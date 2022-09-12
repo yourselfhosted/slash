@@ -55,7 +55,8 @@ CREATE TABLE user (
   row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',
   email TEXT NOT NULL UNIQUE,
   name TEXT NOT NULL,
-  password_hash TEXT NOT NULL
+  password_hash TEXT NOT NULL,
+  open_id TEXT NOT NULL UNIQUE
 );
 
 INSERT INTO
@@ -74,6 +75,12 @@ SET
 WHERE
   rowid = old.rowid;
 END;
+
+CREATE INDEX user_id_index ON user(id);
+
+CREATE UNIQUE INDEX user_email_index ON user(email);
+
+CREATE UNIQUE INDEX user_open_id_index ON user(open_id);
 
 -- user_setting
 CREATE TABLE user_setting (

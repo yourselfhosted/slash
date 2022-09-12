@@ -61,6 +61,7 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 			Email:    signup.Email,
 			Name:     signup.Name,
 			Password: signup.Password,
+			OpenID:   common.GenUUID(),
 		}
 		if err := userCreate.Validate(); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Invalid user create format.").SetInternal(err)

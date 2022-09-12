@@ -18,6 +18,7 @@ type User struct {
 	Email           string         `json:"email"`
 	Name            string         `json:"name"`
 	PasswordHash    string         `json:"-"`
+	OpenID          string         `json:"openId"`
 	UserSettingList []*UserSetting `json:"userSettingList"`
 }
 
@@ -26,6 +27,7 @@ type UserCreate struct {
 	Name         string `json:"name"`
 	Password     string `json:"password"`
 	PasswordHash string
+	OpenID       string
 }
 
 func (create UserCreate) Validate() error {
@@ -53,6 +55,8 @@ type UserPatch struct {
 	Name         *string `json:"name"`
 	Password     *string `json:"password"`
 	PasswordHash *string
+	ResetOpenID  *bool `json:"resetOpenId"`
+	OpenID       *string
 }
 
 type UserFind struct {
@@ -62,8 +66,9 @@ type UserFind struct {
 	RowStatus *RowStatus `json:"rowStatus"`
 
 	// Domain specific fields
-	Email *string `json:"email"`
-	Name  *string `json:"name"`
+	Email  *string `json:"email"`
+	Name   *string `json:"name"`
+	OpenID *string `json:"openId"`
 }
 
 type UserDelete struct {

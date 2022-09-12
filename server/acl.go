@@ -65,6 +65,25 @@ func aclMiddleware(s *Server, next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		{
+			// If there is openId in query string and related user is found, then skip auth.
+			openID := c.QueryParam("openId")
+			if openID != "" {
+				userFind := &api.UserFind{
+					OpenID: &openID,
+				}
+				user, err := s.Store.FindUser(ctx, userFind)
+				if err != nil && common.ErrorCode(err) != common.NotFound {
+					return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user by open_id").SetInternal(err)
+				}
+				if user != nil {
+					// Stores userID into context.
+					c.Set(getUserIDContextKey(), user.ID)
+					return next(c)
+				}
+			}
+		}
+
+		{
 			sess, _ := session.Get("session", c)
 			userIDValue := sess.Values[userIDContextKey]
 			if userIDValue != nil {
