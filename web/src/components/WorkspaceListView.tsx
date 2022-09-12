@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { workspaceService } from "../services";
-import workspace from "../store/modules/workspace";
 import Dropdown from "./common/Dropdown";
 import showCreateWorkspaceDialog from "./CreateWorkspaceDialog";
 
@@ -31,22 +30,26 @@ const WorkspaceListView: React.FC<Props> = (props: Props) => {
               </span>
               <span className="text-base text-gray-600">{workspace.description}</span>
             </div>
-            <Dropdown>
-              <span
-                className="w-full px-2 leading-8 cursor-pointer rounded hover:bg-gray-100"
-                onClick={() => showCreateWorkspaceDialog(workspace.id)}
-              >
-                Edit
-              </span>
-              <span
-                className="w-full px-2 leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100"
-                onClick={() => {
-                  handleDeleteWorkspaceButtonClick(workspace);
-                }}
-              >
-                Delete
-              </span>
-            </Dropdown>
+            <Dropdown
+              actions={
+                <>
+                  <span
+                    className="w-full px-2 leading-8 cursor-pointer rounded hover:bg-gray-100"
+                    onClick={() => showCreateWorkspaceDialog(workspace.id)}
+                  >
+                    Edit
+                  </span>
+                  <span
+                    className="w-full px-2 leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100"
+                    onClick={() => {
+                      handleDeleteWorkspaceButtonClick(workspace);
+                    }}
+                  >
+                    Delete
+                  </span>
+                </>
+              }
+            ></Dropdown>
           </div>
         );
       })}

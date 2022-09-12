@@ -3,13 +3,14 @@ import useToggle from "../../hooks/useToggle";
 import Icon from "../Icon";
 import "../../less/common/dropdown.less";
 
-interface DropdownProps {
-  children?: ReactNode;
+interface Props {
+  trigger?: ReactNode;
+  actions?: ReactNode;
   className?: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
-  const { children, className } = props;
+const Dropdown: React.FC<Props> = (props: Props) => {
+  const { trigger, actions, className } = props;
   const [dropdownStatus, toggleDropdownStatus] = useToggle(false);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -29,10 +30,14 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   return (
     <div ref={dropdownWrapperRef} className={`dropdown-wrapper ${className ?? ""}`} onClick={() => toggleDropdownStatus()}>
-      <span className="trigger-button">
-        <Icon.MoreHorizontal className="icon-img" />
-      </span>
-      <div className={`action-buttons-container ${dropdownStatus ? "" : "!hidden"}`}>{children}</div>
+      {trigger ? (
+        trigger
+      ) : (
+        <span className="trigger-button">
+          <Icon.MoreHorizontal className="icon-img" />
+        </span>
+      )}
+      <div className={`action-buttons-container ${dropdownStatus ? "" : "!hidden"}`}>{actions}</div>
     </div>
   );
 };
