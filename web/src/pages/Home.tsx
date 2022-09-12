@@ -25,7 +25,7 @@ const Home: React.FC = () => {
           <p className="font-mono mb-2 text-gray-400">Workspace List</p>
           <WorkspaceListView workspaceList={workspaceList} />
           <div
-            className="flex flex-row justify-start items-center border px-3 py-3 rounded-lg mt-4 cursor-pointer"
+            className="flex flex-row justify-start items-center border px-3 py-3 rounded-lg cursor-pointer"
             onClick={() => showCreateWorkspaceDialog()}
           >
             <Icon.Plus className="w-5 h-auto mr-1" /> Create Workspace

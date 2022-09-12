@@ -63,30 +63,26 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <div className="w-full flex flex-row justify-between items-center mb-4">
+      <div className="max-w-full w-80 flex flex-row justify-between items-center mb-4">
         <p className="text-base">{workspaceId ? "Edit Workspace" : "Create Workspace"}</p>
         <button className="rounded p-1 hover:bg-gray-100" onClick={destroy}>
           <Icon.X className="w-5 h-auto text-gray-600" />
         </button>
       </div>
       <div className="w-full flex flex-col justify-start items-start">
-        <div className="w-full flex flex-row justify-start items-center mb-2">
-          <input className="rounded border px-2 py-2" type="text" placeholder="Name" value={name} onChange={handleNameInputChange} />
+        <div className="w-full flex flex-col justify-start items-start mb-3">
+          <span className="mb-2">Name</span>
+          <input className="w-full rounded border px-2 py-2" type="text" value={name} onChange={handleNameInputChange} />
         </div>
-        <div className="w-full flex flex-row justify-start items-center mb-2">
-          <input
-            className="rounded border px-2 py-2"
-            type="text"
-            placeholder="Description"
-            value={description}
-            onChange={handleDescriptionInputChange}
-          />
+        <div className="w-full flex flex-col justify-start items-start mb-3">
+          <span className="mb-2">Description</span>
+          <input className="w-full rounded border px-2 py-2" type="text" value={description} onChange={handleDescriptionInputChange} />
         </div>
-      </div>
-      <div className="w-full flex flex-row justify-end items-center mt-2">
-        <div className="flex flex-row justify-start items-center">
+        <div className="w-full flex flex-row justify-end items-center">
           <button
-            className={`border rounded px-2 py-1 border-green-600 text-green-600 ${requestState.isLoading ? "opacity-80" : ""}`}
+            className={`border rounded px-3 py-2 border-green-600 bg-green-600 text-white hover:bg-green-700 ${
+              requestState.isLoading ? "opacity-80" : ""
+            }`}
             onClick={handleSaveBtnClick}
           >
             Save

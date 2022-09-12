@@ -3,7 +3,6 @@ import { useAppSelector } from "../store";
 import { userService } from "../services";
 import useToggle from "../hooks/useToggle";
 import Icon from "./Icon";
-import styles from "../less/header.module.less";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -16,9 +15,9 @@ const Header: React.FC = () => {
   };
 
   return (
-    <div className={styles.header}>
+    <div className="w-full bg-amber-50">
       <div className="w-full max-w-4xl mx-auto px-3 py-4 flex flex-row justify-between items-center">
-        <span>Corgi</span>
+        <span className="text-xl font-mono font-medium">Corgi</span>
         <div className="relative">
           <div className="flex flex-row justify-end items-center" onClick={() => toggleShowDropdown()}>
             <span>{user?.name}</span>

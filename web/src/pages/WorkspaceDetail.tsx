@@ -48,16 +48,19 @@ const WorkspaceDetail: React.FC = () => {
       <Header />
       {loadingState.isLoading ? null : (
         <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start">
-          <div
-            className="flex flex-row justify-start items-center mb-4 text-gray-600 border rounded px-2 py-1 cursor-pointer"
-            onClick={() => handleBackToHome()}
-          >
-            <Icon.ChevronLeft className="w-5 h-auto mr-1" /> Back to Home
+          <div className="w-full flex flex-row justify-start items-center mb-4">
+            <div
+              className="flex flex-row justify-start items-center text-gray-600 border rounded-md px-2 py-1 cursor-pointer"
+              onClick={() => handleBackToHome()}
+            >
+              <Icon.ChevronLeft className="w-5 h-auto" /> Back to Home
+            </div>
+            <span className="ml-4 font-mono text-gray-600">Workspace: {state?.workspace.name}</span>
           </div>
-          <p className="font-mono mb-2 text-gray-600">Workspace: {state?.workspace.name}</p>
-          <ShortcutListView shortcutList={shortcutList} />
+          <p className="font-mono mb-2 text-gray-400">Shortcut List</p>
+          <ShortcutListView workspaceId={state.workspace.id} shortcutList={shortcutList} />
           <div
-            className="flex flex-row justify-start items-center border px-3 py-3 rounded-lg mt-4 cursor-pointer"
+            className="flex flex-row justify-start items-center border px-3 py-3 rounded-lg cursor-pointer"
             onClick={() => showCreateShortcutDialog(state.workspace.id)}
           >
             <Icon.Plus className="w-5 h-auto mr-1" /> Create Shortcut
