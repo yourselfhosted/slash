@@ -1,1 +1,13 @@
+# Air (hot reload) generated
 .air
+
+# temp folder
+tmp
+
+# Frontend asset
+web/dist
+
+# build folder
+build
+
+.DS_Store

@@ -11,12 +11,14 @@ DROP TABLE IF EXISTS `workspace`;
 -- workspace
 CREATE TABLE workspace (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  creator_id INTEGER NOT NULL,
   created_ts BIGINT NOT NULL DEFAULT (strftime('%s', 'now')),
   updated_ts BIGINT NOT NULL DEFAULT (strftime('%s', 'now')),
   row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',
   name TEXT NOT NULL UNIQUE,
-  description TEXT NOT NULL DEFAULT ''
-)
+  description TEXT NOT NULL DEFAULT '',
+  FOREIGN KEY(creator_id) REFERENCES user(id) ON DELETE CASCADE
+);
 
 INSERT INTO
   sqlite_sequence (name, seq)
@@ -106,7 +108,7 @@ CREATE TABLE shortcut (
   workspace_id INTEGER NOT NULL,
   name TEXT NOT NULL,
   link TEXT NOT NULL DEFAULT '',
-  visibility TEXT NOT NULL CHECK (row_status IN ('PRIVATE', 'WORKSPACE')) DEFAULT 'PRIVATE',
+  visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE')) DEFAULT 'PRIVATE',
   FOREIGN KEY(creator_id) REFERENCES user(id) ON DELETE CASCADE,
   FOREIGN KEY(workspace_id) REFERENCES workspace(id) ON DELETE CASCADE
 );

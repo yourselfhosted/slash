@@ -31,6 +31,15 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create workspace").SetInternal(err)
 		}
 
+		_, err = s.Store.UpsertWorkspaceUser(ctx, &api.WorkspaceUserUpsert{
+			WorkspaceID: workspace.ID,
+			UserID:      userID,
+			Role:        api.RoleAdmin,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create workspace user").SetInternal(err)
+		}
+
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspace)); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace response").SetInternal(err)
