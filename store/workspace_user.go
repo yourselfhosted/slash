@@ -162,9 +162,9 @@ func findWorkspaceUserList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceU
 			role,
 			created_ts,
 			updated_ts
-		FROM workspace
+		FROM workspace_user
 		WHERE ` + strings.Join(where, " AND ") + `
-		ORDER BY updated_ts DESC, created_ts DESC, row_status DESC
+		ORDER BY updated_ts DESC, created_ts DESC
 	`
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
