@@ -71,6 +71,12 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 		if workspaceID, err := strconv.Atoi(c.QueryParam("workspaceId")); err == nil {
 			shortcutFind.WorkspaceID = &workspaceID
 		}
+		if name := c.QueryParam("name"); name != "" {
+			shortcutFind.Name = &name
+		}
+		if link := c.QueryParam("link"); link != "" {
+			shortcutFind.Link = &link
+		}
 
 		list, err := s.Store.FindShortcutList(ctx, shortcutFind)
 		if err != nil {
