@@ -31,9 +31,10 @@ type Shortcut struct {
 	RowStatus   RowStatus `json:"rowStatus"`
 
 	// Domain specific fields
-	Name       string     `json:"name"`
-	Link       string     `json:"link"`
-	Visibility Visibility `json:"visibility"`
+	Name        string     `json:"name"`
+	Link        string     `json:"link"`
+	Description string     `json:"description"`
+	Visibility  Visibility `json:"visibility"`
 }
 
 type ShortcutCreate struct {
@@ -42,9 +43,10 @@ type ShortcutCreate struct {
 	WorkspaceID int `json:"workspaceId"`
 
 	// Domain specific fields
-	Name       string     `json:"name"`
-	Link       string     `json:"link"`
-	Visibility Visibility `json:"visibility"`
+	Name        string     `json:"name"`
+	Link        string     `json:"link"`
+	Description string     `json:"description"`
+	Visibility  Visibility `json:"visibility"`
 }
 
 type ShortcutPatch struct {
@@ -54,9 +56,10 @@ type ShortcutPatch struct {
 	RowStatus *RowStatus `json:"rowStatus"`
 
 	// Domain specific fields
-	Name       *string     `json:"name"`
-	Link       *string     `json:"link"`
-	Visibility *Visibility `json:"visibility"`
+	Name        *string     `json:"name"`
+	Link        *string     `json:"link"`
+	Description *string     `json:"description"`
+	Visibility  *Visibility `json:"visibility"`
 }
 
 type ShortcutFind struct {
@@ -67,9 +70,10 @@ type ShortcutFind struct {
 	WorkspaceID *int `json:"workspaceId"`
 
 	// Domain specific fields
-	Name       *string     `json:"name"`
-	Link       *string     `json:"link"`
-	Visibility *Visibility `json:"visibility"`
+	Name        *string     `json:"name"`
+	Link        *string     `json:"link"`
+	Description *string     `json:"description"`
+	Visibility  *Visibility `json:"visibility"`
 }
 
 type ShortcutDelete struct {

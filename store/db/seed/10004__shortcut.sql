@@ -4,6 +4,7 @@ INSERT INTO
     `workspace_id`, 
     `name`,
     `link`,
+    `description`,
     `visibility`
   )
 VALUES
@@ -12,5 +13,6 @@ VALUES
     11, 
     'baidu',
     'https://baidu.com',
+    '百度搜索',
     'WORKSPACE'
   );

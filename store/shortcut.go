@@ -23,9 +23,10 @@ type shortcutRaw struct {
 	RowStatus   api.RowStatus
 
 	// Domain specific fields
-	Name       string
-	Link       string
-	Visibility api.Visibility
+	Name        string
+	Link        string
+	Description string
+	Visibility  api.Visibility
 }
 
 func (raw *shortcutRaw) toShortcut() *api.Shortcut {
@@ -38,9 +39,10 @@ func (raw *shortcutRaw) toShortcut() *api.Shortcut {
 		WorkspaceID: raw.WorkspaceID,
 		RowStatus:   raw.RowStatus,
 
-		Name:       raw.Name,
-		Link:       raw.Link,
-		Visibility: raw.Visibility,
+		Name:        raw.Name,
+		Link:        raw.Link,
+		Description: raw.Description,
+		Visibility:  raw.Visibility,
 	}
 }
 
@@ -178,13 +180,14 @@ func createShortcut(ctx context.Context, tx *sql.Tx, create *api.ShortcutCreate)
 			workspace_id,
 			name, 
 			link,
+			description,
 			visibility
 		)
-		VALUES (?, ?, ?, ?, ?)
-		RETURNING id, creator_id, created_ts, updated_ts, workspace_id, row_status, name, link, visibility
+		VALUES (?, ?, ?, ?, ?, ?)
+		RETURNING id, creator_id, created_ts, updated_ts, workspace_id, row_status, name, link, description, visibility
 	`
 	var shortcutRaw shortcutRaw
-	if err := tx.QueryRowContext(ctx, query, create.CreatorID, create.WorkspaceID, create.Name, create.Link, create.Visibility).Scan(
+	if err := tx.QueryRowContext(ctx, query, create.CreatorID, create.WorkspaceID, create.Name, create.Link, create.Description, create.Visibility).Scan(
 		&shortcutRaw.ID,
 		&shortcutRaw.CreatorID,
 		&shortcutRaw.CreatedTs,
@@ -193,6 +196,7 @@ func createShortcut(ctx context.Context, tx *sql.Tx, create *api.ShortcutCreate)
 		&shortcutRaw.RowStatus,
 		&shortcutRaw.Name,
 		&shortcutRaw.Link,
+		&shortcutRaw.Description,
 		&shortcutRaw.Visibility,
 	); err != nil {
 		return nil, FormatError(err)
@@ -210,6 +214,9 @@ func patchShortcut(ctx context.Context, tx *sql.Tx, patch *api.ShortcutPatch) (*
 	if v := patch.Link; v != nil {
 		set, args = append(set, "link = ?"), append(args, *v)
 	}
+	if v := patch.Description; v != nil {
+		set, args = append(set, "description = ?"), append(args, *v)
+	}
 	if v := patch.Visibility; v != nil {
 		set, args = append(set, "visibility = ?"), append(args, *v)
 	}
@@ -220,7 +227,7 @@ func patchShortcut(ctx context.Context, tx *sql.Tx, patch *api.ShortcutPatch) (*
 		UPDATE shortcut
 		SET ` + strings.Join(set, ", ") + `
 		WHERE id = ?
-		RETURNING id, creator_id, created_ts, updated_ts, workspace_id, row_status, name, link, visibility
+		RETURNING id, creator_id, created_ts, updated_ts, workspace_id, row_status, name, link, description, visibility
 	`
 	var shortcutRaw shortcutRaw
 	if err := tx.QueryRowContext(ctx, query, args...).Scan(
@@ -232,6 +239,7 @@ func patchShortcut(ctx context.Context, tx *sql.Tx, patch *api.ShortcutPatch) (*
 		&shortcutRaw.RowStatus,
 		&shortcutRaw.Name,
 		&shortcutRaw.Link,
+		&shortcutRaw.Description,
 		&shortcutRaw.Visibility,
 	); err != nil {
 		return nil, FormatError(err)
@@ -258,6 +266,9 @@ func findShortcutList(ctx context.Context, tx *sql.Tx, find *api.ShortcutFind) (
 	if v := find.Link; v != nil {
 		where, args = append(where, "link = ?"), append(args, *v)
 	}
+	if v := find.Description; v != nil {
+		where, args = append(where, "description = ?"), append(args, *v)
+	}
 	if v := find.Visibility; v != nil {
 		where, args = append(where, "visibility = ?"), append(args, *v)
 	}
@@ -272,6 +283,7 @@ func findShortcutList(ctx context.Context, tx *sql.Tx, find *api.ShortcutFind) (
 			row_status,
 			name,
 			link,
+			description,
 			visibility
 		FROM shortcut
 		WHERE `+strings.Join(where, " AND ")+`
@@ -295,6 +307,7 @@ func findShortcutList(ctx context.Context, tx *sql.Tx, find *api.ShortcutFind) (
 			&shortcutRaw.RowStatus,
 			&shortcutRaw.Name,
 			&shortcutRaw.Link,
+			&shortcutRaw.Description,
 			&shortcutRaw.Visibility,
 		); err != nil {
 			return nil, FormatError(err)
