@@ -49,22 +49,22 @@ const WorkspaceDetail: React.FC = () => {
       {loadingState.isLoading ? null : (
         <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start">
           <div className="w-full flex flex-row justify-start items-center mb-4">
+            <span className="font-mono text-gray-600 cursor-pointer hover:underline" onClick={() => handleBackToHome()}>
+              Home
+            </span>
+            <span className="font-mono text-gray-200 mx-4">/</span>
+            <span className="font-mono text-gray-600">Workspace: {state?.workspace.name}</span>
+          </div>
+          <div className="w-full flex flex-row justify-between items-center mb-4">
+            <span className="font-mono text-gray-400">Shortcut List</span>
             <div
-              className="flex flex-row justify-start items-center text-gray-600 border rounded-md px-2 py-1 cursor-pointer"
-              onClick={() => handleBackToHome()}
+              className="text-sm flex flex-row justify-start items-center border px-3 py-2 rounded-lg cursor-pointer hover:shadow"
+              onClick={() => showCreateShortcutDialog(state.workspace.id)}
             >
-              <Icon.ChevronLeft className="w-5 h-auto" /> Back to Home
+              <Icon.Plus className="w-5 h-auto mr-1" /> Create Shortcut
             </div>
-            <span className="ml-4 font-mono text-gray-600">Workspace: {state?.workspace.name}</span>
           </div>
-          <p className="font-mono mb-2 text-gray-400">Shortcut List</p>
           <ShortcutListView workspaceId={state.workspace.id} shortcutList={shortcutList} />
-          <div
-            className="flex flex-row justify-start items-center border px-3 py-3 rounded-lg cursor-pointer"
-            onClick={() => showCreateShortcutDialog(state.workspace.id)}
-          >
-            <Icon.Plus className="w-5 h-auto mr-1" /> Create Shortcut
-          </div>
         </div>
       )}
     </div>

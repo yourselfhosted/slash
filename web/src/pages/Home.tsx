@@ -22,14 +22,16 @@ const Home: React.FC = () => {
       <Header />
       {loadingState.isLoading ? null : (
         <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start">
-          <p className="font-mono mb-2 text-gray-400">Workspace List</p>
-          <WorkspaceListView workspaceList={workspaceList} />
-          <div
-            className="flex flex-row justify-start items-center border px-3 py-3 rounded-lg cursor-pointer"
-            onClick={() => showCreateWorkspaceDialog()}
-          >
-            <Icon.Plus className="w-5 h-auto mr-1" /> Create Workspace
+          <div className="mb-4 w-full flex flex-row justify-between items-center">
+            <span className="font-mono text-gray-400">Workspace List</span>
+            <div
+              className="text-sm flex flex-row justify-start items-center border px-3 py-2 rounded-lg cursor-pointer hover:shadow"
+              onClick={() => showCreateWorkspaceDialog()}
+            >
+              <Icon.Plus className="w-5 h-auto mr-1" /> Create Workspace
+            </div>
           </div>
+          <WorkspaceListView workspaceList={workspaceList} />
         </div>
       )}
     </div>

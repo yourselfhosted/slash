@@ -45,6 +45,7 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
                   </span>
                 </>
               }
+              actionsClassName="!w-24"
             ></Dropdown>
           </div>
         );

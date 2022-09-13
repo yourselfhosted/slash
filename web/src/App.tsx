@@ -6,6 +6,7 @@ import Only from "./components/common/OnlyWhen";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import WorkspaceDetail from "./pages/WorkspaceDetail";
+import UserDetail from "./pages/UserDetail";
 
 function App() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ function App() {
       <Routes>
         <Route index element={<Home />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/user/:userId" element={<UserDetail />} />
         <Route path="/workspace/:workspaceId" element={<WorkspaceDetail />} />
       </Routes>
     </Only>

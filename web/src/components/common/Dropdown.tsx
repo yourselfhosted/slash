@@ -1,16 +1,16 @@
 import { ReactNode, useEffect, useRef } from "react";
 import useToggle from "../../hooks/useToggle";
 import Icon from "../Icon";
-import "../../less/common/dropdown.less";
 
 interface Props {
   trigger?: ReactNode;
   actions?: ReactNode;
   className?: string;
+  actionsClassName?: string;
 }
 
 const Dropdown: React.FC<Props> = (props: Props) => {
-  const { trigger, actions, className } = props;
+  const { trigger, actions, className, actionsClassName } = props;
   const [dropdownStatus, toggleDropdownStatus] = useToggle(false);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -29,15 +29,25 @@ const Dropdown: React.FC<Props> = (props: Props) => {
   }, [dropdownStatus]);
 
   return (
-    <div ref={dropdownWrapperRef} className={`dropdown-wrapper ${className ?? ""}`} onClick={() => toggleDropdownStatus()}>
+    <div
+      ref={dropdownWrapperRef}
+      className={`relative flex flex-col justify-start items-start select-none ${className ?? ""}`}
+      onClick={() => toggleDropdownStatus()}
+    >
       {trigger ? (
         trigger
       ) : (
-        <span className="trigger-button">
-          <Icon.MoreHorizontal className="icon-img" />
+        <span className="flex flex-row justify-center items-center border p-1 rounded shadow text-gray-600 cursor-pointer hover:opacity-80">
+          <Icon.MoreHorizontal className="w-4 h-auto" />
         </span>
       )}
-      <div className={`action-buttons-container ${dropdownStatus ? "" : "!hidden"}`}>{actions}</div>
+      <div
+        className={`w-auto mt-1 absolute top-full right-0 flex flex-col justify-start items-start bg-white z-1 border p-1 rounded-md shadow ${
+          actionsClassName ?? ""
+        } ${dropdownStatus ? "" : "!hidden"}`}
+      >
+        {actions}
+      </div>
     </div>
   );
 };

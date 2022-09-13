@@ -16,7 +16,9 @@ const Header: React.FC = () => {
   return (
     <div className="w-full bg-amber-50">
       <div className="w-full max-w-4xl mx-auto px-3 py-4 flex flex-row justify-between items-center">
-        <span className="text-xl font-mono font-medium">Corgi</span>
+        <span className="text-xl font-mono font-medium cursor-pointer" onClick={() => navigate("/")}>
+          Corgi
+        </span>
         <div className="relative">
           <Dropdown
             trigger={
@@ -27,11 +29,21 @@ const Header: React.FC = () => {
             }
             actions={
               <>
-                <span className="w-full px-2 leading-8 cursor-pointer rounded hover:bg-gray-100" onClick={() => handleSignOutButtonClick()}>
+                <span
+                  className="w-full px-3 leading-8 cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                  onClick={() => navigate(`/user/${user?.id}`)}
+                >
+                  My information
+                </span>
+                <span
+                  className="w-full px-3 leading-8 cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                  onClick={() => handleSignOutButtonClick()}
+                >
                   Sign out
                 </span>
               </>
             }
+            actionsClassName="!w-36"
           ></Dropdown>
         </div>
       </div>

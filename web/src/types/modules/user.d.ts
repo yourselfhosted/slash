@@ -9,6 +9,7 @@ interface User {
 
   email: string;
   name: string;
+  openId: string;
 }
 
 interface UserCreate {
@@ -24,6 +25,7 @@ interface UserPatch {
 
   name?: string;
   password?: string;
+  resetOpenID?: boolean;
 }
 
 interface UserDelete {

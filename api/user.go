@@ -54,8 +54,8 @@ type UserPatch struct {
 	Email        *string `json:"email"`
 	Name         *string `json:"name"`
 	Password     *string `json:"password"`
+	ResetOpenID  *bool   `json:"resetOpenId"`
 	PasswordHash *string
-	ResetOpenID  *bool `json:"resetOpenId"`
 	OpenID       *string
 }
 
