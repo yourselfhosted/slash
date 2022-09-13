@@ -14,6 +14,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   const { destroy, workspaceId, shortcutId } = props;
   const [name, setName] = useState<string>("");
   const [link, setLink] = useState<string>("");
+  const [visibility, setVisibility] = useState<Visibility>("PRIVATE");
   const requestState = useLoading(false);
 
   useEffect(() => {
@@ -34,6 +35,11 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   const handleLinkInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value as string;
     setLink(text);
+  };
+
+  const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value as string;
+    setVisibility(text as Visibility);
   };
 
   const handleSaveBtnClick = async () => {
@@ -80,6 +86,33 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
         <div className="w-full flex flex-col justify-start items-start mb-3">
           <span className="mb-2">Link</span>
           <input className="w-full rounded border px-2 py-2" type="text" value={link} onChange={handleLinkInputChange} />
+        </div>
+        <div className="w-full flex flex-col justify-start items-start mb-3">
+          <span className="mb-2">Visibility</span>
+          <div className="w-full flex flex-row justify-start items-center text-base">
+            <input
+              type="radio"
+              name="visibility"
+              id="visibility-private"
+              value="PRIVATE"
+              onChange={handleVisibilityInputChange}
+              checked={visibility === "PRIVATE"}
+            />
+            <label htmlFor="visibility-private" className="ml-1 mr-4">
+              Only for myself
+            </label>
+            <input
+              type="radio"
+              name="visibility"
+              id="visibility-workspace"
+              value="WORKSPACE"
+              onChange={handleVisibilityInputChange}
+              checked={visibility === "WORKSPACE"}
+            />
+            <label htmlFor="visibility-workspace" className="ml-1">
+              Public in workspace
+            </label>
+          </div>
         </div>
         <div className="w-full flex flex-row justify-end items-center">
           <button
