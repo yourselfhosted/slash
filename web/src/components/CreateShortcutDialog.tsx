@@ -10,40 +10,70 @@ interface Props extends DialogProps {
   shortcutId?: ShortcutId;
 }
 
+interface State {
+  shortcutCreate: ShortcutCreate;
+}
+
 const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   const { destroy, workspaceId, shortcutId } = props;
-  const [name, setName] = useState<string>("");
-  const [link, setLink] = useState<string>("");
-  const [visibility, setVisibility] = useState<Visibility>("PRIVATE");
+  const [state, setState] = useState<State>({
+    shortcutCreate: {
+      workspaceId: workspaceId,
+      name: "",
+      link: "",
+      description: "",
+      visibility: "PRIVATE",
+    },
+  });
   const requestState = useLoading(false);
 
   useEffect(() => {
     if (shortcutId) {
       const shortcutTemp = shortcutService.getShortcutById(shortcutId);
       if (shortcutTemp) {
-        setName(shortcutTemp.name);
-        setLink(shortcutTemp.link);
+        setState({
+          ...state,
+          shortcutCreate: Object.assign(state.shortcutCreate, {
+            workspaceId: shortcutTemp.workspaceId,
+            name: shortcutTemp.name,
+            link: shortcutTemp.link,
+            description: shortcutTemp.description,
+            visibility: shortcutTemp.visibility,
+          }),
+        });
       }
     }
   }, [shortcutId]);
 
-  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
     const text = e.target.value as string;
-    setName(text);
+    const tempObject = {} as any;
+    tempObject[key] = text;
+
+    setState({
+      ...state,
+      shortcutCreate: Object.assign(state.shortcutCreate, tempObject),
+    });
+  };
+
+  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleInputChange(e, "name");
   };
 
   const handleLinkInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value as string;
-    setLink(text);
+    handleInputChange(e, "link");
+  };
+
+  const handleDescriptionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleInputChange(e, "description");
   };
 
   const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value as string;
-    setVisibility(text as Visibility);
+    handleInputChange(e, "visibility");
   };
 
   const handleSaveBtnClick = async () => {
-    if (!name) {
+    if (!state.shortcutCreate.name) {
       toastHelper.error("Name is required");
       return;
     }
@@ -52,16 +82,13 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       if (shortcutId) {
         await shortcutService.patchShortcut({
           id: shortcutId,
-          name,
-          link,
+          name: state.shortcutCreate.name,
+          link: state.shortcutCreate.link,
+          description: state.shortcutCreate.description,
+          visibility: state.shortcutCreate.visibility,
         });
       } else {
-        await shortcutService.createShortcut({
-          workspaceId,
-          name,
-          link,
-          visibility: "PRIVATE",
-        });
+        await shortcutService.createShortcut(state.shortcutCreate);
       }
     } catch (error: any) {
       console.error(error);
@@ -81,11 +108,33 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       <div className="w-full flex flex-col justify-start items-start">
         <div className="w-full flex flex-col justify-start items-start mb-3">
           <span className="mb-2">Name</span>
-          <input className="w-full rounded border px-2 py-2" type="text" value={name} onChange={handleNameInputChange} />
+          <input
+            className="w-full rounded border shadow-inner text-sm px-2 py-2"
+            type="text"
+            placeholder="shortcut-name"
+            value={state.shortcutCreate.name}
+            onChange={handleNameInputChange}
+          />
         </div>
         <div className="w-full flex flex-col justify-start items-start mb-3">
           <span className="mb-2">Link</span>
-          <input className="w-full rounded border px-2 py-2" type="text" value={link} onChange={handleLinkInputChange} />
+          <input
+            className="w-full rounded border shadow-inner text-sm px-2 py-2"
+            type="text"
+            placeholder="The full URL of the page you want to get to"
+            value={state.shortcutCreate.link}
+            onChange={handleLinkInputChange}
+          />
+        </div>
+        <div className="w-full flex flex-col justify-start items-start mb-3">
+          <span className="mb-2">Description</span>
+          <input
+            className="w-full rounded border shadow-inner text-sm px-2 py-2"
+            type="text"
+            placeholder="Something to describe the link"
+            value={state.shortcutCreate.description}
+            onChange={handleDescriptionInputChange}
+          />
         </div>
         <div className="w-full flex flex-col justify-start items-start mb-3">
           <span className="mb-2">Visibility</span>
@@ -96,7 +145,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               id="visibility-private"
               value="PRIVATE"
               onChange={handleVisibilityInputChange}
-              checked={visibility === "PRIVATE"}
+              checked={state.shortcutCreate.visibility === "PRIVATE"}
             />
             <label htmlFor="visibility-private" className="ml-1 mr-4">
               Only for myself
@@ -107,7 +156,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               id="visibility-workspace"
               value="WORKSPACE"
               onChange={handleVisibilityInputChange}
-              checked={visibility === "WORKSPACE"}
+              checked={state.shortcutCreate.visibility === "WORKSPACE"}
             />
             <label htmlFor="visibility-workspace" className="ml-1">
               Public in workspace
@@ -116,9 +165,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="w-full flex flex-row justify-end items-center">
           <button
-            className={`border rounded px-3 py-2 border-green-600 bg-green-600 text-white hover:bg-green-700 ${
-              requestState.isLoading ? "opacity-80" : ""
-            }`}
+            className={`rounded px-3 py-2 shadow bg-green-600 text-white hover:bg-green-700 ${requestState.isLoading ? "opacity-80" : ""}`}
             onClick={handleSaveBtnClick}
           >
             Save

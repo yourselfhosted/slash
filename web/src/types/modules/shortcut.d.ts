@@ -13,6 +13,7 @@ interface Shortcut {
 
   name: string;
   link: string;
+  description: string;
   visibility: Visibility;
 }
 
@@ -21,6 +22,7 @@ interface ShortcutCreate {
 
   name: string;
   link: string;
+  description: string;
   visibility: Visibility;
 }
 
@@ -29,6 +31,7 @@ interface ShortcutPatch {
 
   name?: string;
   link?: string;
+  description?: string;
   visibility?: Visibility;
 }
 
