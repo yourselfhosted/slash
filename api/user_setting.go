@@ -14,8 +14,7 @@ const (
 
 // String returns the string format of UserSettingKey type.
 func (key UserSettingKey) String() string {
-	switch key {
-	case UserSettingLocaleKey:
+	if key == UserSettingLocaleKey {
 		return "locale"
 	}
 	return ""
