@@ -90,12 +90,68 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 		return nil
 	})
 
+	g.GET("/workspace/:workspaceName/shortcut/:shortcutName", func(c echo.Context) error {
+		ctx := c.Request().Context()
+		userID, ok := c.Get(getUserIDContextKey()).(int)
+		if !ok {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+		}
+
+		workspaceName := c.Param("workspaceName")
+		shortcutName := c.Param("shortcutName")
+		if workspaceName == "" || shortcutName == "" {
+			return echo.NewHTTPError(http.StatusBadRequest, "Missing workspace name or shortcut name")
+		}
+
+		workspace, err := s.Store.FindWorkspace(ctx, &api.WorkspaceFind{
+			Name: &workspaceName,
+		})
+		if err != nil {
+			if common.ErrorCode(err) == common.NotFound {
+				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("workspace not found by name %s", workspaceName))
+			}
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Errorf("failed to find workspace with name %s", workspaceName)).SetInternal(err)
+		}
+
+		workspaceUser, err := s.Store.FindWordspaceUser(ctx, &api.WorkspaceUserFind{
+			WorkspaceID: &workspace.ID,
+			UserID:      &userID,
+		})
+		if err != nil {
+			if common.ErrorCode(err) == common.NotFound {
+				return echo.NewHTTPError(http.StatusNotFound, "workspace user not found")
+			}
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
+		}
+		if workspaceUser == nil {
+			return echo.NewHTTPError(http.StatusUnauthorized, "not workspace user")
+		}
+
+		shortcut, err := s.Store.FindShortcut(ctx, &api.ShortcutFind{
+			WorkspaceID: &workspace.ID,
+			Name:        &shortcutName,
+		})
+		if err != nil {
+			if common.ErrorCode(err) == common.NotFound {
+				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("shortcut not found by name %s", shortcutName))
+			}
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Errorf("failed to find shortcut with name %s", shortcutName)).SetInternal(err)
+		}
+
+		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
+		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(shortcut)); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode shortcut response").SetInternal(err)
+		}
+		return nil
+	})
+
 	g.PATCH("/workspace/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
 		userID, ok := c.Get(getUserIDContextKey()).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
 		}
+
 		workspaceID, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("ID is not a number: %s", c.Param("id"))).SetInternal(err)

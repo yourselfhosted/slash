@@ -7,6 +7,7 @@ import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import WorkspaceDetail from "./pages/WorkspaceDetail";
 import UserDetail from "./pages/UserDetail";
+import ShortcutRedirector from "./pages/ShortcutRedirector";
 
 function App() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/user/:userId" element={<UserDetail />} />
         <Route path="/workspace/:workspaceId" element={<WorkspaceDetail />} />
+        <Route path="/:workspaceName/go/:shortcutName" element={<ShortcutRedirector />} />
       </Routes>
     </Only>
   );

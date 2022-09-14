@@ -87,6 +87,10 @@ export function getShortcutList(shortcutFind?: ShortcutFind) {
   return axios.get<ResponseObject<Shortcut[]>>(`/api/shortcut?${queryList.join("&")}`);
 }
 
+export function getShortcutWithNameAndWorkspaceName(workspaceName: string, shortcutName: string) {
+  return axios.get<ResponseObject<Shortcut>>(`/api/workspace/${workspaceName}/shortcut/${shortcutName}`);
+}
+
 export function createShortcut(shortcutCreate: ShortcutCreate) {
   return axios.post<ResponseObject<Shortcut>>("/api/shortcut", shortcutCreate);
 }

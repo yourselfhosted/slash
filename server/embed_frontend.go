@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"net/http"
 
+	"github.com/boojack/corgi/common"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -21,10 +22,16 @@ func getFileSystem(path string) http.FileSystem {
 	return http.FS(fs)
 }
 
+func skipper(c echo.Context) bool {
+	path := c.Path()
+	return common.HasPrefixes(path, "/api")
+}
+
 func embedFrontend(e *echo.Echo) {
 	// Use echo static middleware to serve the built dist folder
 	// refer: https://github.com/labstack/echo/blob/master/middleware/static.go
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Skipper:    skipper,
 		HTML5:      true,
 		Filesystem: getFileSystem("dist"),
 	}))
@@ -37,6 +44,7 @@ func embedFrontend(e *echo.Echo) {
 		}
 	})
 	g.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Skipper:    skipper,
 		HTML5:      true,
 		Filesystem: getFileSystem("dist/assets"),
 	}))

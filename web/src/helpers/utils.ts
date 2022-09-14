@@ -44,15 +44,3 @@ export function throttle(fn: FunctionType, delay: number) {
     }, delay);
   };
 }
-
-export async function copyTextToClipboard(text: string) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch (error: unknown) {
-      console.warn("Copy to clipboard failed.", error);
-    }
-  } else {
-    console.warn("Copy to clipboard failed, methods not supports.");
-  }
-}
