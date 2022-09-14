@@ -4,6 +4,8 @@ package api
 type Visibility string
 
 const (
+	// VisibilityPublic is the PUBLIC visibility.
+	VisibilityPublic Visibility = "PUBLIC"
 	// VisibilityWorkspace is the WORKSPACE visibility.
 	VisibilityWorkspace Visibility = "WORKSPACE"
 	// VisibilityPrivite is the PRIVATE visibility.
@@ -12,6 +14,8 @@ const (
 
 func (e Visibility) String() string {
 	switch e {
+	case VisibilityPublic:
+		return "PUBLIC"
 	case VisibilityWorkspace:
 		return "WORKSPACE"
 	case VisibilityPrivite:

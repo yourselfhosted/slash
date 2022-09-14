@@ -1,6 +1,6 @@
 type ShortcutId = number;
 
-type Visibility = "PRIVATE" | "WORKSPACE";
+type Visibility = "PRIVATE" | "WORKSPACE" | "PUBLIC";
 
 interface Shortcut {
   id: ShortcutId;

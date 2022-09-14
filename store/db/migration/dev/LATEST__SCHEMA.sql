@@ -116,7 +116,7 @@ CREATE TABLE shortcut (
   name TEXT NOT NULL,
   link TEXT NOT NULL DEFAULT '',
   description TEXT NOT NULL DEFAULT '',
-  visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE')) DEFAULT 'PRIVATE',
+  visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE',
   FOREIGN KEY(creator_id) REFERENCES user(id) ON DELETE CASCADE,
   FOREIGN KEY(workspace_id) REFERENCES workspace(id) ON DELETE CASCADE
 );

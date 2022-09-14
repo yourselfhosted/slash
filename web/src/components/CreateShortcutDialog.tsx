@@ -148,7 +148,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               checked={state.shortcutCreate.visibility === "PRIVATE"}
             />
             <label htmlFor="visibility-private" className="ml-1 mr-4">
-              Only for myself
+              Private
             </label>
             <input
               type="radio"
@@ -158,8 +158,19 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               onChange={handleVisibilityInputChange}
               checked={state.shortcutCreate.visibility === "WORKSPACE"}
             />
-            <label htmlFor="visibility-workspace" className="ml-1">
-              Public in workspace
+            <label htmlFor="visibility-workspace" className="ml-1 mr-4">
+              Workspace
+            </label>
+            <input
+              type="radio"
+              name="visibility"
+              id="visibility-public"
+              value="PUBLIC"
+              onChange={handleVisibilityInputChange}
+              checked={state.shortcutCreate.visibility === "PUBLIC"}
+            />
+            <label htmlFor="visibility-public" className="ml-1">
+              Public
             </label>
           </div>
         </div>

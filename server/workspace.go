@@ -92,11 +92,6 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 
 	g.GET("/workspace/:workspaceName/shortcut/:shortcutName", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(getUserIDContextKey()).(int)
-		if !ok {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
-		}
-
 		workspaceName := c.Param("workspaceName")
 		shortcutName := c.Param("shortcutName")
 		if workspaceName == "" || shortcutName == "" {
@@ -113,20 +108,6 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Errorf("failed to find workspace with name %s", workspaceName)).SetInternal(err)
 		}
 
-		workspaceUser, err := s.Store.FindWordspaceUser(ctx, &api.WorkspaceUserFind{
-			WorkspaceID: &workspace.ID,
-			UserID:      &userID,
-		})
-		if err != nil {
-			if common.ErrorCode(err) == common.NotFound {
-				return echo.NewHTTPError(http.StatusNotFound, "workspace user not found")
-			}
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
-		}
-		if workspaceUser == nil {
-			return echo.NewHTTPError(http.StatusUnauthorized, "not workspace user")
-		}
-
 		shortcut, err := s.Store.FindShortcut(ctx, &api.ShortcutFind{
 			WorkspaceID: &workspace.ID,
 			Name:        &shortcutName,
@@ -136,6 +117,27 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("shortcut not found by name %s", shortcutName))
 			}
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Errorf("failed to find shortcut with name %s", shortcutName)).SetInternal(err)
+		}
+
+		if shortcut.Visibility != api.VisibilityPublic {
+			userID, ok := c.Get(getUserIDContextKey()).(int)
+			if !ok {
+				return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+			}
+
+			workspaceUser, err := s.Store.FindWordspaceUser(ctx, &api.WorkspaceUserFind{
+				WorkspaceID: &workspace.ID,
+				UserID:      &userID,
+			})
+			if err != nil {
+				if common.ErrorCode(err) == common.NotFound {
+					return echo.NewHTTPError(http.StatusNotFound, "workspace user not found")
+				}
+				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
+			}
+			if workspaceUser == nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, "not workspace user")
+			}
 		}
 
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
