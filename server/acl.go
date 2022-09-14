@@ -62,7 +62,7 @@ func aclMiddleware(s *Server, next echo.HandlerFunc) echo.HandlerFunc {
 
 		println("path", path)
 
-		if common.HasPrefixes(path, "/api/ping", "/api/status", "/api/user/:id", "/api/workspace/:workspaceName/shortcut/:shortcutName") && c.Request().Method == http.MethodGet {
+		if common.HasPrefixes(path, "/api/ping", "/api/status", "/api/user/:id") && c.Request().Method == http.MethodGet {
 			return next(c)
 		}
 
@@ -104,6 +104,10 @@ func aclMiddleware(s *Server, next echo.HandlerFunc) echo.HandlerFunc {
 					c.Set(getUserIDContextKey(), userID)
 				}
 			}
+		}
+
+		if common.HasPrefixes(path, "/api/workspace/:workspaceName/shortcut/:shortcutName") && c.Request().Method == http.MethodGet {
+			return next(c)
 		}
 
 		userID := c.Get(getUserIDContextKey())

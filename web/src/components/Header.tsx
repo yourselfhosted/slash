@@ -20,31 +20,37 @@ const Header: React.FC = () => {
           Corgi
         </span>
         <div className="relative">
-          <Dropdown
-            trigger={
-              <div className="flex flex-row justify-end items-center cursor-pointer">
-                <span>{user?.name}</span>
-                <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600" />
-              </div>
-            }
-            actions={
-              <>
-                <span
-                  className="w-full px-3 leading-8 cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
-                  onClick={() => navigate(`/user/${user?.id}`)}
-                >
-                  My information
-                </span>
-                <span
-                  className="w-full px-3 leading-8 cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
-                  onClick={() => handleSignOutButtonClick()}
-                >
-                  Sign out
-                </span>
-              </>
-            }
-            actionsClassName="!w-36"
-          ></Dropdown>
+          {user ? (
+            <Dropdown
+              trigger={
+                <div className="flex flex-row justify-end items-center cursor-pointer">
+                  <span>{user?.name}</span>
+                  <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600" />
+                </div>
+              }
+              actions={
+                <>
+                  <span
+                    className="w-full px-3 leading-8 cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                    onClick={() => navigate(`/user/${user?.id}`)}
+                  >
+                    My information
+                  </span>
+                  <span
+                    className="w-full px-3 leading-8 cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                    onClick={() => handleSignOutButtonClick()}
+                  >
+                    Sign out
+                  </span>
+                </>
+              }
+              actionsClassName="!w-36"
+            ></Dropdown>
+          ) : (
+            <span className="cursor-pointer" onClick={() => navigate("/auth")}>
+              Sign in
+            </span>
+          )}
         </div>
       </div>
     </div>
