@@ -66,8 +66,12 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 
 	g.GET("/shortcut", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		shortcutFind := &api.ShortcutFind{}
+		userID, ok := c.Get(getUserIDContextKey()).(int)
+		if !ok {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+		}
 
+		shortcutFind := &api.ShortcutFind{}
 		if workspaceID, err := strconv.Atoi(c.QueryParam("workspaceId")); err == nil {
 			shortcutFind.WorkspaceID = &workspaceID
 		}
@@ -78,10 +82,24 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			shortcutFind.Link = &link
 		}
 
-		list, err := s.Store.FindShortcutList(ctx, shortcutFind)
+		list := []*api.Shortcut{}
+		if shortcutFind.WorkspaceID == nil {
+			shortcutFind.MemberID = &userID
+		}
+		shortcutFind.VisibilityList = []api.Visibility{api.VisibilityWorkspace, api.VisibilityPublic}
+		visibleShortcutList, err := s.Store.FindShortcutList(ctx, shortcutFind)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to fetch shortcut list").SetInternal(err)
 		}
+		list = append(list, visibleShortcutList...)
+
+		shortcutFind.VisibilityList = []api.Visibility{api.VisibilityPrivite}
+		shortcutFind.CreatorID = &userID
+		privateShortcutList, err := s.Store.FindShortcutList(ctx, shortcutFind)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to fetch private shortcut list").SetInternal(err)
+		}
+		list = append(list, privateShortcutList...)
 
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(list)); err != nil {

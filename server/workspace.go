@@ -125,6 +125,10 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
 			}
 
+			if shortcut.Visibility == api.VisibilityPrivite && shortcut.CreatorID != userID {
+				return echo.NewHTTPError(http.StatusUnauthorized, "not shortcut owner")
+			}
+
 			workspaceUser, err := s.Store.FindWordspaceUser(ctx, &api.WorkspaceUserFind{
 				WorkspaceID: &workspace.ID,
 				UserID:      &userID,

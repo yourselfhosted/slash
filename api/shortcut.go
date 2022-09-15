@@ -74,10 +74,11 @@ type ShortcutFind struct {
 	WorkspaceID *int `json:"workspaceId"`
 
 	// Domain specific fields
-	Name        *string     `json:"name"`
-	Link        *string     `json:"link"`
-	Description *string     `json:"description"`
-	Visibility  *Visibility `json:"visibility"`
+	Name           *string
+	Link           *string
+	Description    *string
+	MemberID       *int
+	VisibilityList []Visibility
 }
 
 type ShortcutDelete struct {
