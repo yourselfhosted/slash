@@ -19,7 +19,7 @@ const fetchShortcut = async (name) => {
 
 const urlRegex = /https?:\/\/go\/(.+)/;
 
-chrome.tabs.onUpdated.addListener(async (_, a, tab) => {
+chrome.tabs.onUpdated.addListener(async (_1, _2, tab) => {
   if (typeof tab.url === "string") {
     const matchResult = urlRegex.exec(tab.url);
     if (matchResult) {

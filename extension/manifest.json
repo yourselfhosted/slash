@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "manifest_version": 3,
   "omnibox": {
-    "keyword": "go"
+    "keyword": "go/"
   },
   "action": {
     "default_popup": "popup.html"
