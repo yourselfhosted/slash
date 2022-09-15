@@ -35,3 +35,60 @@ VALUES
     'B站',
     'PUBLIC'
   );
+
+INSERT INTO 
+  shortcut (
+    `creator_id`,
+    `workspace_id`, 
+    `name`,
+    `link`,
+    `description`,
+    `visibility`
+  )
+VALUES
+  (
+    101,
+    11, 
+    'ph',
+    'https://producthunt.com',
+    'PH',
+    'PRIVATE'
+  );
+
+INSERT INTO 
+  shortcut (
+    `creator_id`,
+    `workspace_id`, 
+    `name`,
+    `link`,
+    `description`,
+    `visibility`
+  )
+VALUES
+  (
+    101,
+    12, 
+    'github',
+    'https://producthunt.com',
+    'GitHub',
+    'PRIVATE'
+  );
+
+INSERT INTO 
+  shortcut (
+    `creator_id`,
+    `workspace_id`, 
+    `name`,
+    `link`,
+    `description`,
+    `visibility`
+  )
+VALUES
+  (
+    102,
+    12, 
+    'go',
+    'https://google.com',
+    'google',
+    'WORKSPACE'
+  );

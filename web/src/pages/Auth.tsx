@@ -30,7 +30,7 @@ const Auth: React.FC = () => {
     api.getSystemStatus().then(({ data }) => {
       const { data: status } = data;
       if (status.profile.mode === "dev") {
-        setEmail("demo@iamcorgi.com");
+        setEmail("frank@iamcorgi.com");
         setPassword("secret");
       }
     });
