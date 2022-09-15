@@ -90,16 +90,16 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       } else {
         await shortcutService.createShortcut(state.shortcutCreate);
       }
+      destroy();
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(error.response.data.message);
+      toastHelper.error(error.response.data.error || error.response.data.message);
     }
-    destroy();
   };
 
   return (
     <>
-      <div className="max-w-full w-80 flex flex-row justify-between items-center mb-4">
+      <div className="max-w-full w-80 sm:w-96 flex flex-row justify-between items-center mb-4">
         <p className="text-base">{shortcutId ? "Edit Shortcut" : "Create Shortcut"}</p>
         <button className="rounded p-1 hover:bg-gray-100" onClick={destroy}>
           <Icon.X className="w-5 h-auto text-gray-600" />

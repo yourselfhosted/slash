@@ -1,5 +1,6 @@
 import copy from "copy-to-clipboard";
 import { shortcutService, workspaceService } from "../services";
+import { useAppSelector } from "../store";
 import Dropdown from "./common/Dropdown";
 import showCreateShortcutDialog from "./CreateShortcutDialog";
 import Icon from "./Icon";
@@ -11,6 +12,7 @@ interface Props {
 
 const ShortcutListView: React.FC<Props> = (props: Props) => {
   const { workspaceId, shortcutList } = props;
+  const { user } = useAppSelector((state) => state.user);
 
   const handleCopyButtonClick = (shortcut: Shortcut) => {
     const workspace = workspaceService.getWorkspaceById(workspaceId);
@@ -27,8 +29,8 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
         return (
           <div key={shortcut.id} className="w-full flex flex-row justify-between items-start border px-6 py-4 mb-3 rounded-lg">
             <div className="flex flex-row justify-start items-center mr-4">
-              <span className="font-medium">{shortcut.name}</span>
-              <span className="text-gray-500 ml-4">{shortcut.description}</span>
+              <span>{shortcut.name}</span>
+              <span className="text-gray-400 text-sm ml-2">({shortcut.description})</span>
             </div>
             <div className="flex flex-row justify-end items-center">
               <span
@@ -45,20 +47,22 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
               <Dropdown
                 actions={
                   <>
-                    <span
-                      className="w-full px-2 leading-8 cursor-pointer rounded hover:bg-gray-100"
+                    <button
+                      disabled={shortcut.creatorId !== user?.id}
+                      className="w-full px-2 text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       onClick={() => showCreateShortcutDialog(workspaceId, shortcut.id)}
                     >
                       Edit
-                    </span>
-                    <span
-                      className="w-full px-2 leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100"
+                    </button>
+                    <button
+                      disabled={shortcut.creatorId !== user?.id}
+                      className="w-full px-2 text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       onClick={() => {
                         handleDeleteShortcutButtonClick(shortcut);
                       }}
                     >
                       Delete
-                    </span>
+                    </button>
                   </>
                 }
                 actionsClassName="!w-24"

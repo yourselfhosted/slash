@@ -33,7 +33,7 @@ function App() {
     userService.initialState().finally(() => {
       if (!userService.getState().user) {
         pageLoadingStatus.setFinish();
-        navigate("/auth");
+        navigate("/user/auth");
         return;
       }
 
@@ -47,9 +47,9 @@ function App() {
     <Only when={!pageLoadingStatus.isLoading}>
       <Routes>
         <Route index element={<Home />} />
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/user/auth" element={<Auth />} />
         <Route path="/user/:userId" element={<UserDetail />} />
-        <Route path="/workspace/:workspaceId" element={<WorkspaceDetail />} />
+        <Route path="/:workspaceName" element={<WorkspaceDetail />} />
         <Route path="/:workspaceName/go/:shortcutName" element={<ShortcutRedirector />} />
       </Routes>
     </Only>

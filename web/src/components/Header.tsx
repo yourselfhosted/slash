@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store";
 import { userService } from "../services";
 import Icon from "./Icon";
@@ -10,44 +10,44 @@ const Header: React.FC = () => {
 
   const handleSignOutButtonClick = async () => {
     await userService.doSignOut();
-    navigate("/auth");
+    navigate("/user/auth");
   };
 
   return (
     <div className="w-full bg-amber-50">
       <div className="w-full max-w-4xl mx-auto px-3 py-4 flex flex-row justify-between items-center">
-        <span className="text-xl font-mono font-medium cursor-pointer" onClick={() => navigate("/")}>
+        <Link to={"/"} className="text-xl font-mono font-medium cursor-pointer">
           Corgi
-        </span>
+        </Link>
         <div className="relative">
           {user ? (
             <Dropdown
               trigger={
-                <div className="flex flex-row justify-end items-center cursor-pointer">
+                <button className="flex flex-row justify-end items-center cursor-pointer">
                   <span>{user?.name}</span>
                   <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600" />
-                </div>
+                </button>
               }
               actions={
                 <>
-                  <span
-                    className="w-full px-3 leading-8 cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
-                    onClick={() => navigate(`/user/${user?.id}`)}
+                  <Link
+                    to={`/user/${user?.id}`}
+                    className="w-full px-3 leading-8 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
                   >
                     My information
-                  </span>
-                  <span
-                    className="w-full px-3 leading-8 cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                  </Link>
+                  <button
+                    className="w-full px-3 leading-8 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
                     onClick={() => handleSignOutButtonClick()}
                   >
                     Sign out
-                  </span>
+                  </button>
                 </>
               }
               actionsClassName="!w-36"
             ></Dropdown>
           ) : (
-            <span className="cursor-pointer" onClick={() => navigate("/auth")}>
+            <span className="cursor-pointer" onClick={() => navigate("/user/auth")}>
               Sign in
             </span>
           )}

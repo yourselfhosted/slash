@@ -22,6 +22,16 @@ const workspaceService = {
     return workspaces;
   },
 
+  getWorkspaceByName: (workspaceName: string) => {
+    const workspaceList = workspaceService.getState().workspaceList;
+    for (const workspace of workspaceList) {
+      if (workspace.name === workspaceName) {
+        return workspace;
+      }
+    }
+    return undefined;
+  },
+
   getWorkspaceById: (id: WorkspaceId) => {
     const workspaceList = workspaceService.getState().workspaceList;
     for (const workspace of workspaceList) {

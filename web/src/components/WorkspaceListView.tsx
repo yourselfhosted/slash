@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { workspaceService } from "../services";
 import Dropdown from "./common/Dropdown";
 import showCreateWorkspaceDialog from "./CreateWorkspaceDialog";
@@ -9,11 +9,6 @@ interface Props {
 
 const WorkspaceListView: React.FC<Props> = (props: Props) => {
   const { workspaceList } = props;
-  const navigate = useNavigate();
-
-  const gotoWorkspaceDetailPage = (workspace: Workspace) => {
-    navigate(`/workspace/${workspace.id}`);
-  };
 
   const handleDeleteWorkspaceButtonClick = (workspace: Workspace) => {
     workspaceService.deleteWorkspaceById(workspace.id);
@@ -25,10 +20,10 @@ const WorkspaceListView: React.FC<Props> = (props: Props) => {
         return (
           <div key={workspace.id} className="w-full flex flex-row justify-between items-start border px-6 py-4 mb-3 rounded-lg">
             <div className="flex flex-col justify-start items-start">
-              <span className="text-lg font-medium cursor-pointer hover:underline" onClick={() => gotoWorkspaceDetailPage(workspace)}>
+              <Link to={`/${workspace.name}`} className="text-lg font-medium cursor-pointer hover:underline">
                 {workspace.name}
-              </span>
-              <span className="text-base text-gray-600">{workspace.description}</span>
+              </Link>
+              <span className="text-sm mt-1 text-gray-600">{workspace.description}</span>
             </div>
             <Dropdown
               actions={

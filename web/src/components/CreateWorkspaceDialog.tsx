@@ -74,11 +74,11 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
           ...state.workspaceCreate,
         });
       }
+      destroy();
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(error.response.data.message);
+      toastHelper.error(error.response.data.error || error.response.data.message);
     }
-    destroy();
   };
 
   return (
