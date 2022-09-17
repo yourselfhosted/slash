@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { shortcutService, workspaceService } from "../services";
 import { useAppSelector } from "../store";
 import useLoading from "../hooks/useLoading";

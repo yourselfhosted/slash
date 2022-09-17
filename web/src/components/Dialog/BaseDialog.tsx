@@ -6,7 +6,7 @@ import store from "../../store";
 import "../../less/base-dialog.less";
 
 interface DialogConfig {
-  className: string;
+  className?: string;
   clickSpaceDestroy?: boolean;
 }
 

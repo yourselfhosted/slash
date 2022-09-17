@@ -48,7 +48,7 @@ function App() {
       <Routes>
         <Route index element={<Home />} />
         <Route path="/user/auth" element={<Auth />} />
-        <Route path="/user/:userId" element={<UserDetail />} />
+        <Route path="/account/" element={<UserDetail />} />
         <Route path="/:workspaceName" element={<WorkspaceDetail />} />
         <Route path="/:workspaceName/go/:shortcutName" element={<ShortcutRedirector />} />
       </Routes>

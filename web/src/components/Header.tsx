@@ -20,7 +20,7 @@ const Header: React.FC = () => {
 
   return (
     <div className="w-full bg-amber-50">
-      <div className="w-full max-w-4xl mx-auto px-3 py-4 flex flex-row justify-between items-center">
+      <div className="w-full max-w-4xl mx-auto px-3 py-5 flex flex-row justify-between items-center">
         <div className="flex flex-row justify-start items-center">
           <Link to={"/"} className="text-base font-mono font-medium cursor-pointer">
             Corgi
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
               actions={
                 <>
                   <Link
-                    to={`/user/${user?.id}`}
+                    to="/account"
                     className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
                   >
                     <Icon.User className="w-4 h-auto mr-1" /> My Account

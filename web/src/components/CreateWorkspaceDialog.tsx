@@ -63,6 +63,7 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
       return;
     }
 
+    requestState.setLoading();
     try {
       if (workspaceId) {
         await workspaceService.patchWorkspace({
@@ -79,6 +80,7 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
       console.error(error);
       toastHelper.error(error.response.data.error || error.response.data.message);
     }
+    requestState.setFinish();
   };
 
   return (
@@ -110,6 +112,7 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="w-full flex flex-row justify-end items-center">
           <button
+            disabled={requestState.isLoading}
             className={`rounded px-3 py-2 shadow bg-green-600 text-white hover:bg-green-700 ${requestState.isLoading ? "opacity-80" : ""}`}
             onClick={handleSaveBtnClick}
           >
