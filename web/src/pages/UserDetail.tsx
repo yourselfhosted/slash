@@ -32,7 +32,7 @@ const UserDetail: React.FC = () => {
       onConfirm: async () => {
         await userService.patchUser({
           id: user?.id as UserId,
-          resetOpenID: true,
+          resetOpenId: true,
         });
       },
     });

@@ -25,7 +25,7 @@ interface UserPatch {
 
   name?: string;
   password?: string;
-  resetOpenID?: boolean;
+  resetOpenId?: boolean;
 }
 
 interface UserDelete {
