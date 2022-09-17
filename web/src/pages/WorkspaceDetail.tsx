@@ -33,22 +33,16 @@ const WorkspaceDetail: React.FC = () => {
       ...state,
       workspace,
     });
+    loadingState.setLoading();
     Promise.all([shortcutService.fetchWorkspaceShortcuts(workspace.id)]).finally(() => {
       loadingState.setFinish();
     });
-  }, []);
+  }, [params.workspaceName]);
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">
       <Header />
       <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start">
-        <div className="w-full flex flex-row justify-start items-center mb-4">
-          <Link to={"/"} className="font-mono text-gray-600 cursor-pointer hover:underline">
-            Home
-          </Link>
-          <span className="font-mono text-gray-200 mx-4">/</span>
-          <span className="font-mono text-gray-600">Workspace: {state?.workspace.name}</span>
-        </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <span className="font-mono text-gray-400">Shortcut List</span>
           <button
