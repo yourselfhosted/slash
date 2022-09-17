@@ -33,14 +33,15 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
               <span className="text-gray-400 text-sm ml-2">({shortcut.description})</span>
             </div>
             <div className="flex flex-row justify-end items-center">
-              <span
+              <span className=" w-12 mr-2 text-gray-600">{shortcut.creator.name}</span>
+              <button
                 className="cursor-pointer mr-4 hover:opacity-80"
                 onClick={() => {
                   handleCopyButtonClick(shortcut);
                 }}
               >
                 <Icon.Copy className="w-5 h-auto" />
-              </span>
+              </button>
               <a className="cursor-pointer mr-4 hover:opacity-80" target="blank" href={shortcut.link}>
                 <Icon.ExternalLink className="w-5 h-auto" />
               </a>
@@ -49,14 +50,14 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
                   <>
                     <button
                       disabled={shortcut.creatorId !== user?.id}
-                      className="w-full px-2 text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                      className="w-full px-3 text-left leading-10 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       onClick={() => showCreateShortcutDialog(workspaceId, shortcut.id)}
                     >
                       Edit
                     </button>
                     <button
                       disabled={shortcut.creatorId !== user?.id}
-                      className="w-full px-2 text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                      className="w-full px-3 text-left leading-10 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       onClick={() => {
                         handleDeleteShortcutButtonClick(shortcut);
                       }}

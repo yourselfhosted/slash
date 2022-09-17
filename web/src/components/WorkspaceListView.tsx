@@ -20,7 +20,7 @@ const WorkspaceListView: React.FC<Props> = (props: Props) => {
         return (
           <div key={workspace.id} className="w-full flex flex-row justify-between items-start border px-6 py-4 mb-3 rounded-lg">
             <div className="flex flex-col justify-start items-start">
-              <Link to={`/${workspace.name}`} className="text-lg font-medium cursor-pointer hover:underline">
+              <Link to={`/${workspace.name}`} className="text-lg cursor-pointer hover:underline">
                 {workspace.name}
               </Link>
               <span className="text-sm mt-1 text-gray-600">{workspace.description}</span>
@@ -28,20 +28,20 @@ const WorkspaceListView: React.FC<Props> = (props: Props) => {
             <Dropdown
               actions={
                 <>
-                  <span
-                    className="w-full px-2 leading-8 cursor-pointer rounded hover:bg-gray-100"
+                  <button
+                    className="w-full px-3 text-left leading-10 cursor-pointer rounded hover:bg-gray-100"
                     onClick={() => showCreateWorkspaceDialog(workspace.id)}
                   >
                     Edit
-                  </span>
-                  <span
-                    className="w-full px-2 leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100"
+                  </button>
+                  <button
+                    className="w-full px-3 text-left leading-10 cursor-pointer rounded text-red-600 hover:bg-gray-100"
                     onClick={() => {
                       handleDeleteWorkspaceButtonClick(workspace);
                     }}
                   >
                     Delete
-                  </span>
+                  </button>
                 </>
               }
               actionsClassName="!w-24"

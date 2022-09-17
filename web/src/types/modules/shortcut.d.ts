@@ -6,6 +6,7 @@ interface Shortcut {
   id: ShortcutId;
 
   creatorId: UserId;
+  creator: User;
   createdTs: TimeStamp;
   updatedTs: TimeStamp;
   workspaceId: WorkspaceId;

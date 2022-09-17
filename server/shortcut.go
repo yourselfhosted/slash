@@ -31,6 +31,10 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create shortcut").SetInternal(err)
 		}
 
+		if err := s.Store.ComposeShortcut(ctx, shortcut); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
+		}
+
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(shortcut)); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode shortcut response").SetInternal(err)
@@ -55,6 +59,10 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 		shortcut, err := s.Store.PatchShortcut(ctx, shortcutPatch)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to patch shortcut").SetInternal(err)
+		}
+
+		if err := s.Store.ComposeShortcut(ctx, shortcut); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
 		}
 
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
@@ -101,6 +109,12 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 		}
 		list = append(list, privateShortcutList...)
 
+		for _, shortcut := range list {
+			if err := s.Store.ComposeShortcut(ctx, shortcut); err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
+			}
+		}
+
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(list)); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode shortcut list response").SetInternal(err)
@@ -121,6 +135,10 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 		shortcut, err := s.Store.FindShortcut(ctx, shortcutFind)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to fetch shortcut by ID %d", *shortcutFind.ID)).SetInternal(err)
+		}
+
+		if err := s.Store.ComposeShortcut(ctx, shortcut); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
 		}
 
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)

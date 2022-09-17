@@ -29,6 +29,7 @@ type Shortcut struct {
 
 	// Standard fields
 	CreatorID   int       `json:"creatorId"`
+	Creator     *User     `json:"creator"`
 	CreatedTs   int64     `json:"createdTs"`
 	UpdatedTs   int64     `json:"updatedTs"`
 	WorkspaceID int       `json:"workspaceId"`
