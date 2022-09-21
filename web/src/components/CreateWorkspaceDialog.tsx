@@ -113,7 +113,9 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
         <div className="w-full flex flex-row justify-end items-center">
           <button
             disabled={requestState.isLoading}
-            className={`rounded px-3 py-2 shadow bg-green-600 text-white hover:bg-green-700 ${requestState.isLoading ? "opacity-80" : ""}`}
+            className={`rounded px-3 leading-9 shadow bg-green-600 text-white hover:bg-green-700 ${
+              requestState.isLoading ? "opacity-80" : ""
+            }`}
             onClick={handleSaveBtnClick}
           >
             Save

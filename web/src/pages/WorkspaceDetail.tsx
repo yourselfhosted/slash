@@ -52,10 +52,10 @@ const WorkspaceDetail: React.FC = () => {
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <span className="font-mono text-gray-400">Shortcut List</span>
           <button
-            className="text-sm flex flex-row justify-start items-center border px-3 py-2 rounded-lg cursor-pointer hover:shadow"
+            className="text-sm flex flex-row justify-start items-center border px-3 leading-10 rounded-lg cursor-pointer hover:shadow"
             onClick={() => showCreateShortcutDialog(state.workspace.id)}
           >
-            <Icon.Plus className="w-5 h-auto mr-1" /> Create Shortcut
+            <Icon.Plus className="w-4 h-auto mr-1" /> Create Shortcut
           </button>
         </div>
         {loadingState.isLoading ? (

@@ -31,7 +31,7 @@ const Home: React.FC = () => {
         <div className="mb-4 w-full flex flex-row justify-between items-center">
           <span className="font-mono text-gray-400">Workspace List</span>
           <button
-            className="text-sm flex flex-row justify-start items-center border px-3 py-2 rounded-lg cursor-pointer hover:shadow"
+            className="text-sm flex flex-row justify-start items-center border px-3 leading-10 rounded-lg cursor-pointer hover:shadow"
             onClick={() => showCreateWorkspaceDialog()}
           >
             <Icon.Plus className="w-5 h-auto mr-1" /> Create Workspace
