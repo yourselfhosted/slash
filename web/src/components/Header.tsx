@@ -3,7 +3,6 @@ import { useAppSelector } from "../store";
 import { userService } from "../services";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
-import Only from "./common/OnlyWhen";
 import showCreateWorkspaceDialog from "./CreateWorkspaceDialog";
 
 const Header: React.FC = () => {
@@ -25,7 +24,7 @@ const Header: React.FC = () => {
           <Link to={"/"} className="text-base font-mono font-medium cursor-pointer">
             Corgi
           </Link>
-          <Only when={workspaceList.length > 0 && activedWorkspace !== undefined}>
+          {workspaceList.length > 0 && activedWorkspace !== undefined && (
             <>
               <span className="font-mono mx-2 text-gray-200">/</span>
               <Dropdown
@@ -45,9 +44,7 @@ const Header: React.FC = () => {
                           className="w-full px-3 leading-10 flex flex-row justify-between items-center text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
                         >
                           <span className="truncate">{workspace.name}</span>
-                          <Only when={workspace.name === activedWorkspace?.name}>
-                            <Icon.Check className="w-4 h-auto ml-1 shrink-0" />
-                          </Only>
+                          {workspace.name === activedWorkspace?.name && <Icon.Check className="w-4 h-auto ml-1 shrink-0" />}
                         </Link>
                       );
                     })}
@@ -63,7 +60,7 @@ const Header: React.FC = () => {
                 actionsClassName="!w-48 !-left-4"
               ></Dropdown>
             </>
-          </Only>
+          )}
         </div>
         <div className="relative">
           {user ? (

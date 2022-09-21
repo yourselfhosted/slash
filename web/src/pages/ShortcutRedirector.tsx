@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { getShortcutWithNameAndWorkspaceName } from "../helpers/api";
 import useLoading from "../hooks/useLoading";
+import { userService } from "../services";
 
 interface State {
   errMessage?: string;
 }
 
 const ShortcutRedirector: React.FC = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const [state, setState] = useState<State>();
   const loadingState = useLoading();
 
   useEffect(() => {
+    if (!userService.getState().user) {
+      navigate("/user/auth");
+      return;
+    }
+
     const workspaceName = params.workspaceName || "";
     const shortcutName = params.shortcutName || "";
     getShortcutWithNameAndWorkspaceName(workspaceName, shortcutName)

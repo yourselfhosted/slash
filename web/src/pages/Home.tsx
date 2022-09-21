@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { workspaceService } from "../services";
+import { useNavigate } from "react-router-dom";
+import { userService, workspaceService } from "../services";
 import { useAppSelector } from "../store";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
@@ -8,10 +9,16 @@ import WorkspaceListView from "../components/WorkspaceListView";
 import showCreateWorkspaceDialog from "../components/CreateWorkspaceDialog";
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
   const { workspaceList } = useAppSelector((state) => state.workspace);
   const loadingState = useLoading();
 
   useEffect(() => {
+    if (!userService.getState().user) {
+      navigate("/user/auth");
+      return;
+    }
+
     Promise.all([workspaceService.fetchWorkspaceList()]).finally(() => {
       loadingState.setFinish();
     });

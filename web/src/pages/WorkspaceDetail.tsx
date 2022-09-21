@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { shortcutService, workspaceService } from "../services";
+import { useNavigate, useParams } from "react-router-dom";
+import { shortcutService, userService, workspaceService } from "../services";
 import { useAppSelector } from "../store";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
@@ -15,6 +15,7 @@ interface State {
 }
 
 const WorkspaceDetail: React.FC = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
@@ -23,6 +24,11 @@ const WorkspaceDetail: React.FC = () => {
   const loadingState = useLoading();
 
   useEffect(() => {
+    if (!userService.getState().user) {
+      navigate("/user/auth");
+      return;
+    }
+
     const workspace = workspaceService.getWorkspaceByName(params.workspaceName ?? "");
     if (!workspace) {
       toastHelper.error("workspace not found");

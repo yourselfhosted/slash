@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store";
 import Header from "../components/Header";
 import { showCommonDialog } from "../components/Dialog/CommonDialog";
@@ -8,7 +10,15 @@ import toastHelper from "../components/Toast";
 import showChangePasswordDialog from "../components/ChangePasswordDialog";
 
 const UserDetail: React.FC = () => {
+  const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!userService.getState().user) {
+      navigate("/user/auth");
+      return;
+    }
+  }, []);
 
   const handleChangePasswordBtnClick = async () => {
     showChangePasswordDialog();

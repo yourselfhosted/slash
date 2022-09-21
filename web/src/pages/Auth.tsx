@@ -5,7 +5,6 @@ import { validate, ValidatorConfig } from "../helpers/validator";
 import { userService } from "../services";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
-import Only from "../components/common/OnlyWhen";
 import toastHelper from "../components/Toast";
 
 const validateConfig: ValidatorConfig = {
@@ -123,9 +122,7 @@ const Auth: React.FC = () => {
           <div className="flex flex-col justify-start items-start w-full mb-4">
             <div className="text-3xl font-medium font-mono flex flex-row justify-start items-center">
               Corgi
-              <Only when={actionBtnLoadingState.isLoading}>
-                <Icon.Loader className="ml-2 w-5 h-auto animate-spin" />
-              </Only>
+              {actionBtnLoadingState.isLoading && <Icon.Loader className="ml-2 w-5 h-auto animate-spin" />}
             </div>
           </div>
           <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
