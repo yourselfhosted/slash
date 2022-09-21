@@ -292,7 +292,7 @@ func findShortcutList(ctx context.Context, tx *sql.Tx, find *api.ShortcutFind) (
 		where = append(where, fmt.Sprintf("visibility in (%s)", strings.Join(list, ",")))
 	}
 	if v := find.MemberID; v != nil {
-		where, args = append(where, "workspace_id IN (SELECT workspace_id FROM workspace_user WHERE user_id = ? )"), append(args, *v)
+		where, args = append(where, "workspace_id IN (SELECT workspace_id FROM workspace_user WHERE user_id = ?)"), append(args, *v)
 	}
 
 	rows, err := tx.QueryContext(ctx, `

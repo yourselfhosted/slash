@@ -64,6 +64,7 @@ func NewServer(profile *profile.Profile) *Server {
 	s.registerAuthRoutes(apiGroup)
 	s.registerUserRoutes(apiGroup)
 	s.registerWorkspaceRoutes(apiGroup)
+	s.registerWorkspaceUserRoutes(apiGroup)
 	s.registerShortcutRoutes(apiGroup)
 
 	return s

@@ -262,7 +262,7 @@ func findWorkspaceList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceFind)
 		where, args = append(where, "name = ?"), append(args, *v)
 	}
 	if v := find.MemberID; v != nil {
-		where, args = append(where, "id IN (SELECT workspace_id FROM workspace_user WHERE user_id = ? )"), append(args, *v)
+		where, args = append(where, "id IN (SELECT workspace_id FROM workspace_user WHERE user_id = ?)"), append(args, *v)
 	}
 
 	query := `

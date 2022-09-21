@@ -23,24 +23,25 @@ func (e Role) String() string {
 type WorkspaceUser struct {
 	WorkspaceID int   `json:"workspaceId"`
 	UserID      int   `json:"userId"`
+	User        *User `json:"user"`
 	Role        Role  `json:"role"`
 	CreatedTs   int64 `json:"createdTs"`
 	UpdatedTs   int64 `json:"updatedTs"`
 }
 
 type WorkspaceUserUpsert struct {
-	WorkspaceID int   `json:"workspaceId"`
-	UserID      int   `json:"userId"`
-	Role        Role  `json:"role"`
-	UpdatedTs   int64 `json:"updatedTs"`
+	WorkspaceID int    `json:"workspaceId"`
+	UserID      int    `json:"userId"`
+	Role        Role   `json:"role"`
+	UpdatedTs   *int64 `json:"updatedTs"`
 }
 
 type WorkspaceUserFind struct {
-	WorkspaceID *int `json:"workspaceId"`
-	UserID      *int `json:"userId"`
+	WorkspaceID *int
+	UserID      *int
 }
 
 type WorkspaceUserDelete struct {
-	WorkspaceID int `json:"workspaceId"`
-	UserID      int `json:"userId"`
+	WorkspaceID int
+	UserID      int
 }

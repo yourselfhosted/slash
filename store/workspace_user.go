@@ -29,6 +29,21 @@ func (raw *workspaceUserRaw) toWorkspaceUser() *api.WorkspaceUser {
 	}
 }
 
+func (s *Store) ComposeWorkspaceUser(ctx context.Context, workspaceUser *api.WorkspaceUser) error {
+	user, err := s.FindUser(ctx, &api.UserFind{
+		ID: &workspaceUser.UserID,
+	})
+	if err != nil {
+		return err
+	}
+
+	user.OpenID = ""
+	user.UserSettingList = nil
+	workspaceUser.User = user
+
+	return nil
+}
+
 func (s *Store) UpsertWorkspaceUser(ctx context.Context, upsert *api.WorkspaceUserUpsert) (*api.WorkspaceUser, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
@@ -112,14 +127,19 @@ func (s *Store) DeleteWorkspaceUser(ctx context.Context, delete *api.WorkspaceUs
 }
 
 func upsertWorkspaceUser(ctx context.Context, tx *sql.Tx, upsert *api.WorkspaceUserUpsert) (*workspaceUserRaw, error) {
+	set := []string{"workspace_id", "user_id", "role"}
+	args := []interface{}{upsert.WorkspaceID, upsert.UserID, upsert.Role}
+	placeholder := []string{"?", "?", "?"}
+
+	if v := upsert.UpdatedTs; v != nil {
+		set, args, placeholder = append(set, "updated_ts"), append(args, *v), append(placeholder, "?")
+	}
+
 	query := `
 		INSERT INTO workspace_user (
-			workspace_id,
-			user_id,
-			role,
-			updated_ts
+			` + strings.Join(set, ", ") + `
 		)
-		VALUES (?, ?, ?, ?)
+		VALUES (` + strings.Join(placeholder, ",") + `)
 		ON CONFLICT(workspace_id, user_id) DO UPDATE 
 		SET
 			role = EXCLUDED.role,
@@ -127,12 +147,7 @@ func upsertWorkspaceUser(ctx context.Context, tx *sql.Tx, upsert *api.WorkspaceU
 		RETURNING workspace_id, user_id, role, created_ts, updated_ts
 	`
 	var workspaceUserRaw workspaceUserRaw
-	if err := tx.QueryRowContext(ctx, query,
-		upsert.WorkspaceID,
-		upsert.UserID,
-		upsert.Role,
-		upsert.UpdatedTs,
-	).Scan(
+	if err := tx.QueryRowContext(ctx, query, args...).Scan(
 		&workspaceUserRaw.WorkspaceID,
 		&workspaceUserRaw.UserID,
 		&workspaceUserRaw.Role,
