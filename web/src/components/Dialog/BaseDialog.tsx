@@ -8,6 +8,7 @@ import "../../less/base-dialog.less";
 interface DialogConfig {
   className?: string;
   clickSpaceDestroy?: boolean;
+  onDestory?: () => void;
 }
 
 interface Props extends DialogConfig, DialogProps {
@@ -38,7 +39,7 @@ const BaseDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={`dialog-wrapper ${className}`} onClick={handleSpaceClicked}>
+    <div className={`dialog-wrapper px-2 sm:px-0 ${className}`} onClick={handleSpaceClicked}>
       <div className="dialog-container" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
@@ -67,6 +68,10 @@ export function generateDialog<T extends DialogProps>(
         dialog.unmount();
         tempDiv.remove();
       }, ANIMATION_DURATION);
+
+      if (config.onDestory) {
+        config.onDestory();
+      }
     },
   };
 

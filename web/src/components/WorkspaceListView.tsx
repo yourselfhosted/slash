@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { workspaceService } from "../services";
+import { showCommonDialog } from "./Dialog/CommonDialog";
 import Dropdown from "./common/Dropdown";
 import showCreateWorkspaceDialog from "./CreateWorkspaceDialog";
 
@@ -11,7 +12,14 @@ const WorkspaceListView: React.FC<Props> = (props: Props) => {
   const { workspaceList } = props;
 
   const handleDeleteWorkspaceButtonClick = (workspace: Workspace) => {
-    workspaceService.deleteWorkspaceById(workspace.id);
+    showCommonDialog({
+      title: "Delete Workspace",
+      content: `Are you sure to delete workspace \`${workspace.name}\`?`,
+      style: "warning",
+      onConfirm: async () => {
+        await workspaceService.deleteWorkspaceById(workspace.id);
+      },
+    });
   };
 
   return (

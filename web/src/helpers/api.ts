@@ -76,6 +76,24 @@ export function deleteWorkspaceById(workspaceId: WorkspaceId) {
   return axios.delete(`/api/workspace/${workspaceId}`);
 }
 
+export function upsertWorkspaceUser(upsert: WorkspaceUserUpsert) {
+  return axios.post<ResponseObject<WorkspaceUser>>(`/api/workspace/${upsert.workspaceId}/user`, upsert);
+}
+
+export function getWorkspaceUserList(workspaceUserFind?: WorkspaceUserFind) {
+  return axios.get<ResponseObject<WorkspaceUser[]>>(`/api/workspace/${workspaceUserFind?.workspaceId}/user`);
+}
+
+export function getWorkspaceUser(workspaceUserFind?: WorkspaceUserFind) {
+  return axios.get<ResponseObject<WorkspaceUser>>(
+    `/api/workspace/${workspaceUserFind?.workspaceId}/user/${workspaceUserFind?.userId ?? ""}`
+  );
+}
+
+export function deleteWorkspaceUser(workspaceUserDelete: WorkspaceUserDelete) {
+  return axios.delete(`/api/workspace/${workspaceUserDelete.workspaceId}/user/${workspaceUserDelete.userId}`);
+}
+
 export function getShortcutList(shortcutFind?: ShortcutFind) {
   const queryList = [];
   if (shortcutFind?.creatorId) {

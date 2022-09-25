@@ -1,9 +1,10 @@
 import copy from "copy-to-clipboard";
 import { shortcutService, workspaceService } from "../services";
 import { useAppSelector } from "../store";
+import { showCommonDialog } from "./Dialog/CommonDialog";
 import Dropdown from "./common/Dropdown";
-import showCreateShortcutDialog from "./CreateShortcutDialog";
 import Icon from "./Icon";
+import showCreateShortcutDialog from "./CreateShortcutDialog";
 
 interface Props {
   workspaceId: WorkspaceId;
@@ -20,7 +21,14 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
   };
 
   const handleDeleteShortcutButtonClick = (shortcut: Shortcut) => {
-    shortcutService.deleteShortcutById(shortcut.id);
+    showCommonDialog({
+      title: "Delete Shortcut",
+      content: `Are you sure to delete shortcut \`${shortcut.name}\` in this workspace?`,
+      style: "warning",
+      onConfirm: async () => {
+        await shortcutService.deleteShortcutById(shortcut.id);
+      },
+    });
   };
 
   return (

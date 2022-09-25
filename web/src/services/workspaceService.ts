@@ -60,6 +60,25 @@ const workspaceService = {
     await api.deleteWorkspaceById(id);
     store.dispatch(deleteWorkspace(id));
   },
+
+  getWorkspaceUserList: async (id: WorkspaceId) => {
+    const { data } = (
+      await api.getWorkspaceUserList({
+        workspaceId: id,
+      })
+    ).data;
+    return data;
+  },
+
+  getWorkspaceUser: async (workspaceId: WorkspaceId, userId: UserId) => {
+    const { data } = (
+      await api.getWorkspaceUser({
+        workspaceId: workspaceId,
+        userId: userId,
+      })
+    ).data;
+    return data;
+  },
 };
 
 export default workspaceService;

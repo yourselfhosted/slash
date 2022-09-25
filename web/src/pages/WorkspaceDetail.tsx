@@ -1,25 +1,34 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { shortcutService, userService, workspaceService } from "../services";
 import { useAppSelector } from "../store";
+import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 import toastHelper from "../components/Toast";
+import Dropdown from "../components/common/Dropdown";
 import Header from "../components/Header";
 import ShortcutListView from "../components/ShortcutListView";
-import { unknownWorkspace } from "../store/modules/workspace";
 import showCreateShortcutDialog from "../components/CreateShortcutDialog";
+import MemberListView from "../components/MemberListView";
+import showUpsertWorkspaceUserDialog from "../components/UpsertWorkspaceUserDialog";
 
 interface State {
   workspace: Workspace;
+  workspaceUser: WorkspaceUser;
+  userList: WorkspaceUser[];
 }
 
 const WorkspaceDetail: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const location = useLocation();
+  const user = useAppSelector((state) => state.user.user) as User;
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
     workspace: unknownWorkspace,
+    workspaceUser: unknownWorkspaceUser,
+    userList: [],
   });
   const loadingState = useLoading();
 
@@ -35,28 +44,91 @@ const WorkspaceDetail: React.FC = () => {
       return;
     }
 
-    setState({
-      ...state,
-      workspace,
-    });
     loadingState.setLoading();
-    Promise.all([shortcutService.fetchWorkspaceShortcuts(workspace.id)]).finally(() => {
-      loadingState.setFinish();
-    });
+    Promise.all([
+      shortcutService.fetchWorkspaceShortcuts(workspace.id),
+      workspaceService.getWorkspaceUser(workspace.id, user.id),
+      workspaceService.getWorkspaceUserList(workspace.id),
+    ])
+      .then(([, workspaceUser, workspaceUserList]) => {
+        setState({
+          workspace,
+          workspaceUser,
+          userList: workspaceUserList,
+        });
+      })
+      .finally(() => {
+        loadingState.setFinish();
+      });
   }, [params.workspaceName]);
+
+  useEffect(() => {
+    if (location.hash !== "#shortcuts" && location.hash !== "#members") {
+      navigate("#shortcuts");
+    }
+  }, [location.hash]);
+
+  const handleCreateShortcutButtonClick = () => {
+    showCreateShortcutDialog(state.workspace.id, undefined, async () => {
+      if (location.hash !== "#shortcuts") {
+        navigate("#shortcuts");
+      }
+    });
+  };
+
+  const handleUpsertWorkspaceMemberButtonClick = () => {
+    showUpsertWorkspaceUserDialog(state.workspace.id, async () => {
+      const workspaceUserList = await workspaceService.getWorkspaceUserList(state.workspace.id);
+      setState({
+        ...state,
+        userList: workspaceUserList,
+      });
+
+      if (location.hash !== "#members") {
+        navigate("#members");
+      }
+    });
+  };
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start">
       <Header />
-      <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start">
-        <div className="w-full flex flex-row justify-between items-center mb-4">
-          <span className="font-mono text-gray-400">Shortcut List</span>
-          <button
-            className="text-sm flex flex-row justify-start items-center border px-3 leading-10 rounded-lg cursor-pointer hover:shadow"
-            onClick={() => showCreateShortcutDialog(state.workspace.id)}
-          >
-            <Icon.Plus className="w-4 h-auto mr-1" /> Create Shortcut
-          </button>
+      <div className="mx-auto max-w-4xl w-full px-3 pb-6 flex flex-col justify-start items-start">
+        <div className="w-full flex flex-row justify-between items-center mt-4 mb-4">
+          <div className="flex flex-row justify-start items-center space-x-4">
+            <NavLink to="#shortcuts" className={`${location.hash === "#shortcuts" && "underline"}`}>
+              Shortcuts
+            </NavLink>
+            <NavLink to="#members" className={`${location.hash === "#members" && "underline"}`}>
+              Members
+            </NavLink>
+          </div>
+          <div>
+            <Dropdown
+              trigger={
+                <button className="w-32 flex flex-row justify-start items-center border px-3 leading-10 rounded-lg cursor-pointer hover:shadow">
+                  <Icon.Plus className="w-4 h-auto mr-1" /> Add new...
+                </button>
+              }
+              actions={
+                <>
+                  <button
+                    className="w-full flex flex-row justify-start items-center px-3 leading-10 rounded cursor-pointer hover:bg-gray-100"
+                    onClick={handleCreateShortcutButtonClick}
+                  >
+                    Shortcut
+                  </button>
+                  <button
+                    className="w-full flex flex-row justify-start items-center px-3 leading-10 rounded cursor-pointer hover:bg-gray-100"
+                    onClick={handleUpsertWorkspaceMemberButtonClick}
+                  >
+                    Member
+                  </button>
+                </>
+              }
+              actionsClassName="!w-32"
+            />
+          </div>
         </div>
         {loadingState.isLoading ? (
           <div className="py-4 w-full flex flex-row justify-center items-center">
@@ -64,7 +136,12 @@ const WorkspaceDetail: React.FC = () => {
             loading
           </div>
         ) : (
-          <ShortcutListView workspaceId={state.workspace.id} shortcutList={shortcutList} />
+          <>
+            {location.hash === "#shortcuts" && <ShortcutListView workspaceId={state.workspace.id} shortcutList={shortcutList} />}
+            {location.hash === "#members" && (
+              <MemberListView workspaceId={state.workspace.id} workspaceUser={state.workspaceUser} userList={state.userList} />
+            )}
+          </>
         )}
       </div>
     </div>

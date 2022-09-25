@@ -127,13 +127,7 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
 };
 
 export default function showCreateWorkspaceDialog(workspaceId?: WorkspaceId): void {
-  generateDialog(
-    {
-      className: "px-2 sm:px-0",
-    },
-    CreateWorkspaceDialog,
-    {
-      workspaceId,
-    }
-  );
+  generateDialog({}, CreateWorkspaceDialog, {
+    workspaceId,
+  });
 }

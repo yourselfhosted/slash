@@ -189,10 +189,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default function showCreateShortcutDialog(workspaceId: WorkspaceId, shortcutId?: ShortcutId): void {
+export default function showCreateShortcutDialog(workspaceId: WorkspaceId, shortcutId?: ShortcutId, onDestory?: () => void): void {
   generateDialog(
     {
-      className: "px-2 sm:px-0",
+      onDestory,
     },
     CreateShortcutDialog,
     {

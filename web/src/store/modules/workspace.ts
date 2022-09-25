@@ -5,6 +5,11 @@ export const unknownWorkspace = {
   id: UNKNOWN_ID,
 } as Workspace;
 
+export const unknownWorkspaceUser = {
+  workspaceId: UNKNOWN_ID,
+  userId: UNKNOWN_ID,
+} as WorkspaceUser;
+
 interface State {
   workspaceList: Workspace[];
 }

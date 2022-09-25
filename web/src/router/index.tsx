@@ -1,4 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
+import { isNullorUndefined } from "../helpers/utils";
 import { userService, workspaceService } from "../services";
 import Auth from "../pages/Auth";
 import Home from "../pages/Home";
@@ -8,6 +9,10 @@ import ShortcutRedirector from "../pages/ShortcutRedirector";
 
 const router = createBrowserRouter([
   {
+    path: "/user/auth",
+    element: <Auth />,
+  },
+  {
     path: "/",
     element: <Home />,
     loader: async () => {
@@ -16,11 +21,12 @@ const router = createBrowserRouter([
       } catch (error) {
         // do nth
       }
+
+      const { user } = userService.getState();
+      if (isNullorUndefined(user)) {
+        return redirect("/user/auth");
+      }
     },
-  },
-  {
-    path: "/user/auth",
-    element: <Auth />,
   },
   {
     path: "/account",
@@ -30,6 +36,11 @@ const router = createBrowserRouter([
         await userService.initialState();
       } catch (error) {
         // do nth
+      }
+
+      const { user } = userService.getState();
+      if (isNullorUndefined(user)) {
+        return redirect("/user/auth");
       }
     },
   },
@@ -43,6 +54,11 @@ const router = createBrowserRouter([
       } catch (error) {
         // do nth
       }
+
+      const { user } = userService.getState();
+      if (isNullorUndefined(user)) {
+        return redirect("/user/auth");
+      }
     },
   },
   {
@@ -54,6 +70,11 @@ const router = createBrowserRouter([
         await workspaceService.fetchWorkspaceList();
       } catch (error) {
         // do nth
+      }
+
+      const { user } = userService.getState();
+      if (isNullorUndefined(user)) {
+        return redirect("/user/auth");
       }
     },
   },
