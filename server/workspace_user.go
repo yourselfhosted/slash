@@ -134,8 +134,8 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
 		}
-		if currentWorkspaceUser.Role != api.RoleAdmin {
-			return echo.NewHTTPError(http.StatusForbidden, "Access forbidden to add workspace user").SetInternal(err)
+		if currentWorkspaceUser.UserID != userID && currentWorkspaceUser.Role != api.RoleAdmin {
+			return echo.NewHTTPError(http.StatusForbidden, "Access forbidden to delete workspace user").SetInternal(err)
 		}
 
 		userID, err = strconv.Atoi(c.Param("userId"))
@@ -152,6 +152,17 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("Workspace user not found with workspace id %d and user id %d", workspaceID, userID))
 			}
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete workspace user").SetInternal(err)
+		}
+
+		shortcutDelete := &api.ShortcutDelete{
+			CreatorID:   &userID,
+			WorkspaceID: &workspaceID,
+		}
+		if err := s.Store.DeleteShortcut(ctx, shortcutDelete); err != nil {
+			if common.ErrorCode(err) == common.NotFound {
+				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("Shortcut not found with workspace id %d and user id %d", workspaceID, userID))
+			}
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete shortcut").SetInternal(err)
 		}
 
 		return c.JSON(http.StatusOK, true)

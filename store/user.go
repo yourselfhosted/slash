@@ -326,7 +326,6 @@ func findUserList(ctx context.Context, tx *sql.Tx, find *api.UserFind) ([]*userR
 
 func deleteUser(ctx context.Context, tx *sql.Tx, delete *api.UserDelete) error {
 	result, err := tx.ExecContext(ctx, `
-		PRAGMA foreign_keys = ON;
 		DELETE FROM user WHERE id = ?
 	`, delete.ID)
 	if err != nil {

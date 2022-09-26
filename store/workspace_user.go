@@ -212,7 +212,6 @@ func findWorkspaceUserList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceU
 
 func deleteWorkspaceUser(ctx context.Context, tx *sql.Tx, delete *api.WorkspaceUserDelete) error {
 	result, err := tx.ExecContext(ctx, `
-		PRAGMA foreign_keys = ON;
 		DELETE FROM workspace_user WHERE workspace_id = ? AND user_id = ?
 	`, delete.WorkspaceID, delete.UserID)
 	if err != nil {

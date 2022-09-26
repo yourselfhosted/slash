@@ -83,5 +83,9 @@ type ShortcutFind struct {
 }
 
 type ShortcutDelete struct {
-	ID int
+	ID *int
+
+	// Standard fields
+	CreatorID   *int
+	WorkspaceID *int
 }

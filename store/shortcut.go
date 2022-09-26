@@ -182,7 +182,7 @@ func (s *Store) DeleteShortcut(ctx context.Context, delete *api.ShortcutDelete) 
 		return FormatError(err)
 	}
 
-	s.cache.DeleteCache(api.ShortcutCache, delete.ID)
+	s.cache.DeleteCache(api.ShortcutCache, *delete.ID)
 
 	return nil
 }
@@ -346,10 +346,20 @@ func findShortcutList(ctx context.Context, tx *sql.Tx, find *api.ShortcutFind) (
 }
 
 func deleteShortcut(ctx context.Context, tx *sql.Tx, delete *api.ShortcutDelete) error {
+	where, args := []string{"1 = 1"}, []interface{}{}
+
+	if v := delete.ID; v != nil {
+		where, args = append(where, "id = ?"), append(args, *v)
+	}
+	if v := delete.CreatorID; v != nil {
+		where, args = append(where, "creator_id = ?"), append(args, *v)
+	}
+	if v := delete.WorkspaceID; v != nil {
+		where, args = append(where, "workspace_id = ?"), append(args, *v)
+	}
+
 	result, err := tx.ExecContext(ctx, `
-		PRAGMA foreign_keys = ON;
-		DELETE FROM shortcut WHERE id = ?
-	`, delete.ID)
+		DELETE FROM shortcut WHERE `+strings.Join(where, " AND "), args...)
 	if err != nil {
 		return FormatError(err)
 	}

@@ -311,7 +311,6 @@ func findWorkspaceList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceFind)
 
 func deleteWorkspace(ctx context.Context, tx *sql.Tx, delete *api.WorkspaceDelete) error {
 	result, err := tx.ExecContext(ctx, `
-		PRAGMA foreign_keys = ON;
 		DELETE FROM workspace WHERE id = ?
 	`, delete.ID)
 	if err != nil {
