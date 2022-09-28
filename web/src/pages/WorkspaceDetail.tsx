@@ -7,11 +7,12 @@ import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 import toastHelper from "../components/Toast";
 import Dropdown from "../components/common/Dropdown";
+import showCreateShortcutDialog from "../components/CreateShortcutDialog";
+import showUpsertWorkspaceUserDialog from "../components/UpsertWorkspaceUserDialog";
 import Header from "../components/Header";
 import ShortcutListView from "../components/ShortcutListView";
-import showCreateShortcutDialog from "../components/CreateShortcutDialog";
 import MemberListView from "../components/MemberListView";
-import showUpsertWorkspaceUserDialog from "../components/UpsertWorkspaceUserDialog";
+import WorkspaceSetting from "../components/WorkspaceSetting";
 
 interface State {
   workspace: Workspace;
@@ -63,7 +64,7 @@ const WorkspaceDetail: React.FC = () => {
   }, [params.workspaceName]);
 
   useEffect(() => {
-    if (location.hash !== "#shortcuts" && location.hash !== "#members") {
+    if (location.hash !== "#shortcuts" && location.hash !== "#members" && location.hash !== "#setting") {
       navigate("#shortcuts");
     }
   }, [location.hash]);
@@ -101,6 +102,9 @@ const WorkspaceDetail: React.FC = () => {
             </NavLink>
             <NavLink to="#members" className={`${location.hash === "#members" && "underline"}`}>
               Members
+            </NavLink>
+            <NavLink to="#setting" className={`${location.hash === "#setting" && "underline"}`}>
+              Setting
             </NavLink>
           </div>
           <div>
@@ -141,6 +145,7 @@ const WorkspaceDetail: React.FC = () => {
             {location.hash === "#members" && (
               <MemberListView workspaceId={state.workspace.id} workspaceUser={state.workspaceUser} userList={state.userList} />
             )}
+            {location.hash === "#setting" && <WorkspaceSetting workspaceId={state.workspace.id} />}
           </>
         )}
       </div>
