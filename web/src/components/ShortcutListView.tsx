@@ -26,7 +26,7 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
 
   const handleCopyButtonClick = (shortcut: Shortcut) => {
     const workspace = workspaceService.getWorkspaceById(workspaceId);
-    copy(`${location.host}/${workspace?.name}/go/${shortcut.name}`);
+    copy(`${location.host}/${workspace?.name}/o/${shortcut.name}`);
   };
 
   const handleEditShortcutButtonClick = (shortcut: Shortcut) => {
