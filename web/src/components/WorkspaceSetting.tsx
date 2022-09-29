@@ -5,9 +5,9 @@ import useLoading from "../hooks/useLoading";
 import { workspaceService } from "../services";
 import { useAppSelector } from "../store";
 import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
-import showCreateWorkspaceDialog from "./CreateWorkspaceDialog";
-import { showCommonDialog } from "./Dialog/CommonDialog";
+import { showCommonDialog } from "./Alert";
 import toastHelper from "./Toast";
+import CreateWorkspaceDialog from "./CreateWorkspaceDialog";
 
 interface Props {
   workspaceId: WorkspaceId;
@@ -16,6 +16,7 @@ interface Props {
 interface State {
   workspace: Workspace;
   workspaceUser: WorkspaceUser;
+  showEditWorkspaceDialog: boolean;
 }
 
 const WorkspaceSetting: React.FC<Props> = (props: Props) => {
@@ -25,6 +26,7 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   const [state, setState] = useState<State>({
     workspace: unknownWorkspace,
     workspaceUser: unknownWorkspaceUser,
+    showEditWorkspaceDialog: false,
   });
   const loadingState = useLoading();
 
@@ -39,6 +41,7 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
     Promise.all([workspaceService.getWorkspaceUser(workspace.id, user.id)])
       .then(([workspaceUser]) => {
         setState({
+          ...state,
           workspace,
           workspaceUser,
         });
@@ -49,7 +52,29 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   }, []);
 
   const handleEditWorkspaceButtonClick = () => {
-    showCreateWorkspaceDialog(state.workspace.id);
+    setState({
+      ...state,
+      showEditWorkspaceDialog: true,
+    });
+  };
+
+  const handleEditWorkspaceDialogConfirm = () => {
+    const prevWorkspace = state.workspace;
+    const workspace = workspaceService.getWorkspaceById(workspaceId);
+    if (!workspace) {
+      toastHelper.error("workspace not found");
+      return;
+    }
+
+    setState({
+      ...state,
+      workspace: workspace,
+      showEditWorkspaceDialog: false,
+    });
+
+    if (prevWorkspace.name !== workspace.name) {
+      navigate(`/${workspace.name}#setting`);
+    }
   };
 
   const handleDeleteWorkspaceButtonClick = () => {
@@ -80,38 +105,53 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className="w-full flex flex-col justify-start items-start">
-      <p className="text-3xl mt-2 mb-4">{state.workspace.name}</p>
-      <p>{state.workspace.description}</p>
+    <>
+      <div className="w-full flex flex-col justify-start items-start">
+        <p className="text-3xl mt-2 mb-4">{state.workspace.name}</p>
+        <p>{state.workspace.description}</p>
 
-      <div className="border-t pt-4 mt-2 flex flex-row justify-start items-center">
-        <span className="text-gray-400 mr-2">Actions:</span>
-        <div className="flex flex-row justify-start items-center space-x-2">
-          {state.workspaceUser.role === "ADMIN" ? (
-            <>
-              <button className="border rounded-md px-3 leading-8 hover:shadow" onClick={handleEditWorkspaceButtonClick}>
-                Edit
-              </button>
-              <button
-                className="border rounded-md px-3 leading-8 border-red-600 text-red-600 bg-red-50 hover:shadow"
-                onClick={handleDeleteWorkspaceButtonClick}
-              >
-                Delete
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                className="border rounded-md px-3 leading-8 border-red-600 text-red-600 bg-red-50 hover:shadow"
-                onClick={handleExitWorkspaceButtonClick}
-              >
-                Exit
-              </button>
-            </>
-          )}
+        <div className="border-t pt-4 mt-2 flex flex-row justify-start items-center">
+          <span className="text-gray-400 mr-2">Actions:</span>
+          <div className="flex flex-row justify-start items-center space-x-2">
+            {state.workspaceUser.role === "ADMIN" ? (
+              <>
+                <button className="border rounded-md px-3 leading-8 hover:shadow" onClick={handleEditWorkspaceButtonClick}>
+                  Edit
+                </button>
+                <button
+                  className="border rounded-md px-3 leading-8 border-red-600 text-red-600 bg-red-50 hover:shadow"
+                  onClick={handleDeleteWorkspaceButtonClick}
+                >
+                  Delete
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="border rounded-md px-3 leading-8 border-red-600 text-red-600 bg-red-50 hover:shadow"
+                  onClick={handleExitWorkspaceButtonClick}
+                >
+                  Exit
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      {state.showEditWorkspaceDialog && (
+        <CreateWorkspaceDialog
+          workspaceId={state.workspace.id}
+          onClose={() => {
+            setState({
+              ...state,
+              showEditWorkspaceDialog: false,
+            });
+          }}
+          onConfirm={handleEditWorkspaceDialogConfirm}
+        />
+      )}
+    </>
   );
 };
 

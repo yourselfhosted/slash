@@ -1,12 +1,14 @@
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { useEffect, useState } from "react";
 import { workspaceService } from "../services";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
-import { generateDialog } from "./Dialog";
 import toastHelper from "./Toast";
 
-interface Props extends DialogProps {
+interface Props {
   workspaceId?: WorkspaceId;
+  onClose: () => void;
+  onConfirm?: () => void;
 }
 
 interface State {
@@ -14,7 +16,7 @@ interface State {
 }
 
 const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
-  const { destroy, workspaceId } = props;
+  const { onClose, onConfirm, workspaceId } = props;
   const [state, setState] = useState<State>({
     workspaceCreate: {
       name: "",
@@ -75,7 +77,12 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
           ...state.workspaceCreate,
         });
       }
-      destroy();
+
+      if (onConfirm) {
+        onConfirm();
+      } else {
+        onClose();
+      }
     } catch (error: any) {
       console.error(error);
       toastHelper.error(error.response.data.error || error.response.data.message);
@@ -84,14 +91,14 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <>
-      <div className="max-w-full w-80 flex flex-row justify-between items-center mb-4">
+    <Dialog open={true}>
+      <DialogTitle className="flex flex-row justify-between items-center w-80">
         <p className="text-base">{workspaceId ? "Edit Workspace" : "Create Workspace"}</p>
-        <button className="rounded p-1 hover:bg-gray-100" onClick={destroy}>
+        <button className="rounded p-1 hover:bg-gray-100" onClick={onClose}>
           <Icon.X className="w-5 h-auto text-gray-600" />
         </button>
-      </div>
-      <div className="w-full flex flex-col justify-start items-start">
+      </DialogTitle>
+      <DialogContent>
         <div className="w-full flex flex-col justify-start items-start mb-3">
           <span className="mb-2">Name</span>
           <input
@@ -121,13 +128,9 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
             Save
           </button>
         </div>
-      </div>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default function showCreateWorkspaceDialog(workspaceId?: WorkspaceId): void {
-  generateDialog({}, CreateWorkspaceDialog, {
-    workspaceId,
-  });
-}
+export default CreateWorkspaceDialog;

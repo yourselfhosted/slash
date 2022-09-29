@@ -4,7 +4,7 @@ import useLoading from "../hooks/useLoading";
 import { workspaceService } from "../services";
 import toastHelper from "./Toast";
 import Dropdown from "./common/Dropdown";
-import { showCommonDialog } from "./Dialog/CommonDialog";
+import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
 
 const userRoles = ["Admin", "User"];
@@ -26,17 +26,16 @@ const MemberListView: React.FC<Props> = (props: Props) => {
   });
   const loadingState = useLoading();
 
-  const fetchWorkspaceUserList = () => {
+  const fetchWorkspaceUserList = async () => {
     loadingState.setLoading();
-    return Promise.all([workspaceService.getWorkspaceUserList(workspaceId)])
-      .then(([workspaceUserList]) => {
-        setState({
-          workspaceUserList: workspaceUserList,
-        });
-      })
-      .finally(() => {
-        loadingState.setFinish();
+    try {
+      const [workspaceUserList] = await Promise.all([workspaceService.getWorkspaceUserList(workspaceId)]);
+      setState({
+        workspaceUserList: workspaceUserList,
       });
+    } finally {
+      loadingState.setFinish();
+    }
   };
 
   useEffect(() => {

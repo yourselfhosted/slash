@@ -1,9 +1,9 @@
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { useState } from "react";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import useLoading from "../hooks/useLoading";
 import { userService } from "../services";
 import Icon from "./Icon";
-import { generateDialog } from "./Dialog";
 import toastHelper from "./Toast";
 
 const validateConfig: ValidatorConfig = {
@@ -13,15 +13,18 @@ const validateConfig: ValidatorConfig = {
   noChinese: true,
 };
 
-type Props = DialogProps;
+interface Props {
+  onClose: () => void;
+}
 
-const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
+const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
+  const { onClose } = props;
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
   const requestState = useLoading(false);
 
   const handleCloseBtnClick = () => {
-    destroy();
+    onClose();
   };
 
   const handleNewPasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,8 +62,8 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
         id: user.id,
         password: newPassword,
       });
+      onClose();
       toastHelper.info("Password changed");
-      handleCloseBtnClick();
     } catch (error: any) {
       console.error(error);
       toastHelper.error(error.response.data.message);
@@ -69,14 +72,14 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
   };
 
   return (
-    <>
-      <div className="max-w-full w-80 flex flex-row justify-between items-center mb-4">
+    <Dialog open={true}>
+      <DialogTitle className="flex flex-row justify-between items-center w-80">
         <p className="text-base">Change Password</p>
-        <button className="rounded p-1 hover:bg-gray-100" onClick={destroy}>
+        <button className="rounded p-1 hover:bg-gray-100" onClick={handleCloseBtnClick}>
           <Icon.X className="w-5 h-auto text-gray-600" />
         </button>
-      </div>
-      <div className="w-full flex flex-col justify-start items-start">
+      </DialogTitle>
+      <DialogContent>
         <div className="w-full flex flex-col justify-start items-start mb-3">
           <span className="mb-2">New Password</span>
           <input
@@ -98,8 +101,8 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
         <div className="w-full flex flex-row justify-end items-center">
           <button
             disabled={requestState.isLoading}
-            className={`rounded px-3 py-2 ${requestState.isLoading ? "opacity-80" : ""}`}
-            onClick={destroy}
+            className={`rounded px-3 py-2 mr-2 hover:opacity-80 ${requestState.isLoading ? "opacity-80" : ""}`}
+            onClick={handleCloseBtnClick}
           >
             Cancel
           </button>
@@ -111,13 +114,9 @@ const ChangePasswordDialog: React.FC<Props> = ({ destroy }: Props) => {
             Save
           </button>
         </div>
-      </div>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-function showChangePasswordDialog() {
-  generateDialog({}, ChangePasswordDialog);
-}
-
-export default showChangePasswordDialog;
+export default ChangePasswordDialog;

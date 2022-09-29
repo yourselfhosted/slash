@@ -1,13 +1,15 @@
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
-import { generateDialog } from "./Dialog";
 import toastHelper from "./Toast";
 
-interface Props extends DialogProps {
+interface Props {
   workspaceId: WorkspaceId;
   shortcutId?: ShortcutId;
+  onClose: () => void;
+  onConfirm?: () => void;
 }
 
 interface State {
@@ -15,7 +17,7 @@ interface State {
 }
 
 const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
-  const { destroy, workspaceId, shortcutId } = props;
+  const { onClose, onConfirm, workspaceId, shortcutId } = props;
   const [state, setState] = useState<State>({
     shortcutCreate: {
       workspaceId: workspaceId,
@@ -90,7 +92,12 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       } else {
         await shortcutService.createShortcut(state.shortcutCreate);
       }
-      destroy();
+
+      if (onConfirm) {
+        onConfirm();
+      } else {
+        onClose();
+      }
     } catch (error: any) {
       console.error(error);
       toastHelper.error(error.response.data.error || error.response.data.message);
@@ -98,14 +105,14 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <>
-      <div className="max-w-full w-80 sm:w-96 flex flex-row justify-between items-center mb-4">
+    <Dialog open={true}>
+      <DialogTitle className="flex flex-row justify-between items-center w-80 sm:w-96">
         <p className="text-base">{shortcutId ? "Edit Shortcut" : "Create Shortcut"}</p>
-        <button className="rounded p-1 hover:bg-gray-100" onClick={destroy}>
+        <button className="rounded p-1 hover:bg-gray-100" onClick={onClose}>
           <Icon.X className="w-5 h-auto text-gray-600" />
         </button>
-      </div>
-      <div className="w-full flex flex-col justify-start items-start">
+      </DialogTitle>
+      <DialogContent>
         <div className="w-full flex flex-col justify-start items-start mb-3">
           <span className="mb-2">Name</span>
           <input
@@ -184,20 +191,9 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             Save
           </button>
         </div>
-      </div>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default function showCreateShortcutDialog(workspaceId: WorkspaceId, shortcutId?: ShortcutId, onDestory?: () => void): void {
-  generateDialog(
-    {
-      onDestory,
-    },
-    CreateShortcutDialog,
-    {
-      workspaceId,
-      shortcutId,
-    }
-  );
-}
+export default CreateShortcutDialog;
