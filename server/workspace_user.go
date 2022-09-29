@@ -159,10 +159,9 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 			WorkspaceID: &workspaceID,
 		}
 		if err := s.Store.DeleteShortcut(ctx, shortcutDelete); err != nil {
-			if common.ErrorCode(err) == common.NotFound {
-				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("Shortcut not found with workspace id %d and user id %d", workspaceID, userID))
+			if common.ErrorCode(err) != common.NotFound {
+				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete shortcut").SetInternal(err)
 			}
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete shortcut").SetInternal(err)
 		}
 
 		return c.JSON(http.StatusOK, true)
