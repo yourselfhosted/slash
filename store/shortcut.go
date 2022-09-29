@@ -182,7 +182,9 @@ func (s *Store) DeleteShortcut(ctx context.Context, delete *api.ShortcutDelete) 
 		return FormatError(err)
 	}
 
-	s.cache.DeleteCache(api.ShortcutCache, *delete.ID)
+	if delete.ID != nil {
+		s.cache.DeleteCache(api.ShortcutCache, *delete.ID)
+	}
 
 	return nil
 }

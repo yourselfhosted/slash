@@ -117,7 +117,7 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 
 	g.DELETE("/workspace/:workspaceId/user/:userId", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(getUserIDContextKey()).(int)
+		currentUserID, ok := c.Get(getUserIDContextKey()).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
 		}
@@ -127,20 +127,20 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted workspace id").SetInternal(err)
 		}
 
+		userID, err := strconv.Atoi(c.Param("userId"))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted user id").SetInternal(err)
+		}
+
 		currentWorkspaceUser, err := s.Store.FindWordspaceUser(ctx, &api.WorkspaceUserFind{
 			WorkspaceID: &workspaceID,
-			UserID:      &userID,
+			UserID:      &currentUserID,
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
 		}
-		if currentWorkspaceUser.UserID != userID && currentWorkspaceUser.Role != api.RoleAdmin {
+		if currentUserID != userID && currentWorkspaceUser.Role != api.RoleAdmin {
 			return echo.NewHTTPError(http.StatusForbidden, "Access forbidden to delete workspace user").SetInternal(err)
-		}
-
-		userID, err = strconv.Atoi(c.Param("userId"))
-		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted user id").SetInternal(err)
 		}
 
 		workspaceUserDelete := &api.WorkspaceUserDelete{
