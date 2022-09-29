@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createRoot, Root } from "react-dom/client";
-import "../less/toast.less";
+import "../css/toast.css";
 
 type ToastType = "normal" | "success" | "info" | "error";
 
@@ -30,7 +30,7 @@ const Toast: React.FC<ToastItemProps> = (props: ToastItemProps) => {
 
   return (
     <div className="toast-container" onClick={destory}>
-      <p className="content-text">{props.content}</p>
+      <p className="text-sm whitespace-pre-wrap break-words leading-6 max-w-xs">{props.content}</p>
     </div>
   );
 };

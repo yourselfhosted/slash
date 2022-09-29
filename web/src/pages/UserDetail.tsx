@@ -76,7 +76,7 @@ const UserDetail: React.FC = () => {
           </p>
           <p className="leading-8 flex flex-row justify-start items-center">
             <span className="mr-3 text-gray-500 font-mono">OpenID:</span>
-            <input type="text" value={user?.openId} readOnly className="border shrink rounded-md px-3 pr-5 shadow-inner truncate" />
+            <input className="border shrink w-48 rounded-md px-3 pr-5 shadow-inner truncate" type="text" value={user?.openId} readOnly />
             <button className="-ml-6 bg-white text-gray-600 hover:text-black" onClick={handleCopyOpenIdBtnClick}>
               <Icon.Clipboard className="w-4 h-auto" />
             </button>

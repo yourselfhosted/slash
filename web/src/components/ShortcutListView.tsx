@@ -58,7 +58,7 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
                 <span className="text-gray-400 text-sm ml-2">({shortcut.description})</span>
               </div>
               <div className="flex flex-row justify-end items-center">
-                <span className=" w-12 mr-2 text-gray-600">{shortcut.creator.name}</span>
+                <span className="w-16 truncate mr-2 text-gray-600">{shortcut.creator.name}</span>
                 <button
                   className="cursor-pointer mr-4 hover:opacity-80"
                   onClick={() => {
