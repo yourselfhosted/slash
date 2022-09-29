@@ -142,6 +142,7 @@ const WorkspaceDetail: React.FC = () => {
               {location.hash === "#shortcuts" && <ShortcutListView workspaceId={state.workspace.id} shortcutList={shortcutList} />}
               {location.hash === "#members" && (
                 <MemberListView
+                  // enforce to re-fetch member list.
                   key={Date.now()}
                   workspaceId={state.workspace.id}
                   workspaceUser={state.workspaceUser}

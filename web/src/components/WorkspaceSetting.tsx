@@ -107,11 +107,9 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   return (
     <>
       <div className="w-full flex flex-col justify-start items-start">
-        <p className="text-3xl mt-2 mb-4">{state.workspace.name}</p>
-        <p>{state.workspace.description}</p>
-
+        <p className="text-3xl mt-4 mb-4">{state.workspace.name}</p>
+        <p className="mb-4">{state.workspace.description}</p>
         <div className="border-t pt-4 mt-2 flex flex-row justify-start items-center">
-          <span className="text-gray-400 mr-2">Actions:</span>
           <div className="flex flex-row justify-start items-center space-x-2">
             {state.workspaceUser.role === "ADMIN" ? (
               <>

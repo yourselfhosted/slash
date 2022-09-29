@@ -49,12 +49,12 @@ const Alert: React.FC<Props> = (props: Props) => {
       <DialogContent className="w-80">
         <p className="content-text mb-4">{content}</p>
         <div className="w-full flex flex-row justify-end items-center">
-          <button className="rounded px-3 py-2 mr-2 hover:opacity-80" onClick={handleCloseBtnClick}>
+          <button className="rounded px-3 leading-9 mr-4 hover:opacity-80" onClick={handleCloseBtnClick}>
             {closeBtnText}
           </button>
           <button
-            className={`rounded px-3 py-2 shadow bg-green-600 text-white hover:opacity-80 ${
-              style === "warning" ? "border-red-600 text-red-600 bg-red-100" : ""
+            className={`rounded px-3 leading-9 bg-green-600 text-white hover:opacity-80 ${
+              style === "warning" ? "border border-red-600 text-red-600 bg-red-100" : ""
             }`}
             onClick={handleConfirmBtnClick}
           >
