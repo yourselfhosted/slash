@@ -4,13 +4,15 @@
   "version": "0.0.1",
   "manifest_version": 3,
   "omnibox": {
-    "keyword": "go/"
+    "keyword": "o/"
   },
   "action": {
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
-  "permissions": ["tabs", "activeTab", "storage"]
+  "permissions": ["tabs", "activeTab", "storage"],
+  "host_permissions": ["*://o/*"]
 }

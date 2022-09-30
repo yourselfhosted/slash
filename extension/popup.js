@@ -1,10 +1,4 @@
-const getCorgiData = () => {
-  return new Promise((resolve) => {
-    chrome.storage.local.get(["corgi"], (data) => {
-      resolve(data?.corgi);
-    });
-  });
-};
+import { getCorgiData } from "./common.js";
 
 const saveButton = document.body.querySelector("#save-button");
 const domainInput = document.body.querySelector("#domain-input");
@@ -21,6 +15,8 @@ saveButton.addEventListener("click", () => {
 
 (async () => {
   const corgiData = await getCorgiData();
-  domainInput.value = corgiData.domain;
-  openIdInput.value = corgiData.openId;
+  if (corgiData) {
+    domainInput.value = corgiData.domain;
+    openIdInput.value = corgiData.openId;
+  }
 })();
