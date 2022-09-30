@@ -48,5 +48,4 @@ func (s *Server) registerRedirectRoutes(g *echo.Group) {
 		matchedShortcut := list[0]
 		return c.Redirect(http.StatusPermanentRedirect, matchedShortcut.Link)
 	})
-
 }
