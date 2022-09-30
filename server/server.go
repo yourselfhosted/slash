@@ -56,6 +56,12 @@ func NewServer(profile *profile.Profile) *Server {
 		Profile: profile,
 	}
 
+	redirectGroup := e.Group("/o")
+	redirectGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return aclMiddleware(s, next)
+	})
+	s.registerRedirectRoutes(redirectGroup)
+
 	apiGroup := e.Group("/api")
 	apiGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return aclMiddleware(s, next)

@@ -91,6 +91,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 		}
 
 		list := []*api.Shortcut{}
+
 		if shortcutFind.WorkspaceID == nil {
 			shortcutFind.MemberID = &userID
 		}

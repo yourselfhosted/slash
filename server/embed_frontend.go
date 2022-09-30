@@ -24,7 +24,7 @@ func getFileSystem(path string) http.FileSystem {
 
 func skipper(c echo.Context) bool {
 	path := c.Path()
-	return common.HasPrefixes(path, "/api")
+	return common.HasPrefixes(path, "/api", "/o")
 }
 
 func embedFrontend(e *echo.Echo) {
