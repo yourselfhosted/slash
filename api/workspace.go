@@ -12,6 +12,9 @@ type Workspace struct {
 	// Domain specific fields
 	Name        string `json:"name"`
 	Description string `json:"description"`
+
+	// Related fields
+	WorkspaceUserList []*WorkspaceUser `json:"workspaceUserList"`
 }
 
 type WorkspaceCreate struct {

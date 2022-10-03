@@ -23,10 +23,13 @@ func (e Role) String() string {
 type WorkspaceUser struct {
 	WorkspaceID int   `json:"workspaceId"`
 	UserID      int   `json:"userId"`
-	User        *User `json:"user"`
 	Role        Role  `json:"role"`
 	CreatedTs   int64 `json:"createdTs"`
 	UpdatedTs   int64 `json:"updatedTs"`
+
+	// Related fields
+	Email string `json:"email"`
+	Name  string `json:"name"`
 }
 
 type WorkspaceUserUpsert struct {

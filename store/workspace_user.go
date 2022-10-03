@@ -37,9 +37,26 @@ func (s *Store) ComposeWorkspaceUser(ctx context.Context, workspaceUser *api.Wor
 		return err
 	}
 
-	user.OpenID = ""
-	user.UserSettingList = nil
-	workspaceUser.User = user
+	workspaceUser.Email = user.Email
+	workspaceUser.Name = user.Name
+
+	return nil
+}
+
+func (s *Store) ComposeWorkspaceUserListForWorkspace(ctx context.Context, workspace *api.Workspace) error {
+	workspaceUserList, err := s.FindWordspaceUserList(ctx, &api.WorkspaceUserFind{
+		WorkspaceID: &workspace.ID,
+	})
+	if err != nil {
+		return err
+	}
+
+	for _, workspaceUser := range workspaceUserList {
+		if err := s.ComposeWorkspaceUser(ctx, workspaceUser); err != nil {
+			return err
+		}
+	}
+	workspace.WorkspaceUserList = workspaceUserList
 
 	return nil
 }

@@ -34,8 +34,9 @@ func (raw *workspaceRaw) toWorkspace() *api.Workspace {
 		UpdatedTs: raw.UpdatedTs,
 		RowStatus: raw.RowStatus,
 
-		Name:        raw.Name,
-		Description: raw.Description,
+		Name:              raw.Name,
+		Description:       raw.Description,
+		WorkspaceUserList: []*api.WorkspaceUser{},
 	}
 }
 

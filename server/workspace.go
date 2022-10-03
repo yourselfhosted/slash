@@ -40,6 +40,10 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create workspace user").SetInternal(err)
 		}
 
+		if err := s.Store.ComposeWorkspaceUserListForWorkspace(ctx, workspace); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user list").SetInternal(err)
+		}
+
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspace)); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace response").SetInternal(err)
@@ -62,6 +66,12 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to fetch workspace list").SetInternal(err)
 		}
 
+		for _, workspace := range workspaceList {
+			if err := s.Store.ComposeWorkspaceUserListForWorkspace(ctx, workspace); err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user list").SetInternal(err)
+			}
+		}
+
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspaceList)); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace list response").SetInternal(err)
@@ -81,6 +91,10 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace").SetInternal(err)
+		}
+
+		if err := s.Store.ComposeWorkspaceUserListForWorkspace(ctx, workspace); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user list").SetInternal(err)
 		}
 
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
@@ -186,6 +200,10 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 		workspace, err := s.Store.PatchWorkspace(ctx, patch)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to patch workspace").SetInternal(err)
+		}
+
+		if err := s.Store.ComposeWorkspaceUserListForWorkspace(ctx, workspace); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user list").SetInternal(err)
 		}
 
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
