@@ -8,7 +8,7 @@ import toastHelper from "./Toast";
 interface Props {
   workspaceId?: WorkspaceId;
   onClose: () => void;
-  onConfirm?: () => void;
+  onConfirm?: (workspace: Workspace) => void;
 }
 
 interface State {
@@ -67,19 +67,20 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
 
     requestState.setLoading();
     try {
+      let workspace;
       if (workspaceId) {
-        await workspaceService.patchWorkspace({
+        workspace = await workspaceService.patchWorkspace({
           id: workspaceId,
           ...state.workspaceCreate,
         });
       } else {
-        await workspaceService.createWorkspace({
+        workspace = await workspaceService.createWorkspace({
           ...state.workspaceCreate,
         });
       }
 
       if (onConfirm) {
-        onConfirm();
+        onConfirm(workspace);
       } else {
         onClose();
       }

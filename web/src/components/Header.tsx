@@ -122,6 +122,13 @@ const Header: React.FC = () => {
               showCreateWorkspaceDialog: false,
             });
           }}
+          onConfirm={(workspace: Workspace) => {
+            setState({
+              ...state,
+              showCreateWorkspaceDialog: false,
+            });
+            navigate(`/${workspace.name}`);
+          }}
         />
       )}
     </>

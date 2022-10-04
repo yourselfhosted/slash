@@ -76,14 +76,29 @@ const WorkspaceDetail: React.FC = () => {
         <Header />
         <div className="mx-auto max-w-4xl w-full px-3 pb-6 flex flex-col justify-start items-start">
           <div className="w-full flex flex-row justify-between items-center mt-4 mb-4">
-            <div className="flex flex-row justify-start items-center space-x-4">
-              <NavLink to="#shortcuts" className={`${location.hash === "#shortcuts" && "underline"}`}>
+            <div className="flex flex-row justify-start items-center space-x-3 sm:space-x-4">
+              <NavLink
+                to="#shortcuts"
+                className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
+                  location.hash === "#shortcuts" && "!border-b-black text-black"
+                }`}
+              >
                 Shortcuts
               </NavLink>
-              <NavLink to="#members" className={`${location.hash === "#members" && "underline"}`}>
+              <NavLink
+                to="#members"
+                className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
+                  location.hash === "#members" && "!border-b-black text-black"
+                }`}
+              >
                 Members
               </NavLink>
-              <NavLink to="#setting" className={`${location.hash === "#setting" && "underline"}`}>
+              <NavLink
+                to="#setting"
+                className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
+                  location.hash === "#setting" && "!border-b-black text-black"
+                }`}
+              >
                 Setting
               </NavLink>
             </div>
@@ -123,7 +138,21 @@ const WorkspaceDetail: React.FC = () => {
             </div>
           ) : (
             <>
-              {location.hash === "#shortcuts" && <ShortcutListView workspaceId={workspace.id} shortcutList={shortcutList} />}
+              {location.hash === "#shortcuts" &&
+                (shortcutList.length === 0 ? (
+                  <div className="w-full flex flex-col justify-center items-center">
+                    <Icon.Frown className="mt-8 w-16 h-auto text-gray-400" />
+                    <p className="mt-4 text-xl text-gray-600">Oops, no shortcut.</p>
+                    <button
+                      className="mt-4 text-lg flex flex-row justify-start items-center border px-3 py-2 rounded-lg cursor-pointer hover:shadow"
+                      onClick={handleCreateShortcutButtonClick}
+                    >
+                      <Icon.Plus className="w-5 h-auto mr-1" /> Create Shortcut
+                    </button>
+                  </div>
+                ) : (
+                  <ShortcutListView workspaceId={workspace.id} shortcutList={shortcutList} />
+                ))}
               {location.hash === "#members" && <MemberListView workspaceId={workspace.id} />}
               {location.hash === "#setting" && <WorkspaceSetting workspaceId={workspace.id} />}
             </>
