@@ -88,7 +88,7 @@ const UpsertWorkspaceUserDialog: React.FC<Props> = (props: Props) => {
           <input
             className="w-full rounded border text-sm shadow-inner px-2 py-2"
             type="number"
-            value={state.workspaceUserUpsert.userId}
+            value={state.workspaceUserUpsert.userId <= 0 ? "" : state.workspaceUserUpsert.userId}
             onChange={handleUserIdInputChange}
           />
         </div>

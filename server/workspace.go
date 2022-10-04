@@ -26,6 +26,10 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 		if err := json.NewDecoder(c.Request().Body).Decode(workspaceCreate); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post workspace request").SetInternal(err)
 		}
+		if len(workspaceCreate.Name) > 20 {
+			return echo.NewHTTPError(http.StatusBadRequest, "Workspace name length should be less than 20")
+		}
+
 		workspace, err := s.Store.CreateWorkspace(ctx, workspaceCreate)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create workspace").SetInternal(err)
