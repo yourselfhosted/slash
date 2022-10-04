@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { deleteWorkspaceUser, upsertWorkspaceUser } from "../helpers/api";
+import { useAppSelector } from "../store";
+import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
 import useLoading from "../hooks/useLoading";
 import { workspaceService } from "../services";
 import toastHelper from "./Toast";
@@ -11,36 +13,25 @@ const userRoles = ["Admin", "User"];
 
 interface Props {
   workspaceId: WorkspaceId;
-  workspaceUser: WorkspaceUser;
-  userList: WorkspaceUser[];
-}
-
-interface State {
-  workspaceUserList: WorkspaceUser[];
 }
 
 const MemberListView: React.FC<Props> = (props: Props) => {
-  const { workspaceId, workspaceUser: currentUser } = props;
-  const [state, setState] = useState<State>({
-    workspaceUserList: [],
-  });
+  const { workspaceId } = props;
+  const user = useAppSelector((state) => state.user.user) as User;
+  const { workspaceList } = useAppSelector((state) => state.workspace);
+  const workspace = workspaceList.find((workspace) => workspace.id === workspaceId) ?? unknownWorkspace;
+  const currentUser = workspace.workspaceUserList.find((workspaceUser) => workspaceUser.userId === user.id) ?? unknownWorkspaceUser;
   const loadingState = useLoading();
 
-  const fetchWorkspaceUserList = async () => {
-    loadingState.setLoading();
-    try {
-      const [workspaceUserList] = await Promise.all([workspaceService.getWorkspaceUserList(workspaceId)]);
-      setState({
-        workspaceUserList: workspaceUserList,
-      });
-    } finally {
-      loadingState.setFinish();
-    }
-  };
-
   useEffect(() => {
-    fetchWorkspaceUserList();
-  }, [props]);
+    const workspace = workspaceService.getWorkspaceById(workspaceId);
+    if (!workspace) {
+      toastHelper.error("workspace not found");
+      return;
+    }
+
+    loadingState.setFinish();
+  }, []);
 
   const handleWorkspaceUserRoleChange = async (workspaceUser: WorkspaceUser, role: Role) => {
     if (workspaceUser.userId === currentUser.userId) {
@@ -53,20 +44,20 @@ const MemberListView: React.FC<Props> = (props: Props) => {
       userId: workspaceUser.userId,
       role,
     });
-    await fetchWorkspaceUserList();
+    await workspaceService.fetchWorkspaceById(workspaceId);
   };
 
   const handleDeleteWorkspaceUserButtonClick = (workspaceUser: WorkspaceUser) => {
     showCommonDialog({
       title: "Delete Workspace Member",
-      content: `Are you sure to delete member \`${workspaceUser.user.name}\` in this workspace?`,
+      content: `Are you sure to delete member \`${workspaceUser.name}\` in this workspace?`,
       style: "warning",
       onConfirm: async () => {
         await deleteWorkspaceUser({
           workspaceId: workspaceId,
           userId: workspaceUser.userId,
         });
-        await fetchWorkspaceUserList();
+        await workspaceService.fetchWorkspaceById(workspaceId);
       },
     });
   };
@@ -76,11 +67,11 @@ const MemberListView: React.FC<Props> = (props: Props) => {
       {loadingState.isLoading ? (
         <></>
       ) : (
-        state.workspaceUserList.map((workspaceUser) => {
+        workspace.workspaceUserList.map((workspaceUser) => {
           return (
             <div key={workspaceUser.userId} className="w-full flex flex-row justify-between items-start border px-6 py-4 mb-3 rounded-lg">
               <div className="flex flex-row justify-start items-center mr-4">
-                <span>{workspaceUser.user.name}</span>
+                <span>{workspaceUser.name}</span>
                 {currentUser.userId === workspaceUser.userId && <span className="ml-2 text-gray-400">(yourself)</span>}
               </div>
               <div className="flex flex-row justify-end items-center">

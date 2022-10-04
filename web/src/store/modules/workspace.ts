@@ -3,12 +3,14 @@ import { UNKNOWN_ID } from "../../helpers/consts";
 
 export const unknownWorkspace = {
   id: UNKNOWN_ID,
-} as Workspace;
+  workspaceUserList: [],
+} as unknown as Workspace;
 
 export const unknownWorkspaceUser = {
   workspaceId: UNKNOWN_ID,
   userId: UNKNOWN_ID,
-} as WorkspaceUser;
+  role: "USER",
+} as unknown as WorkspaceUser;
 
 interface State {
   workspaceList: Workspace[];
@@ -24,6 +26,18 @@ const workspaceSlice = createSlice({
       return {
         ...state,
         workspaceList: action.payload,
+      };
+    },
+    setWorkspaceById: (state, action: PayloadAction<Workspace>) => {
+      return {
+        ...state,
+        workspaceList: state.workspaceList.map((s) => {
+          if (s.id === action.payload.id) {
+            return action.payload;
+          } else {
+            return s;
+          }
+        }),
       };
     },
     createWorkspace: (state, action: PayloadAction<Workspace>) => {
@@ -56,6 +70,6 @@ const workspaceSlice = createSlice({
   },
 });
 
-export const { setWorkspaceList, createWorkspace, patchWorkspace, deleteWorkspace } = workspaceSlice.actions;
+export const { setWorkspaceList, setWorkspaceById, createWorkspace, patchWorkspace, deleteWorkspace } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;

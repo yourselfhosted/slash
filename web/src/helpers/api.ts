@@ -64,6 +64,10 @@ export function getWorkspaceList(find?: WorkspaceFind) {
   return axios.get<ResponseObject<Workspace[]>>(`/api/workspace?${queryList.join("&")}`);
 }
 
+export function getWorkspaceById(workspaceId: WorkspaceId) {
+  return axios.get<ResponseObject<Workspace>>(`/api/workspace/${workspaceId}`);
+}
+
 export function createWorkspace(create: WorkspaceCreate) {
   return axios.post<ResponseObject<Workspace>>("/api/workspace", create);
 }

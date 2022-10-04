@@ -3,10 +3,11 @@ type Role = "ADMIN" | "USER";
 interface WorkspaceUser {
   workspaceId: WorkspaceId;
   userId: UserId;
-  user: User;
   role: Role;
   createdTs: TimeStamp;
   updatedTs: TimeStamp;
+  email: string;
+  name: string;
 }
 
 interface WorkspaceUserUpsert {

@@ -10,6 +10,8 @@ interface Workspace {
 
   name: string;
   description: string;
+
+  workspaceUserList: WorkspaceUser[];
 }
 
 interface WorkspaceCreate {

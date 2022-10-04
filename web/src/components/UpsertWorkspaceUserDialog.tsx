@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { useState } from "react";
+import { workspaceService } from "../services";
 import { UNKNOWN_ID } from "../helpers/consts";
 import { upsertWorkspaceUser } from "../helpers/api";
 import useLoading from "../hooks/useLoading";
@@ -58,6 +59,8 @@ const UpsertWorkspaceUserDialog: React.FC<Props> = (props: Props) => {
       await upsertWorkspaceUser({
         ...state.workspaceUserUpsert,
       });
+
+      await workspaceService.fetchWorkspaceById(workspaceId);
 
       if (onConfirm) {
         onConfirm();

@@ -1,6 +1,6 @@
 import * as api from "../helpers/api";
 import store from "../store";
-import { createWorkspace, deleteWorkspace, patchWorkspace, setWorkspaceList } from "../store/modules/workspace";
+import { createWorkspace, deleteWorkspace, patchWorkspace, setWorkspaceById, setWorkspaceList } from "../store/modules/workspace";
 
 const convertResponseModelWorkspace = (workspace: Workspace): Workspace => {
   return {
@@ -20,6 +20,13 @@ const workspaceService = {
     const workspaces = data.map((w) => convertResponseModelWorkspace(w));
     store.dispatch(setWorkspaceList(workspaces));
     return workspaces;
+  },
+
+  fetchWorkspaceById: async (workspaceId: WorkspaceId) => {
+    const { data } = (await api.getWorkspaceById(workspaceId)).data;
+    const workspace = convertResponseModelWorkspace(data);
+    store.dispatch(setWorkspaceById(workspace));
+    return workspace;
   },
 
   getWorkspaceByName: (workspaceName: string) => {
