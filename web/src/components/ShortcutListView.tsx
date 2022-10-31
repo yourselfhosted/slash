@@ -67,7 +67,7 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
                 >
                   <Icon.Copy className="w-5 h-auto" />
                 </button>
-                <a className="cursor-pointer mr-4 hover:opacity-80" target="blank" href={shortcut.link}>
+                <a className="cursor-pointer mr-4 hover:opacity-80" target="_blank" href={shortcut.link} rel="noreferrer">
                   <Icon.ExternalLink className="w-5 h-auto" />
                 </a>
                 <Dropdown
