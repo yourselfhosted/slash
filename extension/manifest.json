@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "manifest_version": 3,
   "omnibox": {
-    "keyword": "o/"
+    "keyword": "go/"
   },
   "action": {
     "default_popup": "popup.html"
@@ -14,5 +14,5 @@
     "type": "module"
   },
   "permissions": ["tabs", "activeTab", "storage"],
-  "host_permissions": ["*://o/*"]
+  "host_permissions": ["*://go/*"]
 }

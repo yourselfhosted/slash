@@ -62,7 +62,7 @@ const router = createBrowserRouter([
     },
   },
   {
-    path: "/:workspaceName/o/:shortcutName",
+    path: "/:workspaceName/go/:shortcutName",
     element: <ShortcutRedirector />,
     loader: async () => {
       try {
