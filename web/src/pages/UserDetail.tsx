@@ -1,3 +1,4 @@
+import { Button, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store";
@@ -70,22 +71,19 @@ const UserDetail: React.FC = () => {
           </p>
           <p className="leading-8 flex flex-row justify-start items-center">
             <span className="mr-3 text-gray-500 font-mono">Password: </span>
-            <button className="border rounded-md px-2 leading-8 hover:shadow" onClick={handleChangePasswordBtnClick}>
+            <Button variant="soft" onClick={handleChangePasswordBtnClick}>
               Change
-            </button>
+            </Button>
           </p>
           <p className="leading-8 flex flex-row justify-start items-center">
             <span className="mr-3 text-gray-500 font-mono">OpenID:</span>
-            <input className="border shrink w-48 rounded-md px-3 pr-5 shadow-inner truncate" type="text" value={user?.openId} readOnly />
-            <button className="-ml-6 bg-white text-gray-600 hover:text-black" onClick={handleCopyOpenIdBtnClick}>
+            <Input type="text" className="w-48" value={user?.openId} readOnly />
+            <button className="-ml-6 z-1 bg-white text-gray-600 hover:text-black" onClick={handleCopyOpenIdBtnClick}>
               <Icon.Clipboard className="w-4 h-auto" />
             </button>
-            <button
-              className="border ml-4 rounded-md px-2 leading-8 border-red-600 text-red-600 bg-red-50 hover:shadow"
-              onClick={handleResetOpenIdBtnClick}
-            >
+            <Button className="!ml-6" variant="soft" color="warning" onClick={handleResetOpenIdBtnClick}>
               Reset
-            </button>
+            </Button>
           </p>
         </div>
       </div>

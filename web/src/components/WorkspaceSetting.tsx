@@ -1,3 +1,4 @@
+import { Button } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteWorkspaceUser } from "../helpers/api";
@@ -59,7 +60,7 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
     showCommonDialog({
       title: "Delete Workspace",
       content: `Are you sure to delete workspace \`${workspace.name}\`?`,
-      style: "warning",
+      style: "danger",
       onConfirm: async () => {
         await workspaceService.deleteWorkspaceById(workspace.id);
         navigate("/");
@@ -71,7 +72,7 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
     showCommonDialog({
       title: "Exit Workspace",
       content: `Are you sure to exit workspace \`${workspace.name}\`?`,
-      style: "warning",
+      style: "danger",
       onConfirm: async () => {
         await deleteWorkspaceUser({
           workspaceId: workspace.id,
@@ -91,24 +92,18 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
           <div className="flex flex-row justify-start items-center space-x-2">
             {workspaceUser.role === "ADMIN" ? (
               <>
-                <button className="border rounded-md px-3 leading-8 hover:shadow" onClick={handleEditWorkspaceButtonClick}>
+                <Button variant="soft" onClick={handleEditWorkspaceButtonClick}>
                   Edit
-                </button>
-                <button
-                  className="border rounded-md px-3 leading-8 border-red-600 text-red-600 bg-red-50 hover:shadow"
-                  onClick={handleDeleteWorkspaceButtonClick}
-                >
+                </Button>
+                <Button variant="soft" color="danger" onClick={handleDeleteWorkspaceButtonClick}>
                   Delete
-                </button>
+                </Button>
               </>
             ) : (
               <>
-                <button
-                  className="border rounded-md px-3 leading-8 border-red-600 text-red-600 bg-red-50 hover:shadow"
-                  onClick={handleExitWorkspaceButtonClick}
-                >
+                <Button variant="soft" color="danger" onClick={handleExitWorkspaceButtonClick}>
                   Exit
-                </button>
+                </Button>
               </>
             )}
           </div>

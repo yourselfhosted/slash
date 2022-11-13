@@ -1,3 +1,4 @@
+import { Button, Input } from "@mui/joy";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "../helpers/api";
@@ -119,7 +120,8 @@ const Auth: React.FC = () => {
     <div className="flex flex-row justify-center items-center w-full h-screen bg-white">
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
-          <div className="flex flex-col justify-start items-start w-full mb-4">
+          <div className="flex flex-row justify-start items-center w-full mb-4">
+            <img src="/corgi-logo.png" className="w-14 h-auto mr-1" alt="" />
             <div className="text-3xl font-medium font-mono flex flex-row justify-start items-center">
               Corgi
               {actionBtnLoadingState.isLoading && <Icon.Loader className="ml-2 w-5 h-auto animate-spin" />}
@@ -128,38 +130,20 @@ const Auth: React.FC = () => {
           <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
             <div className="w-full flex flex-col mb-2">
               <span className="leading-8 mb-1 text-gray-600">Email</span>
-              <input
-                className="border rounded-md px-3 p-2 leading-7 focus:border-blue-600"
-                type="email"
-                value={email}
-                onChange={handleEmailInputChanged}
-              />
+              <Input className="w-full py-3" type="email" value={email} onChange={handleEmailInputChanged} />
             </div>
             <div className="w-full flex flex-col mb-2">
               <span className="leading-8 text-gray-600">Password</span>
-              <input
-                className="border rounded-md px-3 p-2 leading-7 focus:border-blue-600"
-                type="password"
-                value={password}
-                onChange={handlePasswordInputChanged}
-              />
+              <Input className="w-full py-3" type="password" value={password} onChange={handlePasswordInputChanged} />
             </div>
           </div>
-          <div className="w-full flex flex-row justify-end items-center mt-4">
-            <button
-              className={`mr-4 text-gray-600 hover:text-black ${actionBtnLoadingState.isLoading ? "opacity-80 cursor-wait" : ""}`}
-              onClick={() => handleSignupBtnsClick()}
-            >
+          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+            <Button variant="plain" disabled={actionBtnLoadingState.isLoading} onClick={() => handleSignupBtnsClick()}>
               Sign up
-            </button>
-            <button
-              className={`border rounded-md border-green-600 bg-green-600 text-white px-3 py-2 leading-6 hover:bg-green-700 ${
-                actionBtnLoadingState.isLoading ? "opacity-80 cursor-wait" : ""
-              }`}
-              onClick={() => handleSigninBtnsClick()}
-            >
+            </Button>
+            <Button color="primary" disabled={actionBtnLoadingState.isLoading} onClick={() => handleSigninBtnsClick()}>
               Sign in
-            </button>
+            </Button>
           </div>
         </div>
       </div>

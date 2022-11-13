@@ -2,7 +2,7 @@ import { Button, Modal, ModalDialog } from "@mui/joy";
 import { createRoot } from "react-dom/client";
 import Icon from "./Icon";
 
-type AlertStyle = "primary" | "warning";
+type AlertStyle = "primary" | "warning" | "danger";
 
 interface Props {
   title: string;
