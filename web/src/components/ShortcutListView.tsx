@@ -41,7 +41,7 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
     showCommonDialog({
       title: "Delete Shortcut",
       content: `Are you sure to delete shortcut \`${shortcut.name}\` in this workspace?`,
-      style: "warning",
+      style: "danger",
       onConfirm: async () => {
         await shortcutService.deleteShortcutById(shortcut.id);
       },

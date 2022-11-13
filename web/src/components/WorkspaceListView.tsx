@@ -31,7 +31,7 @@ const WorkspaceListView: React.FC<Props> = (props: Props) => {
     showCommonDialog({
       title: "Delete Workspace",
       content: `Are you sure to delete workspace \`${workspace.name}\`?`,
-      style: "warning",
+      style: "danger",
       onConfirm: async () => {
         await workspaceService.deleteWorkspaceById(workspace.id);
       },

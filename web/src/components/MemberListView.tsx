@@ -51,7 +51,7 @@ const MemberListView: React.FC<Props> = (props: Props) => {
     showCommonDialog({
       title: "Delete Workspace Member",
       content: `Are you sure to delete member \`${workspaceUser.name}\` in this workspace?`,
-      style: "warning",
+      style: "danger",
       onConfirm: async () => {
         await deleteWorkspaceUser({
           workspaceId: workspaceId,
