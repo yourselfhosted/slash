@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { workspaceService } from "../services";
 import useLoading from "../hooks/useLoading";
@@ -92,45 +92,31 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Dialog open={true}>
-      <DialogTitle className="flex flex-row justify-between items-center w-80">
-        <p className="text-base">{workspaceId ? "Edit Workspace" : "Create Workspace"}</p>
-        <button className="rounded p-1 hover:bg-gray-100" onClick={onClose}>
-          <Icon.X className="w-5 h-auto text-gray-600" />
-        </button>
-      </DialogTitle>
-      <DialogContent>
-        <div className="w-full flex flex-col justify-start items-start mb-3">
-          <span className="mb-2">Name</span>
-          <input
-            className="w-full rounded border text-sm shadow-inner px-2 py-2"
-            type="text"
-            value={state.workspaceCreate.name}
-            onChange={handleNameInputChange}
-          />
+    <Modal open={true}>
+      <ModalDialog>
+        <div className="flex flex-row justify-between items-center w-80">
+          <span className="text-lg font-medium">{workspaceId ? "Edit Workspace" : "Create Workspace"}</span>
+          <Button variant="plain" onClick={onClose}>
+            <Icon.X className="w-5 h-auto text-gray-600" />
+          </Button>
         </div>
-        <div className="w-full flex flex-col justify-start items-start mb-3">
-          <span className="mb-2">Description</span>
-          <input
-            className="w-full rounded border text-sm shadow-inner px-2 py-2"
-            type="text"
-            value={state.workspaceCreate.description}
-            onChange={handleDescriptionInputChange}
-          />
+        <div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">Name</span>
+            <Input className="w-full" type="text" value={state.workspaceCreate.name} onChange={handleNameInputChange} />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">Description</span>
+            <Input className="w-full" type="text" value={state.workspaceCreate.description} onChange={handleDescriptionInputChange} />
+          </div>
+          <div className="w-full flex flex-row justify-end items-center">
+            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
+              Save
+            </Button>
+          </div>
         </div>
-        <div className="w-full flex flex-row justify-end items-center">
-          <button
-            disabled={requestState.isLoading}
-            className={`rounded px-3 leading-9 shadow bg-green-600 text-white hover:bg-green-700 ${
-              requestState.isLoading ? "opacity-80" : ""
-            }`}
-            onClick={handleSaveBtnClick}
-          >
-            Save
-          </button>
-        </div>
-      </DialogContent>
-    </Dialog>
+      </ModalDialog>
+    </Modal>
   );
 };
 

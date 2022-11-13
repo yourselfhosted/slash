@@ -1,23 +1,23 @@
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Button, Modal, ModalDialog } from "@mui/joy";
 import { createRoot } from "react-dom/client";
 import Icon from "./Icon";
 
-type DialogStyle = "info" | "warning";
+type AlertStyle = "primary" | "warning";
 
 interface Props {
   title: string;
   content: string;
-  style?: DialogStyle;
+  style?: AlertStyle;
   closeBtnText?: string;
   confirmBtnText?: string;
   onClose?: () => void;
   onConfirm?: () => void;
 }
 
-const defaultProps = {
+const defaultProps: Props = {
   title: "",
   content: "",
-  style: "info",
+  style: "primary",
   closeBtnText: "Close",
   confirmBtnText: "Confirm",
   onClose: () => null,
@@ -31,38 +31,39 @@ const Alert: React.FC<Props> = (props: Props) => {
   };
 
   const handleCloseBtnClick = () => {
-    onClose();
+    if (onClose) {
+      onClose();
+    }
   };
 
   const handleConfirmBtnClick = async () => {
-    onConfirm();
+    if (onConfirm) {
+      onConfirm();
+    }
   };
 
   return (
-    <Dialog open={true}>
-      <DialogTitle className="flex flex-row justify-between items-center w-80">
-        <p className="text-base">{title}</p>
-        <button className="rounded p-1 hover:bg-gray-100" onClick={handleCloseBtnClick}>
-          <Icon.X className="w-5 h-auto text-gray-600" />
-        </button>
-      </DialogTitle>
-      <DialogContent className="w-80">
-        <p className="content-text mb-4">{content}</p>
-        <div className="w-full flex flex-row justify-end items-center">
-          <button className="rounded px-3 leading-9 mr-4 hover:opacity-80" onClick={handleCloseBtnClick}>
-            {closeBtnText}
-          </button>
-          <button
-            className={`rounded px-3 leading-9 bg-green-600 text-white hover:opacity-80 ${
-              style === "warning" ? "border border-red-600 text-red-600 bg-red-100" : ""
-            }`}
-            onClick={handleConfirmBtnClick}
-          >
-            {confirmBtnText}
-          </button>
+    <Modal open={true}>
+      <ModalDialog>
+        <div className="flex flex-row justify-between items-center w-80 mb-4">
+          <span className="text-lg font-medium">{title}</span>
+          <Button variant="plain" onClick={handleCloseBtnClick}>
+            <Icon.X className="w-5 h-auto text-gray-600" />
+          </Button>
         </div>
-      </DialogContent>
-    </Dialog>
+        <div className="w-80">
+          <p className="content-text mb-4">{content}</p>
+          <div className="w-full flex flex-row justify-end items-center space-x-2">
+            <Button variant="plain" onClick={handleCloseBtnClick}>
+              {closeBtnText}
+            </Button>
+            <Button color={style} onClick={handleConfirmBtnClick}>
+              {confirmBtnText}
+            </Button>
+          </div>
+        </div>
+      </ModalDialog>
+    </Modal>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useState } from "react";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import useLoading from "../hooks/useLoading";
@@ -72,50 +72,34 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Dialog open={true}>
-      <DialogTitle className="flex flex-row justify-between items-center w-80">
-        <p className="text-base">Change Password</p>
-        <button className="rounded p-1 hover:bg-gray-100" onClick={handleCloseBtnClick}>
-          <Icon.X className="w-5 h-auto text-gray-600" />
-        </button>
-      </DialogTitle>
-      <DialogContent>
-        <div className="w-full flex flex-col justify-start items-start mb-3">
-          <span className="mb-2">New Password</span>
-          <input
-            className="w-full rounded border text-sm shadow-inner px-2 py-2"
-            type="text"
-            value={newPassword}
-            onChange={handleNewPasswordChanged}
-          />
+    <Modal open={true}>
+      <ModalDialog>
+        <div className="flex flex-row justify-between items-center w-80 mb-4">
+          <span className="text-lg font-medium">Change Password</span>
+          <Button variant="plain" onClick={handleCloseBtnClick}>
+            <Icon.X className="w-5 h-auto text-gray-600" />
+          </Button>
         </div>
-        <div className="w-full flex flex-col justify-start items-start mb-3">
-          <span className="mb-2">New Password Again</span>
-          <input
-            className="w-full rounded border text-sm shadow-inner px-2 py-2"
-            type="text"
-            value={newPasswordAgain}
-            onChange={handleNewPasswordAgainChanged}
-          />
+        <div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">New Password</span>
+            <Input className="w-full" type="text" value={newPassword} onChange={handleNewPasswordChanged} />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">New Password Again</span>
+            <Input className="w-full" type="text" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
+          </div>
+          <div className="w-full flex flex-row justify-end items-center space-x-2">
+            <Button variant="plain" disabled={requestState.isLoading} onClick={handleCloseBtnClick}>
+              Cancel
+            </Button>
+            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
+              Save
+            </Button>
+          </div>
         </div>
-        <div className="w-full flex flex-row justify-end items-center">
-          <button
-            disabled={requestState.isLoading}
-            className={`rounded px-3 leading-9 mr-4 hover:opacity-80 ${requestState.isLoading ? "opacity-80" : ""}`}
-            onClick={handleCloseBtnClick}
-          >
-            Cancel
-          </button>
-          <button
-            disabled={requestState.isLoading}
-            className={`rounded px-3 leading-9 bg-green-600 text-white hover:bg-green-700 ${requestState.isLoading ? "opacity-80" : ""}`}
-            onClick={handleSaveBtnClick}
-          >
-            Save
-          </button>
-        </div>
-      </DialogContent>
-    </Dialog>
+      </ModalDialog>
+    </Modal>
   );
 };
 

@@ -1,6 +1,6 @@
 .toast-list-container {
   @apply flex flex-col justify-start items-end fixed top-2 right-4 max-h-full;
-  z-index: 9999;
+  z-index: 99999;
 }
 
 .toast-list-container > .toast-wrapper {
