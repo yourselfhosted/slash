@@ -76,7 +76,7 @@ const Auth: React.FC = () => {
       }
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(error.response.data.message);
+      toastHelper.error(JSON.stringify(error.response.data));
     }
     actionBtnLoadingState.setFinish();
   };
@@ -111,7 +111,7 @@ const Auth: React.FC = () => {
       }
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(error.response.data.message);
+      toastHelper.error(JSON.stringify(error.response.data));
     }
     actionBtnLoadingState.setFinish();
   };

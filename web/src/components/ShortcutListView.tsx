@@ -1,3 +1,4 @@
+import { Tooltip } from "@mui/joy";
 import copy from "copy-to-clipboard";
 import { useState } from "react";
 import { shortcutService, workspaceService } from "../services";
@@ -59,17 +60,21 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
               </div>
               <div className="flex flex-row justify-end items-center">
                 <span className="w-16 truncate mr-2 text-gray-600">{shortcut.creator.name}</span>
-                <button
-                  className="cursor-pointer mr-4 hover:opacity-80"
-                  onClick={() => {
-                    handleCopyButtonClick(shortcut);
-                  }}
-                >
-                  <Icon.Copy className="w-5 h-auto" />
-                </button>
-                <a className="cursor-pointer mr-4 hover:opacity-80" target="_blank" href={shortcut.link} rel="noreferrer">
-                  <Icon.ExternalLink className="w-5 h-auto" />
-                </a>
+                <Tooltip title="Copy link" variant="solid" placement="top">
+                  <button
+                    className="cursor-pointer mr-4 hover:opacity-80"
+                    onClick={() => {
+                      handleCopyButtonClick(shortcut);
+                    }}
+                  >
+                    <Icon.Copy className="w-5 h-auto" />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Go to link" variant="solid" placement="top">
+                  <a className="cursor-pointer mr-4 hover:opacity-80" target="_blank" href={shortcut.link} rel="noreferrer">
+                    <Icon.ExternalLink className="w-5 h-auto" />
+                  </a>
+                </Tooltip>
                 <Dropdown
                   actions={
                     <>

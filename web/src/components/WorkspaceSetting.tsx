@@ -9,6 +9,7 @@ import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspa
 import { showCommonDialog } from "./Alert";
 import toastHelper from "./Toast";
 import CreateWorkspaceDialog from "./CreateWorkspaceDialog";
+import Icon from "./Icon";
 
 interface Props {
   workspaceId: WorkspaceId;
@@ -93,9 +94,11 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
             {workspaceUser.role === "ADMIN" ? (
               <>
                 <Button variant="soft" onClick={handleEditWorkspaceButtonClick}>
+                  <Icon.Edit className="w-4 h-auto mr-1" />
                   Edit
                 </Button>
                 <Button variant="soft" color="danger" onClick={handleDeleteWorkspaceButtonClick}>
+                  <Icon.Trash className="w-4 h-auto mr-1" />
                   Delete
                 </Button>
               </>
