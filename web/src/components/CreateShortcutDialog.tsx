@@ -147,7 +147,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Visibility</span>
             <div className="w-full flex flex-row justify-start items-center text-base">
-              <RadioGroup row value={state.shortcutCreate.visibility} onChange={handleVisibilityInputChange}>
+              <RadioGroup orientation="horizontal" value={state.shortcutCreate.visibility} onChange={handleVisibilityInputChange}>
                 <Radio value="PRIVATE" label="Private" />
                 <Radio value="WORKSPACE" label="Workspace" />
                 <Radio value="PUBLIC" label="Public" />

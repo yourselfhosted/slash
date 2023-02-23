@@ -96,7 +96,7 @@ const UpsertWorkspaceUserDialog: React.FC<Props> = (props: Props) => {
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Role</span>
             <div>
-              <RadioGroup row value={state.workspaceUserUpsert.role} onChange={handleUserRoleInputChange}>
+              <RadioGroup orientation="horizontal" value={state.workspaceUserUpsert.role} onChange={handleUserRoleInputChange}>
                 <Radio value="USER" label="User" />
                 <Radio value="ADMIN" label="Admin" />
               </RadioGroup>
