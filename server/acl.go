@@ -15,6 +15,7 @@ import (
 
 var (
 	userIDContextKey = "user-id"
+	sessionName      = "corgi_session"
 )
 
 func getUserIDContextKey() string {
@@ -22,7 +23,7 @@ func getUserIDContextKey() string {
 }
 
 func setUserSession(ctx echo.Context, user *api.User) error {
-	sess, _ := session.Get("session", ctx)
+	sess, _ := session.Get(sessionName, ctx)
 	sess.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   1000 * 3600 * 24 * 30,
@@ -37,7 +38,7 @@ func setUserSession(ctx echo.Context, user *api.User) error {
 }
 
 func removeUserSession(ctx echo.Context) error {
-	sess, _ := session.Get("session", ctx)
+	sess, _ := session.Get(sessionName, ctx)
 	sess.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   0,
@@ -55,56 +56,31 @@ func aclMiddleware(s *Server, next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()
 		path := c.Path()
-		// Skip auth.
-		if common.HasPrefixes(path, "/api/auth") {
+
+		if s.defaultAuthSkipper(c) {
 			return next(c)
 		}
 
-		if common.HasPrefixes(path, "/api/ping", "/api/status", "/api/user/:id") && c.Request().Method == http.MethodGet {
-			return next(c)
-		}
-
-		{
-			// If there is openId in query string and related user is found, then skip auth.
-			openID := c.QueryParam("openId")
-			if openID != "" {
-				userFind := &api.UserFind{
-					OpenID: &openID,
+		sess, _ := session.Get(sessionName, c)
+		userIDValue := sess.Values[userIDContextKey]
+		if userIDValue != nil {
+			userID, _ := strconv.Atoi(fmt.Sprintf("%v", userIDValue))
+			userFind := &api.UserFind{
+				ID: &userID,
+			}
+			user, err := s.Store.FindUser(ctx, userFind)
+			if err != nil && common.ErrorCode(err) != common.NotFound {
+				return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user by ID: %d", userID)).SetInternal(err)
+			}
+			if user != nil {
+				if user.RowStatus == api.Archived {
+					return echo.NewHTTPError(http.StatusForbidden, fmt.Sprintf("User has been archived with email %s", user.Email))
 				}
-				user, err := s.Store.FindUser(ctx, userFind)
-				if err != nil && common.ErrorCode(err) != common.NotFound {
-					return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user by open_id").SetInternal(err)
-				}
-				if user != nil {
-					// Stores userID into context.
-					c.Set(getUserIDContextKey(), user.ID)
-					return next(c)
-				}
+				c.Set(getUserIDContextKey(), userID)
 			}
 		}
 
-		{
-			sess, _ := session.Get("session", c)
-			userIDValue := sess.Values[userIDContextKey]
-			if userIDValue != nil {
-				userID, _ := strconv.Atoi(fmt.Sprintf("%v", userIDValue))
-				userFind := &api.UserFind{
-					ID: &userID,
-				}
-				user, err := s.Store.FindUser(ctx, userFind)
-				if err != nil && common.ErrorCode(err) != common.NotFound {
-					return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user by ID: %d", userID)).SetInternal(err)
-				}
-				if user != nil {
-					if user.RowStatus == api.Archived {
-						return echo.NewHTTPError(http.StatusForbidden, fmt.Sprintf("User has been archived with email %s", user.Email))
-					}
-					c.Set(getUserIDContextKey(), userID)
-				}
-			}
-		}
-
-		if common.HasPrefixes(path, "/go/:shortcutName", "/api/workspace/:workspaceName/shortcut/:shortcutName") && c.Request().Method == http.MethodGet {
+		if common.HasPrefixes(path, "/api/ping", "/api/status") && c.Request().Method == http.MethodGet {
 			return next(c)
 		}
 

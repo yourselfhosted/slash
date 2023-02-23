@@ -64,7 +64,7 @@ const UserDetail: React.FC = () => {
       <div className="w-full h-full flex flex-col justify-start items-start">
         <Header />
         <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
-          <p className="text-3xl mt-2 mb-4">{user?.name}</p>
+          <p className="text-3xl mt-2 mb-4">{user?.displayName}</p>
           <p className="leading-8 flex flex-row justify-start items-center">
             <span className="mr-3 text-gray-500 font-mono">Email: </span>
             {user?.email}

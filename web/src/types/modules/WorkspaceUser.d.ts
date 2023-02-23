@@ -7,7 +7,7 @@ interface WorkspaceUser {
   createdTs: TimeStamp;
   updatedTs: TimeStamp;
   email: string;
-  name: string;
+  displayName: string;
 }
 
 interface WorkspaceUserUpsert {

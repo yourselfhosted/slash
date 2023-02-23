@@ -8,14 +8,14 @@ interface User {
   rowStatus: RowStatus;
 
   email: string;
-  name: string;
+  displayName: string;
   openId: string;
 }
 
 interface UserCreate {
   email: string;
   password: string;
-  name: string;
+  displayName: string;
 }
 
 interface UserPatch {
@@ -23,7 +23,7 @@ interface UserPatch {
 
   rowStatus?: RowStatus;
 
-  name?: string;
+  displayName?: string;
   password?: string;
   resetOpenId?: boolean;
 }

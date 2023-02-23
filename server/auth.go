@@ -42,12 +42,7 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 		if err = setUserSession(c, user); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to set signin session").SetInternal(err)
 		}
-
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(user)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode user response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(user))
 	})
 
 	g.POST("/auth/signup", func(c echo.Context) error {
@@ -58,10 +53,10 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 		}
 
 		userCreate := &api.UserCreate{
-			Email:    signup.Email,
-			Name:     signup.Name,
-			Password: signup.Password,
-			OpenID:   common.GenUUID(),
+			Email:       signup.Email,
+			DisplayName: signup.DisplayName,
+			Password:    signup.Password,
+			OpenID:      common.GenUUID(),
 		}
 		if err := userCreate.Validate(); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Invalid user create format.").SetInternal(err)

@@ -1,9 +1,9 @@
 package api
 
 type Signup struct {
-	Email    string `json:"email"`
-	Name     string `json:"name"`
-	Password string `json:"password"`
+	Email       string `json:"email"`
+	DisplayName string `json:"displayName"`
+	Password    string `json:"password"`
 }
 
 type Signin struct {

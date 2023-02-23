@@ -84,7 +84,7 @@ const Header: React.FC = () => {
               <Dropdown
                 trigger={
                   <button className="flex flex-row justify-end items-center cursor-pointer">
-                    <span>{user?.name}</span>
+                    <span>{user?.displayName}</span>
                     <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600" />
                   </button>
                 }

@@ -50,7 +50,7 @@ const MemberListView: React.FC<Props> = (props: Props) => {
   const handleDeleteWorkspaceUserButtonClick = (workspaceUser: WorkspaceUser) => {
     showCommonDialog({
       title: "Delete Workspace Member",
-      content: `Are you sure to delete member \`${workspaceUser.name}\` in this workspace?`,
+      content: `Are you sure to delete member \`${workspaceUser.displayName}\` in this workspace?`,
       style: "danger",
       onConfirm: async () => {
         await deleteWorkspaceUser({
@@ -71,7 +71,7 @@ const MemberListView: React.FC<Props> = (props: Props) => {
           return (
             <div key={workspaceUser.userId} className="w-full flex flex-row justify-between items-start border px-6 py-4 mb-3 rounded-lg">
               <div className="flex flex-row justify-start items-center mr-4">
-                <span>{workspaceUser.name}</span>
+                <span>{workspaceUser.displayName}</span>
                 {currentUser.userId === workspaceUser.userId && <span className="ml-2 text-gray-400">(yourself)</span>}
               </div>
               <div className="flex flex-row justify-end items-center">

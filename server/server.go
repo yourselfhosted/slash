@@ -1,11 +1,15 @@
 package server
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"time"
 
 	"github.com/boojack/corgi/server/profile"
 	"github.com/boojack/corgi/store"
+	"github.com/boojack/corgi/store/db"
+	"github.com/pkg/errors"
 
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
@@ -15,24 +19,39 @@ import (
 )
 
 type Server struct {
-	e *echo.Echo
+	e  *echo.Echo
+	db *sql.DB
 
 	Profile *profile.Profile
-
-	Store *store.Store
+	Store   *store.Store
 }
 
-func NewServer(profile *profile.Profile) *Server {
+func NewServer(ctx context.Context, profile *profile.Profile) (*Server, error) {
 	e := echo.New()
 	e.Debug = true
 	e.HideBanner = true
 	e.HidePort = true
+
+	db := db.NewDB(profile)
+	if err := db.Open(ctx); err != nil {
+		return nil, errors.Wrap(err, "cannot open db")
+	}
+
+	s := &Server{
+		e:       e,
+		db:      db.DBInstance,
+		Profile: profile,
+	}
+	storeInstance := store.New(db.DBInstance, profile)
+	s.Store = storeInstance
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `{"time":"${time_rfc3339}",` +
 			`"method":"${method}","uri":"${uri}",` +
 			`"status":${status},"error":"${error}"}` + "\n",
 	}))
+
+	e.Use(middleware.Gzip())
 
 	e.Use(middleware.CORS())
 
@@ -51,11 +70,6 @@ func NewServer(profile *profile.Profile) *Server {
 	}
 	e.Use(session.Middleware(sessions.NewCookieStore(secret)))
 
-	s := &Server{
-		e:       e,
-		Profile: profile,
-	}
-
 	redirectGroup := e.Group("/o")
 	redirectGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return aclMiddleware(s, next)
@@ -73,9 +87,26 @@ func NewServer(profile *profile.Profile) *Server {
 	s.registerWorkspaceUserRoutes(apiGroup)
 	s.registerShortcutRoutes(apiGroup)
 
-	return s
+	return s, nil
 }
 
-func (server *Server) Run() error {
-	return server.e.Start(fmt.Sprintf(":%d", server.Profile.Port))
+func (s *Server) Start(_ context.Context) error {
+	return s.e.Start(fmt.Sprintf(":%d", s.Profile.Port))
+}
+
+func (s *Server) Shutdown(ctx context.Context) {
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	// Shutdown echo server
+	if err := s.e.Shutdown(ctx); err != nil {
+		fmt.Printf("failed to shutdown server, error: %v\n", err)
+	}
+
+	// Close database connection
+	if err := s.db.Close(); err != nil {
+		fmt.Printf("failed to close database, error: %v\n", err)
+	}
+
+	fmt.Printf("server stopped properly\n")
 }

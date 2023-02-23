@@ -3,11 +3,13 @@ tmp_dir = ".air"
 
 [build]
   bin = "./.air/corgi"
-  cmd = "go build -o ./.air/corgi ./bin/server/main.go"
+  cmd = "go build -o ./.air/corgi ./main.go"
   delay = 1000
-  exclude_dir = [".air", "web", "extension", "build"]
+  exclude_dir = [".air", "web", "build"]
   exclude_file = []
   exclude_regex = []
   exclude_unchanged = false
   follow_symlink = false
   full_bin = ""
+  send_interrupt = true
+  kill_delay = 2000

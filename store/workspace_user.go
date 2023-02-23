@@ -15,8 +15,6 @@ type workspaceUserRaw struct {
 	WorkspaceID int
 	UserID      int
 	Role        api.Role
-	CreatedTs   int64
-	UpdatedTs   int64
 }
 
 func (raw *workspaceUserRaw) toWorkspaceUser() *api.WorkspaceUser {
@@ -24,8 +22,6 @@ func (raw *workspaceUserRaw) toWorkspaceUser() *api.WorkspaceUser {
 		WorkspaceID: raw.WorkspaceID,
 		UserID:      raw.UserID,
 		Role:        raw.Role,
-		CreatedTs:   raw.CreatedTs,
-		UpdatedTs:   raw.UpdatedTs,
 	}
 }
 
@@ -38,7 +34,7 @@ func (s *Store) ComposeWorkspaceUser(ctx context.Context, workspaceUser *api.Wor
 	}
 
 	workspaceUser.Email = user.Email
-	workspaceUser.Name = user.Name
+	workspaceUser.DisplayName = user.DisplayName
 
 	return nil
 }
@@ -159,17 +155,14 @@ func upsertWorkspaceUser(ctx context.Context, tx *sql.Tx, upsert *api.WorkspaceU
 		VALUES (` + strings.Join(placeholder, ",") + `)
 		ON CONFLICT(workspace_id, user_id) DO UPDATE 
 		SET
-			role = EXCLUDED.role,
-			updated_ts = EXCLUDED.updated_ts
-		RETURNING workspace_id, user_id, role, created_ts, updated_ts
+			role = EXCLUDED.role
+		RETURNING workspace_id, user_id, role
 	`
 	var workspaceUserRaw workspaceUserRaw
 	if err := tx.QueryRowContext(ctx, query, args...).Scan(
 		&workspaceUserRaw.WorkspaceID,
 		&workspaceUserRaw.UserID,
 		&workspaceUserRaw.Role,
-		&workspaceUserRaw.CreatedTs,
-		&workspaceUserRaw.UpdatedTs,
 	); err != nil {
 		return nil, FormatError(err)
 	}
@@ -191,13 +184,9 @@ func findWorkspaceUserList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceU
 		SELECT 
 			workspace_id,
 			user_id,
-			role,
-			created_ts,
-			updated_ts
+			role
 		FROM workspace_user
-		WHERE ` + strings.Join(where, " AND ") + `
-		ORDER BY updated_ts DESC, created_ts DESC
-	`
+		WHERE ` + strings.Join(where, " AND ")
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, FormatError(err)
@@ -211,8 +200,6 @@ func findWorkspaceUserList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceU
 			&workspaceUserRaw.WorkspaceID,
 			&workspaceUserRaw.UserID,
 			&workspaceUserRaw.Role,
-			&workspaceUserRaw.CreatedTs,
-			&workspaceUserRaw.UpdatedTs,
 		); err != nil {
 			return nil, FormatError(err)
 		}

@@ -1,14 +1,14 @@
-INSERT INTO 
+INSERT INTO
   user (
-    `id`, 
+    `id`,
     `email`,
-    `name`, 
+    `display_name`,
     `password_hash`,
     `open_id`
   )
 VALUES
   (
-    101, 
+    101,
     'frank@iamcorgi.com',
     'Frank',
     -- raw password: secret
@@ -16,17 +16,17 @@ VALUES
     'frank_open_id'
   );
 
-INSERT INTO 
+INSERT INTO
   user (
-    `id`, 
+    `id`,
     `email`,
-    `name`, 
+    `display_name`,
     `password_hash`,
     `open_id`
   )
 VALUES
   (
-    102, 
+    102,
     'bob@iamcorgi.com',
     'Bob',
     -- raw password: secret

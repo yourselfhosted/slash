@@ -22,7 +22,7 @@ type userRaw struct {
 
 	// Domain specific fields
 	Email        string
-	Name         string
+	DisplayName  string
 	PasswordHash string
 	OpenID       string
 }
@@ -36,7 +36,7 @@ func (raw *userRaw) toUser() *api.User {
 		RowStatus: raw.RowStatus,
 
 		Email:        raw.Email,
-		Name:         raw.Name,
+		DisplayName:  raw.DisplayName,
 		PasswordHash: raw.PasswordHash,
 		OpenID:       raw.OpenID,
 	}
@@ -113,20 +113,9 @@ func (s *Store) FindUserList(ctx context.Context, find *api.UserFind) ([]*api.Us
 }
 
 func (s *Store) FindUser(ctx context.Context, find *api.UserFind) (*api.User, error) {
-	if find.ID != nil {
-		user := &api.User{}
-		has, err := s.cache.FindCache(api.UserCache, *find.ID, user)
-		if err != nil {
-			return nil, err
-		}
-		if has {
-			return user, nil
-		}
-	}
-
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -142,7 +131,6 @@ func (s *Store) FindUser(ctx context.Context, find *api.UserFind) (*api.User, er
 	}
 
 	user := list[0].toUser()
-
 	if err := s.cache.UpsertCache(api.UserCache, user.ID, user); err != nil {
 		return nil, err
 	}
@@ -175,17 +163,17 @@ func createUser(ctx context.Context, tx *sql.Tx, create *api.UserCreate) (*userR
 	query := `
 		INSERT INTO user (
 			email,
-			name,
+			display_name,
 			password_hash,
 			open_id
 		)
 		VALUES (?, ?, ?, ?)
-		RETURNING id, created_ts, updated_ts, row_status, email, name, password_hash, open_id
+		RETURNING id, created_ts, updated_ts, row_status, email, display_name, password_hash, open_id
 	`
 	var userRaw userRaw
 	if err := tx.QueryRowContext(ctx, query,
 		create.Email,
-		create.Name,
+		create.DisplayName,
 		create.PasswordHash,
 		create.OpenID,
 	).Scan(
@@ -194,7 +182,7 @@ func createUser(ctx context.Context, tx *sql.Tx, create *api.UserCreate) (*userR
 		&userRaw.UpdatedTs,
 		&userRaw.RowStatus,
 		&userRaw.Email,
-		&userRaw.Name,
+		&userRaw.DisplayName,
 		&userRaw.PasswordHash,
 		&userRaw.OpenID,
 	); err != nil {
@@ -213,8 +201,8 @@ func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw,
 	if v := patch.Email; v != nil {
 		set, args = append(set, "email = ?"), append(args, *v)
 	}
-	if v := patch.Name; v != nil {
-		set, args = append(set, "name = ?"), append(args, *v)
+	if v := patch.DisplayName; v != nil {
+		set, args = append(set, "display_name = ?"), append(args, *v)
 	}
 	if v := patch.PasswordHash; v != nil {
 		set, args = append(set, "password_hash = ?"), append(args, *v)
@@ -229,7 +217,7 @@ func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw,
 		UPDATE user
 		SET ` + strings.Join(set, ", ") + `
 		WHERE id = ?
-		RETURNING id, created_ts, updated_ts, row_status, email, name, password_hash, open_id
+		RETURNING id, created_ts, updated_ts, row_status, email, display_name, password_hash, open_id
 	`
 	row, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -245,7 +233,7 @@ func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw,
 			&userRaw.UpdatedTs,
 			&userRaw.RowStatus,
 			&userRaw.Email,
-			&userRaw.Name,
+			&userRaw.DisplayName,
 			&userRaw.PasswordHash,
 			&userRaw.OpenID,
 		); err != nil {
@@ -271,9 +259,6 @@ func findUserList(ctx context.Context, tx *sql.Tx, find *api.UserFind) ([]*userR
 	if v := find.Email; v != nil {
 		where, args = append(where, "email = ?"), append(args, *v)
 	}
-	if v := find.Name; v != nil {
-		where, args = append(where, "name = ?"), append(args, *v)
-	}
 	if v := find.OpenID; v != nil {
 		where, args = append(where, "open_id = ?"), append(args, *v)
 	}
@@ -285,16 +270,16 @@ func findUserList(ctx context.Context, tx *sql.Tx, find *api.UserFind) ([]*userR
 			updated_ts,
 			row_status,
 			email,
-			name,
+			display_name,
 			password_hash,
 			open_id
 		FROM user
 		WHERE ` + strings.Join(where, " AND ") + `
-		ORDER BY updated_ts DESC, created_ts DESC, row_status DESC
+		ORDER BY updated_ts DESC, created_ts DESC
 	`
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -307,18 +292,17 @@ func findUserList(ctx context.Context, tx *sql.Tx, find *api.UserFind) ([]*userR
 			&userRaw.UpdatedTs,
 			&userRaw.RowStatus,
 			&userRaw.Email,
-			&userRaw.Name,
+			&userRaw.DisplayName,
 			&userRaw.PasswordHash,
 			&userRaw.OpenID,
 		); err != nil {
-			return nil, FormatError(err)
+			return nil, err
 		}
-
 		userRawList = append(userRawList, &userRaw)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return userRawList, nil

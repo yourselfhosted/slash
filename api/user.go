@@ -16,7 +16,7 @@ type User struct {
 
 	// Domain specific fields
 	Email           string         `json:"email"`
-	Name            string         `json:"name"`
+	DisplayName     string         `json:"displayName"`
 	PasswordHash    string         `json:"-"`
 	OpenID          string         `json:"openId"`
 	UserSettingList []*UserSetting `json:"userSettingList"`
@@ -24,20 +24,20 @@ type User struct {
 
 type UserCreate struct {
 	Email        string `json:"email"`
-	Name         string `json:"name"`
+	DisplayName  string `json:"displayName"`
 	Password     string `json:"password"`
-	PasswordHash string
-	OpenID       string
+	PasswordHash string `json:"-"`
+	OpenID       string `json:"-"`
 }
 
 func (create UserCreate) Validate() error {
 	if !common.ValidateEmail(create.Email) {
 		return fmt.Errorf("invalid email format")
 	}
-	if len(create.Email) < 6 {
+	if len(create.Email) < 3 {
 		return fmt.Errorf("email is too short, minimum length is 6")
 	}
-	if len(create.Password) < 6 {
+	if len(create.Password) < 3 {
 		return fmt.Errorf("password is too short, minimum length is 6")
 	}
 
@@ -52,11 +52,11 @@ type UserPatch struct {
 
 	// Domain specific fields
 	Email        *string `json:"email"`
-	Name         *string `json:"name"`
+	DisplayName  *string `json:"displayName"`
 	Password     *string `json:"password"`
 	ResetOpenID  *bool   `json:"resetOpenId"`
-	PasswordHash *string
-	OpenID       *string
+	PasswordHash *string `json:"-"`
+	OpenID       *string `json:"-"`
 }
 
 type UserFind struct {
@@ -66,9 +66,9 @@ type UserFind struct {
 	RowStatus *RowStatus `json:"rowStatus"`
 
 	// Domain specific fields
-	Email  *string `json:"email"`
-	Name   *string `json:"name"`
-	OpenID *string `json:"openId"`
+	Email       *string `json:"email"`
+	DisplayName *string `json:"displayName"`
+	OpenID      *string `json:"openId"`
 }
 
 type UserDelete struct {
