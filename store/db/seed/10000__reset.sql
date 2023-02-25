@@ -1,7 +1,4 @@
 DELETE FROM
-  shortcut_organizer;
-
-DELETE FROM
   shortcut;
 
 DELETE FROM

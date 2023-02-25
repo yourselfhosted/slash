@@ -1,11 +1,14 @@
 import { Tooltip } from "@mui/joy";
 import copy from "copy-to-clipboard";
 import { useState } from "react";
+import { UNKNOWN_ID } from "../helpers/consts";
 import { shortcutService, workspaceService } from "../services";
 import { useAppSelector } from "../store";
-import { UNKNOWN_ID } from "../helpers/consts";
+import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
+import { absolutifyLink } from "../helpers/utils";
 import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
+import toastHelper from "./Toast";
 import Dropdown from "./common/Dropdown";
 import CreateShortcutDialog from "./CreateShortcutDialog";
 
@@ -20,14 +23,22 @@ interface State {
 
 const ShortcutListView: React.FC<Props> = (props: Props) => {
   const { workspaceId, shortcutList } = props;
-  const { user } = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user.user as User);
+  const { workspaceList } = useAppSelector((state) => state.workspace);
   const [state, setState] = useState<State>({
     currentEditingShortcutId: UNKNOWN_ID,
   });
+  const workspace = workspaceList.find((workspace) => workspace.id === workspaceId) ?? unknownWorkspace;
+  const workspaceUser = workspace.workspaceUserList.find((workspaceUser) => workspaceUser.userId === user.id) ?? unknownWorkspaceUser;
+
+  const havePermission = (shortcut: Shortcut) => {
+    return workspaceUser.role === "ADMIN" || shortcut.creatorId === user.id;
+  };
 
   const handleCopyButtonClick = (shortcut: Shortcut) => {
     const workspace = workspaceService.getWorkspaceById(workspaceId);
-    copy(`${location.host}/${workspace?.name}/go/${shortcut.name}`);
+    copy(absolutifyLink(`/${workspace?.name}/${shortcut.name}`));
+    toastHelper.error("Shortcut link copied to clipboard.");
   };
 
   const handleEditShortcutButtonClick = (shortcut: Shortcut) => {
@@ -79,14 +90,14 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
                   actions={
                     <>
                       <button
-                        disabled={shortcut.creatorId !== user?.id}
+                        disabled={!havePermission(shortcut)}
                         className="w-full px-3 text-left leading-10 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                         onClick={() => handleEditShortcutButtonClick(shortcut)}
                       >
                         Edit
                       </button>
                       <button
-                        disabled={shortcut.creatorId !== user?.id}
+                        disabled={!havePermission(shortcut)}
                         className="w-full px-3 text-left leading-10 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                         onClick={() => {
                           handleDeleteShortcutButtonClick(shortcut);

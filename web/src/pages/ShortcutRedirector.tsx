@@ -1,37 +1,35 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { getShortcutWithNameAndWorkspaceName } from "../helpers/api";
 import useLoading from "../hooks/useLoading";
-import { userService } from "../services";
 
 interface State {
   errMessage?: string;
 }
 
 const ShortcutRedirector: React.FC = () => {
-  const navigate = useNavigate();
   const params = useParams();
   const [state, setState] = useState<State>();
   const loadingState = useLoading();
 
   useEffect(() => {
-    if (!userService.getState().user) {
-      navigate("/user/auth");
-      return;
-    }
-
     const workspaceName = params.workspaceName || "";
     const shortcutName = params.shortcutName || "";
     getShortcutWithNameAndWorkspaceName(workspaceName, shortcutName)
       .then(({ data: { data: shortcut } }) => {
         if (shortcut) {
           window.location.href = shortcut.link;
+        } else {
+          setState({
+            errMessage: "Not found",
+          });
+          loadingState.setFinish();
         }
       })
-      .catch((err) => {
+      .catch((error) => {
         setState({
-          errMessage: err?.message || "Not found",
+          errMessage: error.response.data.error || "Error occurred",
         });
         loadingState.setFinish();
       });

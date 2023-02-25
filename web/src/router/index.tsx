@@ -62,21 +62,8 @@ const router = createBrowserRouter([
     },
   },
   {
-    path: "/:workspaceName/go/:shortcutName",
+    path: "/:workspaceName/:shortcutName",
     element: <ShortcutRedirector />,
-    loader: async () => {
-      try {
-        await userService.initialState();
-        await workspaceService.fetchWorkspaceList();
-      } catch (error) {
-        // do nth
-      }
-
-      const { user } = userService.getState();
-      if (isNullorUndefined(user)) {
-        return redirect("/user/auth");
-      }
-    },
   },
 ]);
 

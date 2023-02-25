@@ -70,7 +70,7 @@ CREATE TABLE shortcut (
   row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',
   workspace_id INTEGER NOT NULL,
   name TEXT NOT NULL,
-  link TEXT NOT NULL DEFAULT '',
+  link TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT '',
   visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE'
 );
@@ -79,11 +79,3 @@ INSERT INTO
   sqlite_sequence (name, seq)
 VALUES
   ('shortcut', 1000);
-
--- shortcut_organizer
-CREATE TABLE shortcut_organizer (
-  shortcut_id INTEGER NOT NULL,
-  user_id INTEGER NOT NULL,
-  pinned INTEGER NOT NULL CHECK (pinned IN (0, 1)) DEFAULT 0,
-  UNIQUE(shortcut_id, user_id)
-);

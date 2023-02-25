@@ -26,6 +26,17 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post shortcut request").SetInternal(err)
 		}
 
+		existingShortcut, err := s.Store.FindShortcut(ctx, &api.ShortcutFind{
+			Name:        &shortcutCreate.Name,
+			WorkspaceID: &shortcutCreate.WorkspaceID,
+		})
+		if err != nil && common.ErrorCode(err) != common.NotFound {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find shortcut").SetInternal(err)
+		}
+		if existingShortcut != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Shortcut with name %s already exists", shortcutCreate.Name))
+		}
+
 		shortcut, err := s.Store.CreateShortcut(ctx, shortcutCreate)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create shortcut").SetInternal(err)
@@ -48,6 +59,29 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("ID is not a number: %s", c.Param("shortcutId"))).SetInternal(err)
 		}
+		userID, ok := c.Get(getUserIDContextKey()).(int)
+		if !ok {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+		}
+
+		shortcut, err := s.Store.FindShortcut(ctx, &api.ShortcutFind{
+			ID: &shortcutID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find shortcut").SetInternal(err)
+		}
+
+		workspaceUser, err := s.Store.FindWordspaceUser(ctx, &api.WorkspaceUserFind{
+			UserID:      &userID,
+			WorkspaceID: &shortcut.WorkspaceID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
+		}
+
+		if shortcut.CreatorID != userID && workspaceUser.Role != api.RoleAdmin {
+			return echo.NewHTTPError(http.StatusForbidden, "Forbidden to patch shortcut")
+		}
 
 		shortcutPatch := &api.ShortcutPatch{
 			ID: shortcutID,
@@ -56,7 +90,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted patch shortcut request").SetInternal(err)
 		}
 
-		shortcut, err := s.Store.PatchShortcut(ctx, shortcutPatch)
+		shortcut, err = s.Store.PatchShortcut(ctx, shortcutPatch)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to patch shortcut").SetInternal(err)
 		}
