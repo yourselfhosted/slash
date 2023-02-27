@@ -1,29 +1,33 @@
-INSERT INTO 
+INSERT INTO
   workspace (
-    `id`, 
+    `id`,
     `creator_id`,
-    `name`, 
+    `name`,
+    `title`,
     `description`
   )
 VALUES
   (
-    11, 
+    11,
     101,
+    'minecraft',
     'minecraft',
     ''
   );
 
-INSERT INTO 
+INSERT INTO
   workspace (
-    `id`, 
+    `id`,
     `creator_id`,
-    `name`, 
+    `name`,
+    `title`,
     `description`
   )
 VALUES
   (
-    12, 
+    12,
     102,
+    'bob',
     'bob-room',
     ''
   );

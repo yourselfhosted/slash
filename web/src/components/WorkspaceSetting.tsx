@@ -87,7 +87,10 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   return (
     <>
       <div className="w-full flex flex-col justify-start items-start">
-        <p className="text-3xl mt-4 mb-4">{workspace.name}</p>
+        <p className="text-3xl mt-4 mb-4">
+          {workspace.title}
+          <span className="text-lg ml-1 font-mono text-gray-400">({workspace.name})</span>
+        </p>
         <p className="mb-4">{workspace.description || "No description."}</p>
         <div className="border-t pt-4 flex flex-row justify-start items-center">
           <div className="flex flex-row justify-start items-center space-x-2">

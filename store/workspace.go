@@ -22,6 +22,7 @@ type workspaceRaw struct {
 
 	// Domain specific fields
 	Name        string
+	Title       string
 	Description string
 }
 
@@ -35,6 +36,7 @@ func (raw *workspaceRaw) toWorkspace() *api.Workspace {
 		RowStatus: raw.RowStatus,
 
 		Name:              raw.Name,
+		Title:             raw.Title,
 		Description:       raw.Description,
 		WorkspaceUserList: []*api.WorkspaceUser{},
 	}
@@ -174,15 +176,17 @@ func createWorkspace(ctx context.Context, tx *sql.Tx, create *api.WorkspaceCreat
 		INSERT INTO workspace (
 			creator_id,
 			name,
+			title,
 			description
 		)
 		VALUES (?, ?, ?)
-		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, description
+		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, title, description
 	`
 	var workspaceRaw workspaceRaw
 	if err := tx.QueryRowContext(ctx, query,
 		create.CreatorID,
 		create.Name,
+		create.Title,
 		create.Description,
 	).Scan(
 		&workspaceRaw.ID,
@@ -191,6 +195,7 @@ func createWorkspace(ctx context.Context, tx *sql.Tx, create *api.WorkspaceCreat
 		&workspaceRaw.UpdatedTs,
 		&workspaceRaw.RowStatus,
 		&workspaceRaw.Name,
+		&workspaceRaw.Title,
 		&workspaceRaw.Description,
 	); err != nil {
 		return nil, FormatError(err)
@@ -208,6 +213,9 @@ func patchWorkspace(ctx context.Context, tx *sql.Tx, patch *api.WorkspacePatch) 
 	if v := patch.Name; v != nil {
 		set, args = append(set, "name = ?"), append(args, *v)
 	}
+	if v := patch.Title; v != nil {
+		set, args = append(set, "title = ?"), append(args, *v)
+	}
 	if v := patch.Description; v != nil {
 		set, args = append(set, "description = ?"), append(args, *v)
 	}
@@ -218,7 +226,7 @@ func patchWorkspace(ctx context.Context, tx *sql.Tx, patch *api.WorkspacePatch) 
 		UPDATE workspace
 		SET ` + strings.Join(set, ", ") + `
 		WHERE id = ?
-		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, description
+		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, title, description
 	`
 	row, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -235,6 +243,7 @@ func patchWorkspace(ctx context.Context, tx *sql.Tx, patch *api.WorkspacePatch) 
 			&workspaceRaw.UpdatedTs,
 			&workspaceRaw.RowStatus,
 			&workspaceRaw.Name,
+			&workspaceRaw.Title,
 			&workspaceRaw.Description,
 		); err != nil {
 			return nil, FormatError(err)
@@ -274,6 +283,7 @@ func findWorkspaceList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceFind)
 			updated_ts,
 			row_status,
 			name,
+			title,
 			description
 		FROM workspace
 		WHERE ` + strings.Join(where, " AND ") + `
@@ -295,6 +305,7 @@ func findWorkspaceList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceFind)
 			&workspaceRaw.UpdatedTs,
 			&workspaceRaw.RowStatus,
 			&workspaceRaw.Name,
+			&workspaceRaw.Title,
 			&workspaceRaw.Description,
 		); err != nil {
 			return nil, FormatError(err)

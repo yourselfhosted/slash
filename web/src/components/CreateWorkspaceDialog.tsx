@@ -20,6 +20,7 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
   const [state, setState] = useState<State>({
     workspaceCreate: {
       name: "",
+      title: "",
       description: "",
     },
   });
@@ -33,6 +34,7 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
           ...state,
           workspaceCreate: Object.assign(state.workspaceCreate, {
             name: workspaceTemp.name,
+            title: workspaceTemp.title,
             description: workspaceTemp.description,
           }),
         });
@@ -51,17 +53,13 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(e, "name");
-  };
-
-  const handleDescriptionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(e, "description");
-  };
-
   const handleSaveBtnClick = async () => {
     if (!state.workspaceCreate.name) {
-      toastHelper.error("Name is required");
+      toastHelper.error("ID is required");
+      return;
+    }
+    if (!state.workspaceCreate.title) {
+      toastHelper.error("Title is required");
       return;
     }
 
@@ -102,12 +100,31 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Name</span>
-            <Input className="w-full" type="text" value={state.workspaceCreate.name} onChange={handleNameInputChange} />
+            <span className="mb-2">
+              ID <span className="text-red-600">*</span>
+            </span>
+            <Input
+              className="w-full"
+              type="text"
+              placeholder="Workspace ID is an unique identifier for your workspace."
+              value={state.workspaceCreate.name}
+              onChange={(e) => handleInputChange(e, "name")}
+            />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">
+              Name <span className="text-red-600">*</span>
+            </span>
+            <Input className="w-full" type="text" value={state.workspaceCreate.title} onChange={(e) => handleInputChange(e, "title")} />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Description</span>
-            <Input className="w-full" type="text" value={state.workspaceCreate.description} onChange={handleDescriptionInputChange} />
+            <Input
+              className="w-full"
+              type="text"
+              value={state.workspaceCreate.description}
+              onChange={(e) => handleInputChange(e, "description")}
+            />
           </div>
           <div className="w-full flex flex-row justify-end items-center">
             <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>

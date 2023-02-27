@@ -9,6 +9,7 @@ interface Workspace {
   rowStatus: RowStatus;
 
   name: string;
+  title: string;
   description: string;
 
   workspaceUserList: WorkspaceUser[];
@@ -16,6 +17,7 @@ interface Workspace {
 
 interface WorkspaceCreate {
   name: string;
+  title: string;
   description: string;
 }
 
@@ -23,6 +25,7 @@ interface WorkspacePatch {
   id: WorkspaceId;
   rowStatus?: RowStatus;
   name?: string;
+  title?: string;
   description?: string;
 }
 

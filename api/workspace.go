@@ -11,6 +11,7 @@ type Workspace struct {
 
 	// Domain specific fields
 	Name        string `json:"name"`
+	Title       string `json:"title"`
 	Description string `json:"description"`
 
 	// Related fields
@@ -21,6 +22,7 @@ type WorkspaceCreate struct {
 	CreatorID int
 
 	Name        string `json:"name"`
+	Title       string `json:"title"`
 	Description string `json:"description"`
 }
 
@@ -32,6 +34,7 @@ type WorkspacePatch struct {
 
 	// Domain specific fields
 	Name        *string `json:"name"`
+	Title       *string `json:"title"`
 	Description *string `json:"description"`
 }
 
