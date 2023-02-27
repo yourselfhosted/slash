@@ -58,12 +58,8 @@ func (s *Store) CreateUser(ctx context.Context, create *api.UserCreate) (*api.Us
 		return nil, FormatError(err)
 	}
 
+	s.userCache.Store(userRaw.ID, userRaw)
 	user := userRaw.toUser()
-
-	if err := s.cache.UpsertCache(api.UserCache, user.ID, user); err != nil {
-		return nil, err
-	}
-
 	return user, nil
 }
 
@@ -83,12 +79,8 @@ func (s *Store) PatchUser(ctx context.Context, patch *api.UserPatch) (*api.User,
 		return nil, FormatError(err)
 	}
 
+	s.userCache.Store(userRaw.ID, userRaw)
 	user := userRaw.toUser()
-
-	if err := s.cache.UpsertCache(api.UserCache, user.ID, user); err != nil {
-		return nil, err
-	}
-
 	return user, nil
 }
 
@@ -105,14 +97,21 @@ func (s *Store) FindUserList(ctx context.Context, find *api.UserFind) ([]*api.Us
 	}
 
 	list := []*api.User{}
-	for _, raw := range userRawList {
-		list = append(list, raw.toUser())
+	for _, userRaw := range userRawList {
+		s.userCache.Store(userRaw.ID, userRaw)
+		list = append(list, userRaw.toUser())
 	}
 
 	return list, nil
 }
 
 func (s *Store) FindUser(ctx context.Context, find *api.UserFind) (*api.User, error) {
+	if find.ID != nil {
+		if cache, ok := s.userCache.Load(*find.ID); ok {
+			return cache.(*userRaw).toUser(), nil
+		}
+	}
+
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -130,11 +129,9 @@ func (s *Store) FindUser(ctx context.Context, find *api.UserFind) (*api.User, er
 		return nil, &common.Error{Code: common.Conflict, Err: fmt.Errorf("found %d users with filter %+v, expect 1", len(list), find)}
 	}
 
-	user := list[0].toUser()
-	if err := s.cache.UpsertCache(api.UserCache, user.ID, user); err != nil {
-		return nil, err
-	}
-
+	userRaw := list[0]
+	s.userCache.Store(userRaw.ID, userRaw)
+	user := userRaw.toUser()
 	return user, nil
 }
 
@@ -154,8 +151,7 @@ func (s *Store) DeleteUser(ctx context.Context, delete *api.UserDelete) error {
 		return FormatError(err)
 	}
 
-	s.cache.DeleteCache(api.UserCache, delete.ID)
-
+	s.userCache.Delete(delete.ID)
 	return nil
 }
 

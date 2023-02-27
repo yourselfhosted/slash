@@ -58,12 +58,8 @@ func (s *Store) CreateWorkspace(ctx context.Context, create *api.WorkspaceCreate
 		return nil, FormatError(err)
 	}
 
+	s.workspaceCache.Store(workspaceRaw.ID, workspaceRaw)
 	workspace := workspaceRaw.toWorkspace()
-
-	if err := s.cache.UpsertCache(api.WorkspaceCache, workspace.ID, workspace); err != nil {
-		return nil, err
-	}
-
 	return workspace, nil
 }
 
@@ -83,12 +79,8 @@ func (s *Store) PatchWorkspace(ctx context.Context, patch *api.WorkspacePatch) (
 		return nil, FormatError(err)
 	}
 
+	s.workspaceCache.Store(workspaceRaw.ID, workspaceRaw)
 	workspace := workspaceRaw.toWorkspace()
-
-	if err := s.cache.UpsertCache(api.WorkspaceCache, workspace.ID, workspace); err != nil {
-		return nil, err
-	}
-
 	return workspace, nil
 }
 
@@ -105,8 +97,9 @@ func (s *Store) FindWordspaceList(ctx context.Context, find *api.WorkspaceFind) 
 	}
 
 	list := []*api.Workspace{}
-	for _, raw := range workspaceRawList {
-		list = append(list, raw.toWorkspace())
+	for _, workspaceRaw := range workspaceRawList {
+		s.workspaceCache.Store(workspaceRaw.ID, workspaceRaw)
+		list = append(list, workspaceRaw.toWorkspace())
 	}
 
 	return list, nil
@@ -114,13 +107,8 @@ func (s *Store) FindWordspaceList(ctx context.Context, find *api.WorkspaceFind) 
 
 func (s *Store) FindWorkspace(ctx context.Context, find *api.WorkspaceFind) (*api.Workspace, error) {
 	if find.ID != nil {
-		workspace := &api.Workspace{}
-		has, err := s.cache.FindCache(api.WorkspaceCache, *find.ID, workspace)
-		if err != nil {
-			return nil, err
-		}
-		if has {
-			return workspace, nil
+		if cache, ok := s.workspaceCache.Load(*find.ID); ok {
+			return cache.(*workspaceRaw).toWorkspace(), nil
 		}
 	}
 
@@ -141,12 +129,9 @@ func (s *Store) FindWorkspace(ctx context.Context, find *api.WorkspaceFind) (*ap
 		return nil, &common.Error{Code: common.Conflict, Err: fmt.Errorf("found %d workspaces with filter %+v, expect 1", len(list), find)}
 	}
 
-	workspace := list[0].toWorkspace()
-
-	if err := s.cache.UpsertCache(api.WorkspaceCache, workspace.ID, workspace); err != nil {
-		return nil, err
-	}
-
+	workspaceRaw := list[0]
+	s.workspaceCache.Store(workspaceRaw.ID, workspaceRaw)
+	workspace := workspaceRaw.toWorkspace()
 	return workspace, nil
 }
 
@@ -166,8 +151,7 @@ func (s *Store) DeleteWorkspace(ctx context.Context, delete *api.WorkspaceDelete
 		return FormatError(err)
 	}
 
-	s.cache.DeleteCache(api.WorkspaceCache, delete.ID)
-
+	s.workspaceCache.Delete(delete.ID)
 	return nil
 }
 

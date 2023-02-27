@@ -76,12 +76,8 @@ func (s *Store) CreateShortcut(ctx context.Context, create *api.ShortcutCreate) 
 		return nil, FormatError(err)
 	}
 
+	s.shortcutCache.Store(shortcutRaw.ID, shortcutRaw)
 	shortcut := shortcutRaw.toShortcut()
-
-	if err := s.cache.UpsertCache(api.ShortcutCache, shortcut.ID, shortcut); err != nil {
-		return nil, err
-	}
-
 	return shortcut, nil
 }
 
@@ -101,12 +97,8 @@ func (s *Store) PatchShortcut(ctx context.Context, patch *api.ShortcutPatch) (*a
 		return nil, FormatError(err)
 	}
 
+	s.shortcutCache.Store(shortcutRaw.ID, shortcutRaw)
 	shortcut := shortcutRaw.toShortcut()
-
-	if err := s.cache.UpsertCache(api.ShortcutCache, shortcut.ID, shortcut); err != nil {
-		return nil, err
-	}
-
 	return shortcut, nil
 }
 
@@ -123,8 +115,9 @@ func (s *Store) FindShortcutList(ctx context.Context, find *api.ShortcutFind) ([
 	}
 
 	list := []*api.Shortcut{}
-	for _, raw := range shortcutRawList {
-		list = append(list, raw.toShortcut())
+	for _, shortcutRaw := range shortcutRawList {
+		s.shortcutCache.Store(shortcutRaw.ID, shortcutRaw)
+		list = append(list, shortcutRaw.toShortcut())
 	}
 
 	return list, nil
@@ -132,13 +125,8 @@ func (s *Store) FindShortcutList(ctx context.Context, find *api.ShortcutFind) ([
 
 func (s *Store) FindShortcut(ctx context.Context, find *api.ShortcutFind) (*api.Shortcut, error) {
 	if find.ID != nil {
-		shortcut := &api.Shortcut{}
-		has, err := s.cache.FindCache(api.ShortcutCache, *find.ID, shortcut)
-		if err != nil {
-			return nil, err
-		}
-		if has {
-			return shortcut, nil
+		if cache, ok := s.shortcutCache.Load(*find.ID); ok {
+			return cache.(*shortcutRaw).toShortcut(), nil
 		}
 	}
 
@@ -157,12 +145,9 @@ func (s *Store) FindShortcut(ctx context.Context, find *api.ShortcutFind) (*api.
 		return nil, &common.Error{Code: common.NotFound, Err: fmt.Errorf("not found")}
 	}
 
-	shortcut := list[0].toShortcut()
-
-	if err := s.cache.UpsertCache(api.ShortcutCache, shortcut.ID, shortcut); err != nil {
-		return nil, err
-	}
-
+	shortcutRaw := list[0]
+	s.shortcutCache.Store(shortcutRaw.ID, shortcutRaw)
+	shortcut := shortcutRaw.toShortcut()
 	return shortcut, nil
 }
 
@@ -183,7 +168,7 @@ func (s *Store) DeleteShortcut(ctx context.Context, delete *api.ShortcutDelete) 
 	}
 
 	if delete.ID != nil {
-		s.cache.DeleteCache(api.ShortcutCache, *delete.ID)
+		s.shortcutCache.Delete(*delete.ID)
 	}
 
 	return nil
