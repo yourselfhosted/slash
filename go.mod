@@ -26,7 +26,6 @@ require (
 )
 
 require (
-	github.com/VictoriaMetrics/fastcache v1.10.0
 	github.com/gorilla/securecookie v1.1.1
 	github.com/gorilla/sessions v1.2.1
 	github.com/labstack/echo-contrib v0.14.0
@@ -54,8 +53,6 @@ require (
 )
 
 require (
-	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/golang/snappy v0.0.4 // indirect
 	github.com/pkg/errors v0.9.1
 	golang.org/x/mod v0.8.0
 )
