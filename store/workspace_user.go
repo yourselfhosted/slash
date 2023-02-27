@@ -132,11 +132,8 @@ func (s *Store) DeleteWorkspaceUser(ctx context.Context, delete *api.WorkspaceUs
 		return err
 	}
 
-	if err := tx.Commit(); err != nil {
-		return err
-	}
-
-	return nil
+	err = tx.Commit()
+	return err
 }
 
 func upsertWorkspaceUser(ctx context.Context, tx *sql.Tx, upsert *api.WorkspaceUserUpsert) (*workspaceUserRaw, error) {
