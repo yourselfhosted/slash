@@ -115,7 +115,9 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Name</span>
+            <span className="mb-2">
+              Name <span className="text-red-600">*</span>
+            </span>
             <Input
               className="w-full"
               type="text"
@@ -125,7 +127,9 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Link</span>
+            <span className="mb-2">
+              Link <span className="text-red-600">*</span>
+            </span>
             <Input
               className="w-full"
               type="text"
@@ -145,7 +149,9 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Visibility</span>
+            <span className="mb-2">
+              Visibility <span className="text-red-600">*</span>
+            </span>
             <div className="w-full flex flex-row justify-start items-center text-base">
               <RadioGroup orientation="horizontal" value={state.shortcutCreate.visibility} onChange={handleVisibilityInputChange}>
                 <Radio value="PRIVATE" label="Private" />
@@ -154,7 +160,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               </RadioGroup>
             </div>
           </div>
-          <div className="w-full flex flex-row justify-end items-center">
+          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+              Cancel
+            </Button>
             <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
               Save
             </Button>

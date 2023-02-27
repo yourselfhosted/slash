@@ -126,7 +126,10 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
               onChange={(e) => handleInputChange(e, "description")}
             />
           </div>
-          <div className="w-full flex flex-row justify-end items-center">
+          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+              Cancel
+            </Button>
             <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
               Save
             </Button>
