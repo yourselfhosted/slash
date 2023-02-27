@@ -60,7 +60,7 @@ func (s *Store) ComposeWorkspaceUserListForWorkspace(ctx context.Context, worksp
 func (s *Store) UpsertWorkspaceUser(ctx context.Context, upsert *api.WorkspaceUserUpsert) (*api.WorkspaceUser, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -70,7 +70,7 @@ func (s *Store) UpsertWorkspaceUser(ctx context.Context, upsert *api.WorkspaceUs
 	}
 
 	if err := tx.Commit(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	workspaceUser := workspaceUserRaw.toWorkspaceUser()
@@ -81,7 +81,7 @@ func (s *Store) UpsertWorkspaceUser(ctx context.Context, upsert *api.WorkspaceUs
 func (s *Store) FindWordspaceUserList(ctx context.Context, find *api.WorkspaceUserFind) ([]*api.WorkspaceUser, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -101,7 +101,7 @@ func (s *Store) FindWordspaceUserList(ctx context.Context, find *api.WorkspaceUs
 func (s *Store) FindWordspaceUser(ctx context.Context, find *api.WorkspaceUserFind) (*api.WorkspaceUser, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -123,17 +123,17 @@ func (s *Store) FindWordspaceUser(ctx context.Context, find *api.WorkspaceUserFi
 func (s *Store) DeleteWorkspaceUser(ctx context.Context, delete *api.WorkspaceUserDelete) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 	defer tx.Rollback()
 
 	err = deleteWorkspaceUser(ctx, tx, delete)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	if err := tx.Commit(); err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	return nil
@@ -164,7 +164,7 @@ func upsertWorkspaceUser(ctx context.Context, tx *sql.Tx, upsert *api.WorkspaceU
 		&workspaceUserRaw.UserID,
 		&workspaceUserRaw.Role,
 	); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return &workspaceUserRaw, nil
@@ -189,7 +189,7 @@ func findWorkspaceUserList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceU
 		WHERE ` + strings.Join(where, " AND ")
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -201,14 +201,14 @@ func findWorkspaceUserList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceU
 			&workspaceUserRaw.UserID,
 			&workspaceUserRaw.Role,
 		); err != nil {
-			return nil, FormatError(err)
+			return nil, err
 		}
 
 		workspaceUserRawList = append(workspaceUserRawList, &workspaceUserRaw)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return workspaceUserRawList, nil
@@ -219,7 +219,7 @@ func deleteWorkspaceUser(ctx context.Context, tx *sql.Tx, delete *api.WorkspaceU
 		DELETE FROM workspace_user WHERE workspace_id = ? AND user_id = ?
 	`, delete.WorkspaceID, delete.UserID)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	rows, _ := result.RowsAffected()

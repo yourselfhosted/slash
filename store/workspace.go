@@ -45,7 +45,7 @@ func (raw *workspaceRaw) toWorkspace() *api.Workspace {
 func (s *Store) CreateWorkspace(ctx context.Context, create *api.WorkspaceCreate) (*api.Workspace, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -55,7 +55,7 @@ func (s *Store) CreateWorkspace(ctx context.Context, create *api.WorkspaceCreate
 	}
 
 	if err := tx.Commit(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	s.workspaceCache.Store(workspaceRaw.ID, workspaceRaw)
@@ -66,7 +66,7 @@ func (s *Store) CreateWorkspace(ctx context.Context, create *api.WorkspaceCreate
 func (s *Store) PatchWorkspace(ctx context.Context, patch *api.WorkspacePatch) (*api.Workspace, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -76,7 +76,7 @@ func (s *Store) PatchWorkspace(ctx context.Context, patch *api.WorkspacePatch) (
 	}
 
 	if err := tx.Commit(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	s.workspaceCache.Store(workspaceRaw.ID, workspaceRaw)
@@ -87,7 +87,7 @@ func (s *Store) PatchWorkspace(ctx context.Context, patch *api.WorkspacePatch) (
 func (s *Store) FindWordspaceList(ctx context.Context, find *api.WorkspaceFind) ([]*api.Workspace, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -114,7 +114,7 @@ func (s *Store) FindWorkspace(ctx context.Context, find *api.WorkspaceFind) (*ap
 
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -138,17 +138,17 @@ func (s *Store) FindWorkspace(ctx context.Context, find *api.WorkspaceFind) (*ap
 func (s *Store) DeleteWorkspace(ctx context.Context, delete *api.WorkspaceDelete) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 	defer tx.Rollback()
 
 	err = deleteWorkspace(ctx, tx, delete)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	if err := tx.Commit(); err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	s.workspaceCache.Delete(delete.ID)
@@ -182,7 +182,7 @@ func createWorkspace(ctx context.Context, tx *sql.Tx, create *api.WorkspaceCreat
 		&workspaceRaw.Title,
 		&workspaceRaw.Description,
 	); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return &workspaceRaw, nil
@@ -214,7 +214,7 @@ func patchWorkspace(ctx context.Context, tx *sql.Tx, patch *api.WorkspacePatch) 
 	`
 	row, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer row.Close()
 
@@ -230,7 +230,7 @@ func patchWorkspace(ctx context.Context, tx *sql.Tx, patch *api.WorkspacePatch) 
 			&workspaceRaw.Title,
 			&workspaceRaw.Description,
 		); err != nil {
-			return nil, FormatError(err)
+			return nil, err
 		}
 
 		if err := row.Err(); err != nil {
@@ -275,7 +275,7 @@ func findWorkspaceList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceFind)
 	`
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -292,14 +292,14 @@ func findWorkspaceList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceFind)
 			&workspaceRaw.Title,
 			&workspaceRaw.Description,
 		); err != nil {
-			return nil, FormatError(err)
+			return nil, err
 		}
 
 		workspaceRawList = append(workspaceRawList, &workspaceRaw)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return workspaceRawList, nil
@@ -310,7 +310,7 @@ func deleteWorkspace(ctx context.Context, tx *sql.Tx, delete *api.WorkspaceDelet
 		DELETE FROM workspace WHERE id = ?
 	`, delete.ID)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	rows, _ := result.RowsAffected()

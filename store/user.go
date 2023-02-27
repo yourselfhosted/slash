@@ -45,7 +45,7 @@ func (raw *userRaw) toUser() *api.User {
 func (s *Store) CreateUser(ctx context.Context, create *api.UserCreate) (*api.User, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -55,7 +55,7 @@ func (s *Store) CreateUser(ctx context.Context, create *api.UserCreate) (*api.Us
 	}
 
 	if err := tx.Commit(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	s.userCache.Store(userRaw.ID, userRaw)
@@ -66,7 +66,7 @@ func (s *Store) CreateUser(ctx context.Context, create *api.UserCreate) (*api.Us
 func (s *Store) PatchUser(ctx context.Context, patch *api.UserPatch) (*api.User, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -76,7 +76,7 @@ func (s *Store) PatchUser(ctx context.Context, patch *api.UserPatch) (*api.User,
 	}
 
 	if err := tx.Commit(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	s.userCache.Store(userRaw.ID, userRaw)
@@ -87,7 +87,7 @@ func (s *Store) PatchUser(ctx context.Context, patch *api.UserPatch) (*api.User,
 func (s *Store) FindUserList(ctx context.Context, find *api.UserFind) ([]*api.User, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -138,17 +138,17 @@ func (s *Store) FindUser(ctx context.Context, find *api.UserFind) (*api.User, er
 func (s *Store) DeleteUser(ctx context.Context, delete *api.UserDelete) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 	defer tx.Rollback()
 
 	err = deleteUser(ctx, tx, delete)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	if err := tx.Commit(); err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	s.userCache.Delete(delete.ID)
@@ -182,7 +182,7 @@ func createUser(ctx context.Context, tx *sql.Tx, create *api.UserCreate) (*userR
 		&userRaw.PasswordHash,
 		&userRaw.OpenID,
 	); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return &userRaw, nil
@@ -217,7 +217,7 @@ func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw,
 	`
 	row, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer row.Close()
 
@@ -233,7 +233,7 @@ func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw,
 			&userRaw.PasswordHash,
 			&userRaw.OpenID,
 		); err != nil {
-			return nil, FormatError(err)
+			return nil, err
 		}
 
 		if err := row.Err(); err != nil {
@@ -309,7 +309,7 @@ func deleteUser(ctx context.Context, tx *sql.Tx, delete *api.UserDelete) error {
 		DELETE FROM user WHERE id = ?
 	`, delete.ID)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	rows, _ := result.RowsAffected()

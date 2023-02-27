@@ -63,7 +63,7 @@ func (s *Store) ComposeShortcut(ctx context.Context, shortcut *api.Shortcut) err
 func (s *Store) CreateShortcut(ctx context.Context, create *api.ShortcutCreate) (*api.Shortcut, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -73,7 +73,7 @@ func (s *Store) CreateShortcut(ctx context.Context, create *api.ShortcutCreate) 
 	}
 
 	if err := tx.Commit(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	s.shortcutCache.Store(shortcutRaw.ID, shortcutRaw)
@@ -84,7 +84,7 @@ func (s *Store) CreateShortcut(ctx context.Context, create *api.ShortcutCreate) 
 func (s *Store) PatchShortcut(ctx context.Context, patch *api.ShortcutPatch) (*api.Shortcut, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -94,7 +94,7 @@ func (s *Store) PatchShortcut(ctx context.Context, patch *api.ShortcutPatch) (*a
 	}
 
 	if err := tx.Commit(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	s.shortcutCache.Store(shortcutRaw.ID, shortcutRaw)
@@ -105,7 +105,7 @@ func (s *Store) PatchShortcut(ctx context.Context, patch *api.ShortcutPatch) (*a
 func (s *Store) FindShortcutList(ctx context.Context, find *api.ShortcutFind) ([]*api.Shortcut, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -132,7 +132,7 @@ func (s *Store) FindShortcut(ctx context.Context, find *api.ShortcutFind) (*api.
 
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -154,17 +154,17 @@ func (s *Store) FindShortcut(ctx context.Context, find *api.ShortcutFind) (*api.
 func (s *Store) DeleteShortcut(ctx context.Context, delete *api.ShortcutDelete) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 	defer tx.Rollback()
 
 	err = deleteShortcut(ctx, tx, delete)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	if err := tx.Commit(); err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	if delete.ID != nil {
@@ -200,7 +200,7 @@ func createShortcut(ctx context.Context, tx *sql.Tx, create *api.ShortcutCreate)
 		&shortcutRaw.Description,
 		&shortcutRaw.Visibility,
 	); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return &shortcutRaw, nil
@@ -243,7 +243,7 @@ func patchShortcut(ctx context.Context, tx *sql.Tx, patch *api.ShortcutPatch) (*
 		&shortcutRaw.Description,
 		&shortcutRaw.Visibility,
 	); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return &shortcutRaw, nil
@@ -300,7 +300,7 @@ func findShortcutList(ctx context.Context, tx *sql.Tx, find *api.ShortcutFind) (
 		args...,
 	)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -319,14 +319,14 @@ func findShortcutList(ctx context.Context, tx *sql.Tx, find *api.ShortcutFind) (
 			&shortcutRaw.Description,
 			&shortcutRaw.Visibility,
 		); err != nil {
-			return nil, FormatError(err)
+			return nil, err
 		}
 
 		shortcutRawList = append(shortcutRawList, &shortcutRaw)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return shortcutRawList, nil
@@ -348,7 +348,7 @@ func deleteShortcut(ctx context.Context, tx *sql.Tx, delete *api.ShortcutDelete)
 	result, err := tx.ExecContext(ctx, `
 		DELETE FROM shortcut WHERE `+strings.Join(where, " AND "), args...)
 	if err != nil {
-		return FormatError(err)
+		return err
 	}
 
 	rows, _ := result.RowsAffected()

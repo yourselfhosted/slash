@@ -25,7 +25,7 @@ func (raw *userSettingRaw) toUserSetting() *api.UserSetting {
 func (s *Store) UpsertUserSetting(ctx context.Context, upsert *api.UserSettingUpsert) (*api.UserSetting, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -46,7 +46,7 @@ func (s *Store) UpsertUserSetting(ctx context.Context, upsert *api.UserSettingUp
 func (s *Store) FindUserSettingList(ctx context.Context, find *api.UserSettingFind) ([]*api.UserSetting, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -66,7 +66,7 @@ func (s *Store) FindUserSettingList(ctx context.Context, find *api.UserSettingFi
 func (s *Store) FindUserSetting(ctx context.Context, find *api.UserSettingFind) (*api.UserSetting, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer tx.Rollback()
 
@@ -101,7 +101,7 @@ func upsertUserSetting(ctx context.Context, tx *sql.Tx, upsert *api.UserSettingU
 		&userSettingRaw.Key,
 		&userSettingRaw.Value,
 	); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return &userSettingRaw, nil
@@ -125,7 +125,7 @@ func findUserSettingList(ctx context.Context, tx *sql.Tx, find *api.UserSettingF
 		WHERE ` + strings.Join(where, " AND ")
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -137,14 +137,14 @@ func findUserSettingList(ctx context.Context, tx *sql.Tx, find *api.UserSettingF
 			&userSettingRaw.Key,
 			&userSettingRaw.Value,
 		); err != nil {
-			return nil, FormatError(err)
+			return nil, err
 		}
 
 		userSettingRawList = append(userSettingRawList, &userSettingRaw)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, FormatError(err)
+		return nil, err
 	}
 
 	return userSettingRawList, nil
