@@ -7,7 +7,6 @@ import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 import toastHelper from "../components/Toast";
 import Dropdown from "../components/common/Dropdown";
-import Header from "../components/Header";
 import ShortcutListView from "../components/ShortcutListView";
 import MemberListView from "../components/MemberListView";
 import WorkspaceSetting from "../components/WorkspaceSetting";
@@ -72,92 +71,89 @@ const WorkspaceDetail: React.FC = () => {
 
   return (
     <>
-      <div className="w-full h-full flex flex-col justify-start items-start">
-        <Header />
-        <div className="mx-auto max-w-4xl w-full px-3 pb-6 flex flex-col justify-start items-start">
-          <div className="w-full flex flex-row justify-between items-center mt-4 mb-4">
-            <div className="flex flex-row justify-start items-center space-x-3 sm:space-x-4">
-              <NavLink
-                to="#shortcuts"
-                className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
-                  location.hash === "#shortcuts" && "!border-b-black text-black"
-                }`}
-              >
-                Shortcuts
-              </NavLink>
-              <NavLink
-                to="#members"
-                className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
-                  location.hash === "#members" && "!border-b-black text-black"
-                }`}
-              >
-                Members
-              </NavLink>
-              <NavLink
-                to="#setting"
-                className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
-                  location.hash === "#setting" && "!border-b-black text-black"
-                }`}
-              >
-                Setting
-              </NavLink>
-            </div>
-            <div>
-              <Dropdown
-                trigger={
-                  <button className="w-32 flex flex-row justify-start items-center border px-3 leading-10 rounded-lg cursor-pointer hover:shadow">
-                    <Icon.Plus className="w-4 h-auto mr-1" /> Add new...
+      <div className="mx-auto max-w-4xl w-full px-3 pb-6 flex flex-col justify-start items-start">
+        <div className="w-full flex flex-row justify-between items-center mt-4 mb-4">
+          <div className="flex flex-row justify-start items-center space-x-3 sm:space-x-4">
+            <NavLink
+              to="#shortcuts"
+              className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
+                location.hash === "#shortcuts" && "!border-b-black text-black"
+              }`}
+            >
+              Shortcuts
+            </NavLink>
+            <NavLink
+              to="#members"
+              className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
+                location.hash === "#members" && "!border-b-black text-black"
+              }`}
+            >
+              Members
+            </NavLink>
+            <NavLink
+              to="#setting"
+              className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
+                location.hash === "#setting" && "!border-b-black text-black"
+              }`}
+            >
+              Setting
+            </NavLink>
+          </div>
+          <div>
+            <Dropdown
+              trigger={
+                <button className="w-32 flex flex-row justify-start items-center border px-3 leading-10 rounded-lg cursor-pointer hover:shadow">
+                  <Icon.Plus className="w-4 h-auto mr-1" /> Add new...
+                </button>
+              }
+              actions={
+                <>
+                  <button
+                    className="w-full flex flex-row justify-start items-center px-3 leading-10 rounded cursor-pointer hover:bg-gray-100"
+                    onClick={handleCreateShortcutButtonClick}
+                  >
+                    Shortcut
                   </button>
-                }
-                actions={
-                  <>
+                  {workspaceUser.role === "ADMIN" && (
                     <button
                       className="w-full flex flex-row justify-start items-center px-3 leading-10 rounded cursor-pointer hover:bg-gray-100"
-                      onClick={handleCreateShortcutButtonClick}
+                      onClick={handleUpsertWorkspaceMemberButtonClick}
                     >
-                      Shortcut
+                      Member
                     </button>
-                    {workspaceUser.role === "ADMIN" && (
-                      <button
-                        className="w-full flex flex-row justify-start items-center px-3 leading-10 rounded cursor-pointer hover:bg-gray-100"
-                        onClick={handleUpsertWorkspaceMemberButtonClick}
-                      >
-                        Member
-                      </button>
-                    )}
-                  </>
-                }
-                actionsClassName="!w-32"
-              />
-            </div>
+                  )}
+                </>
+              }
+              actionsClassName="!w-32"
+            />
           </div>
-          {loadingState.isLoading ? (
-            <div className="py-4 w-full flex flex-row justify-center items-center">
-              <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
-              loading
-            </div>
-          ) : (
-            <>
-              {location.hash === "#shortcuts" &&
-                (shortcutList.length === 0 ? (
-                  <div className="w-full flex flex-col justify-center items-center">
-                    <Icon.Frown className="mt-8 w-16 h-auto text-gray-400" />
-                    <p className="mt-4 text-xl text-gray-600">Oops, no shortcut.</p>
-                    <button
-                      className="mt-4 text-lg flex flex-row justify-start items-center border px-3 py-2 rounded-lg cursor-pointer hover:shadow"
-                      onClick={handleCreateShortcutButtonClick}
-                    >
-                      <Icon.Plus className="w-5 h-auto mr-1" /> Create Shortcut
-                    </button>
-                  </div>
-                ) : (
-                  <ShortcutListView workspaceId={workspace.id} shortcutList={shortcutList} />
-                ))}
-              {location.hash === "#members" && <MemberListView workspaceId={workspace.id} />}
-              {location.hash === "#setting" && <WorkspaceSetting workspaceId={workspace.id} />}
-            </>
-          )}
         </div>
+        {loadingState.isLoading ? (
+          <div className="py-4 w-full flex flex-row justify-center items-center">
+            <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
+            loading
+          </div>
+        ) : (
+          <>
+            {location.hash === "#shortcuts" &&
+              (shortcutList.length === 0 ? (
+                <div className="w-full flex flex-col justify-center items-center">
+                  <Icon.Frown className="mt-8 w-16 h-auto text-gray-400" />
+                  <p className="mt-4 text-xl text-gray-600">Oops, no shortcut.</p>
+                  <button
+                    className="mt-4 text-lg flex flex-row justify-start items-center border px-3 py-2 rounded-lg cursor-pointer hover:shadow"
+                    onClick={handleCreateShortcutButtonClick}
+                  >
+                    <Icon.Plus className="w-5 h-auto mr-1" /> Create Shortcut
+                  </button>
+                </div>
+              ) : (
+                <ShortcutListView workspaceId={workspace.id} shortcutList={shortcutList} />
+              ))}
+            {location.hash === "#members" && <MemberListView workspaceId={workspace.id} />}
+            {location.hash === "#setting" && <WorkspaceSetting workspaceId={workspace.id} />}
+          </>
+        )}
       </div>
 
       {state.showCreateShortcutDialog && (

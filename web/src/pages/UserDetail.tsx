@@ -2,7 +2,6 @@ import { Button, Input, Tooltip } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store";
-import Header from "../components/Header";
 import { showCommonDialog } from "../components/Alert";
 import { userService } from "../services";
 import Icon from "../components/Icon";
@@ -61,34 +60,32 @@ const UserDetail: React.FC = () => {
 
   return (
     <>
-      <div className="w-full h-full flex flex-col justify-start items-start">
-        <Header />
-        <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
-          <p className="text-3xl mt-2 mb-4">{user?.displayName}</p>
-          <p className="leading-8 flex flex-row justify-start items-center">
-            <span className="mr-3 text-gray-500 font-mono">Email: </span>
-            {user?.email}
-          </p>
-          <div className="leading-8 flex flex-row justify-start items-center">
-            <span className="mr-3 text-gray-500 font-mono">Password: </span>
-            <Button variant="soft" onClick={handleChangePasswordBtnClick}>
-              Change
-            </Button>
-          </div>
-          <div className="leading-8 flex flex-row justify-start items-center">
-            <span className="mr-3 text-gray-500 font-mono">OpenID:</span>
-            <Input type="text" className="w-48" value={user?.openId} readOnly />
-            <Tooltip title="Copy OpenID" variant="solid" placement="top">
-              <button className="-ml-6 z-1 bg-white text-gray-600 hover:text-black" onClick={handleCopyOpenIdBtnClick}>
-                <Icon.Clipboard className="w-4 h-auto" />
-              </button>
-            </Tooltip>
-            <Button className="!ml-6" variant="soft" color="warning" onClick={handleResetOpenIdBtnClick}>
-              Reset
-            </Button>
-          </div>
+      <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
+        <p className="text-3xl mt-2 mb-4">{user?.displayName}</p>
+        <p className="leading-8 flex flex-row justify-start items-center">
+          <span className="mr-3 text-gray-500 font-mono">Email: </span>
+          {user?.email}
+        </p>
+        <div className="leading-8 flex flex-row justify-start items-center">
+          <span className="mr-3 text-gray-500 font-mono">Password: </span>
+          <Button variant="soft" onClick={handleChangePasswordBtnClick}>
+            Change
+          </Button>
+        </div>
+        <div className="leading-8 flex flex-row justify-start items-center">
+          <span className="mr-3 text-gray-500 font-mono">OpenID:</span>
+          <Input type="text" className="w-48" value={user?.openId} readOnly />
+          <Tooltip title="Copy OpenID" variant="solid" placement="top">
+            <button className="-ml-6 z-1 bg-white text-gray-600 hover:text-black" onClick={handleCopyOpenIdBtnClick}>
+              <Icon.Clipboard className="w-4 h-auto" />
+            </button>
+          </Tooltip>
+          <Button className="!ml-6" variant="soft" color="warning" onClick={handleResetOpenIdBtnClick}>
+            Reset
+          </Button>
         </div>
       </div>
+
       {state.showChangePasswordDialog && (
         <ChangePasswordDialog
           onClose={() => {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../components/Header";
 import { getShortcutWithNameAndWorkspaceName } from "../helpers/api";
 import useLoading from "../hooks/useLoading";
 
@@ -36,11 +35,8 @@ const ShortcutRedirector: React.FC = () => {
   }, []);
 
   return loadingState.isLoading ? null : (
-    <div className="w-full h-full flex flex-col justify-start items-start">
-      <Header />
-      <div className="w-full pt-24 text-center font-mono text-xl">
-        <p>{state?.errMessage}</p>
-      </div>
+    <div className="w-full pt-24 text-center font-mono text-xl">
+      <p>{state?.errMessage}</p>
     </div>
   );
 };
