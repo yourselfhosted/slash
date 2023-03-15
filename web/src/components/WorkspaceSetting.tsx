@@ -98,20 +98,41 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   return (
     <>
       <div className="w-full flex flex-col justify-start items-start">
-        <span className="mb-4 text-gray-500">Basic</span>
-        <p className="text-3xl mb-4">
-          {workspace.title}
-          <span className="text-lg ml-1 font-mono text-gray-400">({workspace.name})</span>
-        </p>
-        <p className="mb-4">{workspace.description || "No description."}</p>
-        <div className="border-t pt-4 flex flex-row justify-start items-center">
+        <span className="w-full text-2xl font-medium border-b pb-2 mb-4">General</span>
+        <p className="mb-4">ID: {workspace.name}</p>
+        <p className="mb-4">Name: {workspace.title}</p>
+        <p className="mb-4">Description: {workspace.description || "No description."}</p>
+        {workspaceUser.role === "ADMIN" && (
+          <div className="flex flex-row justify-start items-center">
+            <div className="flex flex-row justify-start items-center space-x-2">
+              <Button variant="soft" onClick={handleEditWorkspaceButtonClick}>
+                <Icon.Edit className="w-4 h-auto mr-1" />
+                Edit
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="w-full mt-8 flex flex-col justify-start items-start">
+        <div className="w-full border-b pb-2 mb-4 flex flex-row justify-between items-center">
+          <span className="text-2xl font-medium">Members</span>
+          {workspaceUser.role === "ADMIN" && (
+            <Button variant="soft" onClick={handleUpsertWorkspaceMemberButtonClick}>
+              <Icon.Plus className="w-4 h-auto mr-1" />
+              New member
+            </Button>
+          )}
+        </div>
+        <MemberListView workspaceId={workspaceId} />
+      </div>
+
+      <div className="w-full mt-8 flex flex-col justify-start items-start">
+        <span className="w-full text-2xl font-medium border-b pb-2 mb-4">Danger Zone</span>
+        <div className="flex flex-row justify-start items-center">
           <div className="flex flex-row justify-start items-center space-x-2">
             {workspaceUser.role === "ADMIN" ? (
               <>
-                <Button variant="soft" onClick={handleEditWorkspaceButtonClick}>
-                  <Icon.Edit className="w-4 h-auto mr-1" />
-                  Edit
-                </Button>
                 <Button variant="soft" color="danger" onClick={handleDeleteWorkspaceButtonClick}>
                   <Icon.Trash className="w-4 h-auto mr-1" />
                   Delete
@@ -126,19 +147,6 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
             )}
           </div>
         </div>
-      </div>
-
-      <div className="w-full flex flex-col justify-start items-start">
-        <div className="w-full flex flex-row justify-between items-center">
-          <span className="mt-8 mb-4 text-gray-500">Member list</span>
-          {workspaceUser.role === "ADMIN" && (
-            <Button variant="soft" onClick={handleUpsertWorkspaceMemberButtonClick}>
-              <Icon.Plus className="w-4 h-auto mr-1" />
-              New member
-            </Button>
-          )}
-        </div>
-        <MemberListView workspaceId={workspaceId} />
       </div>
 
       {state.showEditWorkspaceDialog && (
