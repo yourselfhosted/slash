@@ -1,9 +1,9 @@
 import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { workspaceService } from "../services";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
-import toastHelper from "./Toast";
 
 interface Props {
   workspaceId?: WorkspaceId;
@@ -55,11 +55,11 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
 
   const handleSaveBtnClick = async () => {
     if (!state.workspaceCreate.name) {
-      toastHelper.error("ID is required");
+      toast.error("ID is required");
       return;
     }
     if (!state.workspaceCreate.title) {
-      toastHelper.error("Title is required");
+      toast.error("Title is required");
       return;
     }
 
@@ -84,7 +84,7 @@ const CreateWorkspaceDialog: React.FC<Props> = (props: Props) => {
       }
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(JSON.stringify(error.response.data));
+      toast.error(JSON.stringify(error.response.data));
     }
     requestState.setFinish();
   };

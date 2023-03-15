@@ -1,10 +1,10 @@
 import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { deleteWorkspaceUser, upsertWorkspaceUser } from "../helpers/api";
 import { useAppSelector } from "../store";
 import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
 import useLoading from "../hooks/useLoading";
 import { workspaceService } from "../services";
-import toastHelper from "./Toast";
 import Dropdown from "./common/Dropdown";
 import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
@@ -26,7 +26,7 @@ const MemberListView: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     const workspace = workspaceService.getWorkspaceById(workspaceId);
     if (!workspace) {
-      toastHelper.error("workspace not found");
+      toast.error("workspace not found");
       return;
     }
 
@@ -35,7 +35,7 @@ const MemberListView: React.FC<Props> = (props: Props) => {
 
   const handleWorkspaceUserRoleChange = async (workspaceUser: WorkspaceUser, role: Role) => {
     if (workspaceUser.userId === currentUser.userId) {
-      toastHelper.error("Cannot change yourself.");
+      toast.error("Cannot change yourself.");
       return;
     }
 

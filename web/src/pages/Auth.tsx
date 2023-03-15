@@ -1,12 +1,12 @@
 import { Button, Input } from "@mui/joy";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import * as api from "../helpers/api";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import { userService } from "../services";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
-import toastHelper from "../components/Toast";
 
 const validateConfig: ValidatorConfig = {
   minLength: 4,
@@ -53,13 +53,13 @@ const Auth: React.FC = () => {
 
     const emailValidResult = validate(email, validateConfig);
     if (!emailValidResult.result) {
-      toastHelper.error("Email: " + emailValidResult.reason);
+      toast.error("Email: " + emailValidResult.reason);
       return;
     }
 
     const passwordValidResult = validate(password, validateConfig);
     if (!passwordValidResult.result) {
-      toastHelper.error("Password: " + passwordValidResult.reason);
+      toast.error("Password: " + passwordValidResult.reason);
       return;
     }
 
@@ -72,11 +72,11 @@ const Auth: React.FC = () => {
           replace: true,
         });
       } else {
-        toastHelper.error("Signin failed");
+        toast.error("Signin failed");
       }
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(JSON.stringify(error.response.data));
+      toast.error(JSON.stringify(error.response.data));
     }
     actionBtnLoadingState.setFinish();
   };
@@ -88,13 +88,13 @@ const Auth: React.FC = () => {
 
     const emailValidResult = validate(email, validateConfig);
     if (!emailValidResult.result) {
-      toastHelper.error("Email: " + emailValidResult.reason);
+      toast.error("Email: " + emailValidResult.reason);
       return;
     }
 
     const passwordValidResult = validate(password, validateConfig);
     if (!passwordValidResult.result) {
-      toastHelper.error("Password: " + passwordValidResult.reason);
+      toast.error("Password: " + passwordValidResult.reason);
       return;
     }
 
@@ -107,11 +107,11 @@ const Auth: React.FC = () => {
           replace: true,
         });
       } else {
-        toastHelper.error("Signup failed");
+        toast.error("Signup failed");
       }
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(JSON.stringify(error.response.data));
+      toast.error(JSON.stringify(error.response.data));
     }
     actionBtnLoadingState.setFinish();
   };

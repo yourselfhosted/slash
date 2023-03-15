@@ -1,12 +1,12 @@
 import { Button, Input, Tooltip } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAppSelector } from "../store";
 import { showCommonDialog } from "../components/Alert";
 import { userService } from "../services";
 import Icon from "../components/Icon";
 import copy from "copy-to-clipboard";
-import toastHelper from "../components/Toast";
 import ChangePasswordDialog from "../components/ChangePasswordDialog";
 
 interface State {
@@ -36,12 +36,12 @@ const UserDetail: React.FC = () => {
 
   const handleCopyOpenIdBtnClick = async () => {
     if (!user?.openId) {
-      toastHelper.error("OpenID not found");
+      toast.error("OpenID not found");
       return;
     }
 
     copy(user.openId);
-    toastHelper.success("OpenID copied");
+    toast.success("OpenID copied");
   };
 
   const handleResetOpenIdBtnClick = async () => {

@@ -1,13 +1,13 @@
 import { Button } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { deleteWorkspaceUser } from "../helpers/api";
 import useLoading from "../hooks/useLoading";
 import { workspaceService } from "../services";
 import { useAppSelector } from "../store";
 import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
 import { showCommonDialog } from "./Alert";
-import toastHelper from "./Toast";
 import Icon from "./Icon";
 import CreateWorkspaceDialog from "./CreateWorkspaceDialog";
 import UpsertWorkspaceUserDialog from "./UpsertWorkspaceUserDialog";
@@ -38,7 +38,7 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     const workspace = workspaceService.getWorkspaceById(workspaceId);
     if (!workspace) {
-      toastHelper.error("workspace not found");
+      toast.error("workspace not found");
       return;
     }
 

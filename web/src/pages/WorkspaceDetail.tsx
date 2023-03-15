@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import { shortcutService, userService } from "../services";
 import { useAppSelector } from "../store";
 import { unknownWorkspace } from "../store/modules/workspace";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
-import toastHelper from "../components/Toast";
 import Dropdown from "../components/common/Dropdown";
 import ShortcutListView from "../components/ShortcutListView";
 import WorkspaceSetting from "../components/WorkspaceSetting";
@@ -34,7 +34,7 @@ const WorkspaceDetail: React.FC = () => {
     }
 
     if (!workspace) {
-      toastHelper.error("workspace not found");
+      toast.error("workspace not found");
       return;
     }
 

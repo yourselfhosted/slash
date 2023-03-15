@@ -1,6 +1,7 @@
 import { Tooltip } from "@mui/joy";
 import copy from "copy-to-clipboard";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { UNKNOWN_ID } from "../helpers/consts";
 import { shortcutService, workspaceService } from "../services";
 import { useAppSelector } from "../store";
@@ -8,7 +9,6 @@ import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspa
 import { absolutifyLink } from "../helpers/utils";
 import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
-import toastHelper from "./Toast";
 import Dropdown from "./common/Dropdown";
 import CreateShortcutDialog from "./CreateShortcutDialog";
 
@@ -38,7 +38,7 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
   const handleCopyButtonClick = (shortcut: Shortcut) => {
     const workspace = workspaceService.getWorkspaceById(workspaceId);
     copy(absolutifyLink(`/${workspace?.name}/${shortcut.name}`));
-    toastHelper.error("Shortcut link copied to clipboard.");
+    toast.success("Shortcut link copied to clipboard.");
   };
 
   const handleEditShortcutButtonClick = (shortcut: Shortcut) => {

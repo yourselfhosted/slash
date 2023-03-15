@@ -1,10 +1,10 @@
 import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { validate, ValidatorConfig } from "../helpers/validator";
 import useLoading from "../hooks/useLoading";
 import { userService } from "../services";
 import Icon from "./Icon";
-import toastHelper from "./Toast";
 
 const validateConfig: ValidatorConfig = {
   minLength: 3,
@@ -39,19 +39,19 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
 
   const handleSaveBtnClick = async () => {
     if (newPassword === "" || newPasswordAgain === "") {
-      toastHelper.error("Please fill all inputs");
+      toast.error("Please fill all inputs");
       return;
     }
 
     if (newPassword !== newPasswordAgain) {
-      toastHelper.error("Not matched");
+      toast.error("Not matched");
       setNewPasswordAgain("");
       return;
     }
 
     const passwordValidResult = validate(newPassword, validateConfig);
     if (!passwordValidResult.result) {
-      toastHelper.error("New password is invalid");
+      toast.error("New password is invalid");
       return;
     }
 
@@ -63,10 +63,10 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
         password: newPassword,
       });
       onClose();
-      toastHelper.info("Password changed");
+      toast("Password changed");
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(JSON.stringify(error.response.data));
+      toast.error(JSON.stringify(error.response.data));
     }
     requestState.setFinish();
   };

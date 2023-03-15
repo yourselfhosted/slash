@@ -1,9 +1,9 @@
 import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { shortcutService } from "../services";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
-import toastHelper from "./Toast";
 
 interface Props {
   workspaceId: WorkspaceId;
@@ -76,7 +76,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
 
   const handleSaveBtnClick = async () => {
     if (!state.shortcutCreate.name) {
-      toastHelper.error("Name is required");
+      toast.error("Name is required");
       return;
     }
 
@@ -100,7 +100,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       }
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(JSON.stringify(error.response.data));
+      toast.error(JSON.stringify(error.response.data));
     }
   };
 

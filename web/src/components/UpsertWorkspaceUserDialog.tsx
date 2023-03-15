@@ -1,11 +1,11 @@
 import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { workspaceService } from "../services";
 import { UNKNOWN_ID } from "../helpers/consts";
 import { upsertWorkspaceUser } from "../helpers/api";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
-import toastHelper from "./Toast";
 
 interface Props {
   workspaceId: WorkspaceId;
@@ -50,7 +50,7 @@ const UpsertWorkspaceUserDialog: React.FC<Props> = (props: Props) => {
 
   const handleSaveBtnClick = async () => {
     if (!state.workspaceUserUpsert.userId) {
-      toastHelper.error("User ID is required");
+      toast.error("User ID is required");
       return;
     }
 
@@ -69,7 +69,7 @@ const UpsertWorkspaceUserDialog: React.FC<Props> = (props: Props) => {
       }
     } catch (error: any) {
       console.error(error);
-      toastHelper.error(JSON.stringify(error.response.data));
+      toast.error(JSON.stringify(error.response.data));
     }
     requestState.setFinish();
   };
