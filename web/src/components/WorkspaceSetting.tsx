@@ -8,8 +8,10 @@ import { useAppSelector } from "../store";
 import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
 import { showCommonDialog } from "./Alert";
 import toastHelper from "./Toast";
-import CreateWorkspaceDialog from "./CreateWorkspaceDialog";
 import Icon from "./Icon";
+import CreateWorkspaceDialog from "./CreateWorkspaceDialog";
+import UpsertWorkspaceUserDialog from "./UpsertWorkspaceUserDialog";
+import MemberListView from "./MemberListView";
 
 interface Props {
   workspaceId: WorkspaceId;
@@ -17,6 +19,7 @@ interface Props {
 
 interface State {
   showEditWorkspaceDialog: boolean;
+  showUpsertWorkspaceUserDialog: boolean;
 }
 
 const WorkspaceSetting: React.FC<Props> = (props: Props) => {
@@ -25,6 +28,7 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   const user = useAppSelector((state) => state.user.user) as User;
   const [state, setState] = useState<State>({
     showEditWorkspaceDialog: false,
+    showUpsertWorkspaceUserDialog: false,
   });
   const { workspaceList } = useAppSelector((state) => state.workspace);
   const loadingState = useLoading();
@@ -45,6 +49,13 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
     setState({
       ...state,
       showEditWorkspaceDialog: true,
+    });
+  };
+
+  const handleUpsertWorkspaceMemberButtonClick = () => {
+    setState({
+      ...state,
+      showUpsertWorkspaceUserDialog: true,
     });
   };
 
@@ -87,7 +98,8 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
   return (
     <>
       <div className="w-full flex flex-col justify-start items-start">
-        <p className="text-3xl mt-4 mb-4">
+        <span className="mb-4 text-gray-500">Basic</span>
+        <p className="text-3xl mb-4">
           {workspace.title}
           <span className="text-lg ml-1 font-mono text-gray-400">({workspace.name})</span>
         </p>
@@ -116,6 +128,19 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
         </div>
       </div>
 
+      <div className="w-full flex flex-col justify-start items-start">
+        <div className="w-full flex flex-row justify-between items-center">
+          <span className="mt-8 mb-4 text-gray-500">Member list</span>
+          {workspaceUser.role === "ADMIN" && (
+            <Button variant="soft" onClick={handleUpsertWorkspaceMemberButtonClick}>
+              <Icon.Plus className="w-4 h-auto mr-1" />
+              New member
+            </Button>
+          )}
+        </div>
+        <MemberListView workspaceId={workspaceId} />
+      </div>
+
       {state.showEditWorkspaceDialog && (
         <CreateWorkspaceDialog
           workspaceId={workspace.id}
@@ -126,6 +151,27 @@ const WorkspaceSetting: React.FC<Props> = (props: Props) => {
             });
           }}
           onConfirm={() => handleEditWorkspaceDialogConfirm()}
+        />
+      )}
+
+      {state.showUpsertWorkspaceUserDialog && (
+        <UpsertWorkspaceUserDialog
+          workspaceId={workspace.id}
+          onClose={() => {
+            setState({
+              ...state,
+              showUpsertWorkspaceUserDialog: false,
+            });
+          }}
+          onConfirm={async () => {
+            setState({
+              ...state,
+              showUpsertWorkspaceUserDialog: false,
+            });
+            if (location.hash !== "#members") {
+              navigate("#members");
+            }
+          }}
         />
       )}
     </>

@@ -2,36 +2,30 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { shortcutService, userService } from "../services";
 import { useAppSelector } from "../store";
-import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
+import { unknownWorkspace } from "../store/modules/workspace";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 import toastHelper from "../components/Toast";
 import Dropdown from "../components/common/Dropdown";
 import ShortcutListView from "../components/ShortcutListView";
-import MemberListView from "../components/MemberListView";
 import WorkspaceSetting from "../components/WorkspaceSetting";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
-import UpsertWorkspaceUserDialog from "../components/UpsertWorkspaceUserDialog";
 
 interface State {
   showCreateShortcutDialog: boolean;
-  showUpsertWorkspaceUserDialog: boolean;
 }
 
 const WorkspaceDetail: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
-  const user = useAppSelector((state) => state.user.user) as User;
   const { workspaceList } = useAppSelector((state) => state.workspace);
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
     showCreateShortcutDialog: false,
-    showUpsertWorkspaceUserDialog: false,
   });
   const loadingState = useLoading();
   const workspace = workspaceList.find((workspace) => workspace.name === params.workspaceName) ?? unknownWorkspace;
-  const workspaceUser = workspace.workspaceUserList.find((workspaceUser) => workspaceUser.userId === user.id) ?? unknownWorkspaceUser;
 
   useEffect(() => {
     if (!userService.getState().user) {
@@ -50,7 +44,7 @@ const WorkspaceDetail: React.FC = () => {
   }, [params.workspaceName]);
 
   useEffect(() => {
-    if (location.hash !== "#shortcuts" && location.hash !== "#members" && location.hash !== "#setting") {
+    if (location.hash !== "#shortcuts" && location.hash !== "#setting") {
       navigate("#shortcuts");
     }
   }, [location.hash]);
@@ -59,13 +53,6 @@ const WorkspaceDetail: React.FC = () => {
     setState({
       ...state,
       showCreateShortcutDialog: true,
-    });
-  };
-
-  const handleUpsertWorkspaceMemberButtonClick = () => {
-    setState({
-      ...state,
-      showUpsertWorkspaceUserDialog: true,
     });
   };
 
@@ -81,14 +68,6 @@ const WorkspaceDetail: React.FC = () => {
               }`}
             >
               Shortcuts
-            </NavLink>
-            <NavLink
-              to="#members"
-              className={`py-1 text-gray-400 border-b-2 border-b-transparent ${
-                location.hash === "#members" && "!border-b-black text-black"
-              }`}
-            >
-              Members
             </NavLink>
             <NavLink
               to="#setting"
@@ -114,14 +93,6 @@ const WorkspaceDetail: React.FC = () => {
                   >
                     Shortcut
                   </button>
-                  {workspaceUser.role === "ADMIN" && (
-                    <button
-                      className="w-full flex flex-row justify-start items-center px-3 leading-10 rounded cursor-pointer hover:bg-gray-100"
-                      onClick={handleUpsertWorkspaceMemberButtonClick}
-                    >
-                      Member
-                    </button>
-                  )}
                 </>
               }
               actionsClassName="!w-32"
@@ -150,7 +121,6 @@ const WorkspaceDetail: React.FC = () => {
               ) : (
                 <ShortcutListView workspaceId={workspace.id} shortcutList={shortcutList} />
               ))}
-            {location.hash === "#members" && <MemberListView workspaceId={workspace.id} />}
             {location.hash === "#setting" && <WorkspaceSetting workspaceId={workspace.id} />}
           </>
         )}
@@ -172,27 +142,6 @@ const WorkspaceDetail: React.FC = () => {
             });
             if (location.hash !== "#shortcuts") {
               navigate("#shortcuts");
-            }
-          }}
-        />
-      )}
-
-      {state.showUpsertWorkspaceUserDialog && (
-        <UpsertWorkspaceUserDialog
-          workspaceId={workspace.id}
-          onClose={() => {
-            setState({
-              ...state,
-              showUpsertWorkspaceUserDialog: false,
-            });
-          }}
-          onConfirm={async () => {
-            setState({
-              ...state,
-              showUpsertWorkspaceUserDialog: false,
-            });
-            if (location.hash !== "#members") {
-              navigate("#members");
             }
           }}
         />

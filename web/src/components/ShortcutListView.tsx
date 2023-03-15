@@ -82,7 +82,7 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
                   </button>
                 </Tooltip>
                 <Tooltip title="Go to link" variant="solid" placement="top">
-                  <a className="cursor-pointer mr-4 hover:opacity-80" target="_blank" href={shortcut.link} rel="noreferrer">
+                  <a className="cursor-pointer mr-4 hover:opacity-80" target="_blank" href={shortcut.link}>
                     <Icon.ExternalLink className="w-5 h-auto" />
                   </a>
                 </Tooltip>
