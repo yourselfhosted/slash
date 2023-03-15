@@ -60,7 +60,7 @@ const Header: React.FC = () => {
                             to={`/${workspace.name}`}
                             className="w-full px-3 leading-10 flex flex-row justify-between items-center text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
                           >
-                            <span className="truncate">{workspace.name}</span>
+                            <span className="truncate">{workspace.title}</span>
                             {workspace.name === activedWorkspace?.name && <Icon.Check className="w-4 h-auto ml-1 shrink-0" />}
                           </Link>
                         );

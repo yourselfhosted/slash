@@ -72,18 +72,21 @@ const UserDetail: React.FC = () => {
             Change
           </Button>
         </div>
-        <div className="leading-8 flex flex-row justify-start items-center">
-          <span className="mr-3 text-gray-500 font-mono">OpenID:</span>
-          <Input type="text" className="w-48" value={user?.openId} readOnly />
-          <Tooltip title="Copy OpenID" variant="solid" placement="top">
-            <button className="-ml-6 z-1 bg-white text-gray-600 hover:text-black" onClick={handleCopyOpenIdBtnClick}>
-              <Icon.Clipboard className="w-4 h-auto" />
-            </button>
-          </Tooltip>
-          <Button className="!ml-6" variant="soft" color="warning" onClick={handleResetOpenIdBtnClick}>
-            Reset
-          </Button>
-        </div>
+        {/* Do not display open api related field right now. */}
+        {false && (
+          <div className="leading-8 flex flex-row justify-start items-center">
+            <span className="mr-3 text-gray-500 font-mono">OpenID:</span>
+            <Input type="text" className="w-48" value={user?.openId} readOnly />
+            <Tooltip title="Copy OpenID" variant="solid" placement="top">
+              <button className="-ml-6 z-1 bg-white text-gray-600 hover:text-black" onClick={handleCopyOpenIdBtnClick}>
+                <Icon.Clipboard className="w-4 h-auto" />
+              </button>
+            </Tooltip>
+            <Button className="!ml-6" variant="soft" color="warning" onClick={handleResetOpenIdBtnClick}>
+              Reset
+            </Button>
+          </div>
+        )}
       </div>
 
       {state.showChangePasswordDialog && (
