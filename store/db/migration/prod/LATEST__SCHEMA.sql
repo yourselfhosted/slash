@@ -37,6 +37,7 @@ CREATE TABLE workspace (
   updated_ts BIGINT NOT NULL DEFAULT (strftime('%s', 'now')),
   row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',
   name TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT ''
 );
 
