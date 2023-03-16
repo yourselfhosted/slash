@@ -1,10 +1,10 @@
-export const getCorgiData = () => {
+export const getShortifyData = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get(["corgi"], (data) => {
-      if (data?.corgi) {
-        resolve(data.corgi);
+    chrome.storage.local.get(["shortify"], (data) => {
+      if (data?.shortify) {
+        resolve(data.shortify);
       } else {
-        reject("corgi data not found");
+        reject("shortify data not found");
       }
     });
   });

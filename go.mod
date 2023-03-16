@@ -1,4 +1,4 @@
-module github.com/boojack/corgi
+module github.com/boojack/shortify
 
 go 1.19
 

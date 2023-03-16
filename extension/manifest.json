@@ -1,6 +1,6 @@
 {
-  "name": "Corgi",
-  "description": "Corgi is an URL manager.",
+  "name": "Shortify",
+  "description": "",
   "version": "0.0.1",
   "manifest_version": 3,
   "omnibox": {

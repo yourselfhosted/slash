@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/boojack/corgi/api"
-	"github.com/boojack/corgi/common"
+	"github.com/boojack/shortify/api"
+	"github.com/boojack/shortify/common"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -15,7 +15,7 @@ import (
 
 var (
 	userIDContextKey = "user-id"
-	sessionName      = "corgi_session"
+	sessionName      = "shortify-session"
 )
 
 func getUserIDContextKey() string {

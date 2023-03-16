@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	"github.com/boojack/corgi/api"
+	"github.com/boojack/shortify/api"
 
 	"github.com/labstack/echo/v4"
 )

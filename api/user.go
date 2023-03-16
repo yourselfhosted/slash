@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/boojack/corgi/common"
+	"github.com/boojack/shortify/common"
 )
 
 type User struct {

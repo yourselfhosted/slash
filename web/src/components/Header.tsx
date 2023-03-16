@@ -38,8 +38,8 @@ const Header: React.FC = () => {
         <div className="w-full max-w-4xl mx-auto px-3 py-5 flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center shrink mr-2">
             <Link to="/" className="text-base font-mono font-medium cursor-pointer flex flex-row justify-start items-center">
-              <img src="/corgi-logo.png" className="w-8 h-auto mr-2" alt="" />
-              Corgi
+              <img src="/logo.png" className="w-8 h-auto mr-2" alt="" />
+              Shortify
             </Link>
             {workspaceList.length > 0 && activedWorkspace !== undefined && (
               <>

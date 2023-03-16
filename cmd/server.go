@@ -11,18 +11,18 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/boojack/corgi/server"
-	_profile "github.com/boojack/corgi/server/profile"
+	"github.com/boojack/shortify/server"
+	_profile "github.com/boojack/shortify/server/profile"
 )
 
 const (
 	greetingBanner = `
-██████╗  ██████╗ ██████╗  ██████╗ ██╗
-██╔════╝ ██╔═══██╗██╔══██╗██╔════╝ ██║
-██║  ███╗██║   ██║██████╔╝██║  ███╗██║
-██║   ██║██║   ██║██╔══██╗██║   ██║██║
-╚██████╔╝╚██████╔╝██║  ██║╚██████╔╝██║
- ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝
+███████╗██╗  ██╗ ██████╗ ██████╗ ████████╗██╗███████╗██╗   ██╗
+██╔════╝██║  ██║██╔═══██╗██╔══██╗╚══██╔══╝██║██╔════╝╚██╗ ██╔╝
+███████╗███████║██║   ██║██████╔╝   ██║   ██║█████╗   ╚████╔╝ 
+╚════██║██╔══██║██║   ██║██╔══██╗   ██║   ██║██╔══╝    ╚██╔╝  
+███████║██║  ██║╚██████╔╝██║  ██║   ██║   ██║██║        ██║   
+╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝        ╚═╝   
 `
 )
 
@@ -33,7 +33,7 @@ var (
 	data    string
 
 	rootCmd = &cobra.Command{
-		Use:   "corgi",
+		Use:   "shortify",
 		Short: "",
 		Run: func(_cmd *cobra.Command, _args []string) {
 			ctx, cancel := context.WithCancel(context.Background())
@@ -97,7 +97,7 @@ func init() {
 
 	viper.SetDefault("mode", "dev")
 	viper.SetDefault("port", 8082)
-	viper.SetEnvPrefix("corgi")
+	viper.SetEnvPrefix("shortify")
 }
 
 func initConfig() {

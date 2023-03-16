@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/boojack/corgi/server/version"
+	"github.com/boojack/shortify/server/version"
 	"github.com/spf13/viper"
 )
 
@@ -18,7 +18,7 @@ type Profile struct {
 	Port int `json:"port"`
 	// Data is the data directory
 	Data string `json:"data"`
-	// DSN points to where Corgi stores its own data
+	// DSN points to where Shortify stores its own data
 	DSN string `json:"dsn"`
 	// Version is the current version of server
 	Version string `json:"version"`
@@ -57,7 +57,7 @@ func GetProfile() (*Profile, error) {
 	}
 
 	if profile.Mode == "prod" && profile.Data == "" {
-		profile.Data = "/var/opt/corgi"
+		profile.Data = "/var/opt/shortify"
 	}
 
 	dataDir, err := checkDSN(profile.Data)
@@ -67,7 +67,7 @@ func GetProfile() (*Profile, error) {
 	}
 
 	profile.Data = dataDir
-	profile.DSN = fmt.Sprintf("%s/corgi_%s.db", dataDir, profile.Mode)
+	profile.DSN = fmt.Sprintf("%s/shortify_%s.db", dataDir, profile.Mode)
 	profile.Version = version.GetCurrentVersion(profile.Mode)
 	return &profile, nil
 }

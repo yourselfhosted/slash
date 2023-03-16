@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/boojack/corgi/api"
-	"github.com/boojack/corgi/common"
+	"github.com/boojack/shortify/api"
+	"github.com/boojack/shortify/common"
 )
 
 // shortcutRaw is the store model for an Shortcut.

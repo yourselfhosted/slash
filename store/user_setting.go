@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"strings"
 
-	"github.com/boojack/corgi/api"
+	"github.com/boojack/shortify/api"
 )
 
 type userSettingRaw struct {

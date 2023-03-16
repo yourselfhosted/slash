@@ -15,15 +15,15 @@ RUN apk update && apk add --no-cache gcc musl-dev
 COPY . .
 COPY --from=frontend /frontend-build/dist ./server/dist
 
-RUN go build -o corgi ./main.go
+RUN go build -o shortify ./main.go
 
 # Make workspace with above generated files.
 FROM alpine:3.16 AS monolithic
-WORKDIR /usr/local/corgi
+WORKDIR /usr/local/shortify
 
-COPY --from=backend /backend-build/corgi /usr/local/corgi/
+COPY --from=backend /backend-build/shortify /usr/local/shortify/
 
 # Directory to store the data, which can be referenced as the mounting point.
-RUN mkdir -p /var/opt/corgi
+RUN mkdir -p /var/opt/shortify
 
-ENTRYPOINT ["./corgi", "--mode", "prod", "--port", "5231"]
+ENTRYPOINT ["./shortify", "--mode", "prod", "--port", "5231"]

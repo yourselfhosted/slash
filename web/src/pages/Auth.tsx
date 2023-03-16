@@ -30,7 +30,7 @@ const Auth: React.FC = () => {
     api.getSystemStatus().then(({ data }) => {
       const { data: status } = data;
       if (status.profile.mode === "dev") {
-        setEmail("frank@iamcorgi.com");
+        setEmail("frank@shortify.demo");
         setPassword("secret");
       }
     });
@@ -121,9 +121,9 @@ const Auth: React.FC = () => {
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-full mb-4">
-            <img src="/corgi-logo.png" className="w-14 h-auto mr-1" alt="" />
+            <img src="/logo.png" className="w-14 h-auto mr-1" alt="" />
             <div className="text-3xl font-medium font-mono flex flex-row justify-start items-center">
-              Corgi
+              Shortify
               {actionBtnLoadingState.isLoading && <Icon.Loader className="ml-2 w-5 h-auto animate-spin" />}
             </div>
           </div>

@@ -9,7 +9,7 @@ INSERT INTO
 VALUES
   (
     101,
-    'frank@iamcorgi.com',
+    'frank@shortify.demo',
     'Frank',
     -- raw password: secret
     '$2a$14$ajq8Q7fbtFRQvXpdCq7Jcuy.Rx1h/L4J60Otx.gyNLbAYctGMJ9tK',
@@ -27,7 +27,7 @@ INSERT INTO
 VALUES
   (
     102,
-    'bob@iamcorgi.com',
+    'bob@shortify.demo',
     'Bob',
     -- raw password: secret
     '$2a$14$ajq8Q7fbtFRQvXpdCq7Jcuy.Rx1h/L4J60Otx.gyNLbAYctGMJ9tK',

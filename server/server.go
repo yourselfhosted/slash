@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/boojack/corgi/server/profile"
-	"github.com/boojack/corgi/store"
-	"github.com/boojack/corgi/store/db"
+	"github.com/boojack/shortify/server/profile"
+	"github.com/boojack/shortify/store"
+	"github.com/boojack/shortify/store/db"
 	"github.com/pkg/errors"
 
 	"github.com/gorilla/securecookie"
@@ -64,7 +64,7 @@ func NewServer(ctx context.Context, profile *profile.Profile) (*Server, error) {
 	embedFrontend(e)
 
 	// In dev mode, set the const secret key to make signin session persistence.
-	secret := []byte("iamcorgi")
+	secret := []byte("iamshortify")
 	if profile.Mode == "prod" {
 		secret = securecookie.GenerateRandomKey(16)
 	}
