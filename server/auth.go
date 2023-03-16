@@ -66,8 +66,18 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate password hash").SetInternal(err)
 		}
-
 		userCreate.PasswordHash = string(passwordHash)
+
+		existingUsers, err := s.Store.FindUserList(ctx, &api.UserFind{})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find existing users").SetInternal(err)
+		}
+		// The first user to sign up is an admin by default.
+		if len(existingUsers) == 0 {
+			userCreate.Role = api.RoleAdmin
+		} else {
+			userCreate.Role = api.RoleUser
+		}
 
 		user, err := s.Store.CreateUser(ctx, userCreate)
 		if err != nil {
@@ -79,11 +89,7 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to set signup session").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(user)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode created user response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(user))
 	})
 
 	g.POST("/auth/logout", func(c echo.Context) error {

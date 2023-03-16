@@ -46,11 +46,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(shortcut)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode shortcut response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(shortcut))
 	})
 
 	g.PATCH("/shortcut/:shortcutId", func(c echo.Context) error {
@@ -99,11 +95,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(shortcut)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode shortcut response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(shortcut))
 	})
 
 	g.GET("/shortcut", func(c echo.Context) error {
@@ -150,11 +142,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			}
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(list)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode shortcut list response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(list))
 	})
 
 	g.GET("/shortcut/:id", func(c echo.Context) error {
@@ -176,11 +164,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(shortcut)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode shortcut response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(shortcut))
 	})
 
 	g.DELETE("/shortcut/:id", func(c echo.Context) error {

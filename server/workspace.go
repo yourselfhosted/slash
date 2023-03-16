@@ -48,11 +48,7 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user list").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspace)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(workspace))
 	})
 
 	g.GET("/workspace", func(c echo.Context) error {
@@ -76,11 +72,7 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			}
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspaceList)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace list response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(workspaceList))
 	})
 
 	g.GET("/workspace/:id", func(c echo.Context) error {
@@ -101,11 +93,7 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user list").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspace)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(workspace))
 	})
 
 	g.GET("/workspace/:workspaceName/shortcut/:shortcutName", func(c echo.Context) error {
@@ -162,11 +150,7 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			}
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(shortcut)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode shortcut response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(shortcut))
 	})
 
 	g.PATCH("/workspace/:id", func(c echo.Context) error {
@@ -210,11 +194,7 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user list").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspace)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(workspace))
 	})
 
 	g.DELETE("/workspace/:id", func(c echo.Context) error {

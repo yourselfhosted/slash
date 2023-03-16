@@ -51,11 +51,7 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspaceUser)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace user response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(workspaceUser))
 	})
 
 	g.GET("/workspace/:id/user", func(c echo.Context) error {
@@ -78,11 +74,7 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 			}
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspaceUserList)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace user list response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(workspaceUserList))
 	})
 
 	g.GET("/workspace/:workspaceId/user/:userId", func(c echo.Context) error {
@@ -108,11 +100,7 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose workspace user").SetInternal(err)
 		}
 
-		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-		if err := json.NewEncoder(c.Response().Writer).Encode(composeResponse(workspaceUser)); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to encode workspace user response").SetInternal(err)
-		}
-		return nil
+		return c.JSON(http.StatusOK, composeResponse(workspaceUser))
 	})
 
 	g.DELETE("/workspace/:workspaceId/user/:userId", func(c echo.Context) error {
