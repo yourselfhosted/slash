@@ -13,7 +13,8 @@ CREATE TABLE user (
   email TEXT NOT NULL UNIQUE,
   display_name TEXT NOT NULL,
   password_hash TEXT NOT NULL,
-  open_id TEXT NOT NULL UNIQUE
+  open_id TEXT NOT NULL UNIQUE,
+  role TEXT NOT NULL CHECK (role IN ('ADMIN', 'USER')) DEFAULT 'USER'
 );
 
 INSERT INTO

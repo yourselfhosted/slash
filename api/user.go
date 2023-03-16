@@ -19,6 +19,7 @@ type User struct {
 	DisplayName     string         `json:"displayName"`
 	PasswordHash    string         `json:"-"`
 	OpenID          string         `json:"openId"`
+	Role            Role           `json:"role"`
 	UserSettingList []*UserSetting `json:"userSettingList"`
 }
 
@@ -28,14 +29,15 @@ type UserCreate struct {
 	Password     string `json:"password"`
 	PasswordHash string `json:"-"`
 	OpenID       string `json:"-"`
+	Role         Role   `json:"-"`
 }
 
 func (create UserCreate) Validate() error {
-	if !common.ValidateEmail(create.Email) {
-		return fmt.Errorf("invalid email format")
-	}
 	if len(create.Email) < 3 {
 		return fmt.Errorf("email is too short, minimum length is 6")
+	}
+	if !common.ValidateEmail(create.Email) {
+		return fmt.Errorf("invalid email format")
 	}
 	if len(create.Password) < 3 {
 		return fmt.Errorf("password is too short, minimum length is 6")
@@ -69,6 +71,7 @@ type UserFind struct {
 	Email       *string `json:"email"`
 	DisplayName *string `json:"displayName"`
 	OpenID      *string `json:"openId"`
+	Role        *Role   `json:"-"`
 }
 
 type UserDelete struct {

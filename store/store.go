@@ -13,7 +13,7 @@ type Store struct {
 	profile *profile.Profile
 
 	userCache      sync.Map // map[int]*userRaw
-	workspaceCache sync.Map // map[int]*memoRaw
+	workspaceCache sync.Map // map[int]*workspaceRaw
 	shortcutCache  sync.Map // map[int]*shortcutRaw
 }
 

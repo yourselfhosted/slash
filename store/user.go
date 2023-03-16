@@ -25,6 +25,7 @@ type userRaw struct {
 	DisplayName  string
 	PasswordHash string
 	OpenID       string
+	Role         api.Role
 }
 
 func (raw *userRaw) toUser() *api.User {
@@ -39,6 +40,7 @@ func (raw *userRaw) toUser() *api.User {
 		DisplayName:  raw.DisplayName,
 		PasswordHash: raw.PasswordHash,
 		OpenID:       raw.OpenID,
+		Role:         raw.Role,
 	}
 }
 
@@ -161,10 +163,11 @@ func createUser(ctx context.Context, tx *sql.Tx, create *api.UserCreate) (*userR
 			email,
 			display_name,
 			password_hash,
-			open_id
+			open_id,
+			role
 		)
 		VALUES (?, ?, ?, ?)
-		RETURNING id, created_ts, updated_ts, row_status, email, display_name, password_hash, open_id
+		RETURNING id, created_ts, updated_ts, row_status, email, display_name, password_hash, open_id, role
 	`
 	var userRaw userRaw
 	if err := tx.QueryRowContext(ctx, query,
@@ -172,6 +175,7 @@ func createUser(ctx context.Context, tx *sql.Tx, create *api.UserCreate) (*userR
 		create.DisplayName,
 		create.PasswordHash,
 		create.OpenID,
+		create.Role,
 	).Scan(
 		&userRaw.ID,
 		&userRaw.CreatedTs,
@@ -181,6 +185,7 @@ func createUser(ctx context.Context, tx *sql.Tx, create *api.UserCreate) (*userR
 		&userRaw.DisplayName,
 		&userRaw.PasswordHash,
 		&userRaw.OpenID,
+		&userRaw.Role,
 	); err != nil {
 		return nil, err
 	}
@@ -213,7 +218,7 @@ func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw,
 		UPDATE user
 		SET ` + strings.Join(set, ", ") + `
 		WHERE id = ?
-		RETURNING id, created_ts, updated_ts, row_status, email, display_name, password_hash, open_id
+		RETURNING id, created_ts, updated_ts, row_status, email, display_name, password_hash, open_id, role
 	`
 	row, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -232,6 +237,7 @@ func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw,
 			&userRaw.DisplayName,
 			&userRaw.PasswordHash,
 			&userRaw.OpenID,
+			&userRaw.Role,
 		); err != nil {
 			return nil, err
 		}
@@ -258,6 +264,9 @@ func findUserList(ctx context.Context, tx *sql.Tx, find *api.UserFind) ([]*userR
 	if v := find.OpenID; v != nil {
 		where, args = append(where, "open_id = ?"), append(args, *v)
 	}
+	if v := find.Role; v != nil {
+		where, args = append(where, "role = ?"), append(args, *v)
+	}
 
 	query := `
 		SELECT 
@@ -268,7 +277,8 @@ func findUserList(ctx context.Context, tx *sql.Tx, find *api.UserFind) ([]*userR
 			email,
 			display_name,
 			password_hash,
-			open_id
+			open_id,
+			role
 		FROM user
 		WHERE ` + strings.Join(where, " AND ") + `
 		ORDER BY updated_ts DESC, created_ts DESC
@@ -291,6 +301,7 @@ func findUserList(ctx context.Context, tx *sql.Tx, find *api.UserFind) ([]*userR
 			&userRaw.DisplayName,
 			&userRaw.PasswordHash,
 			&userRaw.OpenID,
+			&userRaw.Role,
 		); err != nil {
 			return nil, err
 		}
