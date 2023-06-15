@@ -138,7 +138,7 @@ func (s *Store) DeleteWorkspaceUser(ctx context.Context, delete *api.WorkspaceUs
 
 func upsertWorkspaceUser(ctx context.Context, tx *sql.Tx, upsert *api.WorkspaceUserUpsert) (*workspaceUserRaw, error) {
 	set := []string{"workspace_id", "user_id", "role"}
-	args := []interface{}{upsert.WorkspaceID, upsert.UserID, upsert.Role}
+	args := []any{upsert.WorkspaceID, upsert.UserID, upsert.Role}
 	placeholder := []string{"?", "?", "?"}
 
 	if v := upsert.UpdatedTs; v != nil {
@@ -168,7 +168,7 @@ func upsertWorkspaceUser(ctx context.Context, tx *sql.Tx, upsert *api.WorkspaceU
 }
 
 func findWorkspaceUserList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceUserFind) ([]*workspaceUserRaw, error) {
-	where, args := []string{"1 = 1"}, []interface{}{}
+	where, args := []string{"1 = 1"}, []any{}
 
 	if v := find.WorkspaceID; v != nil {
 		where, args = append(where, "workspace_id = ?"), append(args, *v)

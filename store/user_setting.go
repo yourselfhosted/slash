@@ -108,7 +108,7 @@ func upsertUserSetting(ctx context.Context, tx *sql.Tx, upsert *api.UserSettingU
 }
 
 func findUserSettingList(ctx context.Context, tx *sql.Tx, find *api.UserSettingFind) ([]*userSettingRaw, error) {
-	where, args := []string{"1 = 1"}, []interface{}{}
+	where, args := []string{"1 = 1"}, []any{}
 
 	if v := find.Key; v != nil {
 		where, args = append(where, "key = ?"), append(args, v.String())

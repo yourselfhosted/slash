@@ -194,7 +194,7 @@ func createUser(ctx context.Context, tx *sql.Tx, create *api.UserCreate) (*userR
 }
 
 func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw, error) {
-	set, args := []string{}, []interface{}{}
+	set, args := []string{}, []any{}
 
 	if v := patch.RowStatus; v != nil {
 		set, args = append(set, "row_status = ?"), append(args, *v)
@@ -253,7 +253,7 @@ func patchUser(ctx context.Context, tx *sql.Tx, patch *api.UserPatch) (*userRaw,
 }
 
 func findUserList(ctx context.Context, tx *sql.Tx, find *api.UserFind) ([]*userRaw, error) {
-	where, args := []string{"1 = 1"}, []interface{}{}
+	where, args := []string{"1 = 1"}, []any{}
 
 	if v := find.ID; v != nil {
 		where, args = append(where, "id = ?"), append(args, *v)

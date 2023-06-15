@@ -189,7 +189,7 @@ func createWorkspace(ctx context.Context, tx *sql.Tx, create *api.WorkspaceCreat
 }
 
 func patchWorkspace(ctx context.Context, tx *sql.Tx, patch *api.WorkspacePatch) (*workspaceRaw, error) {
-	set, args := []string{}, []interface{}{}
+	set, args := []string{}, []any{}
 
 	if v := patch.RowStatus; v != nil {
 		set, args = append(set, "row_status = ?"), append(args, *v)
@@ -244,7 +244,7 @@ func patchWorkspace(ctx context.Context, tx *sql.Tx, patch *api.WorkspacePatch) 
 }
 
 func findWorkspaceList(ctx context.Context, tx *sql.Tx, find *api.WorkspaceFind) ([]*workspaceRaw, error) {
-	where, args := []string{"1 = 1"}, []interface{}{}
+	where, args := []string{"1 = 1"}, []any{}
 
 	if v := find.ID; v != nil {
 		where, args = append(where, "id = ?"), append(args, *v)

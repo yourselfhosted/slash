@@ -6,9 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func composeResponse(data interface{}) interface{} {
+func composeResponse(data any) any {
 	type R struct {
-		Data interface{} `json:"data"`
+		Data any `json:"data"`
 	}
 
 	return R{
