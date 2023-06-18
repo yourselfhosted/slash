@@ -13,6 +13,8 @@ import (
 
 	"github.com/boojack/shortify/server"
 	_profile "github.com/boojack/shortify/server/profile"
+	"github.com/boojack/shortify/store"
+	"github.com/boojack/shortify/store/db"
 )
 
 const (
@@ -37,7 +39,15 @@ var (
 		Short: "",
 		Run: func(_cmd *cobra.Command, _args []string) {
 			ctx, cancel := context.WithCancel(context.Background())
-			s, err := server.NewServer(ctx, profile)
+			db := db.NewDB(profile)
+			if err := db.Open(ctx); err != nil {
+				cancel()
+				fmt.Printf("failed to open db, error: %+v\n", err)
+				return
+			}
+
+			storeInstance := store.New(db.DBInstance, profile)
+			s, err := server.NewServer(profile, storeInstance)
 			if err != nil {
 				cancel()
 				fmt.Printf("failed to create server, error: %+v\n", err)

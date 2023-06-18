@@ -24,3 +24,8 @@ func New(db *sql.DB, profile *profile.Profile) *Store {
 		profile: profile,
 	}
 }
+
+// Close closes the database connection.
+func (s *Store) Close() error {
+	return s.db.Close()
+}

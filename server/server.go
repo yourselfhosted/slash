@@ -2,14 +2,12 @@ package server
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"time"
 
+	apiv1 "github.com/boojack/shortify/api/v1"
 	"github.com/boojack/shortify/server/profile"
 	"github.com/boojack/shortify/store"
-	"github.com/boojack/shortify/store/db"
-	"github.com/pkg/errors"
 
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
@@ -19,31 +17,23 @@ import (
 )
 
 type Server struct {
-	e  *echo.Echo
-	db *sql.DB
+	e *echo.Echo
 
 	Profile *profile.Profile
 	Store   *store.Store
 }
 
-func NewServer(ctx context.Context, profile *profile.Profile) (*Server, error) {
+func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 	e := echo.New()
 	e.Debug = true
 	e.HideBanner = true
 	e.HidePort = true
 
-	db := db.NewDB(profile)
-	if err := db.Open(ctx); err != nil {
-		return nil, errors.Wrap(err, "cannot open db")
-	}
-
 	s := &Server{
 		e:       e,
-		db:      db.DBInstance,
 		Profile: profile,
+		Store:   store,
 	}
-	storeInstance := store.New(db.DBInstance, profile)
-	s.Store = storeInstance
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `{"time":"${time_rfc3339}",` +
@@ -87,6 +77,11 @@ func NewServer(ctx context.Context, profile *profile.Profile) (*Server, error) {
 	s.registerWorkspaceUserRoutes(apiGroup)
 	s.registerShortcutRoutes(apiGroup)
 
+	// Register API v1 routes.
+	apiV1Service := apiv1.NewAPIV1Service(profile, store)
+	apiV1Group := apiGroup.Group("/api/v1")
+	apiV1Service.RegisterUserRoutes(apiV1Group)
+
 	return s, nil
 }
 
@@ -104,7 +99,7 @@ func (s *Server) Shutdown(ctx context.Context) {
 	}
 
 	// Close database connection
-	if err := s.db.Close(); err != nil {
+	if err := s.Store.Close(); err != nil {
 		fmt.Printf("failed to close database, error: %v\n", err)
 	}
 
