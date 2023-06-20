@@ -1,35 +1,35 @@
 INSERT INTO
   user (
     `id`,
+    `username`,
+    `nickname`,
     `email`,
-    `display_name`,
-    `password_hash`,
-    `open_id`
+    `password_hash`
   )
 VALUES
   (
-    101,
-    'frank@shortify.demo',
+    11,
+    'frank',
     'Frank',
+    'frank@shortify.demo',
     -- raw password: secret
-    '$2a$14$ajq8Q7fbtFRQvXpdCq7Jcuy.Rx1h/L4J60Otx.gyNLbAYctGMJ9tK',
-    'frank_open_id'
+    '$2a$14$ajq8Q7fbtFRQvXpdCq7Jcuy.Rx1h/L4J60Otx.gyNLbAYctGMJ9tK'
   );
 
 INSERT INTO
   user (
     `id`,
+    `username`,
+    `nickname`,
     `email`,
-    `display_name`,
-    `password_hash`,
-    `open_id`
+    `password_hash`
   )
 VALUES
   (
-    102,
-    'bob@shortify.demo',
+    12,
+    'bob',
     'Bob',
+    'bob@shortify.demo',
     -- raw password: secret
-    '$2a$14$ajq8Q7fbtFRQvXpdCq7Jcuy.Rx1h/L4J60Otx.gyNLbAYctGMJ9tK',
-    'bob_open_id'
+    '$2a$14$ajq8Q7fbtFRQvXpdCq7Jcuy.Rx1h/L4J60Otx.gyNLbAYctGMJ9tK'
   );

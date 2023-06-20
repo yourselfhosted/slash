@@ -6,8 +6,8 @@ INSERT INTO
   )
 VALUES
   (
-    11, 
-    101,
+    1, 
+    11,
     'ADMIN'
   );
 
@@ -19,33 +19,7 @@ INSERT INTO
   )
 VALUES
   (
-    11, 
-    102,
-    'USER'
-  );
-
-INSERT INTO 
-  workspace_user (
-    `workspace_id`, 
-    `user_id`,
-    `role`
-  )
-VALUES
-  (
-    12, 
-    102,
-    'ADMIN'
-  );
-
-INSERT INTO 
-  workspace_user (
-    `workspace_id`, 
-    `user_id`,
-    `role`
-  )
-VALUES
-  (
-    12, 
-    101,
+    1, 
+    12,
     'USER'
   );
