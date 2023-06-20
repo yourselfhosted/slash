@@ -1,4 +1,4 @@
-package server
+package v1
 
 import (
 	"encoding/json"
@@ -6,31 +6,48 @@ import (
 	"net/http"
 
 	"github.com/boojack/shortify/api"
-	"github.com/google/uuid"
-
+	"github.com/boojack/shortify/server/auth"
+	"github.com/boojack/shortify/store"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *Server) registerAuthRoutes(g *echo.Group) {
+var (
+	userIDContextKey = "user-id"
+)
+
+func getUserIDContextKey() string {
+	return userIDContextKey
+}
+
+type SignUpRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type SignInRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 	g.POST("/auth/signin", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		signin := &api.Signin{}
+		signin := &SignInRequest{}
 		if err := json.NewDecoder(c.Request().Body).Decode(signin); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted signin request").SetInternal(err)
 		}
 
-		userFind := &api.UserFind{
-			Email: &signin.Email,
-		}
-		user, err := s.Store.FindUser(ctx, userFind)
+		user, err := s.Store.GetUserV1(ctx, &store.FindUser{
+			Username: &signin.Username,
+		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user by email %s", signin.Email)).SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user by username %s", signin.Username)).SetInternal(err)
 		}
 		if user == nil {
-			return echo.NewHTTPError(http.StatusUnauthorized, fmt.Sprintf("User not found with email %s", signin.Email))
-		} else if user.RowStatus == api.Archived {
-			return echo.NewHTTPError(http.StatusForbidden, fmt.Sprintf("User has been archived with email %s", signin.Email))
+			return echo.NewHTTPError(http.StatusUnauthorized, fmt.Sprintf("User not found with username %s", signin.Username))
+		} else if user.RowStatus == store.Archived {
+			return echo.NewHTTPError(http.StatusForbidden, fmt.Sprintf("User has been archived with username %s", signin.Username))
 		}
 
 		// Compare the stored hashed password, with the hashed version of the password that was received.
@@ -39,34 +56,28 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Incorrect password").SetInternal(err)
 		}
 
-		if err = setUserSession(c, user); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to set signin session").SetInternal(err)
+		if err := auth.GenerateTokensAndSetCookies(c, user, secret); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate tokens").SetInternal(err)
 		}
-		return c.JSON(http.StatusOK, composeResponse(user))
+		return c.JSON(http.StatusOK, user)
 	})
 
 	g.POST("/auth/signup", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		signup := &api.Signup{}
+		signup := &SignUpRequest{}
 		if err := json.NewDecoder(c.Request().Body).Decode(signup); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted signup request").SetInternal(err)
 		}
 
-		userCreate := &api.UserCreate{
-			Email:       signup.Email,
-			DisplayName: signup.DisplayName,
-			Password:    signup.Password,
-			OpenID:      genUUID(),
+		user := &store.User{
+			Username: signup.Username,
+			Nickname: signup.Username,
 		}
-		if err := userCreate.Validate(); err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Invalid user create format.").SetInternal(err)
-		}
-
 		passwordHash, err := bcrypt.GenerateFromPassword([]byte(signup.Password), bcrypt.DefaultCost)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate password hash").SetInternal(err)
 		}
-		userCreate.PasswordHash = string(passwordHash)
+		user.PasswordHash = string(passwordHash)
 
 		existingUsers, err := s.Store.FindUserList(ctx, &api.UserFind{})
 		if err != nil {
@@ -74,35 +85,26 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 		}
 		// The first user to sign up is an admin by default.
 		if len(existingUsers) == 0 {
-			userCreate.Role = api.RoleAdmin
+			user.Role = store.RoleAdmin
 		} else {
-			userCreate.Role = api.RoleUser
+			user.Role = store.RoleUser
 		}
 
-		user, err := s.Store.CreateUser(ctx, userCreate)
+		user, err = s.Store.CreateUserV1(ctx, user)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create user").SetInternal(err)
 		}
 
-		err = setUserSession(c, user)
-		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to set signup session").SetInternal(err)
+		if err := auth.GenerateTokensAndSetCookies(c, user, secret); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate tokens").SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, composeResponse(user))
+		return c.JSON(http.StatusOK, user)
 	})
 
 	g.POST("/auth/logout", func(c echo.Context) error {
-		err := removeUserSession(c)
-		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to set logout session").SetInternal(err)
-		}
-
+		auth.RemoveTokensAndCookies(c)
 		c.Response().WriteHeader(http.StatusOK)
 		return nil
 	})
-}
-
-func genUUID() string {
-	return uuid.New().String()
 }

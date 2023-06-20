@@ -54,24 +54,17 @@ func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 	embedFrontend(e)
 
 	// In dev mode, set the const secret key to make signin session persistence.
-	secret := []byte("iamshortify")
+	secret := "iamshortify"
 	if profile.Mode == "prod" {
-		secret = securecookie.GenerateRandomKey(16)
+		secret = string(securecookie.GenerateRandomKey(16))
 	}
-	e.Use(session.Middleware(sessions.NewCookieStore(secret)))
-
-	redirectGroup := e.Group("/o")
-	redirectGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return aclMiddleware(s, next)
-	})
-	s.registerRedirectRoutes(redirectGroup)
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte(secret))))
 
 	apiGroup := e.Group("/api")
 	apiGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return aclMiddleware(s, next)
+		return JWTMiddleware(s, next, string(secret))
 	})
 	s.registerSystemRoutes(apiGroup)
-	s.registerAuthRoutes(apiGroup)
 	s.registerUserRoutes(apiGroup)
 	s.registerWorkspaceRoutes(apiGroup)
 	s.registerWorkspaceUserRoutes(apiGroup)
@@ -80,7 +73,10 @@ func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 	// Register API v1 routes.
 	apiV1Service := apiv1.NewAPIV1Service(profile, store)
 	apiV1Group := apiGroup.Group("/api/v1")
-	apiV1Service.RegisterUserRoutes(apiV1Group)
+	apiV1Group.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return JWTMiddleware(s, next, string(secret))
+	})
+	apiV1Service.Start(apiV1Group, secret)
 
 	return s, nil
 }

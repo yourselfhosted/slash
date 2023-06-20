@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/boojack/shortify/api"
+	"github.com/google/uuid"
 
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -154,4 +155,8 @@ func validateEmail(email string) bool {
 		return false
 	}
 	return true
+}
+
+func genUUID() string {
+	return uuid.New().String()
 }

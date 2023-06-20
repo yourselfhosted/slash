@@ -18,6 +18,7 @@ func NewAPIV1Service(profile *profile.Profile, store *store.Store) *APIV1Service
 	}
 }
 
-func (s *APIV1Service) Start(apiV1Group *echo.Group) {
-	s.RegisterUserRoutes(apiV1Group)
+func (s *APIV1Service) Start(apiV1Group *echo.Group, secret string) {
+	s.registerAuthRoutes(apiV1Group, secret)
+	s.registerUserRoutes(apiV1Group)
 }

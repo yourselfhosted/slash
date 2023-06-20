@@ -2,8 +2,10 @@ package v1
 
 import (
 	"fmt"
+	"net/http"
 	"net/mail"
 
+	"github.com/boojack/shortify/store"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,8 +19,8 @@ const (
 	RoleUser Role = "USER"
 )
 
-func (e Role) String() string {
-	switch e {
+func (r Role) String() string {
+	switch r {
 	case RoleAdmin:
 		return "ADMIN"
 	case RoleUser:
@@ -39,7 +41,6 @@ type User struct {
 	Email           string         `json:"email"`
 	DisplayName     string         `json:"displayName"`
 	PasswordHash    string         `json:"-"`
-	OpenID          string         `json:"openId"`
 	Role            Role           `json:"role"`
 	UserSettingList []*UserSetting `json:"userSettingList"`
 }
@@ -49,7 +50,6 @@ type UserCreate struct {
 	DisplayName  string `json:"displayName"`
 	Password     string `json:"password"`
 	PasswordHash string `json:"-"`
-	OpenID       string `json:"-"`
 	Role         Role   `json:"-"`
 }
 
@@ -77,31 +77,34 @@ type UserPatch struct {
 	Email        *string `json:"email"`
 	DisplayName  *string `json:"displayName"`
 	Password     *string `json:"password"`
-	ResetOpenID  *bool   `json:"resetOpenId"`
 	PasswordHash *string `json:"-"`
-	OpenID       *string `json:"-"`
-}
-
-type UserFind struct {
-	ID *int `json:"id"`
-
-	// Standard fields
-	RowStatus *RowStatus `json:"rowStatus"`
-
-	// Domain specific fields
-	Email       *string `json:"email"`
-	DisplayName *string `json:"displayName"`
-	OpenID      *string `json:"openId"`
-	Role        *Role   `json:"-"`
 }
 
 type UserDelete struct {
 	ID int
 }
 
-func (*APIV1Service) RegisterUserRoutes(g *echo.Group) {
+func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	g.GET("/user", func(c echo.Context) error {
 		return c.String(200, "GET /user")
+	})
+
+	// GET /api/user/me is used to check if the user is logged in.
+	g.GET("/user/me", func(c echo.Context) error {
+		ctx := c.Request().Context()
+		userID, ok := c.Get(getUserIDContextKey()).(int)
+		if !ok {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
+		}
+
+		user, err := s.Store.GetUserV1(ctx, &store.FindUser{
+			ID: &userID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
+		}
+
+		return c.JSON(http.StatusOK, user)
 	})
 }
 
