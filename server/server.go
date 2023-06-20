@@ -65,7 +65,6 @@ func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 		return JWTMiddleware(s, next, string(secret))
 	})
 	s.registerSystemRoutes(apiGroup)
-	s.registerWorkspaceRoutes(apiGroup)
 	s.registerWorkspaceUserRoutes(apiGroup)
 	s.registerShortcutRoutes(apiGroup)
 

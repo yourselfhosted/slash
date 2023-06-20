@@ -7,6 +7,7 @@ import (
 
 	"github.com/boojack/shortify/server/auth"
 	"github.com/boojack/shortify/store"
+
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
