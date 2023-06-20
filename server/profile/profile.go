@@ -12,14 +12,14 @@ import (
 
 // Profile is the configuration to start main server.
 type Profile struct {
+	// Data is the data directory
+	Data string `json:"-"`
+	// DSN points to where Shortify stores its own data
+	DSN string `json:"-"`
 	// Mode can be "prod" or "dev"
 	Mode string `json:"mode"`
 	// Port is the binding port for server
 	Port int `json:"port"`
-	// Data is the data directory
-	Data string `json:"data"`
-	// DSN points to where Shortify stores its own data
-	DSN string `json:"dsn"`
 	// Version is the current version of server
 	Version string `json:"version"`
 }
