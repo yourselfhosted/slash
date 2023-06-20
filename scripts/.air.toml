@@ -3,7 +3,7 @@ tmp_dir = ".air"
 
 [build]
   bin = "./.air/shortify"
-  cmd = "go build -o ./.air/shortify ./main.go"
+  cmd = "go build -o ./.air/shortify ./cmd/shortify/main.go"
   delay = 1000
   exclude_dir = [".air", "web", "build"]
   exclude_file = []

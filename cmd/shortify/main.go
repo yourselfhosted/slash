@@ -1,4 +1,4 @@
-package cmd
+package main
 
 import (
 	"context"
@@ -10,6 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	_ "modernc.org/sqlite"
 
 	"github.com/boojack/shortify/server"
 	_profile "github.com/boojack/shortify/server/profile"
@@ -126,4 +127,11 @@ func initConfig() {
 	println("mode:", profile.Mode)
 	println("version:", profile.Version)
 	println("---")
+}
+
+func main() {
+	err := Execute()
+	if err != nil {
+		panic(err)
+	}
 }

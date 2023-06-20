@@ -17,7 +17,7 @@ WORKDIR /backend-build
 COPY . .
 COPY --from=frontend /frontend-build/dist ./server/dist
 
-RUN CGO_ENABLED=0 go build -o shortify ./main.go
+RUN go build -o shortify ./cmd/shortify/main.go
 
 # Make workspace with above generated files.
 FROM alpine:3.16 AS monolithic
