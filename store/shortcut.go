@@ -343,16 +343,8 @@ func (raw *shortcutRaw) toShortcut() *api.Shortcut {
 	}
 }
 
-func (s *Store) ComposeShortcut(ctx context.Context, shortcut *api.Shortcut) error {
-	user, err := s.FindUser(ctx, &api.UserFind{
-		ID: &shortcut.CreatorID,
-	})
-	if err != nil {
-		return err
-	}
-	user.OpenID = ""
-	shortcut.Creator = user
-
+func (*Store) ComposeShortcut(_ context.Context, _ *api.Shortcut) error {
+	// TODO: implement this.
 	return nil
 }
 

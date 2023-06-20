@@ -191,7 +191,7 @@ func (raw *workspaceUserRaw) toWorkspaceUser() *api.WorkspaceUser {
 }
 
 func (s *Store) ComposeWorkspaceUser(ctx context.Context, workspaceUser *api.WorkspaceUser) error {
-	user, err := s.FindUser(ctx, &api.UserFind{
+	user, err := s.GetUser(ctx, &FindUser{
 		ID: &workspaceUser.UserID,
 	})
 	if err != nil {
@@ -199,7 +199,7 @@ func (s *Store) ComposeWorkspaceUser(ctx context.Context, workspaceUser *api.Wor
 	}
 
 	workspaceUser.Email = user.Email
-	workspaceUser.DisplayName = user.DisplayName
+	workspaceUser.DisplayName = user.Nickname
 
 	return nil
 }

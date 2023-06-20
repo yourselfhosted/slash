@@ -131,7 +131,7 @@ func JWTMiddleware(server *Server, next echo.HandlerFunc, secret string) echo.Ha
 		}
 
 		// Even if there is no error, we still need to make sure the user still exists.
-		user, err := server.Store.GetUserV1(ctx, &store.FindUser{
+		user, err := server.Store.GetUser(ctx, &store.FindUser{
 			ID: &userID,
 		})
 		if err != nil {

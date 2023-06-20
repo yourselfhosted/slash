@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/boojack/shortify/api"
 	"github.com/boojack/shortify/server/auth"
 	"github.com/boojack/shortify/store"
 	"github.com/labstack/echo/v4"
@@ -38,7 +37,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted signin request").SetInternal(err)
 		}
 
-		user, err := s.Store.GetUserV1(ctx, &store.FindUser{
+		user, err := s.Store.GetUser(ctx, &store.FindUser{
 			Username: &signin.Username,
 		})
 		if err != nil {
@@ -79,7 +78,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 		}
 		user.PasswordHash = string(passwordHash)
 
-		existingUsers, err := s.Store.FindUserList(ctx, &api.UserFind{})
+		existingUsers, err := s.Store.ListUsers(ctx, &store.FindUser{})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find existing users").SetInternal(err)
 		}
@@ -90,7 +89,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			user.Role = store.RoleUser
 		}
 
-		user, err = s.Store.CreateUserV1(ctx, user)
+		user, err = s.Store.CreateUser(ctx, user)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create user").SetInternal(err)
 		}
