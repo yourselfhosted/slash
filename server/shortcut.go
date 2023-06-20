@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/boojack/shortify/api"
-	"github.com/boojack/shortify/common"
 
 	"github.com/labstack/echo/v4"
 )
@@ -30,7 +29,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			Name:        &shortcutCreate.Name,
 			WorkspaceID: &shortcutCreate.WorkspaceID,
 		})
-		if err != nil && common.ErrorCode(err) != common.NotFound {
+		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find shortcut").SetInternal(err)
 		}
 		if existingShortcut != nil {
@@ -178,9 +177,6 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			ID: &shortcutID,
 		}
 		if err := s.Store.DeleteShortcut(ctx, shortcutDelete); err != nil {
-			if common.ErrorCode(err) == common.NotFound {
-				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("Shortcut ID not found: %d", shortcutID))
-			}
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete shortcut").SetInternal(err)
 		}
 

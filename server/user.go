@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/mail"
 	"strconv"
 
 	"github.com/boojack/shortify/api"
-	"github.com/boojack/shortify/common"
 
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -39,14 +39,6 @@ func (s *Server) registerUserRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
 		}
-
-		userSettingList, err := s.Store.FindUserSettingList(ctx, &api.UserSettingFind{
-			UserID: userID,
-		})
-		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find userSettingList").SetInternal(err)
-		}
-		user.UserSettingList = userSettingList
 
 		return c.JSON(http.StatusOK, composeResponse(user))
 	})
@@ -97,7 +89,7 @@ func (s *Server) registerUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted patch user request").SetInternal(err)
 		}
 
-		if userPatch.Email != nil && !common.ValidateEmail(*userPatch.Email) {
+		if userPatch.Email != nil && !validateEmail(*userPatch.Email) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Invalid email format")
 		}
 
@@ -112,7 +104,7 @@ func (s *Server) registerUserRoutes(g *echo.Group) {
 		}
 
 		if userPatch.ResetOpenID != nil && *userPatch.ResetOpenID {
-			uuid := common.GenUUID()
+			uuid := genUUID()
 			userPatch.OpenID = &uuid
 		}
 
@@ -122,30 +114,6 @@ func (s *Server) registerUserRoutes(g *echo.Group) {
 		}
 
 		return c.JSON(http.StatusOK, composeResponse(user))
-	})
-
-	g.POST("/user/setting", func(c echo.Context) error {
-		ctx := c.Request().Context()
-		userID, ok := c.Get(getUserIDContextKey()).(int)
-		if !ok {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
-		}
-
-		userSettingUpsert := &api.UserSettingUpsert{}
-		if err := json.NewDecoder(c.Request().Body).Decode(userSettingUpsert); err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post user setting upsert request").SetInternal(err)
-		}
-		if err := userSettingUpsert.Validate(); err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Invalid user setting format").SetInternal(err)
-		}
-
-		userSettingUpsert.UserID = userID
-		userSetting, err := s.Store.UpsertUserSetting(ctx, userSettingUpsert)
-		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to upsert user setting").SetInternal(err)
-		}
-
-		return c.JSON(http.StatusOK, composeResponse(userSetting))
 	})
 
 	g.DELETE("/user/:id", func(c echo.Context) error {
@@ -173,12 +141,17 @@ func (s *Server) registerUserRoutes(g *echo.Group) {
 			ID: userID,
 		}
 		if err := s.Store.DeleteUser(ctx, userDelete); err != nil {
-			if common.ErrorCode(err) == common.NotFound {
-				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("User ID not found: %d", userID))
-			}
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete user").SetInternal(err)
 		}
 
 		return c.JSON(http.StatusOK, true)
 	})
+}
+
+// validateEmail validates the email.
+func validateEmail(email string) bool {
+	if _, err := mail.ParseAddress(email); err != nil {
+		return false
+	}
+	return true
 }

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/boojack/shortify/api"
-	"github.com/boojack/shortify/common"
+	"github.com/google/uuid"
 
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -24,7 +24,7 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 			Email: &signin.Email,
 		}
 		user, err := s.Store.FindUser(ctx, userFind)
-		if err != nil && common.ErrorCode(err) != common.NotFound {
+		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user by email %s", signin.Email)).SetInternal(err)
 		}
 		if user == nil {
@@ -56,7 +56,7 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 			Email:       signup.Email,
 			DisplayName: signup.DisplayName,
 			Password:    signup.Password,
-			OpenID:      common.GenUUID(),
+			OpenID:      genUUID(),
 		}
 		if err := userCreate.Validate(); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Invalid user create format.").SetInternal(err)
@@ -101,4 +101,8 @@ func (s *Server) registerAuthRoutes(g *echo.Group) {
 		c.Response().WriteHeader(http.StatusOK)
 		return nil
 	})
+}
+
+func genUUID() string {
+	return uuid.New().String()
 }

@@ -2,8 +2,8 @@ package v1
 
 import (
 	"fmt"
+	"net/mail"
 
-	"github.com/boojack/shortify/common"
 	"github.com/labstack/echo/v4"
 )
 
@@ -57,7 +57,7 @@ func (create UserCreate) Validate() error {
 	if len(create.Email) < 3 {
 		return fmt.Errorf("email is too short, minimum length is 6")
 	}
-	if !common.ValidateEmail(create.Email) {
+	if !validateEmail(create.Email) {
 		return fmt.Errorf("invalid email format")
 	}
 	if len(create.Password) < 3 {
@@ -103,4 +103,12 @@ func (*APIV1Service) RegisterUserRoutes(g *echo.Group) {
 	g.GET("/user", func(c echo.Context) error {
 		return c.String(200, "GET /user")
 	})
+}
+
+// validateEmail validates the email.
+func validateEmail(email string) bool {
+	if _, err := mail.ParseAddress(email); err != nil {
+		return false
+	}
+	return true
 }

@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/boojack/shortify/api"
-	"github.com/boojack/shortify/common"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -69,7 +68,7 @@ func aclMiddleware(s *Server, next echo.HandlerFunc) echo.HandlerFunc {
 				ID: &userID,
 			}
 			user, err := s.Store.FindUser(ctx, userFind)
-			if err != nil && common.ErrorCode(err) != common.NotFound {
+			if err != nil {
 				return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user by ID: %d", userID)).SetInternal(err)
 			}
 			if user != nil {
@@ -80,7 +79,7 @@ func aclMiddleware(s *Server, next echo.HandlerFunc) echo.HandlerFunc {
 			}
 		}
 
-		if common.HasPrefixes(path, "/api/ping", "/api/status", "/api/workspace") && c.Request().Method == http.MethodGet {
+		if hasPrefixes(path, "/api/ping", "/api/status", "/api/workspace") && c.Request().Method == http.MethodGet {
 			return next(c)
 		}
 

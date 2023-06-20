@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/boojack/shortify/api"
-	"github.com/boojack/shortify/common"
+	"github.com/boojack/shortify/internal/errorutil"
 
 	"github.com/labstack/echo/v4"
 )
@@ -136,7 +136,7 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 			UserID:      userID,
 		}
 		if err := s.Store.DeleteWorkspaceUser(ctx, workspaceUserDelete); err != nil {
-			if common.ErrorCode(err) == common.NotFound {
+			if errorutil.ErrorCode(err) == errorutil.NotFound {
 				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("Workspace user not found with workspace id %d and user id %d", workspaceID, userID))
 			}
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete workspace user").SetInternal(err)
@@ -147,9 +147,7 @@ func (s *Server) registerWorkspaceUserRoutes(g *echo.Group) {
 			WorkspaceID: &workspaceID,
 		}
 		if err := s.Store.DeleteShortcut(ctx, shortcutDelete); err != nil {
-			if common.ErrorCode(err) != common.NotFound {
-				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete shortcut").SetInternal(err)
-			}
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete shortcut").SetInternal(err)
 		}
 
 		return c.JSON(http.StatusOK, true)

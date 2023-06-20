@@ -1,8 +1,9 @@
 package server
 
 import (
+	"strings"
+
 	"github.com/boojack/shortify/api"
-	"github.com/boojack/shortify/common"
 	"github.com/labstack/echo/v4"
 )
 
@@ -16,9 +17,19 @@ func composeResponse(data any) any {
 	}
 }
 
+// hasPrefixes returns true if the string s has any of the given prefixes.
+func hasPrefixes(src string, prefixes ...string) bool {
+	for _, prefix := range prefixes {
+		if strings.HasPrefix(src, prefix) {
+			return true
+		}
+	}
+	return false
+}
+
 func defaultAPIRequestSkipper(c echo.Context) bool {
 	path := c.Path()
-	return common.HasPrefixes(path, "/api", "/o")
+	return hasPrefixes(path, "/api", "/o")
 }
 
 func (server *Server) defaultAuthSkipper(c echo.Context) bool {
@@ -26,7 +37,7 @@ func (server *Server) defaultAuthSkipper(c echo.Context) bool {
 	path := c.Path()
 
 	// Skip auth.
-	if common.HasPrefixes(path, "/api/auth") {
+	if hasPrefixes(path, "/api/auth") {
 		return true
 	}
 
@@ -37,7 +48,7 @@ func (server *Server) defaultAuthSkipper(c echo.Context) bool {
 			OpenID: &openID,
 		}
 		user, err := server.Store.FindUser(ctx, userFind)
-		if err != nil && common.ErrorCode(err) != common.NotFound {
+		if err != nil {
 			return false
 		}
 		if user != nil {

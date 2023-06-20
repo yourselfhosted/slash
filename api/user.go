@@ -2,8 +2,7 @@ package api
 
 import (
 	"fmt"
-
-	"github.com/boojack/shortify/common"
+	"net/mail"
 )
 
 type User struct {
@@ -15,12 +14,11 @@ type User struct {
 	RowStatus RowStatus `json:"rowStatus"`
 
 	// Domain specific fields
-	Email           string         `json:"email"`
-	DisplayName     string         `json:"displayName"`
-	PasswordHash    string         `json:"-"`
-	OpenID          string         `json:"openId"`
-	Role            Role           `json:"role"`
-	UserSettingList []*UserSetting `json:"userSettingList"`
+	Email        string `json:"email"`
+	DisplayName  string `json:"displayName"`
+	PasswordHash string `json:"-"`
+	OpenID       string `json:"openId"`
+	Role         Role   `json:"role"`
 }
 
 type UserCreate struct {
@@ -36,7 +34,7 @@ func (create UserCreate) Validate() error {
 	if len(create.Email) < 3 {
 		return fmt.Errorf("email is too short, minimum length is 6")
 	}
-	if !common.ValidateEmail(create.Email) {
+	if !validateEmail(create.Email) {
 		return fmt.Errorf("invalid email format")
 	}
 	if len(create.Password) < 3 {
@@ -76,4 +74,12 @@ type UserFind struct {
 
 type UserDelete struct {
 	ID int
+}
+
+// validateEmail validates the email.
+func validateEmail(email string) bool {
+	if _, err := mail.ParseAddress(email); err != nil {
+		return false
+	}
+	return true
 }

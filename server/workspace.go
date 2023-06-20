@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/boojack/shortify/api"
-	"github.com/boojack/shortify/common"
+	"github.com/boojack/shortify/internal/errorutil"
 
 	"github.com/labstack/echo/v4"
 )
@@ -108,7 +108,7 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			Name: &workspaceName,
 		})
 		if err != nil {
-			if common.ErrorCode(err) == common.NotFound {
+			if errorutil.ErrorCode(err) == errorutil.NotFound {
 				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("workspace not found by name %s", workspaceName))
 			}
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Errorf("failed to find workspace with name %s", workspaceName)).SetInternal(err)
@@ -119,9 +119,6 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 			Name:        &shortcutName,
 		})
 		if err != nil {
-			if common.ErrorCode(err) == common.NotFound {
-				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("shortcut not found by name %s", shortcutName))
-			}
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Errorf("failed to find shortcut with name %s", shortcutName)).SetInternal(err)
 		}
 
@@ -140,9 +137,6 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 				UserID:      &userID,
 			})
 			if err != nil {
-				if common.ErrorCode(err) == common.NotFound {
-					return echo.NewHTTPError(http.StatusNotFound, "workspace user not found")
-				}
 				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
 			}
 			if workspaceUser == nil {
@@ -224,8 +218,8 @@ func (s *Server) registerWorkspaceRoutes(g *echo.Group) {
 		if err := s.Store.DeleteWorkspace(ctx, &api.WorkspaceDelete{
 			ID: workspaceID,
 		}); err != nil {
-			if common.ErrorCode(err) == common.NotFound {
-				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("User ID not found: %d", userID))
+			if errorutil.ErrorCode(err) == errorutil.NotFound {
+				return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("workspace %d not found", workspaceID))
 			}
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete user").SetInternal(err)
 		}
