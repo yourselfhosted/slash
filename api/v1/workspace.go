@@ -81,7 +81,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create workspace").SetInternal(err)
 		}
 
-		_, err = s.Store.UpsertWorkspaceUserV1(ctx, &store.WorkspaceUser{
+		_, err = s.Store.UpsertWorkspaceUser(ctx, &store.WorkspaceUser{
 			WorkspaceID: workspace.ID,
 			UserID:      userID,
 			Role:        store.RoleAdmin,

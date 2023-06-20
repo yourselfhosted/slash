@@ -60,15 +60,9 @@ func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 	}
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte(secret))))
 
-	apiGroup := e.Group("/api")
-	apiGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return JWTMiddleware(s, next, string(secret))
-	})
-	s.registerShortcutRoutes(apiGroup)
-
 	// Register API v1 routes.
 	apiV1Service := apiv1.NewAPIV1Service(profile, store)
-	apiV1Group := apiGroup.Group("/api/v1")
+	apiV1Group := e.Group("/api/v1")
 	apiV1Group.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return JWTMiddleware(s, next, string(secret))
 	})

@@ -25,4 +25,5 @@ func (s *APIV1Service) Start(apiV1Group *echo.Group, secret string) {
 	s.registerUserRoutes(apiV1Group)
 	s.registerWorkspaceRoutes(apiV1Group)
 	s.registerWorkspaceUserRoutes(apiV1Group)
+	s.registerShortcutRoutes(apiV1Group)
 }

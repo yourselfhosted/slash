@@ -6,16 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func composeResponse(data any) any {
-	type R struct {
-		Data any `json:"data"`
-	}
-
-	return R{
-		Data: data,
-	}
-}
-
 // hasPrefixes returns true if the string s has any of the given prefixes.
 func hasPrefixes(src string, prefixes ...string) bool {
 	for _, prefix := range prefixes {

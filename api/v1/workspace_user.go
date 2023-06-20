@@ -59,7 +59,7 @@ func (s *APIV1Service) registerWorkspaceUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post workspace user request").SetInternal(err)
 		}
 
-		workspaceUser, err := s.Store.UpsertWorkspaceUserV1(ctx, &store.WorkspaceUser{
+		workspaceUser, err := s.Store.UpsertWorkspaceUser(ctx, &store.WorkspaceUser{
 			WorkspaceID: upsert.WorkspaceID,
 			UserID:      upsert.UserID,
 			Role:        convertRoleToStore(upsert.Role),
@@ -157,7 +157,7 @@ func (s *APIV1Service) registerWorkspaceUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusForbidden, "Access forbidden to delete workspace user").SetInternal(err)
 		}
 
-		if err := s.Store.DeleteWorkspaceUserV1(ctx, &store.DeleteWorkspaceUser{
+		if err := s.Store.DeleteWorkspaceUser(ctx, &store.DeleteWorkspaceUser{
 			WorkspaceID: workspaceID,
 			UserID:      userID,
 		}); err != nil {

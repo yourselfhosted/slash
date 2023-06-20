@@ -33,7 +33,7 @@ type DeleteWorkspaceUser struct {
 	UserID      int
 }
 
-func (s *Store) UpsertWorkspaceUserV1(ctx context.Context, upsert *WorkspaceUser) (*WorkspaceUser, error) {
+func (s *Store) UpsertWorkspaceUser(ctx context.Context, upsert *WorkspaceUser) (*WorkspaceUser, error) {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -103,7 +103,7 @@ func (s *Store) GetWorkspaceUser(ctx context.Context, find *FindWorkspaceUser) (
 	return workspaceUser, nil
 }
 
-func (s *Store) DeleteWorkspaceUserV1(ctx context.Context, delete *DeleteWorkspaceUser) error {
+func (s *Store) DeleteWorkspaceUser(ctx context.Context, delete *DeleteWorkspaceUser) error {
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
