@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/boojack/shortify/api"
+	"github.com/boojack/shortify/store"
 
 	"github.com/labstack/echo/v4"
 )
@@ -66,7 +67,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find shortcut").SetInternal(err)
 		}
 
-		workspaceUser, err := s.Store.FindWordspaceUser(ctx, &api.WorkspaceUserFind{
+		workspaceUser, err := s.Store.GetWorkspaceUser(ctx, &store.FindWorkspaceUser{
 			UserID:      &userID,
 			WorkspaceID: &shortcut.WorkspaceID,
 		})
@@ -74,7 +75,7 @@ func (s *Server) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
 		}
 
-		if shortcut.CreatorID != userID && workspaceUser.Role != api.RoleAdmin {
+		if shortcut.CreatorID != userID && workspaceUser.Role != store.RoleAdmin {
 			return echo.NewHTTPError(http.StatusForbidden, "Forbidden to patch shortcut")
 		}
 

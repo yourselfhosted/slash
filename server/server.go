@@ -64,7 +64,6 @@ func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 	apiGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return JWTMiddleware(s, next, string(secret))
 	})
-	s.registerWorkspaceUserRoutes(apiGroup)
 	s.registerShortcutRoutes(apiGroup)
 
 	// Register API v1 routes.
