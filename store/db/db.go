@@ -19,9 +19,6 @@ import (
 //go:embed migration
 var migrationFS embed.FS
 
-//go:embed seed
-var seedFS embed.FS
-
 type DB struct {
 	profile *profile.Profile
 	// sqlite db connection instance
@@ -122,9 +119,6 @@ func (db *DB) Open(ctx context.Context) (err error) {
 			if err := db.applyLatestSchema(ctx); err != nil {
 				return fmt.Errorf("failed to apply latest schema: %w", err)
 			}
-			if err := db.seed(ctx); err != nil {
-				return fmt.Errorf("failed to seed: %w", err)
-			}
 		}
 	}
 
@@ -189,28 +183,6 @@ func (db *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion st
 	}
 
 	return tx.Commit()
-}
-
-func (db *DB) seed(ctx context.Context) error {
-	filenames, err := fs.Glob(seedFS, fmt.Sprintf("%s/*.sql", "seed"))
-	if err != nil {
-		return fmt.Errorf("failed to read seed files, err: %w", err)
-	}
-
-	sort.Strings(filenames)
-
-	// Loop over all seed files and execute them in order.
-	for _, filename := range filenames {
-		buf, err := seedFS.ReadFile(filename)
-		if err != nil {
-			return fmt.Errorf("failed to read seed file, filename=%s err=%w", filename, err)
-		}
-		stmt := string(buf)
-		if err := db.execute(ctx, stmt); err != nil {
-			return fmt.Errorf("seed error: statement:%s err=%w", stmt, err)
-		}
-	}
-	return nil
 }
 
 // execute runs a single SQL statement within a transaction.
