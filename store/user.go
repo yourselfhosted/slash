@@ -7,6 +7,16 @@ import (
 	"strings"
 )
 
+// Role is the type of a role.
+type Role string
+
+const (
+	// RoleAdmin is the ADMIN role.
+	RoleAdmin Role = "ADMIN"
+	// RoleUser is the USER role.
+	RoleUser Role = "USER"
+)
+
 type User struct {
 	ID int
 

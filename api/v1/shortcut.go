@@ -39,12 +39,11 @@ type Shortcut struct {
 	ID int `json:"id"`
 
 	// Standard fields
-	CreatorID   int       `json:"creatorId"`
-	Creator     *User     `json:"creator"`
-	CreatedTs   int64     `json:"createdTs"`
-	UpdatedTs   int64     `json:"updatedTs"`
-	WorkspaceID int       `json:"workspaceId"`
-	RowStatus   RowStatus `json:"rowStatus"`
+	CreatorID int       `json:"creatorId"`
+	Creator   *User     `json:"creator"`
+	CreatedTs int64     `json:"createdTs"`
+	UpdatedTs int64     `json:"updatedTs"`
+	RowStatus RowStatus `json:"rowStatus"`
 
 	// Domain specific fields
 	Name        string     `json:"name"`
@@ -54,7 +53,6 @@ type Shortcut struct {
 }
 
 type CreateShortcutRequest struct {
-	WorkspaceID int        `json:"workspaceId"`
 	Name        string     `json:"name"`
 	Link        string     `json:"link"`
 	Description string     `json:"description"`
@@ -83,7 +81,6 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 		shortcut, err := s.Store.CreateShortcut(ctx, &store.Shortcut{
 			CreatorID:   userID,
-			WorkspaceID: create.WorkspaceID,
 			Name:        create.Name,
 			Link:        create.Link,
 			Description: create.Description,
@@ -113,17 +110,11 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find shortcut").SetInternal(err)
 		}
-
-		workspaceUser, err := s.Store.GetWorkspaceUser(ctx, &store.FindWorkspaceUser{
-			UserID:      &userID,
-			WorkspaceID: &shortcut.WorkspaceID,
-		})
-		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find workspace user").SetInternal(err)
+		if shortcut == nil {
+			return echo.NewHTTPError(http.StatusNotFound, "Shortcut not found")
 		}
-
-		if shortcut.CreatorID != userID && workspaceUser.Role != store.RoleAdmin {
-			return echo.NewHTTPError(http.StatusForbidden, "Forbidden to patch shortcut")
+		if shortcut.CreatorID != userID {
+			return echo.NewHTTPError(http.StatusForbidden, "Shortcut does not belong to user")
 		}
 
 		patch := &PatchShortcutRequest{}
@@ -153,9 +144,6 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		}
 
 		find := &store.FindShortcut{}
-		if workspaceID, err := strconv.Atoi(c.QueryParam("workspaceId")); err == nil {
-			find.WorkspaceID = &workspaceID
-		}
 		if name := c.QueryParam("name"); name != "" {
 			find.Name = &name
 		}

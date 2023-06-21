@@ -41,7 +41,6 @@ type Shortcut struct {
 	RowStatus RowStatus
 
 	// Domain specific fields
-	WorkspaceID int
 	Name        string
 	Link        string
 	Description string
@@ -62,7 +61,6 @@ type FindShortcut struct {
 	ID             *int
 	CreatorID      *int
 	RowStatus      *RowStatus
-	WorkspaceID    *int
 	Name           *string
 	VisibilityList []Visibility
 }
@@ -78,9 +76,9 @@ func (s *Store) CreateShortcut(ctx context.Context, create *Shortcut) (*Shortcut
 	}
 	defer tx.Rollback()
 
-	set := []string{"creator_id", "workspace_id", "name", "link", "description", "visibility"}
-	args := []any{create.CreatorID, create.WorkspaceID, create.Name, create.Link, create.Description, create.Visibility}
-	placeholder := []string{"?", "?", "?", "?", "?", "?"}
+	set := []string{"creator_id", "name", "link", "description", "visibility"}
+	args := []any{create.CreatorID, create.Name, create.Link, create.Description, create.Visibility}
+	placeholder := []string{"?", "?", "?", "?", "?"}
 
 	query := `
 		INSERT INTO shortcut (
@@ -140,7 +138,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 			` + strings.Join(set, ", ") + `
 		WHERE
 			id = ?
-		RETURNING id, creator_id, created_ts, updated_ts, workspace_id, row_status, name, link, description, visibility
+		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, description, visibility
 	`
 	var shortcut Shortcut
 	if err := tx.QueryRowContext(ctx, query, args...).Scan(
@@ -148,7 +146,6 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 		&shortcut.CreatorID,
 		&shortcut.CreatedTs,
 		&shortcut.UpdatedTs,
-		&shortcut.WorkspaceID,
 		&shortcut.RowStatus,
 		&shortcut.Name,
 		&shortcut.Link,
@@ -239,9 +236,6 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 	if v := find.RowStatus; v != nil {
 		where, args = append(where, "row_status = ?"), append(args, *v)
 	}
-	if v := find.WorkspaceID; v != nil {
-		where, args = append(where, "workspace_id = ?"), append(args, *v)
-	}
 	if v := find.Name; v != nil {
 		where, args = append(where, "name = ?"), append(args, *v)
 	}
@@ -261,7 +255,6 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 			created_ts,
 			updated_ts,
 			row_status,
-			workspace_id,
 			name,
 			link,
 			description,
@@ -284,7 +277,6 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 			&shortcut.CreatorID,
 			&shortcut.CreatedTs,
 			&shortcut.UpdatedTs,
-			&shortcut.WorkspaceID,
 			&shortcut.RowStatus,
 			&shortcut.Name,
 			&shortcut.Link,
