@@ -55,10 +55,6 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 		return nil, err
 	}
 
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-
 	return list, nil
 }
 
@@ -94,11 +90,11 @@ func listWorkspaceSettings(ctx context.Context, tx *sql.Tx, find *FindWorkspaceS
 			value
 		FROM workspace_setting
 		WHERE ` + strings.Join(where, " AND ")
-
 	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
+
 	defer rows.Close()
 
 	list := []*WorkspaceSetting{}
@@ -110,7 +106,13 @@ func listWorkspaceSettings(ctx context.Context, tx *sql.Tx, find *FindWorkspaceS
 		); err != nil {
 			return nil, err
 		}
+
 		list = append(list, workspaceSetting)
 	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return list, nil
 }

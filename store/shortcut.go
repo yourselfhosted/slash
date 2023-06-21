@@ -174,10 +174,6 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Short
 		return nil, err
 	}
 
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-
 	return shortcuts, nil
 }
 
@@ -190,10 +186,6 @@ func (s *Store) GetShortcut(ctx context.Context, find *FindShortcut) (*Shortcut,
 
 	shortcuts, err := listShortcuts(ctx, tx, find)
 	if err != nil {
-		return nil, err
-	}
-
-	if err := tx.Commit(); err != nil {
 		return nil, err
 	}
 
@@ -210,9 +202,7 @@ func (s *Store) DeleteShortcut(ctx context.Context, delete *DeleteShortcut) erro
 	}
 	defer tx.Rollback()
 
-	if _, err := tx.ExecContext(ctx, `
-		DELETE FROM shortcut WHERE id = ?
-	`, delete.ID); err != nil {
+	if _, err := tx.ExecContext(ctx, `DELETE FROM shortcut WHERE id = ?`, delete.ID); err != nil {
 		return err
 	}
 
