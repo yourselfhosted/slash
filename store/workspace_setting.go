@@ -40,6 +40,7 @@ func (s *Store) UpsertWorkspaceSetting(ctx context.Context, upsert *WorkspaceSet
 	}
 
 	workspaceSetting := upsert
+	s.workspaceSettingCache.Store(workspaceSetting.Key, workspaceSetting)
 	return workspaceSetting, nil
 }
 
@@ -55,10 +56,20 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 		return nil, err
 	}
 
+	for _, workspaceSetting := range list {
+		s.workspaceSettingCache.Store(workspaceSetting.Key, workspaceSetting)
+	}
+
 	return list, nil
 }
 
 func (s *Store) GetWorkspaceSetting(ctx context.Context, find *FindWorkspaceSetting) (*WorkspaceSetting, error) {
+	if find.Key != "" {
+		if cache, ok := s.workspaceSettingCache.Load(find.Key); ok {
+			return cache.(*WorkspaceSetting), nil
+		}
+	}
+
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -75,6 +86,7 @@ func (s *Store) GetWorkspaceSetting(ctx context.Context, find *FindWorkspaceSett
 	}
 
 	workspaceSetting := list[0]
+	s.workspaceSettingCache.Store(workspaceSetting.Key, workspaceSetting)
 	return workspaceSetting, nil
 }
 

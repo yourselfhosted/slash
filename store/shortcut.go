@@ -140,7 +140,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 			id = ?
 		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, description, visibility
 	`
-	var shortcut Shortcut
+	var shortcut *Shortcut
 	if err := tx.QueryRowContext(ctx, query, args...).Scan(
 		&shortcut.ID,
 		&shortcut.CreatorID,
@@ -159,7 +159,8 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 		return nil, err
 	}
 
-	return &shortcut, nil
+	s.shortcutCache.Store(shortcut.ID, shortcut)
+	return shortcut, nil
 }
 
 func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Shortcut, error) {
@@ -169,15 +170,24 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Short
 	}
 	defer tx.Rollback()
 
-	shortcuts, err := listShortcuts(ctx, tx, find)
+	list, err := listShortcuts(ctx, tx, find)
 	if err != nil {
 		return nil, err
 	}
 
-	return shortcuts, nil
+	for _, shortcut := range list {
+		s.shortcutCache.Store(shortcut.ID, shortcut)
+	}
+	return list, nil
 }
 
 func (s *Store) GetShortcut(ctx context.Context, find *FindShortcut) (*Shortcut, error) {
+	if find.ID != nil {
+		if cache, ok := s.shortcutCache.Load(*find.ID); ok {
+			return cache.(*Shortcut), nil
+		}
+	}
+
 	tx, err := s.db.BeginTx(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -192,7 +202,10 @@ func (s *Store) GetShortcut(ctx context.Context, find *FindShortcut) (*Shortcut,
 	if len(shortcuts) == 0 {
 		return nil, nil
 	}
-	return shortcuts[0], nil
+
+	shortcut := shortcuts[0]
+	s.shortcutCache.Store(shortcut.ID, shortcut)
+	return shortcut, nil
 }
 
 func (s *Store) DeleteShortcut(ctx context.Context, delete *DeleteShortcut) error {
@@ -211,6 +224,7 @@ func (s *Store) DeleteShortcut(ctx context.Context, delete *DeleteShortcut) erro
 		return err
 	}
 
+	s.shortcutCache.Delete(delete.ID)
 	return nil
 }
 

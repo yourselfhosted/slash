@@ -181,7 +181,7 @@ func (s *Store) ListUsers(ctx context.Context, find *FindUser) ([]*User, error) 
 
 func (s *Store) GetUser(ctx context.Context, find *FindUser) (*User, error) {
 	if find.ID != nil {
-		if cache, ok := s.workspaceCache.Load(*find.ID); ok {
+		if cache, ok := s.userCache.Load(*find.ID); ok {
 			return cache.(*User), nil
 		}
 	}
