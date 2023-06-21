@@ -14,6 +14,7 @@ type Store struct {
 
 	workspaceSettingCache sync.Map // map[string]*WorkspaceSetting
 	userCache             sync.Map // map[int]*User
+	userSettingCache      sync.Map // map[string]*UserSetting
 	shortcutCache         sync.Map // map[int]*Shortcut
 }
 
