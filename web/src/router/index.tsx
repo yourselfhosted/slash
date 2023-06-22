@@ -5,7 +5,6 @@ import Root from "../layout/Root";
 import Auth from "../pages/Auth";
 import Home from "../pages/Home";
 import UserDetail from "../pages/UserDetail";
-import ShortcutRedirector from "../pages/ShortcutRedirector";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +29,7 @@ const router = createBrowserRouter([
           if (isNullorUndefined(user)) {
             return redirect("/user/auth");
           }
+          return null;
         },
       },
       {
@@ -46,13 +46,10 @@ const router = createBrowserRouter([
           if (isNullorUndefined(user)) {
             return redirect("/user/auth");
           }
+          return null;
         },
       },
     ],
-  },
-  {
-    path: "/:shortcutName",
-    element: <ShortcutRedirector />,
   },
 ]);
 

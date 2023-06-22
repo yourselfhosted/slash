@@ -9,9 +9,9 @@ interface User {
   updatedTs: TimeStamp;
   rowStatus: RowStatus;
 
+  username: string;
+  nickname: string;
   email: string;
-  displayName: string;
-  openId: string;
   role: Role;
 }
 
