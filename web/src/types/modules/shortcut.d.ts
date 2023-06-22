@@ -9,7 +9,6 @@ interface Shortcut {
   creator: User;
   createdTs: TimeStamp;
   updatedTs: TimeStamp;
-  workspaceId: WorkspaceId;
   rowStatus: RowStatus;
 
   name: string;
@@ -19,8 +18,6 @@ interface Shortcut {
 }
 
 interface ShortcutCreate {
-  workspaceId: WorkspaceId;
-
   name: string;
   link: string;
   description: string;
@@ -38,5 +35,4 @@ interface ShortcutPatch {
 
 interface ShortcutFind {
   creatorId?: UserId;
-  workspaceId?: WorkspaceId;
 }

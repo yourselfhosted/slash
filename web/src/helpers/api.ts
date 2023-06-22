@@ -53,58 +53,10 @@ export function deleteUser(userDelete: UserDelete) {
   return axios.delete(`/api/user/${userDelete.id}`);
 }
 
-export function getWorkspaceList(find?: WorkspaceFind) {
-  const queryList = [];
-  if (find?.creatorId) {
-    queryList.push(`creatorId=${find.creatorId}`);
-  }
-  if (find?.memberId) {
-    queryList.push(`memberId=${find.memberId}`);
-  }
-  return axios.get<ResponseObject<Workspace[]>>(`/api/workspace?${queryList.join("&")}`);
-}
-
-export function getWorkspaceById(workspaceId: WorkspaceId) {
-  return axios.get<ResponseObject<Workspace>>(`/api/workspace/${workspaceId}`);
-}
-
-export function createWorkspace(create: WorkspaceCreate) {
-  return axios.post<ResponseObject<Workspace>>("/api/workspace", create);
-}
-
-export function patchWorkspace(patch: WorkspacePatch) {
-  return axios.patch<ResponseObject<Workspace>>(`/api/workspace/${patch.id}`, patch);
-}
-
-export function deleteWorkspaceById(workspaceId: WorkspaceId) {
-  return axios.delete(`/api/workspace/${workspaceId}`);
-}
-
-export function upsertWorkspaceUser(upsert: WorkspaceUserUpsert) {
-  return axios.post<ResponseObject<WorkspaceUser>>(`/api/workspace/${upsert.workspaceId}/user`, upsert);
-}
-
-export function getWorkspaceUserList(workspaceUserFind?: WorkspaceUserFind) {
-  return axios.get<ResponseObject<WorkspaceUser[]>>(`/api/workspace/${workspaceUserFind?.workspaceId}/user`);
-}
-
-export function getWorkspaceUser(workspaceUserFind?: WorkspaceUserFind) {
-  return axios.get<ResponseObject<WorkspaceUser>>(
-    `/api/workspace/${workspaceUserFind?.workspaceId}/user/${workspaceUserFind?.userId ?? ""}`
-  );
-}
-
-export function deleteWorkspaceUser(workspaceUserDelete: WorkspaceUserDelete) {
-  return axios.delete(`/api/workspace/${workspaceUserDelete.workspaceId}/user/${workspaceUserDelete.userId}`);
-}
-
 export function getShortcutList(shortcutFind?: ShortcutFind) {
   const queryList = [];
   if (shortcutFind?.creatorId) {
     queryList.push(`creatorId=${shortcutFind.creatorId}`);
-  }
-  if (shortcutFind?.workspaceId) {
-    queryList.push(`workspaceId=${shortcutFind.workspaceId}`);
   }
   return axios.get<ResponseObject<Shortcut[]>>(`/api/shortcut?${queryList.join("&")}`);
 }

@@ -6,7 +6,6 @@ import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
 
 interface Props {
-  workspaceId: WorkspaceId;
   shortcutId?: ShortcutId;
   onClose: () => void;
   onConfirm?: () => void;
@@ -17,10 +16,9 @@ interface State {
 }
 
 const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
-  const { onClose, onConfirm, workspaceId, shortcutId } = props;
+  const { onClose, onConfirm, shortcutId } = props;
   const [state, setState] = useState<State>({
     shortcutCreate: {
-      workspaceId: workspaceId,
       name: "",
       link: "",
       description: "",
@@ -36,7 +34,6 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
         setState({
           ...state,
           shortcutCreate: Object.assign(state.shortcutCreate, {
-            workspaceId: shortcutTemp.workspaceId,
             name: shortcutTemp.name,
             link: shortcutTemp.link,
             description: shortcutTemp.description,

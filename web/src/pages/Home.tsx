@@ -1,23 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { userService, workspaceService } from "../services";
+import { userService, shortcutService } from "../services";
 import { useAppSelector } from "../store";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
-import WorkspaceListView from "../components/WorkspaceListView";
-import CreateWorkspaceDialog from "../components/CreateWorkspaceDialog";
-
-interface State {
-  showCreateWorkspaceDialog: boolean;
-}
+import ShortcutListView from "../components/ShortcutListView";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { workspaceList } = useAppSelector((state) => state.workspace);
-  const [state, setState] = useState<State>({
-    showCreateWorkspaceDialog: false,
-  });
   const loadingState = useLoading();
+  const { shortcutList } = useAppSelector((state) => state.shortcut);
 
   useEffect(() => {
     if (!userService.getState().user) {
@@ -25,22 +17,10 @@ const Home: React.FC = () => {
       return;
     }
 
-    Promise.all([workspaceService.fetchWorkspaceList()]).finally(() => {
-      const workspaceList = workspaceService.getState().workspaceList;
-      if (workspaceList.length > 0) {
-        navigate(`/${workspaceList[0].name}`);
-        return;
-      }
+    Promise.all([shortcutService.getMyAllShortcuts()]).finally(() => {
       loadingState.setFinish();
     });
   }, []);
-
-  const handleCreateWorkspaceButtonClick = () => {
-    setState({
-      ...state,
-      showCreateWorkspaceDialog: true,
-    });
-  };
 
   return (
     <>
@@ -53,39 +33,10 @@ const Home: React.FC = () => {
             <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
             loading
           </div>
-        ) : workspaceList.length === 0 ? (
-          <div className="w-full flex flex-col justify-center items-center">
-            <Icon.Frown className="mt-8 w-16 h-auto text-gray-400" />
-            <p className="mt-4 text-xl text-gray-600">Oops, no workspace.</p>
-            <button
-              className="mt-4 text-lg flex flex-row justify-start items-center border px-3 py-2 rounded-lg cursor-pointer hover:shadow"
-              onClick={handleCreateWorkspaceButtonClick}
-            >
-              <Icon.Plus className="w-5 h-auto mr-1" /> Create Workspace
-            </button>
-          </div>
         ) : (
-          <WorkspaceListView workspaceList={workspaceList} />
+          <ShortcutListView shortcutList={shortcutList} />
         )}
       </div>
-
-      {state.showCreateWorkspaceDialog && (
-        <CreateWorkspaceDialog
-          onClose={() => {
-            setState({
-              ...state,
-              showCreateWorkspaceDialog: false,
-            });
-          }}
-          onConfirm={(workspace: Workspace) => {
-            setState({
-              ...state,
-              showCreateWorkspaceDialog: false,
-            });
-            navigate(`/${workspace.name}`);
-          }}
-        />
-      )}
     </>
   );
 };

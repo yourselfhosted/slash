@@ -9,7 +9,7 @@ import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 
 const validateConfig: ValidatorConfig = {
-  minLength: 4,
+  minLength: 3,
   maxLength: 24,
   noSpace: true,
   noChinese: true,

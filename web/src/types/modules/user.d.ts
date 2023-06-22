@@ -1,5 +1,7 @@
 type UserId = number;
 
+type Role = "ADMIN" | "USER";
+
 interface User {
   id: UserId;
 
@@ -10,6 +12,7 @@ interface User {
   email: string;
   displayName: string;
   openId: string;
+  role: Role;
 }
 
 interface UserCreate {
@@ -22,7 +25,6 @@ interface UserPatch {
   id: UserId;
 
   rowStatus?: RowStatus;
-
   displayName?: string;
   password?: string;
   resetOpenId?: boolean;

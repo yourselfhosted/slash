@@ -3,9 +3,8 @@ import copy from "copy-to-clipboard";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { UNKNOWN_ID } from "../helpers/consts";
-import { shortcutService, workspaceService } from "../services";
+import { shortcutService } from "../services";
 import { useAppSelector } from "../store";
-import { unknownWorkspace, unknownWorkspaceUser } from "../store/modules/workspace";
 import { absolutifyLink } from "../helpers/utils";
 import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
@@ -13,7 +12,6 @@ import Dropdown from "./common/Dropdown";
 import CreateShortcutDialog from "./CreateShortcutDialog";
 
 interface Props {
-  workspaceId: WorkspaceId;
   shortcutList: Shortcut[];
 }
 
@@ -22,22 +20,18 @@ interface State {
 }
 
 const ShortcutListView: React.FC<Props> = (props: Props) => {
-  const { workspaceId, shortcutList } = props;
+  const { shortcutList } = props;
   const user = useAppSelector((state) => state.user.user as User);
-  const { workspaceList } = useAppSelector((state) => state.workspace);
   const [state, setState] = useState<State>({
     currentEditingShortcutId: UNKNOWN_ID,
   });
-  const workspace = workspaceList.find((workspace) => workspace.id === workspaceId) ?? unknownWorkspace;
-  const workspaceUser = workspace.workspaceUserList.find((workspaceUser) => workspaceUser.userId === user.id) ?? unknownWorkspaceUser;
 
   const havePermission = (shortcut: Shortcut) => {
-    return workspaceUser.role === "ADMIN" || shortcut.creatorId === user.id;
+    return user.role === "ADMIN" || shortcut.creatorId === user.id;
   };
 
   const handleCopyButtonClick = (shortcut: Shortcut) => {
-    const workspace = workspaceService.getWorkspaceById(workspaceId);
-    copy(absolutifyLink(`/${workspace?.name}/${shortcut.name}`));
+    copy(absolutifyLink(`/${shortcut.name}`));
     toast.success("Shortcut link copied to clipboard.");
   };
 
@@ -117,7 +111,6 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
 
       {state.currentEditingShortcutId !== UNKNOWN_ID && (
         <CreateShortcutDialog
-          workspaceId={workspaceId}
           shortcutId={state.currentEditingShortcutId}
           onClose={() => {
             setState({
