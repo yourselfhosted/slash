@@ -16,7 +16,7 @@ const ShortcutRedirector: React.FC = () => {
     const workspaceName = params.workspaceName || "";
     const shortcutName = params.shortcutName || "";
     getShortcutWithNameAndWorkspaceName(workspaceName, shortcutName)
-      .then(({ data: { data: shortcut } }) => {
+      .then(({ data: shortcut }) => {
         if (shortcut) {
           window.location.href = shortcut.link;
         } else {

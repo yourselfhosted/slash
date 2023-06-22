@@ -16,14 +16,14 @@ const shortcutService = {
   },
 
   fetchWorkspaceShortcuts: async () => {
-    const { data } = (await api.getShortcutList({})).data;
+    const data = (await api.getShortcutList({})).data;
     const shortcuts = data.map((s) => convertResponseModelShortcut(s));
     store.dispatch(setShortcuts(shortcuts));
     return shortcuts;
   },
 
   getMyAllShortcuts: async () => {
-    const { data } = (await api.getShortcutList()).data;
+    const data = (await api.getShortcutList()).data;
     const shortcuts = data.map((s) => convertResponseModelShortcut(s));
     store.dispatch(setShortcuts(shortcuts));
   },
@@ -39,13 +39,13 @@ const shortcutService = {
   },
 
   createShortcut: async (shortcutCreate: ShortcutCreate) => {
-    const { data } = (await api.createShortcut(shortcutCreate)).data;
+    const data = (await api.createShortcut(shortcutCreate)).data;
     const shortcut = convertResponseModelShortcut(data);
     store.dispatch(createShortcut(shortcut));
   },
 
   patchShortcut: async (shortcutPatch: ShortcutPatch) => {
-    const { data } = (await api.patchShortcut(shortcutPatch)).data;
+    const data = (await api.patchShortcut(shortcutPatch)).data;
     const shortcut = convertResponseModelShortcut(data);
     store.dispatch(patchShortcut(shortcut));
   },

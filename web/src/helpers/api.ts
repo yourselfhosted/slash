@@ -1,56 +1,45 @@
 import axios from "axios";
 
-type ResponseObject<T> = {
-  data: T;
-  error?: string;
-  message?: string;
-};
-
 export function getSystemStatus() {
-  return axios.get<ResponseObject<SystemStatus>>("/api/status");
+  return axios.get<SystemStatus>("/api/v1/status");
 }
 
-export function signin(email: string, password: string) {
-  return axios.post<ResponseObject<User>>("/api/auth/signin", {
-    email,
+export function signin(username: string, password: string) {
+  return axios.post<User>("/api/v1/auth/signin", {
+    username,
     password,
   });
 }
 
-export function signup(email: string, password: string) {
-  return axios.post<ResponseObject<User>>("/api/auth/signup", {
-    email,
+export function signup(username: string, password: string) {
+  return axios.post<User>("/api/v1/auth/signup", {
+    username,
     password,
-    name: email,
   });
 }
 
 export function signout() {
-  return axios.post("/api/auth/logout");
-}
-
-export function createUser(userCreate: UserCreate) {
-  return axios.post<ResponseObject<User>>("/api/user", userCreate);
+  return axios.post("/api/v1/auth/logout");
 }
 
 export function getMyselfUser() {
-  return axios.get<ResponseObject<User>>("/api/user/me");
+  return axios.get<User>("/api/v1/user/me");
 }
 
 export function getUserList() {
-  return axios.get<ResponseObject<User[]>>("/api/user");
+  return axios.get<User[]>("/api/v1/user");
 }
 
 export function getUserById(id: number) {
-  return axios.get<ResponseObject<User>>(`/api/user/${id}`);
+  return axios.get<User>(`/api/v1/user/${id}`);
 }
 
 export function patchUser(userPatch: UserPatch) {
-  return axios.patch<ResponseObject<User>>(`/api/user/${userPatch.id}`, userPatch);
+  return axios.patch<User>(`/api/v1/user/${userPatch.id}`, userPatch);
 }
 
 export function deleteUser(userDelete: UserDelete) {
-  return axios.delete(`/api/user/${userDelete.id}`);
+  return axios.delete(`/api/v1/user/${userDelete.id}`);
 }
 
 export function getShortcutList(shortcutFind?: ShortcutFind) {
@@ -58,21 +47,21 @@ export function getShortcutList(shortcutFind?: ShortcutFind) {
   if (shortcutFind?.creatorId) {
     queryList.push(`creatorId=${shortcutFind.creatorId}`);
   }
-  return axios.get<ResponseObject<Shortcut[]>>(`/api/shortcut?${queryList.join("&")}`);
+  return axios.get<Shortcut[]>(`/api/v1/shortcut?${queryList.join("&")}`);
 }
 
 export function getShortcutWithNameAndWorkspaceName(workspaceName: string, shortcutName: string) {
-  return axios.get<ResponseObject<Shortcut>>(`/api/workspace/${workspaceName}/shortcut/${shortcutName}`);
+  return axios.get<Shortcut>(`/api/v1/workspace/${workspaceName}/shortcut/${shortcutName}`);
 }
 
 export function createShortcut(shortcutCreate: ShortcutCreate) {
-  return axios.post<ResponseObject<Shortcut>>("/api/shortcut", shortcutCreate);
+  return axios.post<Shortcut>("/api/v1/shortcut", shortcutCreate);
 }
 
 export function patchShortcut(shortcutPatch: ShortcutPatch) {
-  return axios.patch<ResponseObject<Shortcut>>(`/api/shortcut/${shortcutPatch.id}`, shortcutPatch);
+  return axios.patch<Shortcut>(`/api/v1/shortcut/${shortcutPatch.id}`, shortcutPatch);
 }
 
 export function deleteShortcutById(shortcutId: ShortcutId) {
-  return axios.delete(`/api/shortcut/${shortcutId}`);
+  return axios.delete(`/api/v1/shortcut/${shortcutId}`);
 }

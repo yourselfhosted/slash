@@ -17,7 +17,7 @@ const userService = {
 
   initialState: async () => {
     try {
-      const { data: user } = (await api.getMyselfUser()).data;
+      const user = (await api.getMyselfUser()).data;
       if (user) {
         store.dispatch(setUser(convertResponseModelUser(user)));
       }
@@ -27,7 +27,7 @@ const userService = {
   },
 
   doSignIn: async () => {
-    const { data: user } = (await api.getMyselfUser()).data;
+    const user = (await api.getMyselfUser()).data;
     if (user) {
       store.dispatch(setUser(convertResponseModelUser(user)));
     } else {
@@ -42,7 +42,7 @@ const userService = {
   },
 
   getUserById: async (userId: UserId) => {
-    const { data: user } = (await api.getUserById(userId)).data;
+    const user = (await api.getUserById(userId)).data;
     if (user) {
       return convertResponseModelUser(user);
     } else {
@@ -51,7 +51,7 @@ const userService = {
   },
 
   patchUser: async (userPatch: UserPatch): Promise<void> => {
-    const { data } = (await api.patchUser(userPatch)).data;
+    const data = (await api.patchUser(userPatch)).data;
     if (userPatch.id === store.getState().user.user?.id) {
       const user = convertResponseModelUser(data);
       store.dispatch(patchUser(user));

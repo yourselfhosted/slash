@@ -3,21 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import * as api from "../helpers/api";
-import { validate, ValidatorConfig } from "../helpers/validator";
 import { userService } from "../services";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 
-const validateConfig: ValidatorConfig = {
-  minLength: 3,
-  maxLength: 24,
-  noSpace: true,
-  noChinese: true,
-};
-
 const Auth: React.FC = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const actionBtnLoadingState = useLoading(false);
 
@@ -26,19 +18,11 @@ const Auth: React.FC = () => {
       navigate("/");
       return;
     }
-
-    api.getSystemStatus().then(({ data }) => {
-      const { data: status } = data;
-      if (status.profile.mode === "dev") {
-        setEmail("frank@shortify.demo");
-        setPassword("secret");
-      }
-    });
   }, []);
 
-  const handleEmailInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUsernameInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value as string;
-    setEmail(text);
+    setUsername(text);
   };
 
   const handlePasswordInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,21 +35,9 @@ const Auth: React.FC = () => {
       return;
     }
 
-    const emailValidResult = validate(email, validateConfig);
-    if (!emailValidResult.result) {
-      toast.error("Email: " + emailValidResult.reason);
-      return;
-    }
-
-    const passwordValidResult = validate(password, validateConfig);
-    if (!passwordValidResult.result) {
-      toast.error("Password: " + passwordValidResult.reason);
-      return;
-    }
-
     try {
       actionBtnLoadingState.setLoading();
-      await api.signin(email, password);
+      await api.signin(username, password);
       const user = await userService.doSignIn();
       if (user) {
         navigate("/", {
@@ -86,21 +58,9 @@ const Auth: React.FC = () => {
       return;
     }
 
-    const emailValidResult = validate(email, validateConfig);
-    if (!emailValidResult.result) {
-      toast.error("Email: " + emailValidResult.reason);
-      return;
-    }
-
-    const passwordValidResult = validate(password, validateConfig);
-    if (!passwordValidResult.result) {
-      toast.error("Password: " + passwordValidResult.reason);
-      return;
-    }
-
     try {
       actionBtnLoadingState.setLoading();
-      await api.signup(email, password);
+      await api.signup(username, password);
       const user = await userService.doSignIn();
       if (user) {
         navigate("/", {
@@ -129,8 +89,8 @@ const Auth: React.FC = () => {
           </div>
           <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
             <div className="w-full flex flex-col mb-2">
-              <span className="leading-8 mb-1 text-gray-600">Email</span>
-              <Input className="w-full py-3" type="email" value={email} onChange={handleEmailInputChanged} />
+              <span className="leading-8 mb-1 text-gray-600">Username</span>
+              <Input className="w-full py-3" type="username" value={username} onChange={handleUsernameInputChanged} />
             </div>
             <div className="w-full flex flex-col mb-2">
               <span className="leading-8 text-gray-600">Password</span>

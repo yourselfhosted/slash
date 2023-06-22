@@ -20,12 +20,12 @@ func getUserIDContextKey() string {
 	return userIDContextKey
 }
 
-type SignUpRequest struct {
+type SignInRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type SignInRequest struct {
+type SignUpRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -52,8 +52,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 
 		// Compare the stored hashed password, with the hashed version of the password that was received.
 		if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(signin.Password)); err != nil {
-			// If the two passwords don't match, return a 401 status.
-			return echo.NewHTTPError(http.StatusUnauthorized, "Incorrect password").SetInternal(err)
+			return echo.NewHTTPError(http.StatusUnauthorized, "Unmatched username and password").SetInternal(err)
 		}
 
 		if err := auth.GenerateTokensAndSetCookies(c, user, secret); err != nil {
@@ -69,28 +68,28 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted signup request").SetInternal(err)
 		}
 
-		user := &store.User{
-			Username: signup.Username,
-			Nickname: signup.Username,
-		}
 		passwordHash, err := bcrypt.GenerateFromPassword([]byte(signup.Password), bcrypt.DefaultCost)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate password hash").SetInternal(err)
 		}
-		user.PasswordHash = string(passwordHash)
 
+		create := &store.User{
+			Username:     signup.Username,
+			Nickname:     signup.Username,
+			PasswordHash: string(passwordHash),
+		}
 		existingUsers, err := s.Store.ListUsers(ctx, &store.FindUser{})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find existing users").SetInternal(err)
 		}
 		// The first user to sign up is an admin by default.
 		if len(existingUsers) == 0 {
-			user.Role = store.RoleAdmin
+			create.Role = store.RoleAdmin
 		} else {
-			user.Role = store.RoleUser
+			create.Role = store.RoleUser
 		}
 
-		user, err = s.Store.CreateUser(ctx, user)
+		user, err := s.Store.CreateUser(ctx, create)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create user").SetInternal(err)
 		}

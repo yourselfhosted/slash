@@ -15,12 +15,6 @@ interface User {
   role: Role;
 }
 
-interface UserCreate {
-  email: string;
-  password: string;
-  displayName: string;
-}
-
 interface UserPatch {
   id: UserId;
 
