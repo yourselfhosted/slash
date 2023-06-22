@@ -115,7 +115,7 @@ func listUserSettings(ctx context.Context, tx *sql.Tx, find *FindUserSetting) ([
 
 	userSettingMessageList := make([]*UserSetting, 0)
 	for rows.Next() {
-		var userSettingMessage UserSetting
+		userSettingMessage := &UserSetting{}
 		if err := rows.Scan(
 			&userSettingMessage.UserID,
 			&userSettingMessage.Key,
@@ -123,7 +123,7 @@ func listUserSettings(ctx context.Context, tx *sql.Tx, find *FindUserSetting) ([
 		); err != nil {
 			return nil, err
 		}
-		userSettingMessageList = append(userSettingMessageList, &userSettingMessage)
+		userSettingMessageList = append(userSettingMessageList, userSettingMessage)
 	}
 
 	if err := rows.Err(); err != nil {

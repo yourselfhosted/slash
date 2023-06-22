@@ -127,13 +127,19 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted patch shortcut request").SetInternal(err)
 		}
 
-		shortcut, err = s.Store.UpdateShortcut(ctx, &store.UpdateShortcut{
-			ID:         shortcutID,
-			RowStatus:  (*store.RowStatus)(patch.RowStatus),
-			Name:       patch.Name,
-			Link:       patch.Link,
-			Visibility: (*store.Visibility)(patch.Visibility),
-		})
+		shortcutUpdate := &store.UpdateShortcut{
+			ID:          shortcutID,
+			Name:        patch.Name,
+			Link:        patch.Link,
+			Description: patch.Description,
+		}
+		if patch.RowStatus != nil {
+			shortcutUpdate.RowStatus = (*store.RowStatus)(patch.RowStatus)
+		}
+		if patch.Visibility != nil {
+			shortcutUpdate.Visibility = (*store.Visibility)(patch.Visibility)
+		}
+		shortcut, err = s.Store.UpdateShortcut(ctx, shortcutUpdate)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to patch shortcut").SetInternal(err)
 		}
@@ -227,16 +233,13 @@ func (s *APIV1Service) composeShortcut(ctx context.Context, shortcut *Shortcut) 
 		return nil, nil
 	}
 
-	if shortcut.CreatorID != 0 {
-		user, err := s.Store.GetUser(ctx, &store.FindUser{
-			ID: &shortcut.CreatorID,
-		})
-		if err != nil {
-			return nil, err
-		}
-		shortcut.Creator = convertUserFromStore(user)
+	user, err := s.Store.GetUser(ctx, &store.FindUser{
+		ID: &shortcut.CreatorID,
+	})
+	if err != nil {
+		return nil, err
 	}
-
+	shortcut.Creator = convertUserFromStore(user)
 	return shortcut, nil
 }
 

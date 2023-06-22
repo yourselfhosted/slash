@@ -106,7 +106,7 @@ func upsertMigrationHistory(ctx context.Context, tx *sql.Tx, upsert *MigrationHi
 			version=EXCLUDED.version
 		RETURNING version, created_ts
 	`
-	var migrationHistory MigrationHistory
+	migrationHistory := &MigrationHistory{}
 	if err := tx.QueryRowContext(ctx, query, upsert.Version).Scan(
 		&migrationHistory.Version,
 		&migrationHistory.CreatedTs,
@@ -114,5 +114,5 @@ func upsertMigrationHistory(ctx context.Context, tx *sql.Tx, upsert *MigrationHi
 		return nil, err
 	}
 
-	return &migrationHistory, nil
+	return migrationHistory, nil
 }

@@ -272,7 +272,7 @@ func listUsers(ctx context.Context, tx *sql.Tx, find *FindUser) ([]*User, error)
 
 	list := make([]*User, 0)
 	for rows.Next() {
-		user := User{}
+		user := &User{}
 		if err := rows.Scan(
 			&user.ID,
 			&user.CreatedTs,
@@ -286,7 +286,7 @@ func listUsers(ctx context.Context, tx *sql.Tx, find *FindUser) ([]*User, error)
 		); err != nil {
 			return nil, err
 		}
-		list = append(list, &user)
+		list = append(list, user)
 	}
 
 	if err := rows.Err(); err != nil {

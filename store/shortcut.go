@@ -111,9 +111,8 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 	defer tx.Rollback()
 
 	set, args := []string{}, []any{}
-
 	if update.RowStatus != nil {
-		set, args = append(set, "row_status = ?"), append(args, *update.RowStatus)
+		set, args = append(set, "row_status = ?"), append(args, update.RowStatus.String())
 	}
 	if update.Name != nil {
 		set, args = append(set, "name = ?"), append(args, *update.Name)
@@ -125,7 +124,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 		set, args = append(set, "description = ?"), append(args, *update.Description)
 	}
 	if update.Visibility != nil {
-		set, args = append(set, "visibility = ?"), append(args, *update.Visibility)
+		set, args = append(set, "visibility = ?"), append(args, update.Visibility.String())
 	}
 	if len(set) == 0 {
 		return nil, fmt.Errorf("no update specified")
@@ -140,7 +139,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 			id = ?
 		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, description, visibility
 	`
-	var shortcut *Shortcut
+	shortcut := &Shortcut{}
 	if err := tx.QueryRowContext(ctx, query, args...).Scan(
 		&shortcut.ID,
 		&shortcut.CreatorID,
@@ -275,7 +274,7 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 
 	list := make([]*Shortcut, 0)
 	for rows.Next() {
-		var shortcut Shortcut
+		shortcut := &Shortcut{}
 		if err := rows.Scan(
 			&shortcut.ID,
 			&shortcut.CreatorID,
@@ -289,8 +288,7 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 		); err != nil {
 			return nil, err
 		}
-
-		list = append(list, &shortcut)
+		list = append(list, shortcut)
 	}
 
 	if err := rows.Err(); err != nil {
