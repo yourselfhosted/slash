@@ -40,9 +40,8 @@ func TestUserStore(t *testing.T) {
 func createTestingAdminUser(ctx context.Context, ts *store.Store) (*store.User, error) {
 	userCreate := &store.User{
 		Role:     store.RoleAdmin,
-		Username: "test",
-		Nickname: "test_nickname",
 		Email:    "test@test.com",
+		Nickname: "test_nickname",
 	}
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte("test-password"), bcrypt.DefaultCost)
 	if err != nil {

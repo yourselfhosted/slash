@@ -9,7 +9,7 @@ import Icon from "../components/Icon";
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const actionBtnLoadingState = useLoading(false);
 
@@ -20,9 +20,9 @@ const Auth: React.FC = () => {
     }
   }, []);
 
-  const handleUsernameInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value as string;
-    setUsername(text);
+    setEmail(text);
   };
 
   const handlePasswordInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ const Auth: React.FC = () => {
 
     try {
       actionBtnLoadingState.setLoading();
-      await api.signin(username, password);
+      await api.signin(email, password);
       const user = await userService.doSignIn();
       if (user) {
         navigate("/", {
@@ -60,7 +60,7 @@ const Auth: React.FC = () => {
 
     try {
       actionBtnLoadingState.setLoading();
-      await api.signup(username, password);
+      await api.signup(email, password);
       const user = await userService.doSignIn();
       if (user) {
         navigate("/", {
@@ -89,8 +89,8 @@ const Auth: React.FC = () => {
           </div>
           <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
             <div className="w-full flex flex-col mb-2">
-              <span className="leading-8 mb-1 text-gray-600">Username</span>
-              <Input className="w-full py-3" type="username" value={username} onChange={handleUsernameInputChanged} />
+              <span className="leading-8 mb-1 text-gray-600">Email</span>
+              <Input className="w-full py-3" type="email" value={email} onChange={handleEmailInputChanged} />
             </div>
             <div className="w-full flex flex-col mb-2">
               <span className="leading-8 text-gray-600">Password</span>

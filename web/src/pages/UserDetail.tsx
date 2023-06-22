@@ -16,13 +16,11 @@ const UserDetail: React.FC = () => {
     showChangePasswordDialog: false,
   });
 
-  console.log("here");
   useEffect(() => {
     if (!userService.getState().user) {
       navigate("/user/auth");
       return;
     }
-    console.log("here");
   }, []);
 
   const handleChangePasswordBtnClick = async () => {

@@ -42,29 +42,24 @@ type User struct {
 	RowStatus RowStatus `json:"rowStatus"`
 
 	// Domain specific fields
-	Username string `json:"username"`
-	Nickname string `json:"nickname"`
 	Email    string `json:"email"`
+	Nickname string `json:"nickname"`
 	Role     Role   `json:"role"`
 }
 
 type CreateUserRequest struct {
-	Username string `json:"username"`
-	Nickname string `json:"nickname"`
 	Email    string `json:"email"`
+	Nickname string `json:"nickname"`
 	Password string `json:"password"`
 	Role     Role   `json:"-"`
 }
 
 func (create CreateUserRequest) Validate() error {
-	if len(create.Username) < 3 {
-		return fmt.Errorf("username is too short, minimum length is 3")
-	}
-	if create.Nickname != "" && len(create.Nickname) < 3 {
-		return fmt.Errorf("username is too short, minimum length is 3")
-	}
 	if create.Email != "" && !validateEmail(create.Email) {
 		return fmt.Errorf("invalid email format")
+	}
+	if create.Nickname != "" && len(create.Nickname) < 3 {
+		return fmt.Errorf("nickname is too short, minimum length is 3")
 	}
 	if len(create.Password) < 3 {
 		return fmt.Errorf("password is too short, minimum length is 3")
@@ -228,9 +223,8 @@ func convertUserFromStore(user *store.User) *User {
 		CreatedTs: user.CreatedTs,
 		UpdatedTs: user.UpdatedTs,
 		RowStatus: RowStatus(user.RowStatus),
-		Username:  user.Username,
-		Nickname:  user.Nickname,
 		Email:     user.Email,
+		Nickname:  user.Nickname,
 		Role:      Role(user.Role),
 	}
 }

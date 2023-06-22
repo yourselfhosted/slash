@@ -46,26 +46,26 @@ type claimsMessage struct {
 }
 
 // GenerateAPIToken generates an API token.
-func GenerateAPIToken(userName string, userID int, secret string) (string, error) {
+func GenerateAPIToken(username string, userID int, secret string) (string, error) {
 	expirationTime := time.Now().Add(apiTokenDuration)
-	return generateToken(userName, userID, AccessTokenAudienceName, expirationTime, []byte(secret))
+	return generateToken(username, userID, AccessTokenAudienceName, expirationTime, []byte(secret))
 }
 
 // GenerateAccessToken generates an access token for web.
-func GenerateAccessToken(userName string, userID int, secret string) (string, error) {
+func GenerateAccessToken(username string, userID int, secret string) (string, error) {
 	expirationTime := time.Now().Add(accessTokenDuration)
-	return generateToken(userName, userID, AccessTokenAudienceName, expirationTime, []byte(secret))
+	return generateToken(username, userID, AccessTokenAudienceName, expirationTime, []byte(secret))
 }
 
 // GenerateRefreshToken generates a refresh token for web.
-func GenerateRefreshToken(userName string, userID int, secret string) (string, error) {
+func GenerateRefreshToken(username string, userID int, secret string) (string, error) {
 	expirationTime := time.Now().Add(refreshTokenDuration)
-	return generateToken(userName, userID, RefreshTokenAudienceName, expirationTime, []byte(secret))
+	return generateToken(username, userID, RefreshTokenAudienceName, expirationTime, []byte(secret))
 }
 
 // GenerateTokensAndSetCookies generates jwt token and saves it to the http-only cookie.
 func GenerateTokensAndSetCookies(c echo.Context, user *store.User, secret string) error {
-	accessToken, err := GenerateAccessToken(user.Username, user.ID, secret)
+	accessToken, err := GenerateAccessToken(user.Email, user.ID, secret)
 	if err != nil {
 		return errors.Wrap(err, "failed to generate access token")
 	}
@@ -74,7 +74,7 @@ func GenerateTokensAndSetCookies(c echo.Context, user *store.User, secret string
 	setTokenCookie(c, AccessTokenCookieName, accessToken, cookieExp)
 
 	// We generate here a new refresh token and saving it to the cookie.
-	refreshToken, err := GenerateRefreshToken(user.Username, user.ID, secret)
+	refreshToken, err := GenerateRefreshToken(user.Email, user.ID, secret)
 	if err != nil {
 		return errors.Wrap(err, "failed to generate refresh token")
 	}

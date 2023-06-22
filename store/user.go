@@ -26,9 +26,8 @@ type User struct {
 	RowStatus RowStatus
 
 	// Domain specific fields
-	Username     string
-	Nickname     string
 	Email        string
+	Nickname     string
 	PasswordHash string
 	Role         Role
 }
@@ -37,9 +36,8 @@ type UpdateUser struct {
 	ID int
 
 	RowStatus    *RowStatus
-	Username     *string
-	Nickname     *string
 	Email        *string
+	Nickname     *string
 	PasswordHash *string
 	Role         *Role
 }
@@ -47,9 +45,8 @@ type UpdateUser struct {
 type FindUser struct {
 	ID        *int
 	RowStatus *RowStatus
-	Username  *string
-	Nickname  *string
 	Email     *string
+	Nickname  *string
 	Role      *Role
 }
 
@@ -66,19 +63,17 @@ func (s *Store) CreateUser(ctx context.Context, create *User) (*User, error) {
 
 	query := `
 		INSERT INTO user (
-			username,
-			nickname,
 			email,
+			nickname,
 			password_hash,
 			role
 		)
-		VALUES (?, ?, ?, ?, ?)
+		VALUES (?, ?, ?, ?)
 		RETURNING id, created_ts, updated_ts, row_status
 	`
 	if err := tx.QueryRowContext(ctx, query,
-		create.Username,
-		create.Nickname,
 		create.Email,
+		create.Nickname,
 		create.PasswordHash,
 		create.Role,
 	).Scan(
@@ -110,14 +105,11 @@ func (s *Store) UpdateUser(ctx context.Context, update *UpdateUser) (*User, erro
 	if v := update.RowStatus; v != nil {
 		set, args = append(set, "row_status = ?"), append(args, *v)
 	}
-	if v := update.Username; v != nil {
-		set, args = append(set, "username = ?"), append(args, *v)
+	if v := update.Email; v != nil {
+		set, args = append(set, "email = ?"), append(args, *v)
 	}
 	if v := update.Nickname; v != nil {
 		set, args = append(set, "nickname = ?"), append(args, *v)
-	}
-	if v := update.Email; v != nil {
-		set, args = append(set, "email = ?"), append(args, *v)
 	}
 	if v := update.PasswordHash; v != nil {
 		set, args = append(set, "password_hash = ?"), append(args, *v)
@@ -134,7 +126,7 @@ func (s *Store) UpdateUser(ctx context.Context, update *UpdateUser) (*User, erro
 		UPDATE user
 		SET ` + strings.Join(set, ", ") + `
 		WHERE id = ?
-		RETURNING id, created_ts, updated_ts, row_status, username, nickname, email, password_hash, role
+		RETURNING id, created_ts, updated_ts, row_status, email, nickname, password_hash, role
 	`
 	args = append(args, update.ID)
 	user := &User{}
@@ -143,9 +135,8 @@ func (s *Store) UpdateUser(ctx context.Context, update *UpdateUser) (*User, erro
 		&user.CreatedTs,
 		&user.UpdatedTs,
 		&user.RowStatus,
-		&user.Username,
-		&user.Nickname,
 		&user.Email,
+		&user.Nickname,
 		&user.PasswordHash,
 		&user.Role,
 	); err != nil {
@@ -236,14 +227,11 @@ func listUsers(ctx context.Context, tx *sql.Tx, find *FindUser) ([]*User, error)
 	if v := find.RowStatus; v != nil {
 		where, args = append(where, "row_status = ?"), append(args, v.String())
 	}
-	if v := find.Username; v != nil {
-		where, args = append(where, "username = ?"), append(args, *v)
+	if v := find.Email; v != nil {
+		where, args = append(where, "email = ?"), append(args, *v)
 	}
 	if v := find.Nickname; v != nil {
 		where, args = append(where, "nickname = ?"), append(args, *v)
-	}
-	if v := find.Email; v != nil {
-		where, args = append(where, "email = ?"), append(args, *v)
 	}
 	if v := find.Role; v != nil {
 		where, args = append(where, "role = ?"), append(args, *v)
@@ -255,9 +243,8 @@ func listUsers(ctx context.Context, tx *sql.Tx, find *FindUser) ([]*User, error)
 			created_ts,
 			updated_ts,
 			row_status,
-			username,
-			nickname,
 			email,
+			nickname,
 			password_hash,
 			role
 		FROM user
@@ -278,9 +265,8 @@ func listUsers(ctx context.Context, tx *sql.Tx, find *FindUser) ([]*User, error)
 			&user.CreatedTs,
 			&user.UpdatedTs,
 			&user.RowStatus,
-			&user.Username,
-			&user.Nickname,
 			&user.Email,
+			&user.Nickname,
 			&user.PasswordHash,
 			&user.Role,
 		); err != nil {

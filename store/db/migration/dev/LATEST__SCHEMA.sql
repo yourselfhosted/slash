@@ -16,9 +16,8 @@ CREATE TABLE user (
   created_ts BIGINT NOT NULL DEFAULT (strftime('%s', 'now')),
   updated_ts BIGINT NOT NULL DEFAULT (strftime('%s', 'now')),
   row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',
-  username TEXT NOT NULL UNIQUE,
+  email TEXT NOT NULL UNIQUE,
   nickname TEXT NOT NULL,
-  email TEXT NOT NULL,
   password_hash TEXT NOT NULL,
   role TEXT NOT NULL CHECK (role IN ('ADMIN', 'USER')) DEFAULT 'USER'
 );

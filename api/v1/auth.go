@@ -21,12 +21,12 @@ func getUserIDContextKey() string {
 }
 
 type SignInRequest struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
 type SignUpRequest struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -39,20 +39,20 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 		}
 
 		user, err := s.Store.GetUser(ctx, &store.FindUser{
-			Username: &signin.Username,
+			Email: &signin.Email,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user by username %s", signin.Username)).SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user by email %s", signin.Email)).SetInternal(err)
 		}
 		if user == nil {
-			return echo.NewHTTPError(http.StatusUnauthorized, fmt.Sprintf("User not found with username %s", signin.Username))
+			return echo.NewHTTPError(http.StatusUnauthorized, fmt.Sprintf("User not found with email %s", signin.Email))
 		} else if user.RowStatus == store.Archived {
-			return echo.NewHTTPError(http.StatusForbidden, fmt.Sprintf("User has been archived with username %s", signin.Username))
+			return echo.NewHTTPError(http.StatusForbidden, fmt.Sprintf("User has been archived with email %s", signin.Email))
 		}
 
 		// Compare the stored hashed password, with the hashed version of the password that was received.
 		if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(signin.Password)); err != nil {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Unmatched username and password").SetInternal(err)
+			return echo.NewHTTPError(http.StatusUnauthorized, "Unmatched email and password").SetInternal(err)
 		}
 
 		if err := auth.GenerateTokensAndSetCookies(c, user, secret); err != nil {
@@ -74,8 +74,8 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 		}
 
 		create := &store.User{
-			Username:     signup.Username,
-			Nickname:     signup.Username,
+			Email:        signup.Email,
+			Nickname:     signup.Email,
 			PasswordHash: string(passwordHash),
 		}
 		existingUsers, err := s.Store.ListUsers(ctx, &store.FindUser{})

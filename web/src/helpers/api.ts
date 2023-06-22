@@ -4,16 +4,16 @@ export function getSystemStatus() {
   return axios.get<SystemStatus>("/api/v1/status");
 }
 
-export function signin(username: string, password: string) {
+export function signin(email: string, password: string) {
   return axios.post<User>("/api/v1/auth/signin", {
-    username,
+    email,
     password,
   });
 }
 
-export function signup(username: string, password: string) {
+export function signup(email: string, password: string) {
   return axios.post<User>("/api/v1/auth/signup", {
-    username,
+    email,
     password,
   });
 }
