@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -90,7 +91,11 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create shortcut").SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, shortcut)
+		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
+		}
+		return c.JSON(http.StatusOK, shortcutMessage)
 	})
 
 	g.PATCH("/shortcut/:shortcutId", func(c echo.Context) error {
@@ -133,7 +138,11 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to patch shortcut").SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, shortcut)
+		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
+		}
+		return c.JSON(http.StatusOK, shortcutMessage)
 	})
 
 	g.GET("/shortcut", func(c echo.Context) error {
@@ -164,7 +173,15 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		}
 		list = append(list, privateShortcutList...)
 
-		return c.JSON(http.StatusOK, list)
+		shortcutMessageList := []*Shortcut{}
+		for _, shortcut := range list {
+			shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
+			if err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
+			}
+			shortcutMessageList = append(shortcutMessageList, shortcutMessage)
+		}
+		return c.JSON(http.StatusOK, shortcutMessageList)
 	})
 
 	g.GET("/shortcut/:id", func(c echo.Context) error {
@@ -181,7 +198,11 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to fetch shortcut by ID %d", shortcutID)).SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, shortcut)
+		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to compose shortcut").SetInternal(err)
+		}
+		return c.JSON(http.StatusOK, shortcutMessage)
 	})
 
 	g.DELETE("/shortcut/:id", func(c echo.Context) error {
@@ -201,6 +222,24 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 	})
 }
 
+func (s *APIV1Service) composeShortcut(ctx context.Context, shortcut *Shortcut) (*Shortcut, error) {
+	if shortcut == nil {
+		return nil, nil
+	}
+
+	if shortcut.CreatorID != 0 {
+		user, err := s.Store.GetUser(ctx, &store.FindUser{
+			ID: &shortcut.CreatorID,
+		})
+		if err != nil {
+			return nil, err
+		}
+		shortcut.Creator = convertUserFromStore(user)
+	}
+
+	return shortcut, nil
+}
+
 func convertVisibilityToStore(visibility Visibility) store.Visibility {
 	switch visibility {
 	case VisibilityPrivate:
@@ -211,5 +250,19 @@ func convertVisibilityToStore(visibility Visibility) store.Visibility {
 		return store.VisibilityPublic
 	default:
 		return store.VisibilityPrivate
+	}
+}
+
+func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
+	return &Shortcut{
+		ID:          shortcut.ID,
+		CreatedTs:   shortcut.CreatedTs,
+		UpdatedTs:   shortcut.UpdatedTs,
+		CreatorID:   shortcut.CreatorID,
+		Name:        shortcut.Name,
+		Link:        shortcut.Link,
+		Description: shortcut.Description,
+		Visibility:  Visibility(shortcut.Visibility),
+		RowStatus:   RowStatus(shortcut.RowStatus),
 	}
 }

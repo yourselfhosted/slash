@@ -58,7 +58,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 		if err := auth.GenerateTokensAndSetCookies(c, user, secret); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate tokens").SetInternal(err)
 		}
-		return c.JSON(http.StatusOK, user)
+		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
 	g.POST("/auth/signup", func(c echo.Context) error {
@@ -98,7 +98,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate tokens").SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, user)
+		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
 	g.POST("/auth/logout", func(c echo.Context) error {

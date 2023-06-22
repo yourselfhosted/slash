@@ -87,11 +87,15 @@ type UserDelete struct {
 func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	g.GET("/user", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userList, err := s.Store.ListUsers(ctx, &store.FindUser{})
+		list, err := s.Store.ListUsers(ctx, &store.FindUser{})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user list").SetInternal(err)
 		}
 
+		userList := []*User{}
+		for _, user := range list {
+			userList = append(userList, convertUserFromStore(user))
+		}
 		return c.JSON(http.StatusOK, userList)
 	})
 
@@ -110,7 +114,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, user)
+		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
 	g.GET("/user/:id", func(c echo.Context) error {
@@ -127,7 +131,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, user)
+		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
 	g.PATCH("/user/:id", func(c echo.Context) error {
@@ -172,7 +176,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to update user").SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, user)
+		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
 	g.DELETE("/user/:id", func(c echo.Context) error {
@@ -215,4 +219,18 @@ func validateEmail(email string) bool {
 		return false
 	}
 	return true
+}
+
+// convertUserFromStore converts a store user to a user.
+func convertUserFromStore(user *store.User) *User {
+	return &User{
+		ID:        user.ID,
+		CreatedTs: user.CreatedTs,
+		UpdatedTs: user.UpdatedTs,
+		RowStatus: RowStatus(user.RowStatus),
+		Username:  user.Username,
+		Nickname:  user.Nickname,
+		Email:     user.Email,
+		Role:      Role(user.Role),
+	}
 }
