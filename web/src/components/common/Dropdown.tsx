@@ -37,8 +37,8 @@ const Dropdown: React.FC<Props> = (props: Props) => {
       {trigger ? (
         trigger
       ) : (
-        <button className="flex flex-row justify-center items-center p-1 rounded text-gray-600 cursor-pointer border hover:opacity-80">
-          <Icon.MoreHorizontal className="w-4 h-auto" />
+        <button className="flex flex-row justify-center items-center rounded text-gray-600 cursor-pointer hover:opacity-80">
+          <Icon.MoreVertical className="w-4 h-auto" />
         </button>
       )}
       <div

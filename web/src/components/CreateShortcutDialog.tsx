@@ -127,13 +127,16 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             <span className="mb-2">
               Name <span className="text-red-600">*</span>
             </span>
-            <Input
-              className="w-full"
-              type="text"
-              placeholder="shortcut-name"
-              value={state.shortcutCreate.name}
-              onChange={handleNameInputChange}
-            />
+            <div className="relative w-full">
+              <span className="absolute z-1 top-2 left-3 text-gray-400">o/</span>
+              <Input
+                className="w-full !pl-7"
+                type="text"
+                placeholder="shortcut-name"
+                value={state.shortcutCreate.name}
+                onChange={handleNameInputChange}
+              />
+            </div>
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
@@ -159,7 +162,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Tags</span>
-            <Input className="w-full" type="text" placeholder="Tags" value={tag} onChange={handleTagsInputChange} />
+            <Input className="w-full" type="text" placeholder="Separated by spaces" value={tag} onChange={handleTagsInputChange} />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
