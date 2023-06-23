@@ -63,6 +63,16 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 
 	g.POST("/auth/signup", func(c echo.Context) error {
 		ctx := c.Request().Context()
+		disallowSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+			Key: WorkspaceDisallowSignUp.String(),
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get workspace setting").SetInternal(err)
+		}
+		if disallowSignUpSetting != nil && disallowSignUpSetting.Value == "true" {
+			return echo.NewHTTPError(http.StatusForbidden, "Sign up is not allowed")
+		}
+
 		signup := &SignUpRequest{}
 		if err := json.NewDecoder(c.Request().Body).Decode(signup); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted signup request").SetInternal(err)

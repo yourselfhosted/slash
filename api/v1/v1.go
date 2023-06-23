@@ -22,6 +22,7 @@ func NewAPIV1Service(profile *profile.Profile, store *store.Store) *APIV1Service
 func (s *APIV1Service) Start(apiGroup *echo.Group, secret string) {
 	apiV1Group := apiGroup.Group("/api/v1")
 	s.registerSystemRoutes(apiV1Group)
+	s.registerWorkspaceSettingRoutes(apiV1Group)
 	s.registerAuthRoutes(apiV1Group, secret)
 	s.registerUserRoutes(apiV1Group)
 	s.registerShortcutRoutes(apiV1Group)
