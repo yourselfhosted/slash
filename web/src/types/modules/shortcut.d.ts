@@ -15,6 +15,7 @@ interface Shortcut {
   link: string;
   description: string;
   visibility: Visibility;
+  tags: string[];
 }
 
 interface ShortcutCreate {
@@ -22,6 +23,7 @@ interface ShortcutCreate {
   link: string;
   description: string;
   visibility: Visibility;
+  tags: string[];
 }
 
 interface ShortcutPatch {
@@ -31,8 +33,10 @@ interface ShortcutPatch {
   link?: string;
   description?: string;
   visibility?: Visibility;
+  tags?: string[];
 }
 
 interface ShortcutFind {
   creatorId?: UserId;
+  tag?: string;
 }

@@ -58,10 +58,21 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
       <div className="w-full flex flex-col justify-start items-start">
         {shortcutList.map((shortcut) => {
           return (
-            <div key={shortcut.id} className="w-full flex flex-row justify-between items-start border px-6 py-4 mb-3 rounded-lg">
-              <div className="flex flex-row justify-start items-center mr-4">
-                <span>{shortcut.name}</span>
-                <span className="text-gray-400 text-sm ml-2">({shortcut.description})</span>
+            <div key={shortcut.id} className="w-full flex flex-row justify-between items-start border px-4 py-3 mb-2 rounded-lg">
+              <div className="flex flex-col justify-start items-start mr-4">
+                <p>
+                  <span>{shortcut.name}</span>
+                  {shortcut.description && <span className="text-gray-500 ml-1">({shortcut.description})</span>}
+                </p>
+                <div className="space-x-2">
+                  {shortcut.tags.map((tag) => {
+                    return (
+                      <span key={tag} className="text-gray-400 text-sm font-mono">
+                        #{tag}
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
               <div className="flex flex-row justify-end items-center">
                 <span className="w-16 truncate mr-2 text-gray-600">{shortcut.creator.nickname}</span>

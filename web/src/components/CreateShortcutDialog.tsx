@@ -23,8 +23,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       link: "",
       description: "",
       visibility: "PRIVATE",
+      tags: [],
     },
   });
+  const [tag, setTag] = useState<string>("");
   const requestState = useLoading(false);
 
   useEffect(() => {
@@ -40,6 +42,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             visibility: shortcutTemp.visibility,
           }),
         });
+        setTag(shortcutTemp.tags.join(" "));
       }
     }
   }, [shortcutId]);
@@ -67,6 +70,11 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     handleInputChange(e, "description");
   };
 
+  const handleTagsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value as string;
+    setTag(text);
+  };
+
   const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleInputChange(e, "visibility");
   };
@@ -85,9 +93,13 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           link: state.shortcutCreate.link,
           description: state.shortcutCreate.description,
           visibility: state.shortcutCreate.visibility,
+          tags: tag.split(" "),
         });
       } else {
-        await shortcutService.createShortcut(state.shortcutCreate);
+        await shortcutService.createShortcut({
+          ...state.shortcutCreate,
+          tags: tag.split(" "),
+        });
       }
 
       if (onConfirm) {
@@ -144,6 +156,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               value={state.shortcutCreate.description}
               onChange={handleDescriptionInputChange}
             />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">Tags</span>
+            <Input className="w-full" type="text" placeholder="Tags" value={tag} onChange={handleTagsInputChange} />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">

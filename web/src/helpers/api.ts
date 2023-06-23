@@ -47,11 +47,10 @@ export function getShortcutList(shortcutFind?: ShortcutFind) {
   if (shortcutFind?.creatorId) {
     queryList.push(`creatorId=${shortcutFind.creatorId}`);
   }
+  if (shortcutFind?.tag) {
+    queryList.push(`tag=${shortcutFind.tag}`);
+  }
   return axios.get<Shortcut[]>(`/api/v1/shortcut?${queryList.join("&")}`);
-}
-
-export function getShortcutWithNameAndWorkspaceName(workspaceName: string, shortcutName: string) {
-  return axios.get<Shortcut>(`/api/v1/workspace/${workspaceName}/shortcut/${shortcutName}`);
 }
 
 export function createShortcut(shortcutCreate: ShortcutCreate) {
