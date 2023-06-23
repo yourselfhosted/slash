@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { UNKNOWN_ID } from "../helpers/consts";
 import { shortcutService } from "../services";
-import { useAppSelector } from "../store";
+import { useAppSelector } from "../stores";
 import { absolutifyLink } from "../helpers/utils";
 import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";

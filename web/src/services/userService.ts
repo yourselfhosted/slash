@@ -1,6 +1,6 @@
 import * as api from "../helpers/api";
-import store from "../store";
-import { setUser, patchUser } from "../store/modules/user";
+import store from "../stores";
+import { setUser, patchUser } from "../stores/modules/user";
 
 export const convertResponseModelUser = (user: User): User => {
   return {

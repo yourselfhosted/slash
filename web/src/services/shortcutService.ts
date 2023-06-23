@@ -1,6 +1,6 @@
 import * as api from "../helpers/api";
-import store from "../store/";
-import { createShortcut, deleteShortcut, patchShortcut, setShortcuts } from "../store/modules/shortcut";
+import store from "../stores";
+import { createShortcut, deleteShortcut, patchShortcut, setShortcuts } from "../stores/modules/shortcut";
 
 const convertResponseModelShortcut = (shortcut: Shortcut): Shortcut => {
   return {

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../store";
+import { useAppSelector } from "../stores";
 import { userService } from "../services";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";

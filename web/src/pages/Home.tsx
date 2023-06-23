@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userService, shortcutService } from "../services";
-import { useAppSelector } from "../store";
+import { useAppSelector } from "../stores";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 import Dropdown from "../components/common/Dropdown";

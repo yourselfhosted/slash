@@ -1,5 +1,5 @@
-import store from "../store";
-import { setGlobalState } from "../store/modules/global";
+import store from "../stores";
+import { setGlobalState } from "../stores/modules/global";
 import userService from "./userService";
 
 const globalService = {

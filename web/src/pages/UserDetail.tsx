@@ -1,7 +1,7 @@
 import { Button } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../store";
+import { useAppSelector } from "../stores";
 import { userService } from "../services";
 import ChangePasswordDialog from "../components/ChangePasswordDialog";
 

@@ -1,7 +1,7 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { isNullorUndefined } from "../helpers/utils";
 import { userService } from "../services";
-import Root from "../layout/Root";
+import Root from "../layouts/Root";
 import Auth from "../pages/Auth";
 import Home from "../pages/Home";
 import UserDetail from "../pages/UserDetail";
