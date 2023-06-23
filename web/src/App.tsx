@@ -7,7 +7,7 @@ function App() {
   return (
     <CssVarsProvider>
       <RouterProvider router={router} />
-      <Toaster position="top-right" />
+      <Toaster position="top-center" />
     </CssVarsProvider>
   );
 }

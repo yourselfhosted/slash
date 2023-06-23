@@ -64,3 +64,10 @@ export function patchShortcut(shortcutPatch: ShortcutPatch) {
 export function deleteShortcutById(shortcutId: ShortcutId) {
   return axios.delete(`/api/v1/shortcut/${shortcutId}`);
 }
+
+export function upsertWorkspaceSetting(key: string, value: string) {
+  return axios.post(`/api/v1/workspace/setting`, {
+    key,
+    value,
+  });
+}

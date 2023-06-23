@@ -5,4 +5,5 @@ interface Profile {
 
 interface SystemStatus {
   profile: Profile;
+  disallowSignUp: boolean;
 }

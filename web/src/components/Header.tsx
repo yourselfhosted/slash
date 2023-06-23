@@ -32,10 +32,10 @@ const Header: React.FC = () => {
             actions={
               <>
                 <Link
-                  to="/account"
+                  to="/setting"
                   className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
                 >
-                  <Icon.User className="w-4 h-auto mr-2" /> My Account
+                  <Icon.Settings className="w-4 h-auto mr-2" /> Setting
                 </Link>
                 <button
                   className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"

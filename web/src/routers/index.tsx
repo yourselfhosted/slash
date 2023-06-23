@@ -4,7 +4,7 @@ import { userService } from "../services";
 import Root from "../layouts/Root";
 import Auth from "../pages/Auth";
 import Home from "../pages/Home";
-import Account from "../pages/Account";
+import Setting from "../pages/Setting";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/account",
-        element: <Account />,
+        path: "/setting",
+        element: <Setting />,
         loader: async () => {
           try {
             await userService.initialState();
