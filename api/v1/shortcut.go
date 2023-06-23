@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/boojack/shortify/store"
 
@@ -51,6 +52,7 @@ type Shortcut struct {
 	Link        string     `json:"link"`
 	Description string     `json:"description"`
 	Visibility  Visibility `json:"visibility"`
+	Tags        []string   `json:"tags"`
 }
 
 type CreateShortcutRequest struct {
@@ -58,6 +60,7 @@ type CreateShortcutRequest struct {
 	Link        string     `json:"link"`
 	Description string     `json:"description"`
 	Visibility  Visibility `json:"visibility"`
+	Tags        []string   `json:"tags"`
 }
 
 type PatchShortcutRequest struct {
@@ -66,6 +69,7 @@ type PatchShortcutRequest struct {
 	Link        *string     `json:"link"`
 	Description *string     `json:"description"`
 	Visibility  *Visibility `json:"visibility"`
+	Tags        []string    `json:"tags"`
 }
 
 func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
@@ -86,6 +90,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			Link:        create.Link,
 			Description: create.Description,
 			Visibility:  convertVisibilityToStore(create.Visibility),
+			Tag:         strings.Join(create.Tags, " "),
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create shortcut").SetInternal(err)
@@ -138,6 +143,10 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		}
 		if patch.Visibility != nil {
 			shortcutUpdate.Visibility = (*store.Visibility)(patch.Visibility)
+		}
+		if patch.Tags != nil {
+			tag := strings.Join(patch.Tags, " ")
+			shortcutUpdate.Tag = &tag
 		}
 		shortcut, err = s.Store.UpdateShortcut(ctx, shortcutUpdate)
 		if err != nil {
@@ -267,5 +276,6 @@ func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
 		Description: shortcut.Description,
 		Visibility:  Visibility(shortcut.Visibility),
 		RowStatus:   RowStatus(shortcut.RowStatus),
+		Tags:        strings.Split(shortcut.Tag, " "),
 	}
 }
