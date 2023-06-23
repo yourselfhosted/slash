@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { userService, shortcutService } from "../services";
+import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
@@ -13,7 +12,6 @@ interface State {
 }
 
 const Home: React.FC = () => {
-  const navigate = useNavigate();
   const loadingState = useLoading();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
@@ -21,11 +19,6 @@ const Home: React.FC = () => {
   });
 
   useEffect(() => {
-    if (!userService.getState().user) {
-      navigate("/user/auth");
-      return;
-    }
-
     Promise.all([shortcutService.getMyAllShortcuts()]).finally(() => {
       loadingState.setFinish();
     });

@@ -4,11 +4,11 @@ import { userService } from "../services";
 import Root from "../layouts/Root";
 import Auth from "../pages/Auth";
 import Home from "../pages/Home";
-import UserDetail from "../pages/UserDetail";
+import Account from "../pages/Account";
 
 const router = createBrowserRouter([
   {
-    path: "/user/auth",
+    path: "/auth",
     element: <Auth />,
   },
   {
@@ -27,14 +27,14 @@ const router = createBrowserRouter([
 
           const { user } = userService.getState();
           if (isNullorUndefined(user)) {
-            return redirect("/user/auth");
+            return redirect("/auth");
           }
           return null;
         },
       },
       {
         path: "/account",
-        element: <UserDetail />,
+        element: <Account />,
         loader: async () => {
           try {
             await userService.initialState();
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
 
           const { user } = userService.getState();
           if (isNullorUndefined(user)) {
-            return redirect("/user/auth");
+            return redirect("/auth");
           }
           return null;
         },

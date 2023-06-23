@@ -4,40 +4,36 @@ import { toast } from "react-hot-toast";
 import useLoading from "../hooks/useLoading";
 import { userService } from "../services";
 import Icon from "./Icon";
+import { useAppSelector } from "../stores";
 
 interface Props {
   onClose: () => void;
 }
 
-const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
+const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
   const { onClose } = props;
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordAgain, setNewPasswordAgain] = useState("");
+  const user = useAppSelector((state) => state.user.user as User);
+  const [email, setEmail] = useState(user.email);
+  const [nickname, setNickname] = useState(user.nickname);
   const requestState = useLoading(false);
 
   const handleCloseBtnClick = () => {
     onClose();
   };
 
-  const handleNewPasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value as string;
-    setNewPassword(text);
+    setEmail(text);
   };
 
-  const handleNewPasswordAgainChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNicknameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value as string;
-    setNewPasswordAgain(text);
+    setNickname(text);
   };
 
   const handleSaveBtnClick = async () => {
-    if (newPassword === "" || newPasswordAgain === "") {
-      toast.error("Please fill all inputs");
-      return;
-    }
-
-    if (newPassword !== newPasswordAgain) {
-      toast.error("Not matched");
-      setNewPasswordAgain("");
+    if (email === "" || nickname === "") {
+      toast.error("Please fill all fields");
       return;
     }
 
@@ -46,7 +42,8 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
       const user = userService.getState().user as User;
       await userService.patchUser({
         id: user.id,
-        password: newPassword,
+        email,
+        nickname,
       });
       onClose();
       toast("Password changed");
@@ -61,19 +58,19 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
     <Modal open={true}>
       <ModalDialog>
         <div className="flex flex-row justify-between items-center w-80 mb-4">
-          <span className="text-lg font-medium">Change Password</span>
+          <span className="text-lg font-medium">Edit Userinfo</span>
           <Button variant="plain" onClick={handleCloseBtnClick}>
             <Icon.X className="w-5 h-auto text-gray-600" />
           </Button>
         </div>
         <div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">New Password</span>
-            <Input className="w-full" type="text" value={newPassword} onChange={handleNewPasswordChanged} />
+            <span className="mb-2">Email</span>
+            <Input className="w-full" type="text" value={email} onChange={handleEmailChanged} />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">New Password Again</span>
-            <Input className="w-full" type="text" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
+            <span className="mb-2">Nickname</span>
+            <Input className="w-full" type="text" value={nickname} onChange={handleNicknameChanged} />
           </div>
           <div className="w-full flex flex-row justify-end items-center space-x-2">
             <Button variant="plain" disabled={requestState.isLoading} onClick={handleCloseBtnClick}>
@@ -89,4 +86,4 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default ChangePasswordDialog;
+export default EditUserinfoDialog;

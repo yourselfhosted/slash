@@ -1,16 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../stores";
-import { userService } from "../services";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user).user as User;
 
   const handleSignOutButtonClick = async () => {
-    await userService.doSignOut();
-    navigate("/user/auth");
+    navigate("/auth");
   };
 
   return (
@@ -24,37 +22,31 @@ const Header: React.FC = () => {
             </Link>
           </div>
           <div className="relative flex-shrink-0">
-            {user ? (
-              <Dropdown
-                trigger={
-                  <button className="flex flex-row justify-end items-center cursor-pointer">
-                    <span>{user.nickname}</span>
-                    <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600" />
+            <Dropdown
+              trigger={
+                <button className="flex flex-row justify-end items-center cursor-pointer">
+                  <span>{user.nickname}</span>
+                  <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600" />
+                </button>
+              }
+              actions={
+                <>
+                  <Link
+                    to="/account"
+                    className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                  >
+                    <Icon.User className="w-4 h-auto mr-2" /> My Account
+                  </Link>
+                  <button
+                    className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                    onClick={() => handleSignOutButtonClick()}
+                  >
+                    <Icon.LogOut className="w-4 h-auto mr-2" /> Sign out
                   </button>
-                }
-                actions={
-                  <>
-                    <Link
-                      to="/account"
-                      className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
-                    >
-                      <Icon.User className="w-4 h-auto mr-2" /> My Account
-                    </Link>
-                    <button
-                      className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
-                      onClick={() => handleSignOutButtonClick()}
-                    >
-                      <Icon.LogOut className="w-4 h-auto mr-2" /> Sign out
-                    </button>
-                  </>
-                }
-                actionsClassName="!w-40"
-              ></Dropdown>
-            ) : (
-              <span className="cursor-pointer" onClick={() => navigate("/user/auth")}>
-                Sign in
-              </span>
-            )}
+                </>
+              }
+              actionsClassName="!w-40"
+            ></Dropdown>
           </div>
         </div>
       </div>

@@ -14,10 +14,7 @@ const Auth: React.FC = () => {
   const actionBtnLoadingState = useLoading(false);
 
   useEffect(() => {
-    if (userService.getState().user) {
-      navigate("/");
-      return;
-    }
+    userService.doSignOut();
   }, []);
 
   const handleEmailInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {

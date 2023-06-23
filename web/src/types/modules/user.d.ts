@@ -18,9 +18,9 @@ interface UserPatch {
   id: UserId;
 
   rowStatus?: RowStatus;
-  displayName?: string;
+  email?: string;
+  nickname?: string;
   password?: string;
-  resetOpenId?: boolean;
 }
 
 interface UserDelete {

@@ -69,10 +69,10 @@ func (create CreateUserRequest) Validate() error {
 }
 
 type PatchUserRequest struct {
-	RowStatus   *RowStatus `json:"rowStatus"`
-	Email       *string    `json:"email"`
-	DisplayName *string    `json:"displayName"`
-	Password    *string    `json:"password"`
+	RowStatus *RowStatus `json:"rowStatus"`
+	Email     *string    `json:"email"`
+	Nickname  *string    `json:"nickname"`
+	Password  *string    `json:"password"`
 }
 
 type UserDelete struct {
@@ -151,11 +151,16 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		updateUser := &store.UpdateUser{
 			ID: currentUserID,
 		}
+		if userPatch.Email != nil {
+			if !validateEmail(*userPatch.Email) {
+				return echo.NewHTTPError(http.StatusBadRequest, "Invalid email format")
+			}
 
-		if userPatch.Email != nil && !validateEmail(*userPatch.Email) {
-			return echo.NewHTTPError(http.StatusBadRequest, "Invalid email format")
+			updateUser.Email = userPatch.Email
 		}
-
+		if userPatch.Nickname != nil {
+			updateUser.Nickname = userPatch.Nickname
+		}
 		if userPatch.Password != nil && *userPatch.Password != "" {
 			passwordHash, err := bcrypt.GenerateFromPassword([]byte(*userPatch.Password), bcrypt.DefaultCost)
 			if err != nil {
