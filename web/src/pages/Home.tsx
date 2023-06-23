@@ -49,6 +49,7 @@ const Home: React.FC = () => {
                     className="w-full flex flex-row justify-start items-center px-3 leading-10 rounded cursor-pointer hover:bg-gray-100"
                     onClick={() => setShowCreateShortcutDialog(true)}
                   >
+                    <Icon.Link className="w-4 h-auto text-gray-500 mr-1" />
                     Shortcut
                   </button>
                 </>

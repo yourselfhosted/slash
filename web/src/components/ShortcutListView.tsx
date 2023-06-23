@@ -67,28 +67,28 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
               <div className="flex flex-row justify-end items-center space-x-2">
                 <Tooltip title="Copy link" variant="solid" placement="top">
                   <button className="cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
-                    <Icon.Copy className="w-4 h-auto" />
+                    <Icon.Copy className="w-5 h-auto text-gray-600" />
                   </button>
                 </Tooltip>
                 <Tooltip title="Go to link" variant="solid" placement="top">
                   <a className="cursor-pointer hover:opacity-80" target="_blank" href={shortcut.link}>
-                    <Icon.ExternalLink className="w-4 h-auto" />
+                    <Icon.ExternalLink className="w-5 h-auto text-gray-600" />
                   </a>
                 </Tooltip>
                 <Dropdown
-                  actionsClassName="!w-20"
+                  actionsClassName="!w-24"
                   actions={
                     <>
                       <button
                         disabled={!havePermission(shortcut)}
-                        className="w-full px-2 text-left leading-8 text-sm cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                        className="w-full px-2 text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                         onClick={() => setEditingShortcutId(shortcut.id)}
                       >
                         Edit
                       </button>
                       <button
                         disabled={!havePermission(shortcut)}
-                        className="w-full px-2 text-left leading-8 text-sm cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                        className="w-full px-2 text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                         onClick={() => {
                           handleDeleteShortcutButtonClick(shortcut);
                         }}
