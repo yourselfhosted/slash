@@ -45,6 +45,7 @@ type Shortcut struct {
 	Link        string
 	Description string
 	Visibility  Visibility
+	Tag         string
 }
 
 type UpdateShortcut struct {
@@ -55,6 +56,7 @@ type UpdateShortcut struct {
 	Link        *string
 	Description *string
 	Visibility  *Visibility
+	Tag         *string
 }
 
 type FindShortcut struct {
@@ -63,6 +65,7 @@ type FindShortcut struct {
 	RowStatus      *RowStatus
 	Name           *string
 	VisibilityList []Visibility
+	Tag            *string
 }
 
 type DeleteShortcut struct {
@@ -76,9 +79,9 @@ func (s *Store) CreateShortcut(ctx context.Context, create *Shortcut) (*Shortcut
 	}
 	defer tx.Rollback()
 
-	set := []string{"creator_id", "name", "link", "description", "visibility"}
-	args := []any{create.CreatorID, create.Name, create.Link, create.Description, create.Visibility}
-	placeholder := []string{"?", "?", "?", "?", "?"}
+	set := []string{"creator_id", "name", "link", "description", "visibility", "tag"}
+	args := []any{create.CreatorID, create.Name, create.Link, create.Description, create.Visibility, create.Tag}
+	placeholder := []string{"?", "?", "?", "?", "?", "?"}
 
 	query := `
 		INSERT INTO shortcut (
@@ -126,6 +129,9 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 	if update.Visibility != nil {
 		set, args = append(set, "visibility = ?"), append(args, update.Visibility.String())
 	}
+	if update.Tag != nil {
+		set, args = append(set, "tag = ?"), append(args, *update.Tag)
+	}
 	if len(set) == 0 {
 		return nil, fmt.Errorf("no update specified")
 	}
@@ -137,7 +143,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 			` + strings.Join(set, ", ") + `
 		WHERE
 			id = ?
-		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, description, visibility
+		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, description, visibility, tag
 	`
 	shortcut := &Shortcut{}
 	if err := tx.QueryRowContext(ctx, query, args...).Scan(
@@ -150,6 +156,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 		&shortcut.Link,
 		&shortcut.Description,
 		&shortcut.Visibility,
+		&shortcut.Tag,
 	); err != nil {
 		return nil, err
 	}
@@ -250,6 +257,9 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 		}
 		where = append(where, fmt.Sprintf("visibility in (%s)", strings.Join(list, ",")))
 	}
+	if v := find.Tag; v != nil {
+		where, args = append(where, "tag LIKE ?"), append(args, "%"+*v+"%")
+	}
 
 	rows, err := tx.QueryContext(ctx, `
 		SELECT
@@ -261,7 +271,8 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 			name,
 			link,
 			description,
-			visibility
+			visibility,
+			tag
 		FROM shortcut
 		WHERE `+strings.Join(where, " AND ")+`
 		ORDER BY created_ts DESC`,
@@ -285,6 +296,7 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 			&shortcut.Link,
 			&shortcut.Description,
 			&shortcut.Visibility,
+			&shortcut.Tag,
 		); err != nil {
 			return nil, err
 		}

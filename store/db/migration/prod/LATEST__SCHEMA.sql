@@ -40,5 +40,6 @@ CREATE TABLE shortcut (
   name TEXT NOT NULL UNIQUE,
   link TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT '',
-  visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE'
+  visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE',
+  tag TEXT NOT NULL DEFAULT ''
 );
