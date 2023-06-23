@@ -60,13 +60,13 @@ func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 	}
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte(secret))))
 
+	apiGroup := e.Group("")
 	// Register API v1 routes.
 	apiV1Service := apiv1.NewAPIV1Service(profile, store)
-	apiV1Group := e.Group("/api/v1")
-	apiV1Group.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+	apiGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return JWTMiddleware(s, next, string(secret))
 	})
-	apiV1Service.Start(apiV1Group, secret)
+	apiV1Service.Start(apiGroup, secret)
 
 	return s, nil
 }

@@ -73,22 +73,17 @@ func audienceContains(audience jwt.ClaimStrings, token string) bool {
 // will try to generate new access token and refresh token.
 func JWTMiddleware(server *Server, next echo.HandlerFunc, secret string) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		path := c.Request().URL.Path
+		path := c.Path()
 		method := c.Request().Method
 
 		if server.defaultAuthSkipper(c) {
 			return next(c)
 		}
 
-		// Skip validation for server status endpoints.
-		if hasPrefixes(path, "/api/ping", "/api/v1/idp", "/api/user/:id") && method == http.MethodGet {
-			return next(c)
-		}
-
 		token := findAccessToken(c)
 		if token == "" {
 			// When the request is not authenticated, we allow the user to access the shortcut endpoints for those public shortcuts.
-			if hasPrefixes(path, "/api/status", "/api/shortcut") && method == http.MethodGet {
+			if hasPrefixes(path, "/api/v1/status", "/o/*") && method == http.MethodGet {
 				return next(c)
 			}
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing access token")
