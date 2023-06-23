@@ -168,8 +168,15 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		}
 
 		find := &store.FindShortcut{}
-		if name := c.QueryParam("name"); name != "" {
-			find.Name = &name
+		if creatorIDStr := c.QueryParam("creatorId"); creatorIDStr != "" {
+			creatorID, err := strconv.Atoi(creatorIDStr)
+			if err != nil {
+				return echo.NewHTTPError(http.StatusBadRequest, "Unwanted creator id string")
+			}
+			find.CreatorID = &creatorID
+		}
+		if tag := c.QueryParam("tag"); tag != "" {
+			find.Tag = &tag
 		}
 
 		list := []*store.Shortcut{}
