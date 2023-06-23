@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface State {
-  // user is the user who is currently logged in
   user?: User;
 }
 
