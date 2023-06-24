@@ -60,6 +60,7 @@ type Activity struct {
 type FindActivity struct {
 	Type  ActivityType
 	Level ActivityLevel
+	Where []string
 }
 
 func (s *Store) CreateActivity(ctx context.Context, create *Activity) (*Activity, error) {
@@ -141,6 +142,9 @@ func listActivities(ctx context.Context, tx *sql.Tx, find *FindActivity) ([]*Act
 	}
 	if find.Level != "" {
 		where, args = append(where, "level = ?"), append(args, find.Level.String())
+	}
+	if find.Where != nil {
+		where = append(where, find.Where...)
 	}
 
 	query := `
