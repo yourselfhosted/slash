@@ -27,7 +27,7 @@ const Auth: React.FC = () => {
     setPassword(text);
   };
 
-  const handleSigninBtnsClick = async () => {
+  const handleSigninBtnClick = async () => {
     if (actionBtnLoadingState.isLoading) {
       return;
     }
@@ -50,7 +50,7 @@ const Auth: React.FC = () => {
     actionBtnLoadingState.setFinish();
   };
 
-  const handleSignupBtnsClick = async () => {
+  const handleSignupBtnClick = async () => {
     if (actionBtnLoadingState.isLoading) {
       return;
     }
@@ -95,10 +95,10 @@ const Auth: React.FC = () => {
             </div>
           </div>
           <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-            <Button variant="plain" disabled={actionBtnLoadingState.isLoading} onClick={() => handleSignupBtnsClick()}>
+            <Button variant="plain" disabled={actionBtnLoadingState.isLoading} onClick={() => handleSignupBtnClick()}>
               Sign up
             </Button>
-            <Button color="primary" disabled={actionBtnLoadingState.isLoading} onClick={() => handleSigninBtnsClick()}>
+            <Button color="primary" disabled={actionBtnLoadingState.isLoading} onClick={() => handleSigninBtnClick()}>
               Sign in
             </Button>
           </div>
