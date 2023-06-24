@@ -1,4 +1,4 @@
-package server
+package v1
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/boojack/shortify/internal/util"
 	"github.com/boojack/shortify/server/auth"
 	"github.com/boojack/shortify/store"
 	"github.com/golang-jwt/jwt/v4"
@@ -71,19 +72,19 @@ func audienceContains(audience jwt.ClaimStrings, token string) bool {
 // JWTMiddleware validates the access token.
 // If the access token is about to expire or has expired and the request has a valid refresh token, it
 // will try to generate new access token and refresh token.
-func JWTMiddleware(server *Server, next echo.HandlerFunc, secret string) echo.HandlerFunc {
+func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		path := c.Path()
 		method := c.Request().Method
 
-		if server.defaultAuthSkipper(c) {
+		if defaultAuthSkipper(c) {
 			return next(c)
 		}
 
 		token := findAccessToken(c)
 		if token == "" {
 			// When the request is not authenticated, we allow the user to access the shortcut endpoints for those public shortcuts.
-			if hasPrefixes(path, "/api/v1/status", "/o/*") && method == http.MethodGet {
+			if util.HasPrefixes(path, "/api/v1/status", "/o/*") && method == http.MethodGet {
 				return next(c)
 			}
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing access token")
@@ -193,4 +194,9 @@ func JWTMiddleware(server *Server, next echo.HandlerFunc, secret string) echo.Ha
 		c.Set(getUserIDContextKey(), userID)
 		return next(c)
 	}
+}
+
+func defaultAuthSkipper(c echo.Context) bool {
+	path := c.Path()
+	return util.HasPrefixes(path, "/api/v1/auth")
 }

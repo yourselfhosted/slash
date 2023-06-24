@@ -63,9 +63,6 @@ func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 	apiGroup := e.Group("")
 	// Register API v1 routes.
 	apiV1Service := apiv1.NewAPIV1Service(profile, store)
-	apiGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return JWTMiddleware(s, next, string(secret))
-	})
 	apiV1Service.Start(apiGroup, secret)
 
 	return s, nil
@@ -79,12 +76,12 @@ func (s *Server) Shutdown(ctx context.Context) {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
-	// Shutdown echo server
+	// Shutdown echo server.
 	if err := s.e.Shutdown(ctx); err != nil {
 		fmt.Printf("failed to shutdown server, error: %v\n", err)
 	}
 
-	// Close database connection
+	// Close database connection.
 	if err := s.Store.Close(); err != nil {
 		fmt.Printf("failed to close database, error: %v\n", err)
 	}

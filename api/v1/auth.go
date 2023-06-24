@@ -12,14 +12,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var (
-	userIDContextKey = "user-id"
-)
-
-func getUserIDContextKey() string {
-	return userIDContextKey
-}
-
 type SignInRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
