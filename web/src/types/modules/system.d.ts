@@ -3,7 +3,7 @@ interface Profile {
   version: string;
 }
 
-interface SystemStatus {
+interface WorkspaceProfile {
   profile: Profile;
   disallowSignUp: boolean;
 }

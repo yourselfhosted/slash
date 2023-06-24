@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export function getSystemStatus() {
-  return axios.get<SystemStatus>("/api/v1/workspace/status");
+export function getWorkspaceProfile() {
+  return axios.get<WorkspaceProfile>("/api/v1/workspace/profile");
 }
 
 export function signin(email: string, password: string) {

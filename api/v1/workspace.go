@@ -49,16 +49,17 @@ func (upsert WorkspaceSettingUpsert) Validate() error {
 	return nil
 }
 
-type WorkspaceStatus struct {
+type WorkspaceProfile struct {
 	Profile        *profile.Profile `json:"profile"`
 	DisallowSignUp bool             `json:"disallowSignUp"`
 }
 
 func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
-	g.GET("/workspace/status", func(c echo.Context) error {
+	g.GET("/workspace/profile", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		workspaceStatus := WorkspaceStatus{
-			Profile: s.Profile,
+		workspaceProfile := WorkspaceProfile{
+			Profile:        s.Profile,
+			DisallowSignUp: false,
 		}
 
 		disallowSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
@@ -68,10 +69,10 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get workspace setting")
 		}
 		if disallowSignUpSetting != nil {
-			workspaceStatus.DisallowSignUp = disallowSignUpSetting.Value == "true"
+			workspaceProfile.DisallowSignUp = disallowSignUpSetting.Value == "true"
 		}
 
-		return c.JSON(http.StatusOK, workspaceStatus)
+		return c.JSON(http.StatusOK, workspaceProfile)
 	})
 
 	g.POST("/workspace/setting", func(c echo.Context) error {

@@ -1,12 +1,12 @@
 import { Checkbox } from "@mui/joy";
 import { useEffect, useState } from "react";
-import { getSystemStatus, upsertWorkspaceSetting } from "../../helpers/api";
+import { getWorkspaceProfile, upsertWorkspaceSetting } from "../../helpers/api";
 
 const WorkspaceSection: React.FC = () => {
   const [disallowSignUp, setDisallowSignUp] = useState<boolean>(false);
 
   useEffect(() => {
-    getSystemStatus().then(({ data }) => {
+    getWorkspaceProfile().then(({ data }) => {
       setDisallowSignUp(data.disallowSignUp);
     });
   }, []);
