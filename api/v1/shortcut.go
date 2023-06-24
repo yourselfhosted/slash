@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/boojack/shortify/store"
+	"github.com/pkg/errors"
 
 	"github.com/labstack/echo/v4"
 )
@@ -25,8 +26,8 @@ const (
 	VisibilityPrivate Visibility = "PRIVATE"
 )
 
-func (e Visibility) String() string {
-	switch e {
+func (v Visibility) String() string {
+	switch v {
 	case VisibilityPublic:
 		return "PUBLIC"
 	case VisibilityWorkspace:
@@ -94,6 +95,10 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create shortcut").SetInternal(err)
+		}
+
+		if err := s.createShortcutCreateActivity(ctx, shortcut); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create shortcut activity").SetInternal(err)
 		}
 
 		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
@@ -242,6 +247,27 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 		return c.JSON(http.StatusOK, true)
 	})
+}
+
+func (s *APIV1Service) createShortcutCreateActivity(ctx context.Context, shortcut *store.Shortcut) error {
+	payload := &ActivityShorcutCreatePayload{
+		ShortcutID: shortcut.ID,
+	}
+	payloadStr, err := json.Marshal(payload)
+	if err != nil {
+		return errors.Wrap(err, "Failed to marshal activity payload")
+	}
+	activity := &store.Activity{
+		CreatorID: shortcut.CreatorID,
+		Type:      store.ActivityShortcutCreate,
+		Level:     store.ActivityInfo,
+		Payload:   string(payloadStr),
+	}
+	_, err = s.Store.CreateActivity(ctx, activity)
+	if err != nil {
+		return errors.Wrap(err, "Failed to create activity")
+	}
+	return nil
 }
 
 func (s *APIV1Service) composeShortcut(ctx context.Context, shortcut *Shortcut) (*Shortcut, error) {

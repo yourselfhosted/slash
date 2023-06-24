@@ -13,6 +13,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+const (
+	// BotID is the id of bot.
+	BotID = 0
+)
+
 // Role is the type of a role.
 type Role string
 
