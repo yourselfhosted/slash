@@ -30,7 +30,7 @@ func (s *APIV1Service) Start(apiGroup *echo.Group, secret string) {
 	s.registerUserRoutes(apiV1Group)
 	s.registerShortcutRoutes(apiV1Group)
 
-	redirectorGroup := apiGroup.Group("/o")
+	redirectorGroup := apiGroup.Group("/s")
 	redirectorGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return JWTMiddleware(s, next, string(secret))
 	})

@@ -24,7 +24,7 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
   };
 
   const handleCopyButtonClick = (shortcut: Shortcut) => {
-    copy(absolutifyLink(`/o/${shortcut.name}`));
+    copy(absolutifyLink(`/s/${shortcut.name}`));
     toast.success("Shortcut link copied to clipboard.");
   };
 
