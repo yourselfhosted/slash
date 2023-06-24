@@ -16,6 +16,7 @@ interface Shortcut {
   description: string;
   visibility: Visibility;
   tags: string[];
+  view: number;
 }
 
 interface ShortcutCreate {
