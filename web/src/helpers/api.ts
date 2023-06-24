@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export function getSystemStatus() {
-  return axios.get<SystemStatus>("/api/v1/status");
+  return axios.get<SystemStatus>("/api/v1/workspace/status");
 }
 
 export function signin(email: string, password: string) {

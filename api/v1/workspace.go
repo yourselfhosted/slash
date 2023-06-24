@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/boojack/shortify/server/profile"
 	"github.com/boojack/shortify/store"
 	"github.com/labstack/echo/v4"
 )
@@ -48,7 +49,31 @@ func (upsert WorkspaceSettingUpsert) Validate() error {
 	return nil
 }
 
-func (s *APIV1Service) registerWorkspaceSettingRoutes(g *echo.Group) {
+type WorkspaceStatus struct {
+	Profile        *profile.Profile `json:"profile"`
+	DisallowSignUp bool             `json:"disallowSignUp"`
+}
+
+func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
+	g.GET("/workspace/status", func(c echo.Context) error {
+		ctx := c.Request().Context()
+		workspaceStatus := WorkspaceStatus{
+			Profile: s.Profile,
+		}
+
+		disallowSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+			Key: WorkspaceDisallowSignUp.String(),
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get workspace setting")
+		}
+		if disallowSignUpSetting != nil {
+			workspaceStatus.DisallowSignUp = disallowSignUpSetting.Value == "true"
+		}
+
+		return c.JSON(http.StatusOK, workspaceStatus)
+	})
+
 	g.POST("/workspace/setting", func(c echo.Context) error {
 		ctx := c.Request().Context()
 		userID, ok := c.Get(getUserIDContextKey()).(int)
