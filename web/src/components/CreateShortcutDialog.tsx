@@ -159,10 +159,13 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               onChange={handleDescriptionInputChange}
             />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Tags</span>
-            <Input className="w-full" type="text" placeholder="Separated by spaces" value={tag} onChange={handleTagsInputChange} />
-          </div>
+          {/* TODO(steven): release shortcut's tags when ready */}
+          {false && (
+            <div className="w-full flex flex-col justify-start items-start mb-3">
+              <span className="mb-2">Tags</span>
+              <Input className="w-full" type="text" placeholder="Separated by spaces" value={tag} onChange={handleTagsInputChange} />
+            </div>
+          )}
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Visibility <span className="text-red-600">*</span>
