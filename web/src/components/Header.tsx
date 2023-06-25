@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../stores";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
+import { Avatar } from "@mui/joy";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -24,11 +25,12 @@ const Header: React.FC = () => {
           <Dropdown
             trigger={
               <button className="flex flex-row justify-end items-center cursor-pointer">
-                <Icon.User className="w-5 h-auto mr-1" />
+                <Avatar size="sm" variant="plain" />
                 <span>{user.nickname}</span>
                 <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600" />
               </button>
             }
+            actionsClassName="!w-36"
             actions={
               <>
                 <Link
@@ -45,7 +47,6 @@ const Header: React.FC = () => {
                 </button>
               </>
             }
-            actionsClassName="!w-40"
           ></Dropdown>
         </div>
       </div>

@@ -16,7 +16,7 @@ const AccountSection: React.FC = () => {
         <p className="text-gray-400">Account</p>
         <p className="flex flex-row justify-start items-center mt-2">
           <span className="text-xl font-medium">{user.nickname}</span>
-          {isAdmin && <span className="ml-2 bg-blue-600 text-white px-3 leading-7 text-sm rounded-full">Admin</span>}
+          {isAdmin && <span className="ml-2 bg-blue-600 text-white px-2 leading-6 text-sm rounded-full">Admin</span>}
         </p>
         <p className="flex flex-row justify-start items-center">
           <span className="mr-3 text-gray-500 font-mono">Email: </span>

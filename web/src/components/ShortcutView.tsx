@@ -1,12 +1,13 @@
-import copy from "copy-to-clipboard";
-import { absolutifyLink } from "../helpers/utils";
-import toast from "react-hot-toast";
-import { showCommonDialog } from "./Alert";
-import { shortcutService } from "../services";
 import { Tooltip } from "@mui/joy";
+import copy from "copy-to-clipboard";
+import toast from "react-hot-toast";
+import { shortcutService } from "../services";
+import { useAppSelector } from "../stores";
+import { absolutifyLink } from "../helpers/utils";
+import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
-import { useAppSelector } from "../stores";
+import VisibilityIcon from "./VisibilityIcon";
 
 interface Props {
   shortcut: Shortcut;
@@ -38,13 +39,13 @@ const ShortcutView = (props: Props) => {
   };
 
   return (
-    <div className="w-full flex flex-col justify-start items-start border px-4 py-3 mb-2 rounded-lg">
+    <div className="w-full flex flex-col justify-start items-start border px-4 py-3 mb-2 rounded-lg hover:shadow">
       <div className="w-full flex flex-row justify-between items-center">
         <p className="text-lg mr-1 shrink-0">
-          <span className="cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
-            <span className="text-gray-400">o/</span>
+          <button className="cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
+            <span className="text-gray-400">s/</span>
             {shortcut.name}
-          </span>
+          </button>
         </p>
         <div className="flex flex-row justify-end items-center space-x-2">
           <Tooltip title="Copy link" variant="solid" placement="top" arrow>
@@ -63,19 +64,19 @@ const ShortcutView = (props: Props) => {
               <>
                 <button
                   disabled={!havePermission(shortcut)}
-                  className="w-full px-2 text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                  className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                   onClick={() => handleEdit()}
                 >
-                  Edit
+                  <Icon.Edit className="w-4 h-auto mr-2" /> Edit
                 </button>
                 <button
                   disabled={!havePermission(shortcut)}
-                  className="w-full px-2 text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                  className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                   onClick={() => {
                     handleDeleteShortcutButtonClick(shortcut);
                   }}
                 >
-                  Delete
+                  <Icon.Trash className="w-4 h-auto mr-2" /> Delete
                 </button>
               </>
             }
@@ -83,8 +84,8 @@ const ShortcutView = (props: Props) => {
         </div>
       </div>
       {shortcut.description && <p className="mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
-      {shortcut.tags.length > 0 && false && (
-        <div className="mt-2 flex flex-row justify-start items-start gap-2">
+      {shortcut.tags.length > 0 && (
+        <div className="mt-1 flex flex-row justify-start items-start gap-2">
           <Icon.Tag className="text-gray-400 w-4 h-auto" />
           {shortcut.tags.map((tag) => {
             return (
@@ -97,15 +98,21 @@ const ShortcutView = (props: Props) => {
       )}
       <div className="w-full flex mt-2 gap-2">
         <Tooltip title="Creator" variant="solid" placement="top" arrow>
-          <div className="w-auto px-2 pr-3 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 font-mono text-sm">
+          <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
             <Icon.User className="w-4 h-auto mr-1" />
             {shortcut.creator.nickname}
           </div>
         </Tooltip>
         <Tooltip title="View count" variant="solid" placement="top" arrow>
-          <div className="w-auto px-2 pr-3 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 font-mono text-sm">
+          <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
+            <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
+            {shortcut.visibility}
+          </div>
+        </Tooltip>
+        <Tooltip title="View count" variant="solid" placement="top" arrow>
+          <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
             <Icon.Eye className="w-4 h-auto mr-1" />
-            {shortcut.view}
+            {shortcut.view} visits
           </div>
         </Tooltip>
       </div>

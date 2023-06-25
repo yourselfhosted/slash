@@ -128,11 +128,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               Name <span className="text-red-600">*</span>
             </span>
             <div className="relative w-full">
-              <span className="absolute z-1 top-2 left-3 text-gray-400">s/</span>
               <Input
-                className="w-full !pl-7"
+                className="w-full"
                 type="text"
-                placeholder="shortcut-name"
+                placeholder="Unique shortcut name"
                 value={state.shortcutCreate.name}
                 onChange={handleNameInputChange}
               />
