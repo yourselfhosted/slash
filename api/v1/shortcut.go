@@ -8,13 +8,14 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/boojack/shortify/internal/util"
 	"github.com/boojack/shortify/store"
 	"github.com/pkg/errors"
 
 	"github.com/labstack/echo/v4"
 )
 
-// Visibility is the type of a visibility.
+// Visibility is the type of a shortcut visibility.
 type Visibility string
 
 const (
@@ -85,6 +86,9 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err := json.NewDecoder(c.Request().Body).Decode(create); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post shortcut request").SetInternal(err)
 		}
+		if !validateLink(create.Link) {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid link: %s", create.Link))
+		}
 
 		shortcut, err := s.Store.CreateShortcut(ctx, &store.Shortcut{
 			CreatorID:   userID,
@@ -119,6 +123,12 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
 		}
+		currentUser, err := s.Store.GetUser(ctx, &store.FindUser{
+			ID: &userID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
+		}
 
 		shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 			ID: &shortcutID,
@@ -129,13 +139,16 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if shortcut == nil {
 			return echo.NewHTTPError(http.StatusNotFound, "Shortcut not found")
 		}
-		if shortcut.CreatorID != userID {
-			return echo.NewHTTPError(http.StatusForbidden, "Shortcut does not belong to user")
+		if shortcut.CreatorID != userID && currentUser.Role != store.RoleAdmin {
+			return echo.NewHTTPError(http.StatusForbidden, "Unauthorized to update shortcut")
 		}
 
 		patch := &PatchShortcutRequest{}
 		if err := json.NewDecoder(c.Request().Body).Decode(patch); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted patch shortcut request").SetInternal(err)
+		}
+		if patch.Link != nil && !validateLink(*patch.Link) {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid link: %s", *patch.Link))
 		}
 
 		shortcutUpdate := &store.UpdateShortcut{
@@ -239,6 +252,29 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("ID is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
+		userID, ok := c.Get(getUserIDContextKey()).(int)
+		if !ok {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+		}
+		currentUser, err := s.Store.GetUser(ctx, &store.FindUser{
+			ID: &userID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
+		}
+
+		shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
+			ID: &shortcutID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find shortcut").SetInternal(err)
+		}
+		if shortcut == nil {
+			return echo.NewHTTPError(http.StatusNotFound, "Shortcut not found")
+		}
+		if shortcut.CreatorID != userID && currentUser.Role != store.RoleAdmin {
+			return echo.NewHTTPError(http.StatusForbidden, "Unauthorized to delete shortcut")
+		}
 
 		if err := s.Store.DeleteShortcut(ctx, &store.DeleteShortcut{
 			ID: shortcutID,
@@ -328,4 +364,8 @@ func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
 		RowStatus:   RowStatus(shortcut.RowStatus),
 		Tags:        tags,
 	}
+}
+
+func validateLink(link string) bool {
+	return util.HasPrefixes(link, "http://", "https://")
 }
