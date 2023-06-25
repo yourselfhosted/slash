@@ -17,10 +17,7 @@ interface Props {
 const ShortcutView = (props: Props) => {
   const { shortcut, handleEdit } = props;
   const user = useAppSelector((state) => state.user.user as User);
-
-  const havePermission = (shortcut: Shortcut) => {
-    return user.role === "ADMIN" || shortcut.creatorId === user.id;
-  };
+  const havePermission = user.role === "ADMIN" || shortcut.creatorId === user.id;
 
   const handleCopyButtonClick = (shortcut: Shortcut) => {
     copy(absolutifyLink(`/s/${shortcut.name}`));
@@ -58,29 +55,29 @@ const ShortcutView = (props: Props) => {
               <Icon.ExternalLink className="w-5 h-auto text-gray-600" />
             </a>
           </Tooltip>
-          <Dropdown
-            actionsClassName="!w-24"
-            actions={
-              <>
-                <button
-                  disabled={!havePermission(shortcut)}
-                  className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
-                  onClick={() => handleEdit()}
-                >
-                  <Icon.Edit className="w-4 h-auto mr-2" /> Edit
-                </button>
-                <button
-                  disabled={!havePermission(shortcut)}
-                  className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
-                  onClick={() => {
-                    handleDeleteShortcutButtonClick(shortcut);
-                  }}
-                >
-                  <Icon.Trash className="w-4 h-auto mr-2" /> Delete
-                </button>
-              </>
-            }
-          ></Dropdown>
+          {havePermission && (
+            <Dropdown
+              actionsClassName="!w-24"
+              actions={
+                <>
+                  <button
+                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                    onClick={() => handleEdit()}
+                  >
+                    <Icon.Edit className="w-4 h-auto mr-2" /> Edit
+                  </button>
+                  <button
+                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                    onClick={() => {
+                      handleDeleteShortcutButtonClick(shortcut);
+                    }}
+                  >
+                    <Icon.Trash className="w-4 h-auto mr-2" /> Delete
+                  </button>
+                </>
+              }
+            ></Dropdown>
+          )}
         </div>
       </div>
       {shortcut.description && <p className="mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
