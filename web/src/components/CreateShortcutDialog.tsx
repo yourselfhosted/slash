@@ -109,7 +109,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       }
     } catch (error: any) {
       console.error(error);
-      toast.error(JSON.stringify(error.response.data));
+      toast.error(error.response.data.message);
     }
   };
 

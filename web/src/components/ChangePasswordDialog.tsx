@@ -52,7 +52,7 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
       toast("Password changed");
     } catch (error: any) {
       console.error(error);
-      toast.error(JSON.stringify(error.response.data));
+      toast.error(error.response.data.message);
     }
     requestState.setFinish();
   };

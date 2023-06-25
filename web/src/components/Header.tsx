@@ -31,10 +31,10 @@ const Header: React.FC = () => {
                 <button className="flex flex-row justify-end items-center cursor-pointer">
                   <Avatar size="sm" variant="plain" />
                   <span>{user.nickname}</span>
-                  <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600" />
+                  <Icon.ChevronDown className="ml-2 w-5 h-auto text-gray-600" />
                 </button>
               }
-              actionsClassName="!w-36"
+              actionsClassName="!w-32"
               actions={
                 <>
                   <Link
