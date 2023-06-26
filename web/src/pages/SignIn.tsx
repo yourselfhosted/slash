@@ -4,11 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import * as api from "../helpers/api";
 import { userService } from "../services";
+import { useAppSelector } from "../stores";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
+  const {
+    workspaceProfile: { disallowSignUp },
+  } = useAppSelector((state) => state.global);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const actionBtnLoadingState = useLoading(false);
@@ -91,12 +95,14 @@ const SignIn: React.FC = () => {
               </Button>
             </div>
           </form>
-          <p className="w-full mt-4 text-sm">
-            <span>{"Don't have an account yet?"}</span>
-            <Link to="/auth/signup" className="cursor-pointer ml-2 text-blue-600 hover:underline">
-              Sign up
-            </Link>
-          </p>
+          {!disallowSignUp && (
+            <p className="w-full mt-4 text-sm">
+              <span>{"Don't have an account yet?"}</span>
+              <Link to="/auth/signup" className="cursor-pointer ml-2 text-blue-600 hover:underline">
+                Sign up
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </div>
