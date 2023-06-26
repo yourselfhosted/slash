@@ -1,5 +1,6 @@
 import { Tooltip } from "@mui/joy";
 import copy from "copy-to-clipboard";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
@@ -16,6 +17,7 @@ interface Props {
 
 const ShortcutView = (props: Props) => {
   const { shortcut, handleEdit } = props;
+  const { t } = useTranslation();
   const user = useAppSelector((state) => state.user.user as User);
   const havePermission = user.role === "ADMIN" || shortcut.creatorId === user.id;
 
@@ -100,10 +102,10 @@ const ShortcutView = (props: Props) => {
             {shortcut.creator.nickname}
           </div>
         </Tooltip>
-        <Tooltip title="View count" variant="solid" placement="top" arrow>
+        <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
           <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
             <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
-            {shortcut.visibility}
+            {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
           </div>
         </Tooltip>
         <Tooltip title="View count" variant="solid" placement="top" arrow>

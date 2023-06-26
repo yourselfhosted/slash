@@ -1,5 +1,6 @@
 import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import { shortcutService } from "../services";
 import useLoading from "../hooks/useLoading";
@@ -15,8 +16,11 @@ interface State {
   shortcutCreate: ShortcutCreate;
 }
 
+const visibilities: Visibility[] = ["PRIVATE", "WORKSPACE", "PUBLIC"];
+
 const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, shortcutId } = props;
+  const { t } = useTranslation();
   const [state, setState] = useState<State>({
     shortcutCreate: {
       name: "",
@@ -172,9 +176,9 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             </span>
             <div className="w-full flex flex-row justify-start items-center text-base">
               <RadioGroup orientation="horizontal" value={state.shortcutCreate.visibility} onChange={handleVisibilityInputChange}>
-                <Radio value="PRIVATE" label="Private" />
-                <Radio value="WORKSPACE" label="Workspace" />
-                <Radio value="PUBLIC" label="Public" />
+                {visibilities.map((visibility) => (
+                  <Radio key={visibility} value={visibility} label={t(`shortcut.visibility.${visibility.toLowerCase()}.self`)} />
+                ))}
               </RadioGroup>
             </div>
           </div>

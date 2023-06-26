@@ -1,0 +1,18 @@
+{
+  "shortcut": {
+    "visibility": {
+      "private": {
+        "self": "Private",
+        "description": "Only you can see this"
+      },
+      "workspace": {
+        "self": "Workspace",
+        "description": "Only people in your workspace can see this"
+      },
+      "public": {
+        "self": "Public",
+        "description": "Anyone can see this"
+      }
+    }
+  }
+}

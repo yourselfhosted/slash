@@ -3,8 +3,8 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import useLoading from "../hooks/useLoading";
 import { userService } from "../services";
-import Icon from "./Icon";
 import { useAppSelector } from "../stores";
+import Icon from "./Icon";
 
 interface Props {
   onClose: () => void;
