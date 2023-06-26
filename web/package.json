@@ -14,11 +14,13 @@
     "axios": "^0.27.2",
     "copy-to-clipboard": "^3.3.2",
     "dayjs": "^1.11.3",
+    "i18next": "^23.2.3",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.252.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.0",
+    "react-i18next": "^13.0.1",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.13.0",
     "tailwindcss": "^3.3.2"
