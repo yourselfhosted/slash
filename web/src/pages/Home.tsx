@@ -1,3 +1,4 @@
+import { Button } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
@@ -59,9 +60,17 @@ const Home: React.FC = () => {
           </div>
         </div>
         {loadingState.isLoading ? (
-          <div className="py-4 w-full flex flex-row justify-center items-center">
+          <div className="py-12 w-full flex flex-row justify-center items-center opacity-80">
             <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
             loading
+          </div>
+        ) : shortcutList.length === 0 ? (
+          <div className="py-4 w-full flex flex-col justify-center items-center">
+            <Icon.PackageOpen className="w-12 h-auto text-gray-400" />
+            <p className="mt-4 mb-2">No shortcuts found.</p>
+            <Button size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
+              Create one
+            </Button>
           </div>
         ) : (
           <ShortcutListView shortcutList={shortcutList} />

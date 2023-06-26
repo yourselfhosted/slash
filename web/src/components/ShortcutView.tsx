@@ -29,7 +29,7 @@ const ShortcutView = (props: Props) => {
   const handleDeleteShortcutButtonClick = (shortcut: Shortcut) => {
     showCommonDialog({
       title: "Delete Shortcut",
-      content: `Are you sure to delete shortcut \`${shortcut.name}\` in this workspace?`,
+      content: `Are you sure to delete shortcut \`${shortcut.name}\`? You can not undo this action.`,
       style: "danger",
       onConfirm: async () => {
         await shortcutService.deleteShortcutById(shortcut.id);
