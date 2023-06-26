@@ -1,17 +1,18 @@
 import { Button, Input } from "@mui/joy";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import * as api from "../helpers/api";
 import { userService } from "../services";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 
-const Auth: React.FC = () => {
+const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const actionBtnLoadingState = useLoading(false);
+  const allowConfirm = email.length > 0 && password.length > 0;
 
   useEffect(() => {
     userService.doSignOut();
@@ -50,29 +51,6 @@ const Auth: React.FC = () => {
     actionBtnLoadingState.setFinish();
   };
 
-  const handleSignupBtnClick = async () => {
-    if (actionBtnLoadingState.isLoading) {
-      return;
-    }
-
-    try {
-      actionBtnLoadingState.setLoading();
-      await api.signup(email, password);
-      const user = await userService.doSignIn();
-      if (user) {
-        navigate("/", {
-          replace: true,
-        });
-      } else {
-        toast.error("Signup failed");
-      }
-    } catch (error: any) {
-      console.error(error);
-      toast.error(error.response.data.message);
-    }
-    actionBtnLoadingState.setFinish();
-  };
-
   return (
     <div className="flex flex-row justify-center items-center w-full h-screen bg-white">
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
@@ -84,28 +62,45 @@ const Auth: React.FC = () => {
               {actionBtnLoadingState.isLoading && <Icon.Loader className="ml-2 w-5 h-auto animate-spin" />}
             </div>
           </div>
-          <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
-            <div className="w-full flex flex-col mb-2">
-              <span className="leading-8 mb-1 text-gray-600">Email</span>
-              <Input className="w-full py-3" type="email" value={email} onChange={handleEmailInputChanged} />
+          <form className="w-full" onSubmit={handleSigninBtnClick}>
+            <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
+              <div className="w-full flex flex-col mb-2">
+                <span className="leading-8 mb-1 text-gray-600">Email</span>
+                <Input
+                  className="w-full py-3"
+                  type="email"
+                  value={email}
+                  placeholder="steven@shortify.com"
+                  onChange={handleEmailInputChanged}
+                />
+              </div>
+              <div className="w-full flex flex-col mb-2">
+                <span className="leading-8 text-gray-600">Password</span>
+                <Input className="w-full py-3" type="password" value={password} placeholder="····" onChange={handlePasswordInputChanged} />
+              </div>
             </div>
-            <div className="w-full flex flex-col mb-2">
-              <span className="leading-8 text-gray-600">Password</span>
-              <Input className="w-full py-3" type="password" value={password} onChange={handlePasswordInputChanged} />
+            <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+              <Button
+                className="w-full"
+                type="submit"
+                color="primary"
+                disabled={actionBtnLoadingState.isLoading || !allowConfirm}
+                onClick={handleSigninBtnClick}
+              >
+                Sign in
+              </Button>
             </div>
-          </div>
-          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-            <Button variant="plain" disabled={actionBtnLoadingState.isLoading} onClick={() => handleSignupBtnClick()}>
+          </form>
+          <p className="w-full mt-4 text-sm">
+            <span>{"Don't have an account yet?"}</span>
+            <Link to="/auth/signup" className="cursor-pointer ml-2 text-blue-600 hover:underline">
               Sign up
-            </Button>
-            <Button color="primary" disabled={actionBtnLoadingState.isLoading} onClick={() => handleSigninBtnClick()}>
-              Sign in
-            </Button>
-          </div>
+            </Link>
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Auth;
+export default SignIn;

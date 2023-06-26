@@ -2,14 +2,19 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import { isNullorUndefined } from "../helpers/utils";
 import { userService } from "../services";
 import Root from "../layouts/Root";
-import Auth from "../pages/Auth";
+import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
 import Home from "../pages/Home";
 import Setting from "../pages/Setting";
 
 const router = createBrowserRouter([
   {
     path: "/auth",
-    element: <Auth />,
+    element: <SignIn />,
+  },
+  {
+    path: "/auth/signup",
+    element: <SignUp />,
   },
   {
     path: "/",

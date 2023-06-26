@@ -11,9 +11,10 @@ export function signin(email: string, password: string) {
   });
 }
 
-export function signup(email: string, password: string) {
+export function signup(email: string, nickname: string, password: string) {
   return axios.post<User>("/api/v1/auth/signup", {
     email,
+    nickname,
     password,
   });
 }

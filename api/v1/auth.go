@@ -18,6 +18,7 @@ type SignInRequest struct {
 }
 
 type SignUpRequest struct {
+	Nickname string `json:"nickname"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
@@ -77,7 +78,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 
 		create := &store.User{
 			Email:        signup.Email,
-			Nickname:     signup.Email,
+			Nickname:     signup.Nickname,
 			PasswordHash: string(passwordHash),
 		}
 		existingUsers, err := s.Store.ListUsers(ctx, &store.FindUser{})
