@@ -54,7 +54,7 @@ const ShortcutView = (props: Props) => {
   return (
     <div className="w-full flex flex-col justify-start items-start border px-4 py-3 mb-2 rounded-lg hover:shadow">
       <div className="w-full flex flex-row justify-between items-center">
-        <div className="flex flex-row justify-normal items-center text-lg mr-1 shrink-0">
+        <div className="group flex flex-row justify-start items-center mr-1 shrink-0">
           <div className="w-6 h-6 mr-1.5 flex justify-center items-center overflow-clip">
             {favicon ? (
               <img className="w-[90%] h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
@@ -62,24 +62,17 @@ const ShortcutView = (props: Props) => {
               <Icon.Globe2 className="w-5 h-auto text-gray-500" />
             )}
           </div>
-          <button className="cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
+          <button className="items-center cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
             <span className="text-gray-400">
               s<span className="font-mono">/</span>
             </span>
             {shortcut.name}
           </button>
+          <a className="hidden group-hover:block ml-1 cursor-pointer hover:opacity-80" target="_blank" href={shortcut.link}>
+            <Icon.ExternalLink className="w-4 h-auto text-gray-500" />
+          </a>
         </div>
         <div className="flex flex-row justify-end items-center space-x-2">
-          <Tooltip title="Copy link" variant="solid" placement="top" arrow>
-            <button className="cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
-              <Icon.Copy className="w-5 h-auto text-gray-600" />
-            </button>
-          </Tooltip>
-          <Tooltip title="Go to link" variant="solid" placement="top" arrow>
-            <a className="cursor-pointer hover:opacity-80" target="_blank" href={shortcut.link}>
-              <Icon.ExternalLink className="w-5 h-auto text-gray-600" />
-            </a>
-          </Tooltip>
           {havePermission && (
             <Dropdown
               actionsClassName="!w-24"
