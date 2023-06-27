@@ -6,13 +6,33 @@ import (
 	"strings"
 )
 
+type WorkspaceSettingKey string
+
+const (
+	// WorkspaceDisallowSignUp is the key type for disallow sign up in workspace level.
+	WorkspaceDisallowSignUp WorkspaceSettingKey = "disallow-signup"
+	// WorkspaceSecretSessionName is the key type for secret session name.
+	WorkspaceSecretSessionName WorkspaceSettingKey = "secret-session-name"
+)
+
+// String returns the string format of WorkspaceSettingKey type.
+func (key WorkspaceSettingKey) String() string {
+	switch key {
+	case WorkspaceDisallowSignUp:
+		return "disallow-signup"
+	case WorkspaceSecretSessionName:
+		return "secret-session-name"
+	}
+	return ""
+}
+
 type WorkspaceSetting struct {
-	Key   string
+	Key   WorkspaceSettingKey
 	Value string
 }
 
 type FindWorkspaceSetting struct {
-	Key string
+	Key WorkspaceSettingKey
 }
 
 func (s *Store) UpsertWorkspaceSetting(ctx context.Context, upsert *WorkspaceSetting) (*WorkspaceSetting, error) {

@@ -10,33 +10,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type WorkspaceSettingKey string
-
-const (
-	// WorkspaceDisallowSignUp is the key type for disallow sign up in workspace level.
-	WorkspaceDisallowSignUp WorkspaceSettingKey = "disallow-signup"
-)
-
-// String returns the string format of WorkspaceSettingKey type.
-func (key WorkspaceSettingKey) String() string {
-	if key == WorkspaceDisallowSignUp {
-		return "disallow-signup"
-	}
-	return ""
-}
-
 type WorkspaceSetting struct {
-	Key   WorkspaceSettingKey `json:"key"`
-	Value string              `json:"value"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 type WorkspaceSettingUpsert struct {
-	Key   WorkspaceSettingKey `json:"key"`
-	Value string              `json:"value"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 func (upsert WorkspaceSettingUpsert) Validate() error {
-	if upsert.Key == WorkspaceDisallowSignUp {
+	if upsert.Key == store.WorkspaceDisallowSignUp.String() {
 		value := false
 		err := json.Unmarshal([]byte(upsert.Value), &value)
 		if err != nil {
@@ -63,7 +48,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 		}
 
 		disallowSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-			Key: WorkspaceDisallowSignUp.String(),
+			Key: store.WorkspaceDisallowSignUp,
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get workspace setting")
@@ -97,11 +82,11 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post workspace setting request").SetInternal(err)
 		}
 		if err := upsert.Validate(); err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "system setting invalidate").SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, "Invalid system setting key or value").SetInternal(err)
 		}
 
 		workspaceSetting, err := s.Store.UpsertWorkspaceSetting(ctx, &store.WorkspaceSetting{
-			Key:   upsert.Key.String(),
+			Key:   store.WorkspaceSettingKey(upsert.Key),
 			Value: upsert.Value,
 		})
 		if err != nil {
@@ -142,7 +127,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 
 func convertWorkspaceSettingFromStore(workspaceSetting *store.WorkspaceSetting) *WorkspaceSetting {
 	return &WorkspaceSetting{
-		Key:   WorkspaceSettingKey(workspaceSetting.Key),
+		Key:   workspaceSetting.Key.String(),
 		Value: workspaceSetting.Value,
 	}
 }

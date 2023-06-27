@@ -18,15 +18,12 @@ require (
 )
 
 require (
-	github.com/gorilla/context v1.1.1 // indirect
 	github.com/labstack/echo/v4 v4.10.1
 	github.com/labstack/gommon v0.4.0 // indirect
 )
 
 require (
 	github.com/gorilla/securecookie v1.1.1
-	github.com/gorilla/sessions v1.2.1
-	github.com/labstack/echo-contrib v0.14.0
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.4
@@ -39,6 +36,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect

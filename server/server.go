@@ -10,8 +10,6 @@ import (
 	"github.com/boojack/shortify/store"
 
 	"github.com/gorilla/securecookie"
-	"github.com/gorilla/sessions"
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -23,7 +21,7 @@ type Server struct {
 	Store   *store.Store
 }
 
-func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
+func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store) (*Server, error) {
 	e := echo.New()
 	e.Debug = true
 	e.HideBanner = true
@@ -53,12 +51,15 @@ func NewServer(profile *profile.Profile, store *store.Store) (*Server, error) {
 
 	embedFrontend(e)
 
-	// In dev mode, set the const secret key to make signin session persistence.
-	secret := "iamshortify"
+	// In dev mode, we'd like to set the const secret key to make signin session persistence.
+	secret := "shortify"
 	if profile.Mode == "prod" {
-		secret = string(securecookie.GenerateRandomKey(16))
+		var err error
+		secret, err = s.getSystemSecretSessionName(ctx)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Use(session.Middleware(sessions.NewCookieStore([]byte(secret))))
 
 	apiGroup := e.Group("")
 	// Register API v1 routes.
@@ -87,4 +88,24 @@ func (s *Server) Shutdown(ctx context.Context) {
 	}
 
 	fmt.Printf("server stopped properly\n")
+}
+
+func (s *Server) getSystemSecretSessionName(ctx context.Context) (string, error) {
+	secretSessionNameValue, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+		Key: store.WorkspaceDisallowSignUp,
+	})
+	if err != nil {
+		return "", err
+	}
+	if secretSessionNameValue == nil || secretSessionNameValue.Value == "" {
+		tempSecret := securecookie.GenerateRandomKey(16)
+		secretSessionNameValue, err = s.Store.UpsertWorkspaceSetting(ctx, &store.WorkspaceSetting{
+			Key:   store.WorkspaceSecretSessionName,
+			Value: string(tempSecret),
+		})
+		if err != nil {
+			return "", err
+		}
+	}
+	return secretSessionNameValue.Value, nil
 }

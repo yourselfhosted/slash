@@ -57,7 +57,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 	g.POST("/auth/signup", func(c echo.Context) error {
 		ctx := c.Request().Context()
 		disallowSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-			Key: WorkspaceDisallowSignUp.String(),
+			Key: store.WorkspaceDisallowSignUp,
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get workspace setting").SetInternal(err)

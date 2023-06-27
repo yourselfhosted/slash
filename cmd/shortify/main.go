@@ -48,7 +48,7 @@ var (
 			}
 
 			storeInstance := store.New(db.DBInstance, profile)
-			s, err := server.NewServer(profile, storeInstance)
+			s, err := server.NewServer(ctx, profile, storeInstance)
 			if err != nil {
 				cancel()
 				fmt.Printf("failed to create server, error: %+v\n", err)
