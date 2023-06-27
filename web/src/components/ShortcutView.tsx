@@ -5,10 +5,12 @@ import toast from "react-hot-toast";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
 import { absolutifyLink } from "../helpers/utils";
+import * as api from "../helpers/api";
 import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
 import VisibilityIcon from "./VisibilityIcon";
+import { useEffect, useState } from "react";
 
 interface Props {
   shortcut: Shortcut;
@@ -19,7 +21,19 @@ const ShortcutView = (props: Props) => {
   const { shortcut, handleEdit } = props;
   const { t } = useTranslation();
   const user = useAppSelector((state) => state.user.user as User);
+  const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const havePermission = user.role === "ADMIN" || shortcut.creatorId === user.id;
+
+  useEffect(() => {
+    api
+      .getUrlFavicon(shortcut.link)
+      .then(({ data }) => {
+        setFavicon(data);
+      })
+      .catch(() => {
+        // do nothing.
+      });
+  }, [shortcut.link]);
 
   const handleCopyButtonClick = (shortcut: Shortcut) => {
     copy(absolutifyLink(`/s/${shortcut.name}`));
@@ -40,12 +54,21 @@ const ShortcutView = (props: Props) => {
   return (
     <div className="w-full flex flex-col justify-start items-start border px-4 py-3 mb-2 rounded-lg hover:shadow">
       <div className="w-full flex flex-row justify-between items-center">
-        <p className="text-lg mr-1 shrink-0">
+        <div className="flex flex-row justify-normal items-center text-lg mr-1 shrink-0">
+          <div className="w-6 h-6 mr-1.5 flex justify-center items-center overflow-clip">
+            {favicon ? (
+              <img className="w-[90%] h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
+            ) : (
+              <Icon.Globe2 className="w-5 h-auto text-gray-500" />
+            )}
+          </div>
           <button className="cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
-            <span className="text-gray-400">s/</span>
+            <span className="text-gray-400">
+              s<span className="font-mono">/</span>
+            </span>
             {shortcut.name}
           </button>
-        </p>
+        </div>
         <div className="flex flex-row justify-end items-center space-x-2">
           <Tooltip title="Copy link" variant="solid" placement="top" arrow>
             <button className="cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
