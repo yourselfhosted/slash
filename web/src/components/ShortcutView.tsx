@@ -1,16 +1,16 @@
 import { Tooltip } from "@mui/joy";
 import copy from "copy-to-clipboard";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
+import useFaviconStore from "../stores/v1/favicon";
 import { absolutifyLink } from "../helpers/utils";
-import * as api from "../helpers/api";
 import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
 import VisibilityIcon from "./VisibilityIcon";
-import { useEffect, useState } from "react";
 
 interface Props {
   shortcut: Shortcut;
@@ -21,18 +21,16 @@ const ShortcutView = (props: Props) => {
   const { shortcut, handleEdit } = props;
   const { t } = useTranslation();
   const user = useAppSelector((state) => state.user.user as User);
+  const faviconStore = useFaviconStore();
   const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const havePermission = user.role === "ADMIN" || shortcut.creatorId === user.id;
 
   useEffect(() => {
-    api
-      .getUrlFavicon(shortcut.link)
-      .then(({ data }) => {
-        setFavicon(data);
-      })
-      .catch(() => {
-        // do nothing.
-      });
+    faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
+      if (url) {
+        setFavicon(url);
+      }
+    });
   }, [shortcut.link]);
 
   const handleCopyButtonClick = (shortcut: Shortcut) => {
