@@ -74,5 +74,5 @@ export function upsertWorkspaceSetting(key: string, value: string) {
 }
 
 export function getUrlFavicon(url: string) {
-  return axios.get<string>(`/api/v1/favicon?url=${url}`);
+  return axios.get<string>(`/api/v1/url/favicon?url=${url}`);
 }

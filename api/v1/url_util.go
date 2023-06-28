@@ -7,8 +7,8 @@ import (
 	"go.deanishe.net/favicon"
 )
 
-func (*APIV1Service) registerFaviconRoutes(g *echo.Group) {
-	g.GET("/favicon", func(c echo.Context) error {
+func (*APIV1Service) registerURLUtilRoutes(g *echo.Group) {
+	g.GET("/url/favicon", func(c echo.Context) error {
 		url := c.QueryParam("url")
 		icons, err := favicon.Find(url)
 		if err != nil {
