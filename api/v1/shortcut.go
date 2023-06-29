@@ -92,7 +92,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 		shortcut, err := s.Store.CreateShortcut(ctx, &store.Shortcut{
 			CreatorID:   userID,
-			Name:        create.Name,
+			Name:        strings.ToLower(create.Name),
 			Link:        create.Link,
 			Description: create.Description,
 			Visibility:  convertVisibilityToStore(create.Visibility),
@@ -146,6 +146,10 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		patch := &PatchShortcutRequest{}
 		if err := json.NewDecoder(c.Request().Body).Decode(patch); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted patch shortcut request").SetInternal(err)
+		}
+		if patch.Name != nil {
+			name := strings.ToLower(*patch.Name)
+			patch.Name = &name
 		}
 		if patch.Link != nil && !validateLink(*patch.Link) {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid link: %s", *patch.Link))
