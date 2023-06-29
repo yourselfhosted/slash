@@ -61,9 +61,7 @@ const ShortcutView = (props: Props) => {
             )}
           </div>
           <button className="items-center cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
-            <span className="text-gray-400">
-              s<span className="font-mono">/</span>
-            </span>
+            <span className="text-gray-400">s/</span>
             {shortcut.name}
           </button>
           <a className="hidden group-hover:block ml-1 cursor-pointer hover:opacity-80" target="_blank" href={shortcut.link}>

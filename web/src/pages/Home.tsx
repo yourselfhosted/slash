@@ -1,4 +1,4 @@
-import { Button, Option, Select } from "@mui/joy";
+import { Button, Tab, TabList, Tabs } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
@@ -37,18 +37,22 @@ const Home: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start">
+        <div className="w-full flex flex-row justify-start items-center mb-4">
+          <span className="font-mono text-gray-400 mr-2">Shortcuts</span>
+        </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
-            <span className="font-mono text-gray-400 mr-2">Shortcuts</span>
+            <Tabs defaultValue={"ALL"} size="sm" onChange={(_, value) => setSelectFilter(value as any)}>
+              <TabList>
+                <Tab value={"ALL"}>All</Tab>
+                <Tab value={"PRIVATE"}>Mine</Tab>
+              </TabList>
+            </Tabs>
+          </div>
+          <div>
             <Button variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
               <Icon.Plus className="w-5 h-auto" /> New
             </Button>
-          </div>
-          <div>
-            <Select defaultValue={"ALL"} onChange={(_, value) => setSelectFilter(value as any)}>
-              <Option value={"ALL"}>All</Option>
-              <Option value={"PRIVATE"}>Mine</Option>
-            </Select>
           </div>
         </div>
         {loadingState.isLoading ? (
