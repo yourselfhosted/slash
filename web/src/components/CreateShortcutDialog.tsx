@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import { shortcutService } from "../services";
 import useLoading from "../hooks/useLoading";
+import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
 
 interface Props {
@@ -32,6 +33,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   });
   const [tag, setTag] = useState<string>("");
   const requestState = useLoading(false);
+  const isEditing = !!shortcutId;
 
   useEffect(() => {
     if (shortcutId) {
@@ -51,27 +53,35 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     }
   }, [shortcutId]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
-    const text = e.target.value as string;
-    const tempObject = {} as any;
-    tempObject[key] = text;
-
+  const setPartialState = (partialState: Partial<State>) => {
     setState({
       ...state,
-      shortcutCreate: Object.assign(state.shortcutCreate, tempObject),
+      ...partialState,
     });
   };
 
   const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(e, "name");
+    setPartialState({
+      shortcutCreate: Object.assign(state.shortcutCreate, {
+        name: e.target.value.replace(/\s+/g, "-").toLowerCase(),
+      }),
+    });
   };
 
   const handleLinkInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(e, "link");
+    setPartialState({
+      shortcutCreate: Object.assign(state.shortcutCreate, {
+        link: e.target.value,
+      }),
+    });
   };
 
   const handleDescriptionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(e, "description");
+    setPartialState({
+      shortcutCreate: Object.assign(state.shortcutCreate, {
+        description: e.target.value,
+      }),
+    });
   };
 
   const handleTagsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +90,27 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   };
 
   const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(e, "visibility");
+    setPartialState({
+      shortcutCreate: Object.assign(state.shortcutCreate, {
+        visibility: e.target.value,
+      }),
+    });
+  };
+
+  const handleDeleteShortcutButtonClick = () => {
+    if (!shortcutId) {
+      return;
+    }
+
+    showCommonDialog({
+      title: "Delete Shortcut",
+      content: `Are you sure to delete shortcut \`${state.shortcutCreate.name}\`? You can not undo this action.`,
+      style: "danger",
+      onConfirm: async () => {
+        await shortcutService.deleteShortcutById(shortcutId);
+        onClose();
+      },
+    });
   };
 
   const handleSaveBtnClick = async () => {
@@ -121,7 +151,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     <Modal open={true}>
       <ModalDialog>
         <div className="flex flex-row justify-between items-center w-80 sm:w-96 mb-4">
-          <span className="text-lg font-medium">{shortcutId ? "Edit Shortcut" : "Create Shortcut"}</span>
+          <span className="text-lg font-medium">{isEditing ? "Edit Shortcut" : "Create Shortcut"}</span>
           <Button variant="plain" onClick={onClose}>
             <Icon.X className="w-5 h-auto text-gray-600" />
           </Button>
@@ -182,13 +212,22 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               </RadioGroup>
             </div>
           </div>
-          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              Save
-            </Button>
+          <div className="w-full flex flex-row justify-between items-center mt-8 space-x-2">
+            <div>
+              {isEditing && (
+                <Button color="danger" variant="plain" onClick={handleDeleteShortcutButtonClick}>
+                  Delete
+                </Button>
+              )}
+            </div>
+            <div className="space-x-2">
+              <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
+                Save
+              </Button>
+            </div>
           </div>
         </div>
       </ModalDialog>
