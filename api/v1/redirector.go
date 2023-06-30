@@ -3,6 +3,7 @@ package v1
 import (
 	"encoding/json"
 	"net/http"
+	"net/url"
 
 	"github.com/boojack/shortify/store"
 	"github.com/labstack/echo/v4"
@@ -39,7 +40,10 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create activity").SetInternal(err)
 		}
 
-		return c.Redirect(http.StatusSeeOther, shortcut.Link)
+		if isValidURLString(shortcut.Link) {
+			return c.Redirect(http.StatusSeeOther, shortcut.Link)
+		}
+		return c.String(http.StatusOK, shortcut.Link)
 	})
 }
 
@@ -65,4 +69,9 @@ func (s *APIV1Service) createShortcutViewActivity(c echo.Context, shortcut *stor
 		return errors.Wrap(err, "Failed to create activity")
 	}
 	return nil
+}
+
+func isValidURLString(s string) bool {
+	_, err := url.ParseRequestURI(s)
+	return err == nil
 }

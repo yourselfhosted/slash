@@ -24,6 +24,7 @@ const ShortcutView = (props: Props) => {
   const faviconStore = useFaviconStore();
   const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const havePermission = user.role === "ADMIN" || shortcut.creatorId === user.id;
+  const shortifyLink = absolutifyLink(`/s/${shortcut.name}`);
 
   useEffect(() => {
     faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
@@ -33,8 +34,8 @@ const ShortcutView = (props: Props) => {
     });
   }, [shortcut.link]);
 
-  const handleCopyButtonClick = (shortcut: Shortcut) => {
-    copy(absolutifyLink(`/s/${shortcut.name}`));
+  const handleCopyButtonClick = () => {
+    copy(shortifyLink);
     toast.success("Shortcut link copied to clipboard.");
   };
 
@@ -60,11 +61,11 @@ const ShortcutView = (props: Props) => {
               <Icon.Globe2 className="w-5 h-auto text-gray-500" />
             )}
           </div>
-          <button className="items-center cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick(shortcut)}>
+          <button className="items-center cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick()}>
             <span className="text-gray-400">s/</span>
             {shortcut.name}
           </button>
-          <a className="hidden group-hover:block ml-1 cursor-pointer hover:opacity-80" target="_blank" href={shortcut.link}>
+          <a className="hidden group-hover:block ml-1 cursor-pointer hover:opacity-80" target="_blank" href={shortifyLink}>
             <Icon.ExternalLink className="w-4 h-auto text-gray-500" />
           </a>
         </div>

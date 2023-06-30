@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/boojack/shortify/internal/util"
 	"github.com/boojack/shortify/store"
 	"github.com/pkg/errors"
 
@@ -86,9 +85,6 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err := json.NewDecoder(c.Request().Body).Decode(create); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post shortcut request").SetInternal(err)
 		}
-		if !validateLink(create.Link) {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid link: %s", create.Link))
-		}
 
 		shortcut, err := s.Store.CreateShortcut(ctx, &store.Shortcut{
 			CreatorID:   userID,
@@ -150,9 +146,6 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if patch.Name != nil {
 			name := strings.ToLower(*patch.Name)
 			patch.Name = &name
-		}
-		if patch.Link != nil && !validateLink(*patch.Link) {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid link: %s", *patch.Link))
 		}
 
 		shortcutUpdate := &store.UpdateShortcut{
@@ -368,8 +361,4 @@ func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
 		RowStatus:   RowStatus(shortcut.RowStatus),
 		Tags:        tags,
 	}
-}
-
-func validateLink(link string) bool {
-	return util.HasPrefixes(link, "http://", "https://")
 }
