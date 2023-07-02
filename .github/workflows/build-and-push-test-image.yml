@@ -26,13 +26,12 @@ jobs:
           install: true
           version: v0.9.1
 
-      # TODO(steven)
-      # - name: Build and Push
-      #   id: docker_build
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: ./
-      #     file: ./Dockerfile
-      #     platforms: linux/amd64
-      #     push: true
-      #     tags: stevenlgtm/corgi:test
+      - name: Build and Push
+        id: docker_build
+        uses: docker/build-push-action@v3
+        with:
+          context: ./
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: stevenlgtm/shortify:test
