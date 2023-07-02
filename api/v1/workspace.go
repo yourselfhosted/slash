@@ -51,7 +51,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 			Key: store.WorkspaceDisallowSignUp,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get workspace setting")
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to find workspace setting, err: %s", err)).SetInternal(err)
 		}
 		if disallowSignUpSetting != nil {
 			workspaceProfile.DisallowSignUp = disallowSignUpSetting.Value == "true"
@@ -64,14 +64,14 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 		ctx := c.Request().Context()
 		userID, ok := c.Get(getUserIDContextKey()).(int)
 		if !ok {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
 
 		user, err := s.Store.GetUser(ctx, &store.FindUser{
 			ID: &userID,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to find user, err: %s", err)).SetInternal(err)
 		}
 		if user == nil || user.Role != store.RoleAdmin {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
@@ -79,10 +79,10 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 
 		upsert := &WorkspaceSettingUpsert{}
 		if err := json.NewDecoder(c.Request().Body).Decode(upsert); err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post workspace setting request").SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("failed to decode request body, err: %s", err)).SetInternal(err)
 		}
 		if err := upsert.Validate(); err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Invalid system setting key or value").SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("invalid request body, err: %s", err)).SetInternal(err)
 		}
 
 		workspaceSetting, err := s.Store.UpsertWorkspaceSetting(ctx, &store.WorkspaceSetting{
@@ -90,7 +90,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 			Value: upsert.Value,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to upsert system setting").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to upsert workspace setting, err: %s", err)).SetInternal(err)
 		}
 		return c.JSON(http.StatusOK, convertWorkspaceSettingFromStore(workspaceSetting))
 	})
@@ -99,14 +99,14 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 		ctx := c.Request().Context()
 		userID, ok := c.Get(getUserIDContextKey()).(int)
 		if !ok {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
 
 		user, err := s.Store.GetUser(ctx, &store.FindUser{
 			ID: &userID,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to find user, err: %s", err)).SetInternal(err)
 		}
 		if user == nil || user.Role != store.RoleAdmin {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
@@ -114,7 +114,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 
 		list, err := s.Store.ListWorkspaceSettings(ctx, &store.FindWorkspaceSetting{})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find system setting list").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to list workspace settings, err: %s", err)).SetInternal(err)
 		}
 
 		workspaceSettingList := []*WorkspaceSetting{}

@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -12,7 +13,7 @@ func (*APIV1Service) registerURLUtilRoutes(g *echo.Group) {
 		url := c.QueryParam("url")
 		icons, err := favicon.Find(url)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find favicon")
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("failed to find favicon, err: %s", err))
 		}
 
 		availableIcons := []*favicon.Icon{}
@@ -22,7 +23,7 @@ func (*APIV1Service) registerURLUtilRoutes(g *echo.Group) {
 			}
 		}
 		if len(availableIcons) == 0 {
-			return echo.NewHTTPError(http.StatusNotFound, "No favicon found")
+			return echo.NewHTTPError(http.StatusNotFound, "no favicon found")
 		}
 		return c.JSON(http.StatusOK, availableIcons[0].URL)
 	})

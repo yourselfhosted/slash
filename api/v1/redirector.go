@@ -2,6 +2,7 @@ package v1
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 
@@ -14,17 +15,18 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 	g.GET("/*", func(c echo.Context) error {
 		ctx := c.Request().Context()
 		if len(c.ParamValues()) == 0 {
-			return echo.NewHTTPError(http.StatusBadRequest, "Invalid shortcut name")
+			return echo.NewHTTPError(http.StatusBadRequest, "invalid shortcut name")
 		}
+
 		shortcutName := c.ParamValues()[0]
 		shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 			Name: &shortcutName,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get shortcut").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to get shortcut, err: %s", err)).SetInternal(err)
 		}
 		if shortcut == nil {
-			return echo.NewHTTPError(http.StatusNotFound, "Shortcut not found")
+			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("not found shortcut with name: %s", shortcutName))
 		}
 		if shortcut.Visibility != store.VisibilityPublic {
 			userID, ok := c.Get(getUserIDContextKey()).(int)
@@ -37,7 +39,7 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 		}
 
 		if err := s.createShortcutViewActivity(c, shortcut); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create activity").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create activity, err: %s", err)).SetInternal(err)
 		}
 
 		if isValidURLString(shortcut.Link) {

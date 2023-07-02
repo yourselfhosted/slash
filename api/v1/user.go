@@ -89,7 +89,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		ctx := c.Request().Context()
 		list, err := s.Store.ListUsers(ctx, &store.FindUser{})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user list").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to list users, err: %s", err)).SetInternal(err)
 		}
 
 		userList := []*User{}
@@ -104,14 +104,14 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		ctx := c.Request().Context()
 		userID, ok := c.Get(getUserIDContextKey()).(int)
 		if !ok {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
+			return echo.NewHTTPError(http.StatusUnauthorized, "missing auth session")
 		}
 
 		user, err := s.Store.GetUser(ctx, &store.FindUser{
 			ID: &userID,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user, err: %s", err)).SetInternal(err)
 		}
 
 		return c.JSON(http.StatusOK, convertUserFromStore(user))
@@ -121,14 +121,14 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		ctx := c.Request().Context()
 		userID, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted user id").SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
 
 		user, err := s.Store.GetUser(ctx, &store.FindUser{
 			ID: &userID,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user, err: %s", err)).SetInternal(err)
 		}
 
 		return c.JSON(http.StatusOK, convertUserFromStore(user))
@@ -138,19 +138,19 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		ctx := c.Request().Context()
 		userID, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("ID is not a number: %s", c.Param("id"))).SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
 		currentUserID, ok := c.Get(getUserIDContextKey()).(int)
 		if !ok {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
 		if currentUserID != userID {
-			return echo.NewHTTPError(http.StatusForbidden, "Access forbidden for current session user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusForbidden, "access forbidden for current session user").SetInternal(err)
 		}
 
 		userPatch := &PatchUserRequest{}
 		if err := json.NewDecoder(c.Request().Body).Decode(userPatch); err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted patch user request").SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("failed to decode request body, err: %s", err)).SetInternal(err)
 		}
 
 		updateUser := &store.UpdateUser{
@@ -158,7 +158,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		}
 		if userPatch.Email != nil {
 			if !validateEmail(*userPatch.Email) {
-				return echo.NewHTTPError(http.StatusBadRequest, "Invalid email format")
+				return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("invalid email format: %s", *userPatch.Email))
 			}
 
 			updateUser.Email = userPatch.Email
@@ -169,7 +169,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		if userPatch.Password != nil && *userPatch.Password != "" {
 			passwordHash, err := bcrypt.GenerateFromPassword([]byte(*userPatch.Password), bcrypt.DefaultCost)
 			if err != nil {
-				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate password hash").SetInternal(err)
+				return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to hash password, err: %s", err)).SetInternal(err)
 			}
 
 			passwordHashStr := string(passwordHash)
@@ -178,7 +178,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 
 		user, err := s.Store.UpdateUser(ctx, updateUser)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to update user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to update user, err: %s", err)).SetInternal(err)
 		}
 
 		return c.JSON(http.StatusOK, convertUserFromStore(user))
@@ -188,30 +188,30 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		ctx := c.Request().Context()
 		currentUserID, ok := c.Get(getUserIDContextKey()).(int)
 		if !ok {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Missing user in session")
+			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
 		currentUser, err := s.Store.GetUser(ctx, &store.FindUser{
 			ID: &currentUserID,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to find current session user, err: %s", err)).SetInternal(err)
 		}
 		if currentUser == nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Current session user not found with ID: %d", currentUserID)).SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("current session user not found with ID: %d", currentUserID)).SetInternal(err)
 		}
 		if currentUser.Role != store.RoleAdmin {
-			return echo.NewHTTPError(http.StatusForbidden, "Access forbidden for current session user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusForbidden, "access forbidden for current session user").SetInternal(err)
 		}
 
 		userID, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("ID is not a number: %s", c.Param("id"))).SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
 
 		if err := s.Store.DeleteUser(ctx, &store.DeleteUser{
 			ID: userID,
 		}); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to delete user").SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to delete user, err: %s", err)).SetInternal(err)
 		}
 
 		return c.JSON(http.StatusOK, true)
