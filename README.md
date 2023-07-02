@@ -1,11 +1,11 @@
 # Shortify
 
-<img align="right" src="./resources/logo.png" height="96px" alt="logo">
+<img align="right" src="./resources/logo.png" height="64px" alt="logo">
 
-Shortify is a URL shortening and bookmarking service that helps users to shorten long links into short and manageable ones. This service is designed to simplify the sharing of links on blogs, social media, and other platforms.
+**Shortify** is a bookmarking and short link service that allows you to save and share links easily. It lets you store and categorize links, generate short URLs for easy sharing, search and filter your saved links, and access them from any device. It simplifies link organization, management, and collaboration, making it effortless to navigate and share web resources.
+
+Let's Simplify, Share, and Save your links with **Shortify**.
 
 ## Demo
-
-> The project is under development and your contributions and feedback are welcome.
 
 ![demo](./resources/demo.gif)
