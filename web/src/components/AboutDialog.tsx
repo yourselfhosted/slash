@@ -19,8 +19,8 @@ const AboutDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="max-w-full w-80 sm:w-96">
           <p>
-            <span className="font-medium">Shortify</span> is a free and open source project. It is a simple bookmarking tool that allows you
-            to save your favorite links and access them from anywhere.
+            <span className="font-medium">Shortify</span> is a bookmarking and short link service that allows you to save and share links
+            easily.
           </p>
           <div className="mt-1">
             <span className="mr-2">See more in:</span>
