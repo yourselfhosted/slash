@@ -8,8 +8,8 @@ import (
 	apiv1 "github.com/boojack/shortify/api/v1"
 	"github.com/boojack/shortify/server/profile"
 	"github.com/boojack/shortify/store"
+	"github.com/google/uuid"
 
-	"github.com/gorilla/securecookie"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -98,7 +98,7 @@ func (s *Server) getSystemSecretSessionName(ctx context.Context) (string, error)
 		return "", err
 	}
 	if secretSessionNameValue == nil || secretSessionNameValue.Value == "" {
-		tempSecret := securecookie.GenerateRandomKey(16)
+		tempSecret := uuid.New().String()
 		secretSessionNameValue, err = s.Store.UpsertWorkspaceSetting(ctx, &store.WorkspaceSetting{
 			Key:   store.WorkspaceSecretSessionName,
 			Value: string(tempSecret),

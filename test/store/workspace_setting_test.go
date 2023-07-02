@@ -5,14 +5,14 @@ import (
 	"testing"
 
 	"github.com/boojack/shortify/store"
-	"github.com/gorilla/securecookie"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
 
 func TestWorkspaceSettingStore(t *testing.T) {
 	ctx := context.Background()
 	ts := NewTestingStore(ctx, t)
-	tempSecret := securecookie.GenerateRandomKey(16)
+	tempSecret := uuid.New().String()
 	workspaceSetting, err := ts.UpsertWorkspaceSetting(ctx, &store.WorkspaceSetting{
 		Key:   store.WorkspaceSecretSessionName,
 		Value: string(tempSecret),

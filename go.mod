@@ -2,7 +2,7 @@ module github.com/boojack/shortify
 
 go 1.19
 
-require github.com/google/uuid v1.3.0 // indirect
+require github.com/google/uuid v1.3.0
 
 require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
@@ -23,7 +23,6 @@ require (
 )
 
 require (
-	github.com/gorilla/securecookie v1.1.1
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.4
