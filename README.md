@@ -6,6 +6,12 @@
 
 Let's Simplify, Share, and Save your links with **Shortify**.
 
+## Deploy with Docker in seconds
+
+```bash
+docker run -d --name shortify -p 5231:5231 -v ~/.shortify/:/var/opt/shortify stevenlgtm/shortify:latest
+```
+
 ## Demo
 
 ![demo](./resources/demo.gif)
