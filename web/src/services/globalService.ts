@@ -10,14 +10,14 @@ const globalService = {
 
   initialState: async () => {
     try {
-      await userService.initialState();
+      const workspaceProfile = (await api.getWorkspaceProfile()).data;
+      store.dispatch(setGlobalState({ workspaceProfile }));
     } catch (error) {
       // do nth
     }
 
     try {
-      const workspaceProfile = (await api.getWorkspaceProfile()).data;
-      store.dispatch(setGlobalState({ workspaceProfile }));
+      await userService.initialState();
     } catch (error) {
       // do nth
     }
