@@ -22,16 +22,16 @@ func getFileSystem(path string) http.FileSystem {
 	return http.FS(fs)
 }
 
-func defaultAPIRequestSkipper(c echo.Context) bool {
+func defaultRequestSkipper(c echo.Context) bool {
 	path := c.Path()
-	return util.HasPrefixes(path, "/api")
+	return util.HasPrefixes(path, "/api/", "/s/*")
 }
 
 func embedFrontend(e *echo.Echo) {
 	// Use echo static middleware to serve the built dist folder
 	// refer: https://github.com/labstack/echo/blob/master/middleware/static.go
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Skipper:    defaultAPIRequestSkipper,
+		Skipper:    defaultRequestSkipper,
 		HTML5:      true,
 		Filesystem: getFileSystem("dist"),
 	}))
@@ -44,7 +44,7 @@ func embedFrontend(e *echo.Echo) {
 		}
 	})
 	assetsGroup.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Skipper:    defaultAPIRequestSkipper,
+		Skipper:    defaultRequestSkipper,
 		HTML5:      true,
 		Filesystem: getFileSystem("dist/assets"),
 	}))
