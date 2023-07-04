@@ -77,14 +77,15 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 		path := c.Path()
 		method := c.Request().Method
 
-		if defaultAuthSkipper(c) {
+		// Pass auth and profile endpoints.
+		if util.HasPrefixes(path, "/api/v1/auth", "/api/v1/workspace/profile") {
 			return next(c)
 		}
 
 		token := findAccessToken(c)
 		if token == "" {
 			// When the request is not authenticated, we allow the user to access the shortcut endpoints for those public shortcuts.
-			if util.HasPrefixes(path, "/api/v1/workspace/profile", "/s/*") && method == http.MethodGet {
+			if util.HasPrefixes(path, "/s/*") && method == http.MethodGet {
 				return next(c)
 			}
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing access token")
@@ -194,9 +195,4 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 		c.Set(getUserIDContextKey(), userID)
 		return next(c)
 	}
-}
-
-func defaultAuthSkipper(c echo.Context) bool {
-	path := c.Path()
-	return util.HasPrefixes(path, "/api/v1/auth")
 }
