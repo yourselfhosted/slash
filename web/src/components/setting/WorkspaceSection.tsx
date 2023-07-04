@@ -17,20 +17,18 @@ const WorkspaceSection: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
-        <p className="text-gray-400">Workspace settings</p>
-        <div className="w-full flex flex-col justify-start items-start">
-          <Checkbox
-            className="font-medium"
-            label="Disable self-service signup"
-            checked={disallowSignUp}
-            onChange={(event) => handleDisallowSignUpChange(event.target.checked)}
-          />
-          <p className="mt-2 text-gray-500">Once disabled, other users cannot signup.</p>
-        </div>
+    <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
+      <p className="text-gray-400">Workspace settings</p>
+      <div className="w-full flex flex-col justify-start items-start">
+        <Checkbox
+          className="font-medium"
+          label="Disable user signup"
+          checked={disallowSignUp}
+          onChange={(event) => handleDisallowSignUpChange(event.target.checked)}
+        />
+        <p className="mt-2 text-gray-500">Once disabled, other users cannot signup.</p>
       </div>
-    </>
+    </div>
   );
 };
 
