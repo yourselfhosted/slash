@@ -18,6 +18,8 @@ const ShortcutListView: React.FC<Props> = (props: Props) => {
         })}
       </div>
 
+      <p className="w-full text-center text-gray-400 text-sm mt-2 mb-4 italic">Total {shortcutList.length} data</p>
+
       {editingShortcutId && (
         <CreateShortcutDialog
           shortcutId={editingShortcutId}

@@ -34,6 +34,10 @@ const ShortcutView = (props: Props) => {
     });
   }, [shortcut.link]);
 
+  const gotoShortcutLink = () => {
+    window.open(shortifyLink, "_blank");
+  };
+
   const handleCopyButtonClick = () => {
     copy(shortifyLink);
     toast.success("Shortcut link copied to clipboard.");
@@ -61,9 +65,12 @@ const ShortcutView = (props: Props) => {
               <Icon.Globe2 className="w-5 h-auto text-gray-500" />
             )}
           </div>
-          <button className="items-center cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick()}>
+          <button className="items-center cursor-pointer hover:opacity-80 hover:underline" onClick={() => gotoShortcutLink()}>
             <span className="text-gray-400">s/</span>
             {shortcut.name}
+          </button>
+          <button className="hidden group-hover:block ml-1 cursor-pointer hover:opacity-80" onClick={() => handleCopyButtonClick()}>
+            <Icon.Clipboard className="w-4 h-auto text-gray-500" />
           </button>
           <a className="hidden group-hover:block ml-1 cursor-pointer hover:opacity-80" target="_blank" href={shortifyLink}>
             <Icon.ExternalLink className="w-4 h-auto text-gray-500" />
@@ -123,7 +130,7 @@ const ShortcutView = (props: Props) => {
         </Tooltip>
         <Tooltip title="View count" variant="solid" placement="top" arrow>
           <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
-            <Icon.Eye className="w-4 h-auto mr-1" />
+            <Icon.BarChart2 className="w-4 h-auto mr-1" />
             {shortcut.view} visits
           </div>
         </Tooltip>

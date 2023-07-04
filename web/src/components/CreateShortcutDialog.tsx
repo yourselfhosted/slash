@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import { shortcutService } from "../services";
 import useLoading from "../hooks/useLoading";
-import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
 
 interface Props {
@@ -94,22 +93,6 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       shortcutCreate: Object.assign(state.shortcutCreate, {
         visibility: e.target.value,
       }),
-    });
-  };
-
-  const handleDeleteShortcutButtonClick = () => {
-    if (!shortcutId) {
-      return;
-    }
-
-    showCommonDialog({
-      title: "Delete Shortcut",
-      content: `Are you sure to delete shortcut \`${state.shortcutCreate.name}\`? You can not undo this action.`,
-      style: "danger",
-      onConfirm: async () => {
-        await shortcutService.deleteShortcutById(shortcutId);
-        onClose();
-      },
     });
   };
 
@@ -208,23 +191,17 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
                 ))}
               </RadioGroup>
             </div>
+            <p className="mt-3 text-sm text-gray-500 w-full bg-gray-100 border border-gray-200 px-2 py-1 rounded-md">
+              {t(`shortcut.visibility.${state.shortcutCreate.visibility.toLowerCase()}.description`)}
+            </p>
           </div>
-          <div className="w-full flex flex-row justify-between items-center mt-8 space-x-2">
-            <div>
-              {isEditing && (
-                <Button color="danger" variant="plain" onClick={handleDeleteShortcutButtonClick}>
-                  Delete
-                </Button>
-              )}
-            </div>
-            <div className="space-x-2">
-              <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-                Save
-              </Button>
-            </div>
+          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
+              Save
+            </Button>
           </div>
         </div>
       </ModalDialog>

@@ -65,7 +65,8 @@ const Home: React.FC = () => {
             <Icon.PackageOpen className="w-12 h-auto text-gray-400" />
             <p className="mt-4 mb-2">No shortcuts found.</p>
             <Button size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
-              Create one
+              <Icon.Plus className="w-5 h-auto mr-1" />
+              Create
             </Button>
           </div>
         ) : (
