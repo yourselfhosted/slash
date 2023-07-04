@@ -83,7 +83,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			Name:        strings.ToLower(create.Name),
 			Link:        create.Link,
 			Description: create.Description,
-			Visibility:  convertVisibilityToStore(create.Visibility),
+			Visibility:  store.Visibility(create.Visibility.String()),
 			Tag:         strings.Join(create.Tags, " "),
 		})
 		if err != nil {
@@ -176,13 +176,6 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		}
 
 		find := &store.FindShortcut{}
-		if creatorIDStr := c.QueryParam("creatorId"); creatorIDStr != "" {
-			creatorID, err := strconv.Atoi(creatorIDStr)
-			if err != nil {
-				return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("unwanted creator id string: %s", creatorIDStr))
-			}
-			find.CreatorID = &creatorID
-		}
 		if tag := c.QueryParam("tag"); tag != "" {
 			find.Tag = &tag
 		}
@@ -323,19 +316,6 @@ func (s *APIV1Service) composeShortcut(ctx context.Context, shortcut *Shortcut) 
 	shortcut.View = len(activityList)
 
 	return shortcut, nil
-}
-
-func convertVisibilityToStore(visibility Visibility) store.Visibility {
-	switch visibility {
-	case VisibilityPrivate:
-		return store.VisibilityPrivate
-	case VisibilityWorkspace:
-		return store.VisibilityWorkspace
-	case VisibilityPublic:
-		return store.VisibilityPublic
-	default:
-		return store.VisibilityPrivate
-	}
 }
 
 func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {

@@ -45,9 +45,6 @@ export function deleteUser(userDelete: UserDelete) {
 
 export function getShortcutList(shortcutFind?: ShortcutFind) {
   const queryList = [];
-  if (shortcutFind?.creatorId) {
-    queryList.push(`creatorId=${shortcutFind.creatorId}`);
-  }
   if (shortcutFind?.tag) {
     queryList.push(`tag=${shortcutFind.tag}`);
   }

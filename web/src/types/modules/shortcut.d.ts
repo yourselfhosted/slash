@@ -38,6 +38,5 @@ interface ShortcutPatch {
 }
 
 interface ShortcutFind {
-  creatorId?: UserId;
   tag?: string;
 }
