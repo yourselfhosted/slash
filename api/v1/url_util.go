@@ -9,6 +9,7 @@ import (
 )
 
 func (*APIV1Service) registerURLUtilRoutes(g *echo.Group) {
+	// GET /url/favicon?url=...
 	g.GET("/url/favicon", func(c echo.Context) error {
 		url := c.QueryParam("url")
 		icons, err := favicon.Find(url)

@@ -80,10 +80,6 @@ type PatchUserRequest struct {
 	Password  *string    `json:"password"`
 }
 
-type UserDelete struct {
-	ID int
-}
-
 func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	g.GET("/user", func(c echo.Context) error {
 		ctx := c.Request().Context()
@@ -160,7 +156,6 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 			if !validateEmail(*userPatch.Email) {
 				return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("invalid email format: %s", *userPatch.Email))
 			}
-
 			updateUser.Email = userPatch.Email
 		}
 		if userPatch.Nickname != nil {

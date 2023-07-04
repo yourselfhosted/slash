@@ -13,11 +13,8 @@ const (
 )
 
 // String returns the string format of UserSettingKey type.
-func (key UserSettingKey) String() string {
-	if key == UserSettingLocaleKey {
-		return "locale"
-	}
-	return ""
+func (k UserSettingKey) String() string {
+	return string(k)
 }
 
 var (
@@ -27,7 +24,7 @@ var (
 type UserSetting struct {
 	UserID int
 	Key    UserSettingKey `json:"key"`
-	// Value is a JSON string with basic value
+	// Value is a JSON string with basic value.
 	Value string `json:"value"`
 }
 
