@@ -208,6 +208,14 @@ func (s *Store) DeleteUser(ctx context.Context, delete *DeleteUser) error {
 		return err
 	}
 
+	if err := vacuumUserSetting(ctx, tx); err != nil {
+		return err
+	}
+
+	if err := vacuumShortcut(ctx, tx); err != nil {
+		return err
+	}
+
 	if err := tx.Commit(); err != nil {
 		// do nothing here to prevent linter warning.
 		return err

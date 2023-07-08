@@ -303,6 +303,9 @@ func (s *APIV1Service) composeShortcut(ctx context.Context, shortcut *Shortcut) 
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to get creator")
 	}
+	if user == nil {
+		return nil, errors.New("Creator not found")
+	}
 	shortcut.Creator = convertUserFromStore(user)
 
 	activityList, err := s.Store.ListActivities(ctx, &store.FindActivity{

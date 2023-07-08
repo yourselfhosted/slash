@@ -309,3 +309,22 @@ func listShortcuts(ctx context.Context, tx *sql.Tx, find *FindShortcut) ([]*Shor
 
 	return list, nil
 }
+
+func vacuumShortcut(ctx context.Context, tx *sql.Tx) error {
+	stmt := `
+	DELETE FROM 
+		shortcut 
+	WHERE 
+		creator_id NOT IN (
+			SELECT 
+				id 
+			FROM 
+				user
+		)`
+	_, err := tx.ExecContext(ctx, stmt)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

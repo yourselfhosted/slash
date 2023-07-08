@@ -132,3 +132,22 @@ func listUserSettings(ctx context.Context, tx *sql.Tx, find *FindUserSetting) ([
 
 	return userSettingMessageList, nil
 }
+
+func vacuumUserSetting(ctx context.Context, tx *sql.Tx) error {
+	stmt := `
+	DELETE FROM 
+		user_setting 
+	WHERE 
+		user_id NOT IN (
+			SELECT 
+				id 
+			FROM 
+				user
+		)`
+	_, err := tx.ExecContext(ctx, stmt)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
