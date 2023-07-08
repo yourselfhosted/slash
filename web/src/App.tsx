@@ -1,15 +1,33 @@
-import { CssVarsProvider } from "@mui/joy/styles";
-import { Toaster } from "react-hot-toast";
-import { RouterProvider } from "react-router-dom";
-import router from "./routers";
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
+import { globalService } from "./services";
+import useUserStore from "./stores/v1/user";
 
 function App() {
-  return (
-    <CssVarsProvider>
-      <RouterProvider router={router} />
-      <Toaster position="top-center" />
-    </CssVarsProvider>
-  );
+  const userStore = useUserStore();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const initialState = async () => {
+      try {
+        await globalService.initialState();
+      } catch (error) {
+        // do nothing
+      }
+
+      try {
+        await userStore.fetchCurrentUser();
+      } catch (error) {
+        // do nothing.
+      }
+
+      setLoading(false);
+    };
+
+    initialState();
+  }, []);
+
+  return <>{!loading && <Outlet />}</>;
 }
 
 export default App;

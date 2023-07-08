@@ -2,7 +2,7 @@ import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import useLoading from "../hooks/useLoading";
-import { userService } from "../services";
+import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 
 const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
   const { onClose } = props;
+  const userStore = useUserStore();
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
   const requestState = useLoading(false);
@@ -43,9 +44,8 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
 
     requestState.setLoading();
     try {
-      const user = userService.getState().user as User;
-      await userService.patchUser({
-        id: user.id,
+      userStore.patchUser({
+        id: userStore.getCurrentUser().id,
         password: newPassword,
       });
       onClose();

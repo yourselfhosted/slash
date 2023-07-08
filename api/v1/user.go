@@ -56,7 +56,7 @@ type CreateUserRequest struct {
 	Email    string `json:"email"`
 	Nickname string `json:"nickname"`
 	Password string `json:"password"`
-	Role     Role   `json:"-"`
+	Role     Role   `json:"role"`
 }
 
 func (create CreateUserRequest) Validate() error {
@@ -78,9 +78,56 @@ type PatchUserRequest struct {
 	Email     *string    `json:"email"`
 	Nickname  *string    `json:"nickname"`
 	Password  *string    `json:"password"`
+	Role      *Role      `json:"role"`
 }
 
 func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
+	g.POST("/user", func(c echo.Context) error {
+		ctx := c.Request().Context()
+		userID, ok := c.Get(getUserIDContextKey()).(int)
+		if !ok {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
+		}
+		currentUser, err := s.Store.GetUser(ctx, &store.FindUser{
+			ID: &userID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to find user by id").SetInternal(err)
+		}
+		if currentUser == nil {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
+		}
+		if currentUser.Role != store.RoleAdmin {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized to create user")
+		}
+
+		userCreate := &CreateUserRequest{}
+		if err := json.NewDecoder(c.Request().Body).Decode(userCreate); err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "Malformatted post user request").SetInternal(err)
+		}
+		if err := userCreate.Validate(); err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "Invalid user create format").SetInternal(err)
+		}
+
+		passwordHash, err := bcrypt.GenerateFromPassword([]byte(userCreate.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to generate password hash").SetInternal(err)
+		}
+
+		user, err := s.Store.CreateUser(ctx, &store.User{
+			Role:         store.Role(userCreate.Role),
+			Email:        userCreate.Email,
+			Nickname:     userCreate.Nickname,
+			PasswordHash: string(passwordHash),
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create user").SetInternal(err)
+		}
+
+		userMessage := convertUserFromStore(user)
+		return c.JSON(http.StatusOK, userMessage)
+	})
+
 	g.GET("/user", func(c echo.Context) error {
 		ctx := c.Request().Context()
 		list, err := s.Store.ListUsers(ctx, &store.FindUser{})
@@ -140,7 +187,16 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
-		if currentUserID != userID {
+		currentUser, err := s.Store.GetUser(ctx, &store.FindUser{
+			ID: &currentUserID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "failed to find current user").SetInternal(err)
+		}
+		if currentUser == nil {
+			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
+		}
+		if currentUser.ID != userID && currentUser.Role != store.RoleAdmin {
 			return echo.NewHTTPError(http.StatusForbidden, "access forbidden for current session user").SetInternal(err)
 		}
 
@@ -150,7 +206,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		}
 
 		updateUser := &store.UpdateUser{
-			ID: currentUserID,
+			ID: userID,
 		}
 		if userPatch.Email != nil {
 			if !validateEmail(*userPatch.Email) {
@@ -169,6 +225,14 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 
 			passwordHashStr := string(passwordHash)
 			updateUser.PasswordHash = &passwordHashStr
+		}
+		if userPatch.RowStatus != nil {
+			rowStatus := store.RowStatus(*userPatch.RowStatus)
+			updateUser.RowStatus = &rowStatus
+		}
+		if userPatch.Role != nil {
+			role := store.Role(*userPatch.Role)
+			updateUser.Role = &role
 		}
 
 		user, err := s.Store.UpdateUser(ctx, updateUser)
@@ -201,6 +265,18 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		userID, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
+		}
+		user, err := s.Store.GetUser(ctx, &store.FindUser{
+			ID: &userID,
+		})
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user, err: %s", err)).SetInternal(err)
+		}
+		if user == nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user not found with ID: %d", userID)).SetInternal(err)
+		}
+		if user.Role == store.RoleAdmin {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("cannot delete admin user with ID: %d", userID)).SetInternal(err)
 		}
 
 		if err := s.Store.DeleteUser(ctx, &store.DeleteUser{

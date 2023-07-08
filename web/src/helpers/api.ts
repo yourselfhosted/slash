@@ -35,6 +35,10 @@ export function getUserById(id: number) {
   return axios.get<User>(`/api/v1/user/${id}`);
 }
 
+export function createUser(userCreate: UserCreate) {
+  return axios.post<User>("/api/v1/user", userCreate);
+}
+
 export function patchUser(userPatch: UserPatch) {
   return axios.patch<User>(`/api/v1/user/${userPatch.id}`, userPatch);
 }

@@ -1,0 +1,201 @@
+import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import useLoading from "../hooks/useLoading";
+import useUserStore from "../stores/v1/user";
+import Icon from "./Icon";
+
+interface Props {
+  user?: User;
+  onClose: () => void;
+  onConfirm?: () => void;
+}
+
+interface State {
+  userCreate: UserCreate;
+}
+
+const roles: Role[] = ["USER", "ADMIN"];
+
+const CreateUserDialog: React.FC<Props> = (props: Props) => {
+  const { onClose, onConfirm, user } = props;
+  const userStore = useUserStore();
+  const [state, setState] = useState<State>({
+    userCreate: {
+      email: "",
+      nickname: "",
+      password: "",
+      role: "USER",
+    },
+  });
+  const requestState = useLoading(false);
+  const isEditing = !!user;
+
+  useEffect(() => {
+    if (user) {
+      setState({
+        ...state,
+        userCreate: Object.assign(state.userCreate, {
+          email: user.email,
+          nickname: user.nickname,
+          password: "",
+          role: user.role,
+        }),
+      });
+    }
+  }, [user]);
+
+  const setPartialState = (partialState: Partial<State>) => {
+    setState({
+      ...state,
+      ...partialState,
+    });
+  };
+
+  const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPartialState({
+      userCreate: Object.assign(state.userCreate, {
+        email: e.target.value.toLowerCase(),
+      }),
+    });
+  };
+
+  const handleNicknameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPartialState({
+      userCreate: Object.assign(state.userCreate, {
+        nickname: e.target.value,
+      }),
+    });
+  };
+
+  const handlePasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPartialState({
+      userCreate: Object.assign(state.userCreate, {
+        password: e.target.value,
+      }),
+    });
+  };
+
+  const handleRoleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPartialState({
+      userCreate: Object.assign(state.userCreate, {
+        visibility: e.target.value,
+      }),
+    });
+  };
+
+  const handleSaveBtnClick = async () => {
+    if (!state.userCreate.email) {
+      toast.error("Email is required");
+      return;
+    }
+
+    try {
+      if (user) {
+        const userPatch: UserPatch = {
+          id: user.id,
+        };
+        if (user.email !== state.userCreate.email) {
+          userPatch.email = state.userCreate.email;
+        }
+        if (user.nickname !== state.userCreate.nickname) {
+          userPatch.nickname = state.userCreate.nickname;
+        }
+        if (state.userCreate.password) {
+          userPatch.password = state.userCreate.password;
+        }
+        if (user.role !== state.userCreate.role) {
+          userPatch.role = state.userCreate.role;
+        }
+        await userStore.patchUser(userPatch);
+      } else {
+        await userStore.createUser(state.userCreate);
+      }
+
+      if (onConfirm) {
+        onConfirm();
+      } else {
+        onClose();
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  return (
+    <Modal open={true}>
+      <ModalDialog>
+        <div className="flex flex-row justify-between items-center w-80 sm:w-96 mb-4">
+          <span className="text-lg font-medium">{isEditing ? "Edit User" : "Create User"}</span>
+          <Button variant="plain" onClick={onClose}>
+            <Icon.X className="w-5 h-auto text-gray-600" />
+          </Button>
+        </div>
+        <div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">
+              Email <span className="text-red-600">*</span>
+            </span>
+            <div className="relative w-full">
+              <Input
+                className="w-full"
+                type="email"
+                placeholder="Unique user email"
+                value={state.userCreate.email}
+                onChange={handleEmailInputChange}
+              />
+            </div>
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">
+              Nickname <span className="text-red-600">*</span>
+            </span>
+            <Input
+              className="w-full"
+              type="text"
+              placeholder="Nickname"
+              value={state.userCreate.nickname}
+              onChange={handleNicknameInputChange}
+            />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">
+              Password
+              {!isEditing && <span className="text-red-600"> *</span>}
+            </span>
+            <Input
+              className="w-full"
+              type="password"
+              placeholder=""
+              value={state.userCreate.password}
+              onChange={handlePasswordInputChange}
+            />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">
+              Role <span className="text-red-600">*</span>
+            </span>
+            <div className="w-full flex flex-row justify-start items-center text-base">
+              <RadioGroup orientation="horizontal" value={state.userCreate.role} onChange={handleRoleInputChange}>
+                {roles.map((role) => (
+                  <Radio key={role} value={role} label={role} />
+                ))}
+              </RadioGroup>
+            </div>
+          </div>
+          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
+              Save
+            </Button>
+          </div>
+        </div>
+      </ModalDialog>
+    </Modal>
+  );
+};
+
+export default CreateUserDialog;

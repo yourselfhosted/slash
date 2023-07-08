@@ -3,11 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import * as api from "../helpers/api";
-import { userService } from "../services";
+import { globalService } from "../services";
 import useLoading from "../hooks/useLoading";
+import useUserStore from "../stores/v1/user";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
+  const userStore = useUserStore();
+  const {
+    workspaceProfile: { disallowSignUp },
+  } = globalService.getState();
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +20,15 @@ const SignUp: React.FC = () => {
   const allowConfirm = email.length > 0 && nickname.length > 0 && password.length > 0;
 
   useEffect(() => {
-    userService.doSignOut();
+    if (disallowSignUp) {
+      return navigate("/auth", {
+        replace: true,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    api.signout();
   }, []);
 
   const handleEmailInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +54,7 @@ const SignUp: React.FC = () => {
     try {
       actionBtnLoadingState.setLoading();
       await api.signup(email, nickname, password);
-      const user = await userService.doSignIn();
+      const user = await userStore.fetchCurrentUser();
       if (user) {
         navigate("/", {
           replace: true,

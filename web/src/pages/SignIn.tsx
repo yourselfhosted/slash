@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import * as api from "../helpers/api";
-import { userService } from "../services";
 import { useAppSelector } from "../stores";
 import useLoading from "../hooks/useLoading";
+import useUserStore from "../stores/v1/user";
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
+  const userStore = useUserStore();
   const {
     workspaceProfile: { disallowSignUp },
   } = useAppSelector((state) => state.global);
@@ -18,7 +19,7 @@ const SignIn: React.FC = () => {
   const allowConfirm = email.length > 0 && password.length > 0;
 
   useEffect(() => {
-    userService.doSignOut();
+    api.signout();
   }, []);
 
   const handleEmailInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +40,7 @@ const SignIn: React.FC = () => {
     try {
       actionBtnLoadingState.setLoading();
       await api.signin(email, password);
-      const user = await userService.doSignIn();
+      const user = await userStore.fetchCurrentUser();
       if (user) {
         navigate("/", {
           replace: true,

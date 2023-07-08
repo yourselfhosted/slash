@@ -2,6 +2,7 @@ import { Button, Tab, TabList, Tabs } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
+import useUserStore from "../stores/v1/user";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 import ShortcutListView from "../components/ShortcutListView";
@@ -13,13 +14,14 @@ interface State {
 
 const Home: React.FC = () => {
   const loadingState = useLoading();
+  const currentUser = useUserStore().getCurrentUser();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
-  const user = useAppSelector((state) => state.user).user as User;
   const [state, setState] = useState<State>({
     showCreateShortcutDialog: false,
   });
   const [selectedFilter, setSelectFilter] = useState<"ALL" | "PRIVATE">("ALL");
-  const filteredShortcutList = selectedFilter === "ALL" ? shortcutList : shortcutList.filter((shortcut) => shortcut.creatorId === user.id);
+  const filteredShortcutList =
+    selectedFilter === "ALL" ? shortcutList : shortcutList.filter((shortcut) => shortcut.creatorId === currentUser.id);
 
   useEffect(() => {
     Promise.all([shortcutService.getMyAllShortcuts()]).finally(() => {

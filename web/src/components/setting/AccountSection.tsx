@@ -1,26 +1,26 @@
 import { Button } from "@mui/joy";
 import { useState } from "react";
-import { useAppSelector } from "../../stores";
+import useUserStore from "../../stores/v1/user";
 import ChangePasswordDialog from "../ChangePasswordDialog";
 import EditUserinfoDialog from "../EditUserinfoDialog";
 
 const AccountSection: React.FC = () => {
-  const user = useAppSelector((state) => state.user).user as User;
+  const currentUser = useUserStore().getCurrentUser();
   const [showEditUserinfoDialog, setShowEditUserinfoDialog] = useState<boolean>(false);
   const [showChangePasswordDialog, setShowChangePasswordDialog] = useState<boolean>(false);
-  const isAdmin = user.role === "ADMIN";
+  const isAdmin = currentUser.role === "ADMIN";
 
   return (
     <>
       <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start gap-y-2">
-        <p className="text-gray-400">Account</p>
+        <p className="text-base font-semibold leading-6 text-gray-900">Account</p>
         <p className="flex flex-row justify-start items-center mt-2">
-          <span className="text-xl font-medium">{user.nickname}</span>
+          <span className="text-xl">{currentUser.nickname}</span>
           {isAdmin && <span className="ml-2 bg-blue-600 text-white px-2 leading-6 text-sm rounded-full">Admin</span>}
         </p>
         <p className="flex flex-row justify-start items-center">
           <span className="mr-3 text-gray-500 font-mono">Email: </span>
-          {user.email}
+          {currentUser.email}
         </p>
         <div className="flex flex-row justify-start items-center gap-2 mt-2">
           <Button variant="outlined" color="neutral" onClick={() => setShowEditUserinfoDialog(true)}>

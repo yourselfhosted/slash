@@ -14,6 +14,13 @@ interface User {
   role: Role;
 }
 
+interface UserCreate {
+  email: string;
+  nickname: string;
+  password: string;
+  role: Role;
+}
+
 interface UserPatch {
   id: UserId;
 
@@ -21,6 +28,7 @@ interface UserPatch {
   email?: string;
   nickname?: string;
   password?: string;
+  role?: Role;
 }
 
 interface UserDelete {

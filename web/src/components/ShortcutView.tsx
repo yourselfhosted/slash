@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { shortcutService } from "../services";
-import { useAppSelector } from "../stores";
 import useFaviconStore from "../stores/v1/favicon";
+import useUserStore from "../stores/v1/user";
 import { absolutifyLink } from "../helpers/utils";
 import { showCommonDialog } from "./Alert";
 import Icon from "./Icon";
@@ -21,11 +21,11 @@ interface Props {
 const ShortcutView = (props: Props) => {
   const { shortcut, handleEdit } = props;
   const { t } = useTranslation();
-  const user = useAppSelector((state) => state.user.user as User);
+  const currentUser = useUserStore().getCurrentUser();
   const faviconStore = useFaviconStore();
   const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
-  const havePermission = user.role === "ADMIN" || shortcut.creatorId === user.id;
+  const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
   const shortifyLink = absolutifyLink(`/s/${shortcut.name}`);
 
   useEffect(() => {

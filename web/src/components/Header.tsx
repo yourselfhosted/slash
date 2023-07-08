@@ -1,14 +1,14 @@
 import { Avatar } from "@mui/joy";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../stores";
+import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
 import AboutDialog from "./AboutDialog";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state.user).user as User;
+  const currentUser = useUserStore().getCurrentUser();
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
 
   const handleSignOutButtonClick = async () => {
@@ -30,7 +30,7 @@ const Header: React.FC = () => {
               trigger={
                 <button className="flex flex-row justify-end items-center cursor-pointer">
                   <Avatar size="sm" variant="plain" />
-                  <span>{user.nickname}</span>
+                  <span>{currentUser.nickname}</span>
                   <Icon.ChevronDown className="ml-2 w-5 h-auto text-gray-600" />
                 </button>
               }

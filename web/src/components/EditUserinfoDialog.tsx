@@ -2,8 +2,7 @@ import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import useLoading from "../hooks/useLoading";
-import { userService } from "../services";
-import { useAppSelector } from "../stores";
+import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
 
 interface Props {
@@ -12,9 +11,10 @@ interface Props {
 
 const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
   const { onClose } = props;
-  const user = useAppSelector((state) => state.user.user as User);
-  const [email, setEmail] = useState(user.email);
-  const [nickname, setNickname] = useState(user.nickname);
+  const userStore = useUserStore();
+  const currentUser = userStore.getCurrentUser();
+  const [email, setEmail] = useState(currentUser.email);
+  const [nickname, setNickname] = useState(currentUser.nickname);
   const requestState = useLoading(false);
 
   const handleCloseBtnClick = () => {
@@ -39,14 +39,13 @@ const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
 
     requestState.setLoading();
     try {
-      const user = userService.getState().user as User;
-      await userService.patchUser({
-        id: user.id,
+      await userStore.patchUser({
+        id: currentUser.id,
         email,
         nickname,
       });
       onClose();
-      toast("Password changed");
+      toast("User information updated");
     } catch (error: any) {
       console.error(error);
       toast.error(error.response.data.message);
