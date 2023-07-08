@@ -1,4 +1,5 @@
 import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
+import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
@@ -32,7 +33,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   });
   const [tag, setTag] = useState<string>("");
   const requestState = useLoading(false);
-  const isEditing = !!shortcutId;
+  const isCreating = isUndefined(shortcutId);
 
   useEffect(() => {
     if (shortcutId) {
@@ -134,7 +135,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     <Modal open={true}>
       <ModalDialog>
         <div className="flex flex-row justify-between items-center w-80 sm:w-96 mb-4">
-          <span className="text-lg font-medium">{isEditing ? "Edit Shortcut" : "Create Shortcut"}</span>
+          <span className="text-lg font-medium">{isCreating ? "Create Shortcut" : "Edit Shortcut"}</span>
           <Button variant="plain" onClick={onClose}>
             <Icon.X className="w-5 h-auto text-gray-600" />
           </Button>

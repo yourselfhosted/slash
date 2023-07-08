@@ -1,4 +1,5 @@
 import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
+import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import useLoading from "../hooks/useLoading";
@@ -29,7 +30,7 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
     },
   });
   const requestState = useLoading(false);
-  const isEditing = !!user;
+  const isCreating = isUndefined(user);
 
   useEffect(() => {
     if (user) {
@@ -85,8 +86,8 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveBtnClick = async () => {
-    if (!state.userCreate.email) {
-      toast.error("Email is required");
+    if (isCreating && (!state.userCreate.email || !state.userCreate.nickname || !state.userCreate.password)) {
+      toast.error("Please fill all inputs");
       return;
     }
 
@@ -100,9 +101,6 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
         }
         if (user.nickname !== state.userCreate.nickname) {
           userPatch.nickname = state.userCreate.nickname;
-        }
-        if (state.userCreate.password) {
-          userPatch.password = state.userCreate.password;
         }
         if (user.role !== state.userCreate.role) {
           userPatch.role = state.userCreate.role;
@@ -127,7 +125,7 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
     <Modal open={true}>
       <ModalDialog>
         <div className="flex flex-row justify-between items-center w-80 sm:w-96 mb-4">
-          <span className="text-lg font-medium">{isEditing ? "Edit User" : "Create User"}</span>
+          <span className="text-lg font-medium">{isCreating ? "Create User" : "Edit User"}</span>
           <Button variant="plain" onClick={onClose}>
             <Icon.X className="w-5 h-auto text-gray-600" />
           </Button>
@@ -159,19 +157,20 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
               onChange={handleNicknameInputChange}
             />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Password
-              {!isEditing && <span className="text-red-600"> *</span>}
-            </span>
-            <Input
-              className="w-full"
-              type="password"
-              placeholder=""
-              value={state.userCreate.password}
-              onChange={handlePasswordInputChange}
-            />
-          </div>
+          {isCreating && (
+            <div className="w-full flex flex-col justify-start items-start mb-3">
+              <span className="mb-2">
+                Password <span className="text-red-600">*</span>
+              </span>
+              <Input
+                className="w-full"
+                type="password"
+                placeholder=""
+                value={state.userCreate.password}
+                onChange={handlePasswordInputChange}
+              />
+            </div>
+          )}
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Role <span className="text-red-600">*</span>
