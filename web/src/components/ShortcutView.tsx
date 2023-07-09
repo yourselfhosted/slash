@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { shortcutService } from "../services";
 import useFaviconStore from "../stores/v1/favicon";
+import useFilterStore from "../stores/v1/filter";
 import useUserStore from "../stores/v1/user";
 import { absolutifyLink } from "../helpers/utils";
 import { showCommonDialog } from "./Alert";
@@ -22,6 +23,7 @@ const ShortcutView = (props: Props) => {
   const { shortcut, handleEdit } = props;
   const { t } = useTranslation();
   const currentUser = useUserStore().getCurrentUser();
+  const filterStore = useFilterStore();
   const faviconStore = useFaviconStore();
   const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
@@ -116,11 +118,15 @@ const ShortcutView = (props: Props) => {
         </div>
         {shortcut.description && <p className="mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
         {shortcut.tags.length > 0 && (
-          <div className="mt-1 flex flex-row justify-start items-start gap-2">
+          <div className="mt-2 ml-1 flex flex-row justify-start items-start gap-2">
             <Icon.Tag className="text-gray-400 w-4 h-auto" />
             {shortcut.tags.map((tag) => {
               return (
-                <span key={tag} className="text-gray-400 text-sm font-mono leading-4">
+                <span
+                  key={tag}
+                  className="text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
+                  onClick={() => filterStore.setFilter({ tag: tag })}
+                >
                   #{tag}
                 </span>
               );

@@ -2,26 +2,45 @@ import { Button, Tab, TabList, Tabs } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
+import useFilterStore, { Filter } from "../stores/v1/filter";
 import useUserStore from "../stores/v1/user";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 import ShortcutListView from "../components/ShortcutListView";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
+import FilterView from "../components/FilterView";
 
 interface State {
   showCreateShortcutDialog: boolean;
 }
 
+const getFilteredShortcutList = (shortcutList: Shortcut[], filter: Filter, currentUser: User) => {
+  const { tag, mineOnly } = filter;
+  const filteredShortcutList = shortcutList.filter((shortcut) => {
+    if (tag) {
+      if (!shortcut.tags.includes(tag)) {
+        return false;
+      }
+    }
+    if (mineOnly) {
+      if (shortcut.creatorId !== currentUser.id) {
+        return false;
+      }
+    }
+    return true;
+  });
+  return filteredShortcutList;
+};
+
 const Home: React.FC = () => {
   const loadingState = useLoading();
   const currentUser = useUserStore().getCurrentUser();
+  const filterStore = useFilterStore();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
     showCreateShortcutDialog: false,
   });
-  const [selectedFilter, setSelectFilter] = useState<"ALL" | "PRIVATE">("ALL");
-  const filteredShortcutList =
-    selectedFilter === "ALL" ? shortcutList : shortcutList.filter((shortcut) => shortcut.creatorId === currentUser.id);
+  const filteredShortcutList = getFilteredShortcutList(shortcutList, filterStore.filter, currentUser);
 
   useEffect(() => {
     Promise.all([shortcutService.getMyAllShortcuts()]).finally(() => {
@@ -44,7 +63,7 @@ const Home: React.FC = () => {
         </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
-            <Tabs defaultValue={"ALL"} size="sm" onChange={(_, value) => setSelectFilter(value as any)}>
+            <Tabs defaultValue={"ALL"} size="sm" onChange={(_, value) => filterStore.setFilter({ mineOnly: value !== "ALL" })}>
               <TabList>
                 <Tab value={"ALL"}>All</Tab>
                 <Tab value={"PRIVATE"}>Mine</Tab>
@@ -57,6 +76,9 @@ const Home: React.FC = () => {
             </Button>
           </div>
         </div>
+
+        <FilterView />
+
         {loadingState.isLoading ? (
           <div className="py-12 w-full flex flex-row justify-center items-center opacity-80">
             <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
