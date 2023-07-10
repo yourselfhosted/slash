@@ -2,7 +2,7 @@ import { Button, Tab, TabList, Tabs } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
-import useFilterStore, { Filter } from "../stores/v1/filter";
+import useViewStore, { Filter } from "../stores/v1/filter";
 import useUserStore from "../stores/v1/user";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
@@ -35,12 +35,13 @@ const getFilteredShortcutList = (shortcutList: Shortcut[], filter: Filter, curre
 const Home: React.FC = () => {
   const loadingState = useLoading();
   const currentUser = useUserStore().getCurrentUser();
-  const filterStore = useFilterStore();
+  const viewStore = useViewStore();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
     showCreateShortcutDialog: false,
   });
-  const filteredShortcutList = getFilteredShortcutList(shortcutList, filterStore.filter, currentUser);
+  const filter = viewStore.filter;
+  const filteredShortcutList = getFilteredShortcutList(shortcutList, filter, currentUser);
 
   useEffect(() => {
     Promise.all([shortcutService.getMyAllShortcuts()]).finally(() => {
@@ -63,7 +64,11 @@ const Home: React.FC = () => {
         </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
-            <Tabs defaultValue={"ALL"} size="sm" onChange={(_, value) => filterStore.setFilter({ mineOnly: value !== "ALL" })}>
+            <Tabs
+              value={filter.mineOnly ? "PRIVATE" : "ALL"}
+              size="sm"
+              onChange={(_, value) => viewStore.setFilter({ mineOnly: value !== "ALL" })}
+            >
               <TabList>
                 <Tab value={"ALL"}>All</Tab>
                 <Tab value={"PRIVATE"}>Mine</Tab>

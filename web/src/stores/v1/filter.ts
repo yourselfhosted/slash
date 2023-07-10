@@ -1,20 +1,28 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface Filter {
   tag?: string;
   mineOnly?: boolean;
 }
 
-interface FilterState {
+interface ViewState {
   filter: Filter;
   setFilter: (filter: Partial<Filter>) => void;
 }
 
-const useFilterStore = create<FilterState>()((set, get) => ({
-  filter: {},
-  setFilter: (filter: Partial<Filter>) => {
-    set({ filter: { ...get().filter, ...filter } });
-  },
-}));
+const useViewStore = create<ViewState>()(
+  persist(
+    (set, get) => ({
+      filter: {},
+      setFilter: (filter: Partial<Filter>) => {
+        set({ filter: { ...get().filter, ...filter } });
+      },
+    }),
+    {
+      name: "view",
+    }
+  )
+);
 
-export default useFilterStore;
+export default useViewStore;

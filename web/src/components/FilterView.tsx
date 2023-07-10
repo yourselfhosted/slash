@@ -1,9 +1,9 @@
-import useFilterStore from "../stores/v1/filter";
+import useViewStore from "../stores/v1/filter";
 import Icon from "./Icon";
 
 const FilterView = () => {
-  const filterStore = useFilterStore();
-  const filter = filterStore.filter;
+  const viewStore = useViewStore();
+  const filter = viewStore.filter;
   const shouldShowFilters = filter.tag !== undefined;
 
   if (!shouldShowFilters) {
@@ -16,7 +16,7 @@ const FilterView = () => {
       {filter.tag && (
         <button
           className="ml-2 px-2 py-1 flex flex-row justify-center items-center bg-gray-200 rounded-full text-gray-500 text-sm hover:line-through"
-          onClick={() => filterStore.setFilter({ tag: undefined })}
+          onClick={() => viewStore.setFilter({ tag: undefined })}
         >
           <Icon.Tag className="w-4 h-auto mr-1" />#{filter.tag}
         </button>
