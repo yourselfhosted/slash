@@ -81,7 +81,7 @@ const Home: React.FC = () => {
             </Tabs>
           </div>
           <div>
-            <Button variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
+            <Button className="shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
               <Icon.Plus className="w-5 h-auto" /> New
             </Button>
           </div>

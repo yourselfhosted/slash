@@ -69,7 +69,7 @@ const ShortcutView = (props: Props) => {
               )}
             </div>
             <a
-              className="flex flex-row px-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
+              className="flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
               target="_blank"
               href={shortifyLink}
             >
