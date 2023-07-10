@@ -47,7 +47,7 @@ const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
             <QRCodeCanvas value={shortifyLink} size={128} bgColor={"#ffffff"} fgColor={"#000000"} includeMargin={false} level={"L"} />
           </div>
           <div className="w-full flex flex-row justify-center items-center px-4">
-            <Button className="w-full" color="primary" onClick={handleDownloadQRCodeClick}>
+            <Button className="w-full" color="neutral" onClick={handleDownloadQRCodeClick}>
               <Icon.Download className="w-4 h-auto mr-1" />
               Download
             </Button>

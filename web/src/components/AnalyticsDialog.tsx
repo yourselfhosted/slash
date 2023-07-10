@@ -66,12 +66,23 @@ const AnalyticsDialog: React.FC<Props> = (props: Props) => {
               <div className="w-full mt-4 py-1 px-2 flex flex-row justify-between items-center">
                 <span>Devices</span>
                 <div>
-                  <button className={`text-sm ${selectedDeviceTab === "os" && "text-blue-600"}`} onClick={() => setSelectedDeviceTab("os")}>
+                  <button
+                    className={`whitespace-nowrap border-b-2 px-1 text-sm font-medium ${
+                      selectedDeviceTab === "os"
+                        ? "border-blue-600 text-blue-600"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }`}
+                    onClick={() => setSelectedDeviceTab("os")}
+                  >
                     OS
                   </button>
                   <span className="text-gray-200 font-mono mx-1">/</span>
                   <button
-                    className={`text-sm ${selectedDeviceTab === "browser" && "text-blue-600"}`}
+                    className={`whitespace-nowrap border-b-2 px-1 text-sm font-medium ${
+                      selectedDeviceTab === "browser"
+                        ? "border-blue-600 text-blue-600"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }`}
                     onClick={() => setSelectedDeviceTab("browser")}
                   >
                     Browser

@@ -63,9 +63,9 @@ const ShortcutView = (props: Props) => {
           <div className="group flex flex-row justify-start items-center pr-2 mr-1 shrink-0">
             <div className="w-6 h-6 mr-1 flex justify-center items-center overflow-clip">
               {favicon ? (
-                <img className="w-[90%] h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
+                <img className="w-full h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
               ) : (
-                <Icon.Globe2 className="w-5 h-auto text-gray-500" />
+                <Icon.CircleSlash className="w-6 h-auto text-gray-400" />
               )}
             </div>
             <a
