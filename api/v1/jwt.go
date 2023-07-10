@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/boojack/shortify/api/v1/auth"
 	"github.com/boojack/shortify/internal/util"
-	"github.com/boojack/shortify/server/auth"
 	"github.com/boojack/shortify/store"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
