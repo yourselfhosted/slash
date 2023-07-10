@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 export interface Filter {
   tag?: string;
   mineOnly?: boolean;
+  visibility?: Visibility;
 }
 
 interface ViewState {

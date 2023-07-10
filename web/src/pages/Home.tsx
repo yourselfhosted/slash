@@ -2,7 +2,7 @@ import { Button, Tab, TabList, Tabs } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
-import useViewStore, { Filter } from "../stores/v1/filter";
+import useViewStore, { Filter } from "../stores/v1/view";
 import useUserStore from "../stores/v1/user";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
@@ -15,7 +15,7 @@ interface State {
 }
 
 const getFilteredShortcutList = (shortcutList: Shortcut[], filter: Filter, currentUser: User) => {
-  const { tag, mineOnly } = filter;
+  const { tag, mineOnly, visibility } = filter;
   const filteredShortcutList = shortcutList.filter((shortcut) => {
     if (tag) {
       if (!shortcut.tags.includes(tag)) {
@@ -24,6 +24,11 @@ const getFilteredShortcutList = (shortcutList: Shortcut[], filter: Filter, curre
     }
     if (mineOnly) {
       if (shortcut.creatorId !== currentUser.id) {
+        return false;
+      }
+    }
+    if (visibility) {
+      if (shortcut.visibility !== visibility) {
         return false;
       }
     }

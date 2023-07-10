@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { shortcutService } from "../services";
 import useFaviconStore from "../stores/v1/favicon";
-import useViewStore from "../stores/v1/filter";
+import useViewStore from "../stores/v1/view";
 import useUserStore from "../stores/v1/user";
 import { absolutifyLink } from "../helpers/utils";
 import { showCommonDialog } from "./Alert";
@@ -143,14 +143,17 @@ const ShortcutView = (props: Props) => {
             </div>
           </Tooltip>
           <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
+            <div
+              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm"
+              onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
+            >
               <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
               {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
             <div
-              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm"
+              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm"
               onClick={() => setShowAnalyticsDialog(true)}
             >
               <Icon.BarChart2 className="w-4 h-auto mr-1" />

@@ -85,7 +85,7 @@ const AnalyticsDialog: React.FC<Props> = (props: Props) => {
                     <thead>
                       <tr>
                         <th scope="col" className="py-2 px-2 text-left text-sm font-semibold text-gray-500">
-                          Devices
+                          Operating system
                         </th>
                         <th scope="col" className="py-2 pr-2 text-right text-sm font-semibold text-gray-500">
                           Visitors
