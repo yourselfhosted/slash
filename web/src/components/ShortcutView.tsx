@@ -13,6 +13,7 @@ import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
 import VisibilityIcon from "./VisibilityIcon";
 import GenerateQRCodeDialog from "./GenerateQRCodeDialog";
+import AnalyticsDialog from "./AnalyticsDialog";
 
 interface Props {
   shortcut: Shortcut;
@@ -27,6 +28,7 @@ const ShortcutView = (props: Props) => {
   const faviconStore = useFaviconStore();
   const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
+  const [showAnalyticsDialog, setShowAnalyticsDialog] = useState<boolean>(false);
   const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
   const shortifyLink = absolutifyLink(`/s/${shortcut.name}`);
 
@@ -46,7 +48,7 @@ const ShortcutView = (props: Props) => {
   const handleDeleteShortcutButtonClick = (shortcut: Shortcut) => {
     showCommonDialog({
       title: "Delete Shortcut",
-      content: `Are you sure to delete shortcut \`${shortcut.name}\`? You can not undo this action.`,
+      content: `Are you sure to delete shortcut \`${shortcut.name}\`? You cannot undo this action.`,
       style: "danger",
       onConfirm: async () => {
         await shortcutService.deleteShortcutById(shortcut.id);
@@ -147,7 +149,10 @@ const ShortcutView = (props: Props) => {
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
+            <div
+              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm"
+              onClick={() => setShowAnalyticsDialog(true)}
+            >
               <Icon.BarChart2 className="w-4 h-auto mr-1" />
               {shortcut.view} visits
             </div>
@@ -156,6 +161,8 @@ const ShortcutView = (props: Props) => {
       </div>
 
       {showQRCodeDialog && <GenerateQRCodeDialog shortcut={shortcut} onClose={() => setShowQRCodeDialog(false)} />}
+
+      {showAnalyticsDialog && <AnalyticsDialog shortcutId={shortcut.id} onClose={() => setShowAnalyticsDialog(false)} />}
     </>
   );
 };

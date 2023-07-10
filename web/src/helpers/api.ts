@@ -59,6 +59,10 @@ export function createShortcut(shortcutCreate: ShortcutCreate) {
   return axios.post<Shortcut>("/api/v1/shortcut", shortcutCreate);
 }
 
+export function getShortcutAnalytics(shortcutId: ShortcutId) {
+  return axios.get<AnalysisData>(`/api/v1/shortcut/${shortcutId}/analytics`);
+}
+
 export function patchShortcut(shortcutPatch: ShortcutPatch) {
   return axios.patch<Shortcut>(`/api/v1/shortcut/${shortcutPatch.id}`, shortcutPatch);
 }

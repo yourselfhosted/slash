@@ -61,10 +61,10 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 		}
 	}
 
-	apiGroup := e.Group("")
+	rootGroup := e.Group("")
 	// Register API v1 routes.
 	apiV1Service := apiv1.NewAPIV1Service(profile, store)
-	apiV1Service.Start(apiGroup, secret)
+	apiV1Service.Start(rootGroup, secret)
 
 	return s, nil
 }
