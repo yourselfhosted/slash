@@ -1,6 +1,6 @@
 import { Avatar } from "@mui/joy";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as api from "../helpers/api";
 import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
@@ -8,13 +8,12 @@ import Dropdown from "./common/Dropdown";
 import AboutDialog from "./AboutDialog";
 
 const Header: React.FC = () => {
-  const navigate = useNavigate();
   const currentUser = useUserStore().getCurrentUser();
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
 
   const handleSignOutButtonClick = async () => {
     await api.signout();
-    navigate("/auth");
+    window.location.href = "/auth";
   };
 
   return (
