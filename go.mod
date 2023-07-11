@@ -1,4 +1,4 @@
-module github.com/boojack/shortify
+module github.com/boojack/slash
 
 go 1.19
 

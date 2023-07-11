@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/boojack/shortify/server/version"
+	"github.com/boojack/slash/server/version"
 	"github.com/spf13/viper"
 )
 
@@ -14,7 +14,7 @@ import (
 type Profile struct {
 	// Data is the data directory
 	Data string `json:"-"`
-	// DSN points to where Shortify stores its own data
+	// DSN points to store data
 	DSN string `json:"-"`
 	// Mode can be "prod" or "dev"
 	Mode string `json:"mode"`
@@ -57,7 +57,7 @@ func GetProfile() (*Profile, error) {
 	}
 
 	if profile.Mode == "prod" && profile.Data == "" {
-		profile.Data = "/var/opt/shortify"
+		profile.Data = "/var/opt/slash"
 	}
 
 	dataDir, err := checkDSN(profile.Data)
@@ -67,7 +67,7 @@ func GetProfile() (*Profile, error) {
 	}
 
 	profile.Data = dataDir
-	profile.DSN = fmt.Sprintf("%s/shortify_%s.db", dataDir, profile.Mode)
+	profile.DSN = fmt.Sprintf("%s/slash_%s.db", dataDir, profile.Mode)
 	profile.Version = version.GetCurrentVersion(profile.Mode)
 	return &profile, nil
 }

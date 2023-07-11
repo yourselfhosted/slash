@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/boojack/shortify/store"
-	"github.com/boojack/shortify/store/db"
-	test "github.com/boojack/shortify/test"
+	"github.com/boojack/slash/store"
+	"github.com/boojack/slash/store/db"
+	test "github.com/boojack/slash/test"
 
 	// sqlite driver.
 	_ "modernc.org/sqlite"

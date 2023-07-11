@@ -77,7 +77,7 @@ const SignUp: React.FC = () => {
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-col justify-start items-center w-full gap-y-2 mb-4">
             <img src="/logo.png" className="w-16 h-auto" alt="logo" />
-            <span className="text-2xl font-medium font-mono opacity-80">Shortify</span>
+            <span className="text-2xl font-medium font-mono opacity-80">Slash</span>
           </div>
           <p className="w-full text-center mb-4 text-2xl">Create your account</p>
           <form className="w-full" onSubmit={handleSignupBtnClick}>
@@ -88,7 +88,7 @@ const SignUp: React.FC = () => {
                   className="w-full py-3"
                   type="email"
                   value={email}
-                  placeholder="steven@shortify.com"
+                  placeholder="steven@slash.com"
                   onChange={handleEmailInputChanged}
                 />
               </div>

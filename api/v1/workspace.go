@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/boojack/shortify/server/profile"
-	"github.com/boojack/shortify/store"
+	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 )
 

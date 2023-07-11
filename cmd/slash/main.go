@@ -12,10 +12,10 @@ import (
 	"github.com/spf13/viper"
 	_ "modernc.org/sqlite"
 
-	"github.com/boojack/shortify/server"
-	_profile "github.com/boojack/shortify/server/profile"
-	"github.com/boojack/shortify/store"
-	"github.com/boojack/shortify/store/db"
+	"github.com/boojack/slash/server"
+	_profile "github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/store"
+	"github.com/boojack/slash/store/db"
 )
 
 const (
@@ -36,7 +36,7 @@ var (
 	data    string
 
 	rootCmd = &cobra.Command{
-		Use:   "shortify",
+		Use:   "slash",
 		Short: "",
 		Run: func(_cmd *cobra.Command, _args []string) {
 			ctx, cancel := context.WithCancel(context.Background())
@@ -108,7 +108,7 @@ func init() {
 
 	viper.SetDefault("mode", "dev")
 	viper.SetDefault("port", 8082)
-	viper.SetEnvPrefix("shortify")
+	viper.SetEnvPrefix("slash")
 }
 
 func initConfig() {

@@ -17,18 +17,18 @@ WORKDIR /backend-build
 COPY . .
 COPY --from=frontend /frontend-build/dist ./server/dist
 
-RUN go build -o shortify ./cmd/shortify/main.go
+RUN go build -o slash ./cmd/slash/main.go
 
 # Make workspace with above generated files.
 FROM alpine:3.16 AS monolithic
-WORKDIR /usr/local/shortify
+WORKDIR /usr/local/slash
 
 RUN apk add --no-cache tzdata
 ENV TZ="UTC"
 
-COPY --from=backend /backend-build/shortify /usr/local/shortify/
+COPY --from=backend /backend-build/slash /usr/local/slash/
 
 # Directory to store the data, which can be referenced as the mounting point.
-RUN mkdir -p /var/opt/shortify
+RUN mkdir -p /var/opt/slash
 
-ENTRYPOINT ["./shortify", "--mode", "prod", "--port", "5231"]
+ENTRYPOINT ["./slash", "--mode", "prod", "--port", "5231"]

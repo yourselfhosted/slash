@@ -5,7 +5,7 @@ import (
 	"io/fs"
 	"net/http"
 
-	"github.com/boojack/shortify/internal/util"
+	"github.com/boojack/slash/internal/util"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )

@@ -24,7 +24,7 @@ const Header: React.FC = () => {
           <div className="flex flex-row justify-start items-center shrink mr-2">
             <Link to="/" className="text-base font-mono font-medium cursor-pointer flex flex-row justify-start items-center">
               <img src="/logo.png" className="w-8 h-auto mr-2" alt="" />
-              Shortify
+              Slash
             </Link>
           </div>
           <div className="relative flex-shrink-0">

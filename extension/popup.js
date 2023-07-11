@@ -1,11 +1,11 @@
-import { getShortifyData } from "./common.js";
+import { getSlashData } from "./common.js";
 
 const saveButton = document.body.querySelector("#save-button");
 const domainInput = document.body.querySelector("#domain-input");
 
 saveButton.addEventListener("click", () => {
   chrome.storage.local.set({
-    shortify: {
+    slash: {
       domain: domainInput.value,
     },
   });
@@ -13,9 +13,9 @@ saveButton.addEventListener("click", () => {
 
 (async () => {
   try {
-    const shortifyData = await getShortifyData();
-    if (shortifyData) {
-      domainInput.value = shortifyData.domain;
+    const slashData = await getSlashData();
+    if (slashData) {
+      domainInput.value = slashData.domain;
     }
   } catch (error) {
     // do nothing.

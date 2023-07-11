@@ -41,4 +41,4 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: stevenlgtm/shortify:latest, stevenlgtm/shortify:${{ env.VERSION }}
+          tags: stevenlgtm/slash:latest, stevenlgtm/slash:${{ env.VERSION }}

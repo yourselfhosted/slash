@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/boojack/shortify/store"
+	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/mssola/useragent"
 	"golang.org/x/exp/slices"

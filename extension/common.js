@@ -1,10 +1,10 @@
-export const getShortifyData = () => {
+export const getSlashData = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get(["shortify"], (data) => {
-      if (data?.shortify) {
-        resolve(data.shortify);
+    chrome.storage.local.get(["slash"], (data) => {
+      if (data?.slash) {
+        resolve(data.slash);
       } else {
-        reject("shortify data not found");
+        reject("slash data not found");
       }
     });
   });

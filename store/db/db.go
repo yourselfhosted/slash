@@ -12,8 +12,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/boojack/shortify/server/profile"
-	"github.com/boojack/shortify/server/version"
+	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/server/version"
 )
 
 //go:embed migration
@@ -89,7 +89,7 @@ func (db *DB) Open(ctx context.Context) (err error) {
 				if err != nil {
 					return fmt.Errorf("failed to read raw database file, err: %w", err)
 				}
-				backupDBFilePath := fmt.Sprintf("%s/shortify_%s_%d_backup.db", db.profile.Data, db.profile.Version, time.Now().Unix())
+				backupDBFilePath := fmt.Sprintf("%s/slash_%s_%d_backup.db", db.profile.Data, db.profile.Version, time.Now().Unix())
 				if err := os.WriteFile(backupDBFilePath, rawBytes, 0644); err != nil {
 					return fmt.Errorf("failed to write raw database file, err: %w", err)
 				}

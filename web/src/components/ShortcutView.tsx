@@ -30,7 +30,7 @@ const ShortcutView = (props: Props) => {
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
   const [showAnalyticsDialog, setShowAnalyticsDialog] = useState<boolean>(false);
   const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
-  const shortifyLink = absolutifyLink(`/s/${shortcut.name}`);
+  const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
 
   useEffect(() => {
     faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
@@ -41,7 +41,7 @@ const ShortcutView = (props: Props) => {
   }, [shortcut.link]);
 
   const handleCopyButtonClick = () => {
-    copy(shortifyLink);
+    copy(shortcutLink);
     toast.success("Shortcut link copied to clipboard.");
   };
 
@@ -71,7 +71,7 @@ const ShortcutView = (props: Props) => {
             <a
               className="flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
               target="_blank"
-              href={shortifyLink}
+              href={shortcutLink}
             >
               <span className="text-gray-400">s/</span>
               {shortcut.name}

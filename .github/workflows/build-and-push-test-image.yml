@@ -34,4 +34,4 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: stevenlgtm/shortify:test
+          tags: stevenlgtm/slash:test

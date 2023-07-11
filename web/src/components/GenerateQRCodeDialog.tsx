@@ -13,7 +13,7 @@ interface Props {
 const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
   const { shortcut, onClose } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const shortifyLink = absolutifyLink(`/s/${shortcut.name}`);
+  const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
 
   const handleCloseBtnClick = () => {
     onClose();
@@ -44,7 +44,7 @@ const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div>
           <div ref={containerRef} className="w-full flex flex-row justify-center items-center mt-2 mb-6">
-            <QRCodeCanvas value={shortifyLink} size={128} bgColor={"#ffffff"} fgColor={"#000000"} includeMargin={false} level={"L"} />
+            <QRCodeCanvas value={shortcutLink} size={128} bgColor={"#ffffff"} fgColor={"#000000"} includeMargin={false} level={"L"} />
           </div>
           <div className="w-full flex flex-row justify-center items-center px-4">
             <Button className="w-full" color="neutral" onClick={handleDownloadQRCodeClick}>

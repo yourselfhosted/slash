@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"sync"
 
-	"github.com/boojack/shortify/server/profile"
+	"github.com/boojack/slash/server/profile"
 )
 
 // Store provides database access to all raw objects.

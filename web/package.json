@@ -1,5 +1,5 @@
 {
-  "name": "shortify",
+  "name": "slash",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

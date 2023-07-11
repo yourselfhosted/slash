@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/boojack/shortify/store"
+	"github.com/boojack/slash/store"
 	"github.com/pkg/errors"
 
 	"github.com/labstack/echo/v4"

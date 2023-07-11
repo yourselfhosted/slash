@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	apiv1 "github.com/boojack/shortify/api/v1"
-	"github.com/boojack/shortify/server/profile"
-	"github.com/boojack/shortify/store"
+	apiv1 "github.com/boojack/slash/api/v1"
+	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/store"
 	"github.com/google/uuid"
 
 	"github.com/labstack/echo/v4"
@@ -52,7 +52,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	embedFrontend(e)
 
 	// In dev mode, we'd like to set the const secret key to make signin session persistence.
-	secret := "shortify"
+	secret := "slash"
 	if profile.Mode == "prod" {
 		var err error
 		secret, err = s.getSystemSecretSessionName(ctx)

@@ -5,8 +5,8 @@ import (
 	"net"
 	"testing"
 
-	"github.com/boojack/shortify/server/profile"
-	"github.com/boojack/shortify/server/version"
+	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/server/version"
 )
 
 func getUnusedPort() int {
@@ -31,7 +31,7 @@ func GetTestingProfile(t *testing.T) *profile.Profile {
 		Mode:    mode,
 		Port:    port,
 		Data:    dir,
-		DSN:     fmt.Sprintf("%s/shortify_%s.db", dir, mode),
+		DSN:     fmt.Sprintf("%s/slash_%s.db", dir, mode),
 		Version: version.GetCurrentVersion(mode),
 	}
 }

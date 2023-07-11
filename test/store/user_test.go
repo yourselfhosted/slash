@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/boojack/shortify/store"
+	"github.com/boojack/slash/store"
 
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/bcrypt"
