@@ -20,15 +20,17 @@ const SignUp: React.FC = () => {
   const allowConfirm = email.length > 0 && nickname.length > 0 && password.length > 0;
 
   useEffect(() => {
+    if (userStore.getCurrentUser()) {
+      return navigate("/", {
+        replace: true,
+      });
+    }
+
     if (disallowSignUp) {
       return navigate("/auth", {
         replace: true,
       });
     }
-  }, []);
-
-  useEffect(() => {
-    api.signout();
   }, []);
 
   const handleEmailInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -19,7 +19,11 @@ const SignIn: React.FC = () => {
   const allowConfirm = email.length > 0 && password.length > 0;
 
   useEffect(() => {
-    api.signout();
+    if (userStore.getCurrentUser()) {
+      return navigate("/", {
+        replace: true,
+      });
+    }
   }, []);
 
   const handleEmailInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
