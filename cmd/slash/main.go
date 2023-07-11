@@ -18,17 +18,6 @@ import (
 	"github.com/boojack/slash/store/db"
 )
 
-const (
-	greetingBanner = `
-███████╗██╗  ██╗ ██████╗ ██████╗ ████████╗██╗███████╗██╗   ██╗
-██╔════╝██║  ██║██╔═══██╗██╔══██╗╚══██╔══╝██║██╔════╝╚██╗ ██╔╝
-███████╗███████║██║   ██║██████╔╝   ██║   ██║█████╗   ╚████╔╝ 
-╚════██║██╔══██║██║   ██║██╔══██╗   ██║   ██║██╔══╝    ╚██╔╝  
-███████║██║  ██║╚██████╔╝██║  ██║   ██║   ██║██║        ██║   
-╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝        ╚═╝   
-`
-)
-
 var (
 	profile *_profile.Profile
 	mode    string
@@ -67,7 +56,7 @@ var (
 				cancel()
 			}()
 
-			println(greetingBanner)
+			println("Welcome to Slash!")
 			fmt.Printf("Version %s has started at :%d\n", profile.Version, profile.Port)
 			if err := s.Start(ctx); err != nil {
 				if err != http.ErrServerClosed {
