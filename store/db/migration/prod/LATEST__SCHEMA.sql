@@ -22,6 +22,8 @@ CREATE TABLE user (
   role TEXT NOT NULL CHECK (role IN ('ADMIN', 'USER')) DEFAULT 'USER'
 );
 
+CREATE INDEX idx_user_email ON user(email);
+
 -- user_setting
 CREATE TABLE user_setting (
   user_id INTEGER NOT NULL,
@@ -43,6 +45,8 @@ CREATE TABLE shortcut (
   visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE',
   tag TEXT NOT NULL DEFAULT ''
 );
+
+CREATE INDEX idx_shortcut_name ON shortcut(name);
 
 -- activity
 CREATE TABLE activity (
