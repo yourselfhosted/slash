@@ -18,6 +18,10 @@ import (
 	"github.com/boojack/slash/store/db"
 )
 
+const (
+	greetingBanner = `Welcome to Slash!`
+)
+
 var (
 	profile *_profile.Profile
 	mode    string
@@ -26,7 +30,7 @@ var (
 
 	rootCmd = &cobra.Command{
 		Use:   "slash",
-		Short: "",
+		Short: `A bookmarking and url shortener, save and share your links very easily.`,
 		Run: func(_cmd *cobra.Command, _args []string) {
 			ctx, cancel := context.WithCancel(context.Background())
 			db := db.NewDB(profile)
@@ -56,7 +60,7 @@ var (
 				cancel()
 			}()
 
-			println("Welcome to Slash!")
+			println(greetingBanner)
 			fmt.Printf("Version %s has started at :%d\n", profile.Version, profile.Port)
 			if err := s.Start(ctx); err != nil {
 				if err != http.ErrServerClosed {

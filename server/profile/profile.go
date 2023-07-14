@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/boojack/slash/server/version"
@@ -12,30 +13,35 @@ import (
 
 // Profile is the configuration to start main server.
 type Profile struct {
-	// Data is the data directory
-	Data string `json:"-"`
-	// DSN points to store data
-	DSN string `json:"-"`
 	// Mode can be "prod" or "dev"
 	Mode string `json:"mode"`
 	// Port is the binding port for server
-	Port int `json:"port"`
+	Port int `json:"-"`
+	// Data is the data directory
+	Data string `json:"-"`
+	// DSN points to where slash stores its own data
+	DSN string `json:"-"`
 	// Version is the current version of server
 	Version string `json:"version"`
+}
+
+func (p *Profile) IsDev() bool {
+	return p.Mode != "prod"
 }
 
 func checkDSN(dataDir string) (string, error) {
 	// Convert to absolute path if relative path is supplied.
 	if !filepath.IsAbs(dataDir) {
-		absDir, err := filepath.Abs(filepath.Dir(os.Args[0]) + "/" + dataDir)
+		relativeDir := filepath.Join(filepath.Dir(os.Args[0]), dataDir)
+		absDir, err := filepath.Abs(relativeDir)
 		if err != nil {
 			return "", err
 		}
 		dataDir = absDir
 	}
 
-	// Trim trailing / in case user supplies
-	dataDir = strings.TrimRight(dataDir, "/")
+	// Trim trailing \ or / in case user supplies
+	dataDir = strings.TrimRight(dataDir, "\\/")
 
 	if _, err := os.Stat(dataDir); err != nil {
 		return "", fmt.Errorf("unable to access data folder %s, err %w", dataDir, err)
@@ -44,7 +50,7 @@ func checkDSN(dataDir string) (string, error) {
 	return dataDir, nil
 }
 
-// GetDevProfile will return a profile for dev or prod.
+// GetProfile will return a profile for dev or prod.
 func GetProfile() (*Profile, error) {
 	profile := Profile{}
 	err := viper.Unmarshal(&profile)
@@ -57,7 +63,18 @@ func GetProfile() (*Profile, error) {
 	}
 
 	if profile.Mode == "prod" && profile.Data == "" {
-		profile.Data = "/var/opt/slash"
+		if runtime.GOOS == "windows" {
+			profile.Data = filepath.Join(os.Getenv("ProgramData"), "slash")
+
+			if _, err := os.Stat(profile.Data); os.IsNotExist(err) {
+				if err := os.MkdirAll(profile.Data, 0770); err != nil {
+					fmt.Printf("Failed to create data directory: %s, err: %+v\n", profile.Data, err)
+					return nil, err
+				}
+			}
+		} else {
+			profile.Data = "/var/opt/slash"
+		}
 	}
 
 	dataDir, err := checkDSN(profile.Data)
@@ -67,7 +84,9 @@ func GetProfile() (*Profile, error) {
 	}
 
 	profile.Data = dataDir
-	profile.DSN = fmt.Sprintf("%s/slash_%s.db", dataDir, profile.Mode)
+	dbFile := fmt.Sprintf("slash_%s.db", profile.Mode)
+	profile.DSN = filepath.Join(dataDir, dbFile)
 	profile.Version = version.GetCurrentVersion(profile.Mode)
+
 	return &profile, nil
 }
