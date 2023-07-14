@@ -95,13 +95,9 @@ const Home: React.FC = () => {
             loading
           </div>
         ) : filteredShortcutList.length === 0 ? (
-          <div className="py-4 w-full flex flex-col justify-center items-center">
-            <Icon.PackageOpen className="w-12 h-auto text-gray-400" />
-            <p className="mt-4 mb-2">No shortcuts found.</p>
-            <Button size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
-              <Icon.Plus className="w-5 h-auto mr-1" />
-              Create
-            </Button>
+          <div className="py-16 w-full flex flex-col justify-center items-center">
+            <Icon.PackageOpen className="w-16 h-auto text-gray-400" />
+            <p className="mt-4">No shortcuts found.</p>
           </div>
         ) : (
           <ShortcutListView shortcutList={filteredShortcutList} />
