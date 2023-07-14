@@ -82,7 +82,7 @@ func Execute() error {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVarP(&mode, "mode", "m", "dev", `mode of server, can be "prod" or "dev"`)
+	rootCmd.PersistentFlags().StringVarP(&mode, "mode", "m", "demo", `mode of server, can be "prod" or "dev" or "demo"`)
 	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 8082, "port of server")
 	rootCmd.PersistentFlags().StringVarP(&data, "data", "d", "", "data directory")
 
@@ -99,7 +99,7 @@ func init() {
 		panic(err)
 	}
 
-	viper.SetDefault("mode", "dev")
+	viper.SetDefault("mode", "demo")
 	viper.SetDefault("port", 8082)
 	viper.SetEnvPrefix("slash")
 }

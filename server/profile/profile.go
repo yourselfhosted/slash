@@ -58,8 +58,8 @@ func GetProfile() (*Profile, error) {
 		return nil, err
 	}
 
-	if profile.Mode != "dev" && profile.Mode != "prod" {
-		profile.Mode = "dev"
+	if profile.Mode != "demo" && profile.Mode != "dev" && profile.Mode != "prod" {
+		profile.Mode = "demo"
 	}
 
 	if profile.Mode == "prod" && profile.Data == "" {

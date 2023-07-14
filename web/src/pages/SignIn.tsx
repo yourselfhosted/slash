@@ -11,7 +11,10 @@ const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const userStore = useUserStore();
   const {
-    workspaceProfile: { disallowSignUp },
+    workspaceProfile: {
+      disallowSignUp,
+      profile: { mode },
+    },
   } = useAppSelector((state) => state.global);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +26,11 @@ const SignIn: React.FC = () => {
       return navigate("/", {
         replace: true,
       });
+    }
+
+    if (mode === "demo") {
+      setEmail("slash@stevenlgtm.com");
+      setPassword("secret");
     }
   }, []);
 

@@ -95,7 +95,7 @@ const ShortcutView = (props: Props) => {
           <div className="flex flex-row justify-end items-center space-x-2">
             {havePermission && (
               <Dropdown
-                actionsClassName="!w-24"
+                actionsClassName="!w-32"
                 actions={
                   <>
                     <button
@@ -103,6 +103,12 @@ const ShortcutView = (props: Props) => {
                       onClick={() => handleEdit()}
                     >
                       <Icon.Edit className="w-4 h-auto mr-2" /> Edit
+                    </button>
+                    <button
+                      className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                      onClick={() => setShowAnalyticsDialog(true)}
+                    >
+                      <Icon.BarChart2 className="w-4 h-auto mr-2" /> Analytics
                     </button>
                     <button
                       className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
