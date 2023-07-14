@@ -80,7 +80,7 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
   const handleRoleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       userCreate: Object.assign(state.userCreate, {
-        visibility: e.target.value,
+        role: e.target.value,
       }),
     });
   };
