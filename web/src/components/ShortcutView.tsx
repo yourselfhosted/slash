@@ -79,18 +79,22 @@ const ShortcutView = (props: Props) => {
                 <Icon.ExternalLink className="w-4 h-auto text-gray-600" />
               </span>
             </a>
-            <button
-              className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-100 hover:shadow hover:text-blue-600"
-              onClick={() => handleCopyButtonClick()}
-            >
-              <Icon.Clipboard className="w-4 h-auto mx-auto" />
-            </button>
-            <button
-              className="hidden group-hover:block ml-1 w-6 h-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-100 hover:shadow hover:text-blue-600"
-              onClick={() => setShowQRCodeDialog(true)}
-            >
-              <Icon.QrCode className="w-4 h-auto mx-auto" />
-            </button>
+            <Tooltip title="Copy" variant="solid" placement="top" arrow>
+              <button
+                className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-100 hover:shadow hover:text-blue-600"
+                onClick={() => handleCopyButtonClick()}
+              >
+                <Icon.Clipboard className="w-4 h-auto mx-auto" />
+              </button>
+            </Tooltip>
+            <Tooltip title="QR Code" variant="solid" placement="top" arrow>
+              <button
+                className="hidden group-hover:block ml-1 w-6 h-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-100 hover:shadow hover:text-blue-600"
+                onClick={() => setShowQRCodeDialog(true)}
+              >
+                <Icon.QrCode className="w-4 h-auto mx-auto" />
+              </button>
+            </Tooltip>
           </div>
           <div className="flex flex-row justify-end items-center space-x-2">
             {havePermission && (

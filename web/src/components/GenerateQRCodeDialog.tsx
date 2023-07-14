@@ -37,7 +37,7 @@ const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
     <Modal open={true}>
       <ModalDialog>
         <div className="flex flex-row justify-between items-center w-64 mb-4">
-          <span className="text-lg font-medium">Download QR Code</span>
+          <span className="text-lg font-medium">QR Code</span>
           <Button variant="plain" onClick={handleCloseBtnClick}>
             <Icon.X className="w-5 h-auto text-gray-600" />
           </Button>
