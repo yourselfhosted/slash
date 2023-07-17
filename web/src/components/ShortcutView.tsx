@@ -81,7 +81,7 @@ const ShortcutView = (props: Props) => {
             </a>
             <Tooltip title="Copy" variant="solid" placement="top" arrow>
               <button
-                className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-100 hover:shadow hover:text-blue-600"
+                className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow"
                 onClick={() => handleCopyButtonClick()}
               >
                 <Icon.Clipboard className="w-4 h-auto mx-auto" />
@@ -89,7 +89,7 @@ const ShortcutView = (props: Props) => {
             </Tooltip>
             <Tooltip title="QR Code" variant="solid" placement="top" arrow>
               <button
-                className="hidden group-hover:block ml-1 w-6 h-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-100 hover:shadow hover:text-blue-600"
+                className="hidden group-hover:block ml-1 w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow"
                 onClick={() => setShowQRCodeDialog(true)}
               >
                 <Icon.QrCode className="w-4 h-auto mx-auto" />
