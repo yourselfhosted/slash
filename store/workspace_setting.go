@@ -17,13 +17,7 @@ const (
 
 // String returns the string format of WorkspaceSettingKey type.
 func (key WorkspaceSettingKey) String() string {
-	switch key {
-	case WorkspaceDisallowSignUp:
-		return "disallow-signup"
-	case WorkspaceSecretSessionName:
-		return "secret-session-name"
-	}
-	return ""
+	return string(key)
 }
 
 type WorkspaceSetting struct {

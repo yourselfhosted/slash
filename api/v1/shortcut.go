@@ -261,35 +261,12 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusForbidden, "Unauthorized to delete shortcut")
 		}
 
-		if err := s.Store.DeleteShortcut(ctx, &store.DeleteShortcut{
-			ID: shortcutID,
-		}); err != nil {
+		err = s.Store.DeleteShortcut(ctx, &store.DeleteShortcut{ID: shortcutID})
+		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to delete shortcut, err: %s", err)).SetInternal(err)
 		}
-
 		return c.JSON(http.StatusOK, true)
 	})
-}
-
-func (s *APIV1Service) createShortcutCreateActivity(ctx context.Context, shortcut *store.Shortcut) error {
-	payload := &ActivityShorcutCreatePayload{
-		ShortcutID: shortcut.ID,
-	}
-	payloadStr, err := json.Marshal(payload)
-	if err != nil {
-		return errors.Wrap(err, "Failed to marshal activity payload")
-	}
-	activity := &store.Activity{
-		CreatorID: shortcut.CreatorID,
-		Type:      store.ActivityShortcutCreate,
-		Level:     store.ActivityInfo,
-		Payload:   string(payloadStr),
-	}
-	_, err = s.Store.CreateActivity(ctx, activity)
-	if err != nil {
-		return errors.Wrap(err, "Failed to create activity")
-	}
-	return nil
 }
 
 func (s *APIV1Service) composeShortcut(ctx context.Context, shortcut *Shortcut) (*Shortcut, error) {
@@ -339,4 +316,25 @@ func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
 		RowStatus:   RowStatus(shortcut.RowStatus),
 		Tags:        tags,
 	}
+}
+
+func (s *APIV1Service) createShortcutCreateActivity(ctx context.Context, shortcut *store.Shortcut) error {
+	payload := &ActivityShorcutCreatePayload{
+		ShortcutID: shortcut.ID,
+	}
+	payloadStr, err := json.Marshal(payload)
+	if err != nil {
+		return errors.Wrap(err, "Failed to marshal activity payload")
+	}
+	activity := &store.Activity{
+		CreatorID: shortcut.CreatorID,
+		Type:      store.ActivityShortcutCreate,
+		Level:     store.ActivityInfo,
+		Payload:   string(payloadStr),
+	}
+	_, err = s.Store.CreateActivity(ctx, activity)
+	if err != nil {
+		return errors.Wrap(err, "Failed to create activity")
+	}
+	return nil
 }

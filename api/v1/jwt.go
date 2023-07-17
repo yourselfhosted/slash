@@ -88,6 +88,7 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 			if util.HasPrefixes(path, "/s/*") && method == http.MethodGet {
 				return next(c)
 			}
+			auth.RemoveTokensAndCookies(c)
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing access token")
 		}
 
@@ -116,6 +117,7 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 					generateToken = true
 				}
 			} else {
+				auth.RemoveTokensAndCookies(c)
 				return echo.NewHTTPError(http.StatusUnauthorized, errors.Wrap(err, "Invalid or expired access token"))
 			}
 		}
