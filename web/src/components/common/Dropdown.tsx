@@ -21,10 +21,15 @@ const Dropdown: React.FC<Props> = (props: Props) => {
           toggleDropdownStatus(false);
         }
       };
+
       window.addEventListener("click", handleClickOutside, {
         capture: true,
-        once: true,
       });
+      return () => {
+        window.removeEventListener("click", handleClickOutside, {
+          capture: true,
+        });
+      };
     }
   }, [dropdownStatus]);
 

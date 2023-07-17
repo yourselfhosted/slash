@@ -2,40 +2,18 @@ import { Button, Tab, TabList, Tabs } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
-import useViewStore, { Filter } from "../stores/v1/view";
+import useViewStore, { getFilteredShortcutList, getOrderedShortcutList } from "../stores/v1/view";
 import useUserStore from "../stores/v1/user";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
 import ShortcutListView from "../components/ShortcutListView";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
 import FilterView from "../components/FilterView";
+import OrderSetting from "../components/OrderSetting";
 
 interface State {
   showCreateShortcutDialog: boolean;
 }
-
-const getFilteredShortcutList = (shortcutList: Shortcut[], filter: Filter, currentUser: User) => {
-  const { tag, mineOnly, visibility } = filter;
-  const filteredShortcutList = shortcutList.filter((shortcut) => {
-    if (tag) {
-      if (!shortcut.tags.includes(tag)) {
-        return false;
-      }
-    }
-    if (mineOnly) {
-      if (shortcut.creatorId !== currentUser.id) {
-        return false;
-      }
-    }
-    if (visibility) {
-      if (shortcut.visibility !== visibility) {
-        return false;
-      }
-    }
-    return true;
-  });
-  return filteredShortcutList;
-};
 
 const Home: React.FC = () => {
   const loadingState = useLoading();
@@ -47,6 +25,7 @@ const Home: React.FC = () => {
   });
   const filter = viewStore.filter;
   const filteredShortcutList = getFilteredShortcutList(shortcutList, filter, currentUser);
+  const orderedShortcutList = getOrderedShortcutList(filteredShortcutList, viewStore.order);
 
   useEffect(() => {
     Promise.all([shortcutService.getMyAllShortcuts()]).finally(() => {
@@ -69,6 +48,12 @@ const Home: React.FC = () => {
         </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
+            <Button className="shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
+              <Icon.Plus className="w-5 h-auto" /> New
+            </Button>
+          </div>
+          <div className="flex flex-row justify-end items-center">
+            <OrderSetting />
             <Tabs
               value={filter.mineOnly ? "PRIVATE" : "ALL"}
               size="sm"
@@ -80,11 +65,6 @@ const Home: React.FC = () => {
               </TabList>
             </Tabs>
           </div>
-          <div>
-            <Button className="shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
-              <Icon.Plus className="w-5 h-auto" /> New
-            </Button>
-          </div>
         </div>
 
         <FilterView />
@@ -94,13 +74,13 @@ const Home: React.FC = () => {
             <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
             loading
           </div>
-        ) : filteredShortcutList.length === 0 ? (
+        ) : orderedShortcutList.length === 0 ? (
           <div className="py-16 w-full flex flex-col justify-center items-center">
             <Icon.PackageOpen className="w-16 h-auto text-gray-400" />
             <p className="mt-4">No shortcuts found.</p>
           </div>
         ) : (
-          <ShortcutListView shortcutList={filteredShortcutList} />
+          <ShortcutListView shortcutList={orderedShortcutList} />
         )}
       </div>
 
