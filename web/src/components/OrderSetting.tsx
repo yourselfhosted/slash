@@ -1,4 +1,5 @@
 import { Select, Option, Button } from "@mui/joy";
+import { toast } from "react-hot-toast";
 import useViewStore from "../stores/v1/view";
 import Dropdown from "./common/Dropdown";
 import Icon from "./Icon";
@@ -8,19 +9,24 @@ const OrderSetting = () => {
   const order = viewStore.getOrder();
   const { field, direction } = order;
 
+  const handleReset = () => {
+    viewStore.setOrder({ field: "name", direction: "asc" });
+    toast.success("Order reset");
+  };
+
   return (
     <Dropdown
       trigger={
         <button className="p-1 mr-2">
-          <Icon.ListFilter className="w-5 h-auto text-gray-600" />
+          <Icon.ListFilter className="w-5 h-auto text-gray-500" />
         </button>
       }
       actions={
         <div className="w-52 p-2 pt-0 gap-2 flex flex-col justify-start items-start" onClick={(e) => e.stopPropagation()}>
           <div className="w-full flex flex-row justify-between items-center mt-1">
             <span className="text-sm font-medium">View order</span>
-            <Button size="sm" variant="plain" color="neutral" onClick={() => viewStore.setOrder({ field: "name", direction: "asc" })}>
-              <Icon.RefreshCw className="w-4 h-auto" />
+            <Button size="sm" variant="plain" color="neutral" onClick={handleReset}>
+              <Icon.RefreshCw className="w-4 h-auto text-gray-500" />
             </Button>
           </div>
           <div className="w-full flex flex-row justify-between items-center">

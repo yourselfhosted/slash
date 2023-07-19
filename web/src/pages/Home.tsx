@@ -48,7 +48,7 @@ const Home: React.FC = () => {
         </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
-            <Button className="shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
+            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
               <Icon.Plus className="w-5 h-auto" /> New
             </Button>
           </div>
