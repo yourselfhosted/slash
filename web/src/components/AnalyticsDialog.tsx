@@ -11,7 +11,7 @@ interface Props {
 const AnalyticsDialog: React.FC<Props> = (props: Props) => {
   const { shortcutId, onClose } = props;
   const [analytics, setAnalytics] = useState<AnalysisData | null>(null);
-  const [selectedDeviceTab, setSelectedDeviceTab] = useState<"os" | "browser">("os");
+  const [selectedDeviceTab, setSelectedDeviceTab] = useState<"os" | "browser">("browser");
 
   useEffect(() => {
     api.getShortcutAnalytics(shortcutId).then(({ data }) => {
@@ -118,7 +118,12 @@ const AnalyticsDialog: React.FC<Props> = (props: Props) => {
                 )}
               </div>
             </>
-          ) : null}
+          ) : (
+            <div className="py-12 w-full flex flex-row justify-center items-center opacity-80">
+              <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
+              loading
+            </div>
+          )}
         </div>
       </ModalDialog>
     </Modal>
