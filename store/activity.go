@@ -2,7 +2,6 @@ package store
 
 import (
 	"context"
-	"database/sql"
 	"strings"
 )
 
@@ -64,13 +63,7 @@ type FindActivity struct {
 }
 
 func (s *Store) CreateActivity(ctx context.Context, create *Activity) (*Activity, error) {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	query := `
+	stmt := `
 		INSERT INTO activity (
 			creator_id,
 			type,
@@ -80,7 +73,7 @@ func (s *Store) CreateActivity(ctx context.Context, create *Activity) (*Activity
 		VALUES (?, ?, ?, ?)
 		RETURNING id, created_ts
 	`
-	if err := tx.QueryRowContext(ctx, query,
+	if err := s.db.QueryRowContext(ctx, stmt,
 		create.CreatorID,
 		create.Type.String(),
 		create.Level.String(),
@@ -92,50 +85,11 @@ func (s *Store) CreateActivity(ctx context.Context, create *Activity) (*Activity
 		return nil, err
 	}
 
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-
 	activity := create
 	return activity, nil
 }
 
 func (s *Store) ListActivities(ctx context.Context, find *FindActivity) ([]*Activity, error) {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	list, err := listActivities(ctx, tx, find)
-	if err != nil {
-		return nil, err
-	}
-
-	return list, nil
-}
-
-func (s *Store) GetActivity(ctx context.Context, find *FindActivity) (*Activity, error) {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	list, err := listActivities(ctx, tx, find)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(list) == 0 {
-		return nil, nil
-	}
-
-	activity := list[0]
-	return activity, nil
-}
-
-func listActivities(ctx context.Context, tx *sql.Tx, find *FindActivity) ([]*Activity, error) {
 	where, args := []string{"1 = 1"}, []any{}
 	if find.Type != "" {
 		where, args = append(where, "type = ?"), append(args, find.Type.String())
@@ -157,11 +111,10 @@ func listActivities(ctx context.Context, tx *sql.Tx, find *FindActivity) ([]*Act
 			payload
 		FROM activity
 		WHERE ` + strings.Join(where, " AND ")
-	rows, err := tx.QueryContext(ctx, query, args...)
+	rows, err := s.db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	list := []*Activity{}
@@ -186,4 +139,18 @@ func listActivities(ctx context.Context, tx *sql.Tx, find *FindActivity) ([]*Act
 	}
 
 	return list, nil
+}
+
+func (s *Store) GetActivity(ctx context.Context, find *FindActivity) (*Activity, error) {
+	list, err := s.ListActivities(ctx, find)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(list) == 0 {
+		return nil, nil
+	}
+
+	activity := list[0]
+	return activity, nil
 }

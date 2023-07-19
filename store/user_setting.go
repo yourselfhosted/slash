@@ -18,13 +18,7 @@ type FindUserSetting struct {
 }
 
 func (s *Store) UpsertUserSetting(ctx context.Context, upsert *UserSetting) (*UserSetting, error) {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	query := `
+	stmt := `
 		INSERT INTO user_setting (
 			user_id, key, value
 		)
@@ -32,11 +26,7 @@ func (s *Store) UpsertUserSetting(ctx context.Context, upsert *UserSetting) (*Us
 		ON CONFLICT(user_id, key) DO UPDATE 
 		SET value = EXCLUDED.value
 	`
-	if _, err := tx.ExecContext(ctx, query, upsert.UserID, upsert.Key, upsert.Value); err != nil {
-		return nil, err
-	}
-
-	if err := tx.Commit(); err != nil {
+	if _, err := s.db.ExecContext(ctx, stmt, upsert.UserID, upsert.Key, upsert.Value); err != nil {
 		return nil, err
 	}
 
@@ -46,51 +36,6 @@ func (s *Store) UpsertUserSetting(ctx context.Context, upsert *UserSetting) (*Us
 }
 
 func (s *Store) ListUserSettings(ctx context.Context, find *FindUserSetting) ([]*UserSetting, error) {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	userSettingList, err := listUserSettings(ctx, tx, find)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, userSetting := range userSettingList {
-		s.userSettingCache.Store(getUserSettingCacheKey(userSetting.UserID, userSetting.Key), userSetting)
-	}
-	return userSettingList, nil
-}
-
-func (s *Store) GetUserSetting(ctx context.Context, find *FindUserSetting) (*UserSetting, error) {
-	if find.UserID != nil && find.Key != "" {
-		if cache, ok := s.userSettingCache.Load(getUserSettingCacheKey(*find.UserID, find.Key)); ok {
-			return cache.(*UserSetting), nil
-		}
-	}
-
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	list, err := listUserSettings(ctx, tx, find)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(list) == 0 {
-		return nil, nil
-	}
-
-	userSettingMessage := list[0]
-	s.userSettingCache.Store(getUserSettingCacheKey(userSettingMessage.UserID, userSettingMessage.Key), userSettingMessage)
-	return userSettingMessage, nil
-}
-
-func listUserSettings(ctx context.Context, tx *sql.Tx, find *FindUserSetting) ([]*UserSetting, error) {
 	where, args := []string{"1 = 1"}, []any{}
 
 	if v := find.Key; v != "" {
@@ -107,30 +52,54 @@ func listUserSettings(ctx context.Context, tx *sql.Tx, find *FindUserSetting) ([
 			value
 		FROM user_setting
 		WHERE ` + strings.Join(where, " AND ")
-	rows, err := tx.QueryContext(ctx, query, args...)
+	rows, err := s.db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	userSettingMessageList := make([]*UserSetting, 0)
+	userSettingList := make([]*UserSetting, 0)
 	for rows.Next() {
-		userSettingMessage := &UserSetting{}
+		userSetting := &UserSetting{}
 		if err := rows.Scan(
-			&userSettingMessage.UserID,
-			&userSettingMessage.Key,
-			&userSettingMessage.Value,
+			&userSetting.UserID,
+			&userSetting.Key,
+			&userSetting.Value,
 		); err != nil {
 			return nil, err
 		}
-		userSettingMessageList = append(userSettingMessageList, userSettingMessage)
+		userSettingList = append(userSettingList, userSetting)
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return userSettingMessageList, nil
+	for _, userSetting := range userSettingList {
+		s.userSettingCache.Store(getUserSettingCacheKey(userSetting.UserID, userSetting.Key), userSetting)
+	}
+	return userSettingList, nil
+}
+
+func (s *Store) GetUserSetting(ctx context.Context, find *FindUserSetting) (*UserSetting, error) {
+	if find.UserID != nil && find.Key != "" {
+		if cache, ok := s.userSettingCache.Load(getUserSettingCacheKey(*find.UserID, find.Key)); ok {
+			return cache.(*UserSetting), nil
+		}
+	}
+
+	list, err := s.ListUserSettings(ctx, find)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(list) == 0 {
+		return nil, nil
+	}
+
+	userSettingMessage := list[0]
+	s.userSettingCache.Store(getUserSettingCacheKey(userSettingMessage.UserID, userSettingMessage.Key), userSettingMessage)
+	return userSettingMessage, nil
 }
 
 func vacuumUserSetting(ctx context.Context, tx *sql.Tx) error {

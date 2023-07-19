@@ -2,7 +2,6 @@ package store
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"strings"
 )
@@ -55,13 +54,7 @@ type DeleteUser struct {
 }
 
 func (s *Store) CreateUser(ctx context.Context, create *User) (*User, error) {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	query := `
+	stmt := `
 		INSERT INTO user (
 			email,
 			nickname,
@@ -71,7 +64,7 @@ func (s *Store) CreateUser(ctx context.Context, create *User) (*User, error) {
 		VALUES (?, ?, ?, ?)
 		RETURNING id, created_ts, updated_ts, row_status
 	`
-	if err := tx.QueryRowContext(ctx, query,
+	if err := s.db.QueryRowContext(ctx, stmt,
 		create.Email,
 		create.Nickname,
 		create.PasswordHash,
@@ -85,22 +78,12 @@ func (s *Store) CreateUser(ctx context.Context, create *User) (*User, error) {
 		return nil, err
 	}
 
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-
 	user := create
 	s.userCache.Store(user.ID, user)
 	return user, nil
 }
 
 func (s *Store) UpdateUser(ctx context.Context, update *UpdateUser) (*User, error) {
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
 	set, args := []string{}, []any{}
 	if v := update.RowStatus; v != nil {
 		set, args = append(set, "row_status = ?"), append(args, *v)
@@ -122,7 +105,7 @@ func (s *Store) UpdateUser(ctx context.Context, update *UpdateUser) (*User, erro
 		return nil, fmt.Errorf("no fields to update")
 	}
 
-	query := `
+	stmt := `
 		UPDATE user
 		SET ` + strings.Join(set, ", ") + `
 		WHERE id = ?
@@ -130,7 +113,7 @@ func (s *Store) UpdateUser(ctx context.Context, update *UpdateUser) (*User, erro
 	`
 	args = append(args, update.ID)
 	user := &User{}
-	if err := tx.QueryRowContext(ctx, query, args...).Scan(
+	if err := s.db.QueryRowContext(ctx, stmt, args...).Scan(
 		&user.ID,
 		&user.CreatedTs,
 		&user.UpdatedTs,
@@ -143,23 +126,68 @@ func (s *Store) UpdateUser(ctx context.Context, update *UpdateUser) (*User, erro
 		return nil, err
 	}
 
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-
 	s.userCache.Store(user.ID, user)
 	return user, nil
 }
 
 func (s *Store) ListUsers(ctx context.Context, find *FindUser) ([]*User, error) {
-	tx, err := s.db.BeginTx(ctx, nil)
+	where, args := []string{"1 = 1"}, []any{}
+
+	if v := find.ID; v != nil {
+		where, args = append(where, "id = ?"), append(args, *v)
+	}
+	if v := find.RowStatus; v != nil {
+		where, args = append(where, "row_status = ?"), append(args, v.String())
+	}
+	if v := find.Email; v != nil {
+		where, args = append(where, "email = ?"), append(args, *v)
+	}
+	if v := find.Nickname; v != nil {
+		where, args = append(where, "nickname = ?"), append(args, *v)
+	}
+	if v := find.Role; v != nil {
+		where, args = append(where, "role = ?"), append(args, *v)
+	}
+
+	query := `
+		SELECT 
+			id,
+			created_ts,
+			updated_ts,
+			row_status,
+			email,
+			nickname,
+			password_hash,
+			role
+		FROM user
+		WHERE ` + strings.Join(where, " AND ") + `
+		ORDER BY updated_ts DESC, created_ts DESC
+	`
+	rows, err := s.db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
-	defer tx.Rollback()
+	defer rows.Close()
 
-	list, err := listUsers(ctx, tx, find)
-	if err != nil {
+	list := make([]*User, 0)
+	for rows.Next() {
+		user := &User{}
+		if err := rows.Scan(
+			&user.ID,
+			&user.CreatedTs,
+			&user.UpdatedTs,
+			&user.RowStatus,
+			&user.Email,
+			&user.Nickname,
+			&user.PasswordHash,
+			&user.Role,
+		); err != nil {
+			return nil, err
+		}
+		list = append(list, user)
+	}
+
+	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
@@ -177,13 +205,7 @@ func (s *Store) GetUser(ctx context.Context, find *FindUser) (*User, error) {
 		}
 	}
 
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	list, err := listUsers(ctx, tx, find)
+	list, err := s.ListUsers(ctx, find)
 	if err != nil {
 		return nil, err
 	}
@@ -217,75 +239,10 @@ func (s *Store) DeleteUser(ctx context.Context, delete *DeleteUser) error {
 	}
 
 	if err := tx.Commit(); err != nil {
-		// do nothing here to prevent linter warning.
 		return err
 	}
 
 	s.userCache.Delete(delete.ID)
 
 	return nil
-}
-
-func listUsers(ctx context.Context, tx *sql.Tx, find *FindUser) ([]*User, error) {
-	where, args := []string{"1 = 1"}, []any{}
-
-	if v := find.ID; v != nil {
-		where, args = append(where, "id = ?"), append(args, *v)
-	}
-	if v := find.RowStatus; v != nil {
-		where, args = append(where, "row_status = ?"), append(args, v.String())
-	}
-	if v := find.Email; v != nil {
-		where, args = append(where, "email = ?"), append(args, *v)
-	}
-	if v := find.Nickname; v != nil {
-		where, args = append(where, "nickname = ?"), append(args, *v)
-	}
-	if v := find.Role; v != nil {
-		where, args = append(where, "role = ?"), append(args, *v)
-	}
-
-	query := `
-		SELECT 
-			id,
-			created_ts,
-			updated_ts,
-			row_status,
-			email,
-			nickname,
-			password_hash,
-			role
-		FROM user
-		WHERE ` + strings.Join(where, " AND ") + `
-		ORDER BY updated_ts DESC, created_ts DESC
-	`
-	rows, err := tx.QueryContext(ctx, query, args...)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	list := make([]*User, 0)
-	for rows.Next() {
-		user := &User{}
-		if err := rows.Scan(
-			&user.ID,
-			&user.CreatedTs,
-			&user.UpdatedTs,
-			&user.RowStatus,
-			&user.Email,
-			&user.Nickname,
-			&user.PasswordHash,
-			&user.Role,
-		); err != nil {
-			return nil, err
-		}
-		list = append(list, user)
-	}
-
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return list, nil
 }

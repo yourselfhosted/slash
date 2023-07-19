@@ -177,21 +177,15 @@ func (db *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion st
 		}
 	}
 
-	tx, err := db.DBInstance.Begin()
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback()
-
 	// upsert the newest version to migration_history
 	version := minorVersion + ".0"
-	if _, err = upsertMigrationHistory(ctx, tx, &MigrationHistoryUpsert{
+	if _, err = db.UpsertMigrationHistory(ctx, &MigrationHistoryUpsert{
 		Version: version,
 	}); err != nil {
 		return fmt.Errorf("failed to upsert migration history with version: %s, err: %w", version, err)
 	}
 
-	return tx.Commit()
+	return nil
 }
 
 func (db *DB) seed(ctx context.Context) error {
@@ -218,17 +212,11 @@ func (db *DB) seed(ctx context.Context) error {
 
 // execute runs a single SQL statement within a transaction.
 func (db *DB) execute(ctx context.Context, stmt string) error {
-	tx, err := db.DBInstance.Begin()
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback()
-
-	if _, err := tx.ExecContext(ctx, stmt); err != nil {
+	if _, err := db.DBInstance.ExecContext(ctx, stmt); err != nil {
 		return fmt.Errorf("failed to execute statement, err: %w", err)
 	}
 
-	return tx.Commit()
+	return nil
 }
 
 // minorDirRegexp is a regular expression for minor version directory.
