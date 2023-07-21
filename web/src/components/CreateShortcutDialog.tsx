@@ -1,4 +1,4 @@
-import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
+import { Button, Divider, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,24 +31,28 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       tags: [],
     },
   });
+  const [showDescriptionAndTag, setShowDescriptionAndTag] = useState<boolean>(false);
   const [tag, setTag] = useState<string>("");
   const requestState = useLoading(false);
   const isCreating = isUndefined(shortcutId);
 
   useEffect(() => {
     if (shortcutId) {
-      const shortcutTemp = shortcutService.getShortcutById(shortcutId);
-      if (shortcutTemp) {
+      const shortcut = shortcutService.getShortcutById(shortcutId);
+      if (shortcut) {
         setState({
           ...state,
           shortcutCreate: Object.assign(state.shortcutCreate, {
-            name: shortcutTemp.name,
-            link: shortcutTemp.link,
-            description: shortcutTemp.description,
-            visibility: shortcutTemp.visibility,
+            name: shortcut.name,
+            link: shortcut.link,
+            description: shortcut.description,
+            visibility: shortcut.visibility,
           }),
         });
-        setTag(shortcutTemp.tags.join(" "));
+        setTag(shortcut.tags.join(" "));
+        if (shortcut.description !== "" || shortcut.tags.length > 0) {
+          setShowDescriptionAndTag(true);
+        }
       }
     }
   }, [shortcutId]);
@@ -157,29 +161,15 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
-              Link <span className="text-red-600">*</span>
+              Destination URL <span className="text-red-600">*</span>
             </span>
             <Input
               className="w-full"
               type="text"
-              placeholder="The full URL of the page you want to get to"
+              placeholder="e.g. https://github.com/boojack/slash"
               value={state.shortcutCreate.link}
               onChange={handleLinkInputChange}
             />
-          </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Description</span>
-            <Input
-              className="w-full"
-              type="text"
-              placeholder="Something to describe the link"
-              value={state.shortcutCreate.description}
-              onChange={handleDescriptionInputChange}
-            />
-          </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Tags</span>
-            <Input className="w-full" type="text" placeholder="Separated by spaces" value={tag} onChange={handleTagsInputChange} />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
@@ -196,6 +186,35 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               {t(`shortcut.visibility.${state.shortcutCreate.visibility.toLowerCase()}.description`)}
             </p>
           </div>
+          <Divider className="text-gray-500">Optional</Divider>
+          <div
+            className="w-full flex flex-row justify-between items-center my-3"
+            onClick={() => setShowDescriptionAndTag(!showDescriptionAndTag)}
+          >
+            <span className={`${showDescriptionAndTag ? "" : "text-gray-500"}`}>Description and tags</span>
+            <button className="w-7 h-7 p-1 rounded-md hover:bg-gray-100">
+              <Icon.ChevronDown className={`w-5 h-auto text-gray-500 ${showDescriptionAndTag ? "transform rotate-180" : ""}`} />
+            </button>
+          </div>
+          {showDescriptionAndTag && (
+            <>
+              <div className="w-full flex flex-col justify-start items-start mb-3">
+                <span className="mb-2">Description</span>
+                <Input
+                  className="w-full"
+                  type="text"
+                  placeholder="Something to describe the url"
+                  value={state.shortcutCreate.description}
+                  onChange={handleDescriptionInputChange}
+                />
+              </div>
+              <div className="w-full flex flex-col justify-start items-start mb-3">
+                <span className="mb-2">Tags</span>
+                <Input className="w-full" type="text" placeholder="Separated by spaces" value={tag} onChange={handleTagsInputChange} />
+              </div>
+            </>
+          )}
+
           <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
             <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
               Cancel
