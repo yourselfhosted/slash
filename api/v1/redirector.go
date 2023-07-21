@@ -58,9 +58,16 @@ func redirectToShortcut(c echo.Context, shortcut *store.Shortcut) error {
 
 	htmlTemplate := `<html><head>%s</head><body>%s</body></html>`
 	metadataList := []string{
+		fmt.Sprintf(`<title>%s</title>`, shortcut.OpenGraphMetadata.Title),
+		fmt.Sprintf(`<meta name="description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
 		fmt.Sprintf(`<meta property="og:title" content="%s" />`, shortcut.OpenGraphMetadata.Title),
 		fmt.Sprintf(`<meta property="og:description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
 		fmt.Sprintf(`<meta property="og:image" content="%s" />`, shortcut.OpenGraphMetadata.Image),
+		// Twitter related metadata.
+		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, shortcut.OpenGraphMetadata.Title),
+		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
+		fmt.Sprintf(`<meta name="twitter:image" content="%s" />`, shortcut.OpenGraphMetadata.Image),
+		`<meta name="twitter:card" content="summary_large_image" />`,
 	}
 	if isValidURL {
 		metadataList = append(metadataList, fmt.Sprintf(`<meta property="og:url" content="%s" />`, shortcut.Link))
