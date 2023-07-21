@@ -276,7 +276,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
                 <Icon.Sparkles className="ml-1 w-4 h-auto text-blue-600" />
               </span>
               <button className="w-7 h-7 p-1 rounded-md">
-                <Icon.ChevronDown className={`w-5 h-auto text-gray-500 ${showOpenGraphMetadata ? "transform rotate-180" : ""}`} />
+                <Icon.ChevronDown className={`w-4 h-auto text-gray-500 ${showDescriptionAndTag ? "transform rotate-180" : ""}`} />
               </button>
             </div>
             {showOpenGraphMetadata && (
