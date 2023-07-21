@@ -1,4 +1,4 @@
-import { Button, Divider, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
+import { Button, Divider, Input, Modal, ModalDialog, Radio, RadioGroup, Textarea } from "@mui/joy";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -127,7 +127,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleOpenGraphMetadataDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOpenGraphMetadataDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
         openGraphMetadata: {
@@ -225,7 +225,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             </p>
           </div>
           <Divider className="text-gray-500">Optional</Divider>
-          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden my-2">
+          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden my-3">
             <div
               className={`w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 ${
                 showDescriptionAndTag ? "bg-gray-100" : ""
@@ -240,18 +240,26 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             {showDescriptionAndTag && (
               <div className="w-full px-2 py-1">
                 <div className="w-full flex flex-col justify-start items-start mb-3">
-                  <span className="mb-2">Description</span>
+                  <span className="mb-2 text-sm">Description</span>
                   <Input
                     className="w-full"
                     type="text"
                     placeholder="Something to describe the url"
+                    size="sm"
                     value={state.shortcutCreate.description}
                     onChange={handleDescriptionInputChange}
                   />
                 </div>
                 <div className="w-full flex flex-col justify-start items-start mb-3">
-                  <span className="mb-2">Tags</span>
-                  <Input className="w-full" type="text" placeholder="Separated by spaces" value={tag} onChange={handleTagsInputChange} />
+                  <span className="mb-2 text-sm">Tags</span>
+                  <Input
+                    className="w-full"
+                    type="text"
+                    placeholder="Separated by spaces"
+                    size="sm"
+                    value={tag}
+                    onChange={handleTagsInputChange}
+                  />
                 </div>
               </div>
             )}
@@ -263,7 +271,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               }`}
               onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
             >
-              <span className="text-sm">Social media metadata</span>
+              <span className="text-sm flex flex-row justify-start items-center">
+                Social media metadata
+                <Icon.Sparkles className="ml-1 w-4 h-auto text-blue-600" />
+              </span>
               <button className="w-7 h-7 p-1 rounded-md">
                 <Icon.ChevronDown className={`w-5 h-auto text-gray-500 ${showOpenGraphMetadata ? "transform rotate-180" : ""}`} />
               </button>
@@ -271,31 +282,34 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             {showOpenGraphMetadata && (
               <div className="w-full px-2 py-1">
                 <div className="w-full flex flex-col justify-start items-start mb-3">
-                  <span className="mb-2">Image URL</span>
+                  <span className="mb-2 text-sm">Image URL</span>
                   <Input
                     className="w-full"
                     type="text"
                     placeholder="The image url"
+                    size="sm"
                     value={state.shortcutCreate.openGraphMetadata.image}
                     onChange={handleOpenGraphMetadataImageChange}
                   />
                 </div>
                 <div className="w-full flex flex-col justify-start items-start mb-3">
-                  <span className="mb-2">Title</span>
+                  <span className="mb-2 text-sm">Title</span>
                   <Input
                     className="w-full"
                     type="text"
                     placeholder="Slash - A bookmarking and url shortener"
+                    size="sm"
                     value={state.shortcutCreate.openGraphMetadata.title}
                     onChange={handleOpenGraphMetadataTitleChange}
                   />
                 </div>
                 <div className="w-full flex flex-col justify-start items-start mb-3">
-                  <span className="mb-2">Description</span>
-                  <Input
+                  <span className="mb-2 text-sm">Description</span>
+                  <Textarea
                     className="w-full"
-                    type="text"
                     placeholder="A bookmarking and url shortener, save and share your links very easily."
+                    size="sm"
+                    maxRows={3}
                     value={state.shortcutCreate.openGraphMetadata.description}
                     onChange={handleOpenGraphMetadataDescriptionChange}
                   />
