@@ -14,12 +14,13 @@ func TestShortcutStore(t *testing.T) {
 	user, err := createTestingAdminUser(ctx, ts)
 	require.NoError(t, err)
 	shortcut, err := ts.CreateShortcut(ctx, &store.Shortcut{
-		CreatorID:   user.ID,
-		Name:        "test",
-		Link:        "https://test.link",
-		Description: "A test shortcut",
-		Visibility:  store.VisibilityPrivate,
-		Tag:         "test link",
+		CreatorID:         user.ID,
+		Name:              "test",
+		Link:              "https://test.link",
+		Description:       "A test shortcut",
+		Visibility:        store.VisibilityPrivate,
+		Tag:               "test link",
+		OpenGraphMetadata: &store.OpenGraphMetadata{},
 	})
 	require.NoError(t, err)
 	shortcuts, err := ts.ListShortcuts(ctx, &store.FindShortcut{
