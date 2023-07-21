@@ -45,6 +45,25 @@ VALUES
   (
     3,
     101,
+    'ai-infra',
+    'https://star-history.com/blog/open-source-ai-infra-projects',
+    'PUBLIC',
+    '{"title":"Open Source AI Infra for Your Next Project","description":"Some open-source infra projects that can be directly used for your next project. 💡","image":"https://star-history.com/blog/assets/open-source-ai-infra-projects/banner.webp"}'
+  );
+
+INSERT INTO
+  shortcut (
+    `id`,
+    `creator_id`,
+    `name`,
+    `link`,
+    `visibility`,
+    `og_metadata`
+  )
+VALUES
+  (
+    4,
+    101,
     'schema-change',
     'https://www.bytebase.com/blog/how-to-handle-database-schema-change/#what-is-a-database-schema-change',
     'PUBLIC',
@@ -61,7 +80,7 @@ INSERT INTO
   )
 VALUES
   (
-    4,
+    5,
     102,
     'stevenlgtm',
     'https://github.com/boojack',
