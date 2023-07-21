@@ -86,7 +86,7 @@ func (s *Store) CreateShortcut(ctx context.Context, create *Shortcut) (*Shortcut
 	args := []any{create.CreatorID, create.Name, create.Link, create.Description, create.Visibility, create.Tag}
 	placeholder := []string{"?", "?", "?", "?", "?", "?"}
 	if create.OpenGraphMetadata != nil {
-		set = append(set, "open_graph_metadata")
+		set = append(set, "og_metadata")
 		openGraphMetadataBytes, err := json.Marshal(create.OpenGraphMetadata)
 		if err != nil {
 			return nil, err
