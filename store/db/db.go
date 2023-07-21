@@ -23,12 +23,12 @@ var migrationFS embed.FS
 var seedFS embed.FS
 
 type DB struct {
-	profile *profile.Profile
 	// sqlite db connection instance
 	DBInstance *sql.DB
+	profile    *profile.Profile
 }
 
-// NewDB returns a new instance of DB.
+// NewDB returns a new instance of DB associated with the given datasource name.
 func NewDB(profile *profile.Profile) *DB {
 	db := &DB{
 		profile: profile,
@@ -42,8 +42,21 @@ func (db *DB) Open(ctx context.Context) (err error) {
 		return fmt.Errorf("dsn required")
 	}
 
-	// Connect to the database without foreign_key.
-	sqliteDB, err := sql.Open("sqlite", db.profile.DSN+"?cache=shared&_foreign_keys=0&_journal_mode=WAL")
+	// Connect to the database with some sane settings:
+	// - No shared-cache: it's obsolete; WAL journal mode is a better solution.
+	// - No foreign key constraints: it's currently disabled by default, but it's a
+	// good practice to be explicit and prevent future surprises on SQLite upgrades.
+	// - Journal mode set to WAL: it's the recommended journal mode for most applications
+	// as it prevents locking issues.
+	//
+	// Notes:
+	// - When using the `modernc.org/sqlite` driver, each pragma must be prefixed with `_pragma=`.
+	//
+	// References:
+	// - https://pkg.go.dev/modernc.org/sqlite#Driver.Open
+	// - https://www.sqlite.org/sharedcache.html
+	// - https://www.sqlite.org/pragma.html
+	sqliteDB, err := sql.Open("sqlite", db.profile.DSN+"?_pragma=foreign_keys(0)&_pragma=busy_timeout(10000)&_pragma=journal_mode(WAL)")
 	if err != nil {
 		return fmt.Errorf("failed to open db with dsn: %s, err: %w", db.profile.DSN, err)
 	}
@@ -52,16 +65,16 @@ func (db *DB) Open(ctx context.Context) (err error) {
 	if db.profile.Mode == "prod" {
 		_, err := os.Stat(db.profile.DSN)
 		if err != nil {
-			// If db file not exists, we should apply the latest schema.
+			// If db file not exists, we should create a new one with latest schema.
 			if errors.Is(err, os.ErrNotExist) {
 				if err := db.applyLatestSchema(ctx); err != nil {
-					return fmt.Errorf("failed to apply latest schema: %w", err)
+					return fmt.Errorf("failed to apply latest schema, err: %w", err)
 				}
 			} else {
-				return fmt.Errorf("failed to check database file: %w", err)
+				return fmt.Errorf("failed to get db file stat, err: %w", err)
 			}
 		} else {
-			// If db file exists, we should check the migration history and apply the migration if needed.
+			// If db file exists, we should check if we need to migrate the database.
 			currentVersion := version.GetCurrentVersion(db.profile.Mode)
 			migrationHistoryList, err := db.FindMigrationHistoryList(ctx, &MigrationHistoryFind{})
 			if err != nil {
@@ -177,7 +190,7 @@ func (db *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion st
 		}
 	}
 
-	// upsert the newest version to migration_history
+	// Upsert the newest version to migration_history.
 	version := minorVersion + ".0"
 	if _, err = db.UpsertMigrationHistory(ctx, &MigrationHistoryUpsert{
 		Version: version,
