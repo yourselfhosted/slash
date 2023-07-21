@@ -29,9 +29,15 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       description: "",
       visibility: "PRIVATE",
       tags: [],
+      openGraphMetadata: {
+        title: "",
+        description: "",
+        image: "",
+      },
     },
   });
   const [showDescriptionAndTag, setShowDescriptionAndTag] = useState<boolean>(false);
+  const [showOpenGraphMetadata, setShowOpenGraphMetadata] = useState<boolean>(false);
   const [tag, setTag] = useState<string>("");
   const requestState = useLoading(false);
   const isCreating = isUndefined(shortcutId);
@@ -47,12 +53,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             link: shortcut.link,
             description: shortcut.description,
             visibility: shortcut.visibility,
+            openGraphMetadata: shortcut.openGraphMetadata,
           }),
         });
         setTag(shortcut.tags.join(" "));
-        if (shortcut.description !== "" || shortcut.tags.length > 0) {
-          setShowDescriptionAndTag(true);
-        }
       }
     }
   }, [shortcutId]);
@@ -80,6 +84,14 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     });
   };
 
+  const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPartialState({
+      shortcutCreate: Object.assign(state.shortcutCreate, {
+        visibility: e.target.value,
+      }),
+    });
+  };
+
   const handleDescriptionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
@@ -93,10 +105,35 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     setTag(text);
   };
 
-  const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOpenGraphMetadataImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        visibility: e.target.value,
+        openGraphMetadata: {
+          ...state.shortcutCreate.openGraphMetadata,
+          image: e.target.value,
+        },
+      }),
+    });
+  };
+
+  const handleOpenGraphMetadataTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPartialState({
+      shortcutCreate: Object.assign(state.shortcutCreate, {
+        openGraphMetadata: {
+          ...state.shortcutCreate.openGraphMetadata,
+          title: e.target.value,
+        },
+      }),
+    });
+  };
+
+  const handleOpenGraphMetadataDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPartialState({
+      shortcutCreate: Object.assign(state.shortcutCreate, {
+        openGraphMetadata: {
+          ...state.shortcutCreate.openGraphMetadata,
+          description: e.target.value,
+        },
       }),
     });
   };
@@ -116,6 +153,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           description: state.shortcutCreate.description,
           visibility: state.shortcutCreate.visibility,
           tags: tag.split(" "),
+          openGraphMetadata: state.shortcutCreate.openGraphMetadata,
         });
       } else {
         await shortcutService.createShortcut({
@@ -144,7 +182,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             <Icon.X className="w-5 h-auto text-gray-600" />
           </Button>
         </div>
-        <div>
+        <div className="overflow-y-auto">
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Name <span className="text-red-600">*</span>
@@ -187,33 +225,84 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             </p>
           </div>
           <Divider className="text-gray-500">Optional</Divider>
-          <div
-            className="w-full flex flex-row justify-between items-center my-3"
-            onClick={() => setShowDescriptionAndTag(!showDescriptionAndTag)}
-          >
-            <span className={`${showDescriptionAndTag ? "" : "text-gray-500"}`}>Description and tags</span>
-            <button className="w-7 h-7 p-1 rounded-md hover:bg-gray-100">
-              <Icon.ChevronDown className={`w-5 h-auto text-gray-500 ${showDescriptionAndTag ? "transform rotate-180" : ""}`} />
-            </button>
+          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden my-2">
+            <div
+              className={`w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 ${
+                showDescriptionAndTag ? "bg-gray-100" : ""
+              }`}
+              onClick={() => setShowDescriptionAndTag(!showDescriptionAndTag)}
+            >
+              <span className="text-sm">Description and tags</span>
+              <button className="w-7 h-7 p-1 rounded-md">
+                <Icon.ChevronDown className={`w-4 h-auto text-gray-500 ${showDescriptionAndTag ? "transform rotate-180" : ""}`} />
+              </button>
+            </div>
+            {showDescriptionAndTag && (
+              <div className="w-full px-2 py-1">
+                <div className="w-full flex flex-col justify-start items-start mb-3">
+                  <span className="mb-2">Description</span>
+                  <Input
+                    className="w-full"
+                    type="text"
+                    placeholder="Something to describe the url"
+                    value={state.shortcutCreate.description}
+                    onChange={handleDescriptionInputChange}
+                  />
+                </div>
+                <div className="w-full flex flex-col justify-start items-start mb-3">
+                  <span className="mb-2">Tags</span>
+                  <Input className="w-full" type="text" placeholder="Separated by spaces" value={tag} onChange={handleTagsInputChange} />
+                </div>
+              </div>
+            )}
           </div>
-          {showDescriptionAndTag && (
-            <>
-              <div className="w-full flex flex-col justify-start items-start mb-3">
-                <span className="mb-2">Description</span>
-                <Input
-                  className="w-full"
-                  type="text"
-                  placeholder="Something to describe the url"
-                  value={state.shortcutCreate.description}
-                  onChange={handleDescriptionInputChange}
-                />
+          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden">
+            <div
+              className={`w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 ${
+                showOpenGraphMetadata ? "bg-gray-100" : ""
+              }`}
+              onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
+            >
+              <span className="text-sm">Social media metadata</span>
+              <button className="w-7 h-7 p-1 rounded-md">
+                <Icon.ChevronDown className={`w-5 h-auto text-gray-500 ${showOpenGraphMetadata ? "transform rotate-180" : ""}`} />
+              </button>
+            </div>
+            {showOpenGraphMetadata && (
+              <div className="w-full px-2 py-1">
+                <div className="w-full flex flex-col justify-start items-start mb-3">
+                  <span className="mb-2">Image URL</span>
+                  <Input
+                    className="w-full"
+                    type="text"
+                    placeholder="The image url"
+                    value={state.shortcutCreate.openGraphMetadata.image}
+                    onChange={handleOpenGraphMetadataImageChange}
+                  />
+                </div>
+                <div className="w-full flex flex-col justify-start items-start mb-3">
+                  <span className="mb-2">Title</span>
+                  <Input
+                    className="w-full"
+                    type="text"
+                    placeholder="Slash - A bookmarking and url shortener"
+                    value={state.shortcutCreate.openGraphMetadata.title}
+                    onChange={handleOpenGraphMetadataTitleChange}
+                  />
+                </div>
+                <div className="w-full flex flex-col justify-start items-start mb-3">
+                  <span className="mb-2">Description</span>
+                  <Input
+                    className="w-full"
+                    type="text"
+                    placeholder="A bookmarking and url shortener, save and share your links very easily."
+                    value={state.shortcutCreate.openGraphMetadata.description}
+                    onChange={handleOpenGraphMetadataDescriptionChange}
+                  />
+                </div>
               </div>
-              <div className="w-full flex flex-col justify-start items-start mb-3">
-                <span className="mb-2">Tags</span>
-                <Input className="w-full" type="text" placeholder="Separated by spaces" value={tag} onChange={handleTagsInputChange} />
-              </div>
-            </>
-          )}
+            )}
+          </div>
 
           <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
             <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>

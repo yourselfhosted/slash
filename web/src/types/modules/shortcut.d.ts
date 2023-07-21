@@ -2,6 +2,12 @@ type ShortcutId = number;
 
 type Visibility = "PRIVATE" | "WORKSPACE" | "PUBLIC";
 
+interface OpenGraphMetadata {
+  title: string;
+  description: string;
+  image: string;
+}
+
 interface Shortcut {
   id: ShortcutId;
 
@@ -16,6 +22,7 @@ interface Shortcut {
   description: string;
   visibility: Visibility;
   tags: string[];
+  openGraphMetadata: OpenGraphMetadata;
   view: number;
 }
 
@@ -25,6 +32,7 @@ interface ShortcutCreate {
   description: string;
   visibility: Visibility;
   tags: string[];
+  openGraphMetadata: OpenGraphMetadata;
 }
 
 interface ShortcutPatch {
@@ -35,6 +43,7 @@ interface ShortcutPatch {
   description?: string;
   visibility?: Visibility;
   tags?: string[];
+  openGraphMetadata?: OpenGraphMetadata;
 }
 
 interface ShortcutFind {
