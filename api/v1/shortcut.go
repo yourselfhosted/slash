@@ -30,6 +30,12 @@ func (v Visibility) String() string {
 	return string(v)
 }
 
+type OpenGraphMetadata struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
+}
+
 type Shortcut struct {
 	ID int `json:"id"`
 
@@ -41,29 +47,32 @@ type Shortcut struct {
 	RowStatus RowStatus `json:"rowStatus"`
 
 	// Domain specific fields
-	Name        string     `json:"name"`
-	Link        string     `json:"link"`
-	Description string     `json:"description"`
-	Visibility  Visibility `json:"visibility"`
-	Tags        []string   `json:"tags"`
-	View        int        `json:"view"`
+	Name              string             `json:"name"`
+	Link              string             `json:"link"`
+	Description       string             `json:"description"`
+	Visibility        Visibility         `json:"visibility"`
+	Tags              []string           `json:"tags"`
+	View              int                `json:"view"`
+	OpenGraphMetadata *OpenGraphMetadata `json:"openGraphMetadata"`
 }
 
 type CreateShortcutRequest struct {
-	Name        string     `json:"name"`
-	Link        string     `json:"link"`
-	Description string     `json:"description"`
-	Visibility  Visibility `json:"visibility"`
-	Tags        []string   `json:"tags"`
+	Name              string             `json:"name"`
+	Link              string             `json:"link"`
+	Description       string             `json:"description"`
+	Visibility        Visibility         `json:"visibility"`
+	Tags              []string           `json:"tags"`
+	OpenGraphMetadata *OpenGraphMetadata `json:"openGraphMetadata"`
 }
 
 type PatchShortcutRequest struct {
-	RowStatus   *RowStatus  `json:"rowStatus"`
-	Name        *string     `json:"name"`
-	Link        *string     `json:"link"`
-	Description *string     `json:"description"`
-	Visibility  *Visibility `json:"visibility"`
-	Tags        []string    `json:"tags"`
+	RowStatus         *RowStatus         `json:"rowStatus"`
+	Name              *string            `json:"name"`
+	Link              *string            `json:"link"`
+	Description       *string            `json:"description"`
+	Visibility        *Visibility        `json:"visibility"`
+	Tags              []string           `json:"tags"`
+	OpenGraphMetadata *OpenGraphMetadata `json:"openGraphMetadata"`
 }
 
 func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
@@ -85,6 +94,11 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			Description: create.Description,
 			Visibility:  store.Visibility(create.Visibility.String()),
 			Tag:         strings.Join(create.Tags, " "),
+			OpenGraphMetadata: &store.OpenGraphMetadata{
+				Title:       create.OpenGraphMetadata.Title,
+				Description: create.OpenGraphMetadata.Description,
+				Image:       create.OpenGraphMetadata.Image,
+			},
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create shortcut, err: %s", err)).SetInternal(err)
@@ -155,6 +169,13 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if patch.Tags != nil {
 			tag := strings.Join(patch.Tags, " ")
 			shortcutUpdate.Tag = &tag
+		}
+		if patch.OpenGraphMetadata != nil {
+			shortcutUpdate.OpenGraphMetadata = &store.OpenGraphMetadata{
+				Title:       patch.OpenGraphMetadata.Title,
+				Description: patch.OpenGraphMetadata.Description,
+				Image:       patch.OpenGraphMetadata.Image,
+			}
 		}
 		shortcut, err = s.Store.UpdateShortcut(ctx, shortcutUpdate)
 		if err != nil {
@@ -315,6 +336,11 @@ func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
 		Visibility:  Visibility(shortcut.Visibility),
 		RowStatus:   RowStatus(shortcut.RowStatus),
 		Tags:        tags,
+		OpenGraphMetadata: &OpenGraphMetadata{
+			Title:       shortcut.OpenGraphMetadata.Title,
+			Description: shortcut.OpenGraphMetadata.Description,
+			Image:       shortcut.OpenGraphMetadata.Image,
+		},
 	}
 }
 

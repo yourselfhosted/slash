@@ -43,7 +43,8 @@ CREATE TABLE shortcut (
   link TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT '',
   visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE',
-  tag TEXT NOT NULL DEFAULT ''
+  tag TEXT NOT NULL DEFAULT '',
+  og_metadata TEXT NOT NULL DEFAULT '{}'
 );
 
 CREATE INDEX idx_shortcut_name ON shortcut(name);

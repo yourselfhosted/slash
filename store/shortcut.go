@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -31,6 +32,12 @@ func (e Visibility) String() string {
 	return "PRIVATE"
 }
 
+type OpenGraphMetadata struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
+}
+
 type Shortcut struct {
 	ID int
 
@@ -41,22 +48,24 @@ type Shortcut struct {
 	RowStatus RowStatus
 
 	// Domain specific fields
-	Name        string
-	Link        string
-	Description string
-	Visibility  Visibility
-	Tag         string
+	Name              string
+	Link              string
+	Description       string
+	Visibility        Visibility
+	Tag               string
+	OpenGraphMetadata *OpenGraphMetadata
 }
 
 type UpdateShortcut struct {
 	ID int
 
-	RowStatus   *RowStatus
-	Name        *string
-	Link        *string
-	Description *string
-	Visibility  *Visibility
-	Tag         *string
+	RowStatus         *RowStatus
+	Name              *string
+	Link              *string
+	Description       *string
+	Visibility        *Visibility
+	Tag               *string
+	OpenGraphMetadata *OpenGraphMetadata
 }
 
 type FindShortcut struct {
@@ -76,6 +85,15 @@ func (s *Store) CreateShortcut(ctx context.Context, create *Shortcut) (*Shortcut
 	set := []string{"creator_id", "name", "link", "description", "visibility", "tag"}
 	args := []any{create.CreatorID, create.Name, create.Link, create.Description, create.Visibility, create.Tag}
 	placeholder := []string{"?", "?", "?", "?", "?", "?"}
+	if create.OpenGraphMetadata != nil {
+		set = append(set, "open_graph_metadata")
+		openGraphMetadataBytes, err := json.Marshal(create.OpenGraphMetadata)
+		if err != nil {
+			return nil, err
+		}
+		args = append(args, string(openGraphMetadataBytes))
+		placeholder = append(placeholder, "?")
+	}
 
 	stmt := `
 		INSERT INTO shortcut (
@@ -116,6 +134,13 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 	if update.Tag != nil {
 		set, args = append(set, "tag = ?"), append(args, *update.Tag)
 	}
+	if update.OpenGraphMetadata != nil {
+		openGraphMetadataBytes, err := json.Marshal(update.OpenGraphMetadata)
+		if err != nil {
+			return nil, err
+		}
+		set, args = append(set, "og_metadata = ?"), append(args, string(openGraphMetadataBytes))
+	}
 	if len(set) == 0 {
 		return nil, fmt.Errorf("no update specified")
 	}
@@ -127,9 +152,10 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 			` + strings.Join(set, ", ") + `
 		WHERE
 			id = ?
-		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, description, visibility, tag
+		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, description, visibility, tag, og_metadata
 	`
 	shortcut := &Shortcut{}
+	openGraphMetadataString := ""
 	if err := s.db.QueryRowContext(ctx, stmt, args...).Scan(
 		&shortcut.ID,
 		&shortcut.CreatorID,
@@ -141,8 +167,15 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 		&shortcut.Description,
 		&shortcut.Visibility,
 		&shortcut.Tag,
+		&openGraphMetadataString,
 	); err != nil {
 		return nil, err
+	}
+	if openGraphMetadataString != "" {
+		shortcut.OpenGraphMetadata = &OpenGraphMetadata{}
+		if err := json.Unmarshal([]byte(openGraphMetadataString), shortcut.OpenGraphMetadata); err != nil {
+			return nil, err
+		}
 	}
 
 	s.shortcutCache.Store(shortcut.ID, shortcut)
@@ -186,7 +219,8 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Short
 			link,
 			description,
 			visibility,
-			tag
+			tag,
+			og_metadata
 		FROM shortcut
 		WHERE `+strings.Join(where, " AND ")+`
 		ORDER BY created_ts DESC`,
@@ -200,6 +234,7 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Short
 	list := make([]*Shortcut, 0)
 	for rows.Next() {
 		shortcut := &Shortcut{}
+		openGraphMetadataString := ""
 		if err := rows.Scan(
 			&shortcut.ID,
 			&shortcut.CreatorID,
@@ -211,8 +246,15 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Short
 			&shortcut.Description,
 			&shortcut.Visibility,
 			&shortcut.Tag,
+			&openGraphMetadataString,
 		); err != nil {
 			return nil, err
+		}
+		if openGraphMetadataString != "" {
+			shortcut.OpenGraphMetadata = &OpenGraphMetadata{}
+			if err := json.Unmarshal([]byte(openGraphMetadataString), shortcut.OpenGraphMetadata); err != nil {
+				return nil, err
+			}
 		}
 		list = append(list, shortcut)
 	}

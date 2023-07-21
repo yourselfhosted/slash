@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
@@ -42,11 +43,36 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create activity, err: %s", err)).SetInternal(err)
 		}
 
-		if isValidURLString(shortcut.Link) {
+		return redirectToShortcut(c, shortcut)
+	})
+}
+
+func redirectToShortcut(c echo.Context, shortcut *store.Shortcut) error {
+	isValidURL := isValidURLString(shortcut.Link)
+	if shortcut.OpenGraphMetadata == nil {
+		if isValidURL {
 			return c.Redirect(http.StatusSeeOther, shortcut.Link)
 		}
 		return c.String(http.StatusOK, shortcut.Link)
-	})
+	}
+
+	htmlTemplate := `<html><head>%s</head><body>%s</body></html>`
+	metadataList := []string{
+		fmt.Sprintf(`<meta property="og:title" content="%s" />`, shortcut.OpenGraphMetadata.Title),
+		fmt.Sprintf(`<meta property="og:description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
+		fmt.Sprintf(`<meta property="og:image" content="%s" />`, shortcut.OpenGraphMetadata.Image),
+	}
+	if isValidURL {
+		metadataList = append(metadataList, fmt.Sprintf(`<meta property="og:url" content="%s" />`, shortcut.Link))
+	}
+	body := ""
+	if isValidURL {
+		body = fmt.Sprintf(`<script>window.location.href = "%s";</script>`, shortcut.Link)
+	} else {
+		body = shortcut.Link
+	}
+	htmlString := fmt.Sprintf(htmlTemplate, strings.Join(metadataList, ""), body)
+	return c.HTML(http.StatusOK, htmlString)
 }
 
 func (s *APIV1Service) createShortcutViewActivity(c echo.Context, shortcut *store.Shortcut) error {

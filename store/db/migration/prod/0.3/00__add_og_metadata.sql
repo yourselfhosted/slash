@@ -1,0 +1,1 @@
+ALTER TABLE shortcut ADD COLUMN og_metadata TEXT NOT NULL DEFAULT '{}';
