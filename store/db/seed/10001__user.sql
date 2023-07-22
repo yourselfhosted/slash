@@ -12,8 +12,7 @@ VALUES
     'ADMIN',
     'slash@stevenlgtm.com',
     'Slasher',
-    -- raw password: secret
-    '$2a$14$ajq8Q7fbtFRQvXpdCq7Jcuy.Rx1h/L4J60Otx.gyNLbAYctGMJ9tK'
+    '$2a$10$H8HBWGcG/hoePhFy5SiNKOHxMD6omIpyEEWbl/fIorFC814bXW.Ua'
   );
 
 INSERT INTO
