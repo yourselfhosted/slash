@@ -1,5 +1,5 @@
 import { Button, Input } from "@mui/joy";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import * as api from "../helpers/api";
@@ -44,7 +44,8 @@ const SignIn: React.FC = () => {
     setPassword(text);
   };
 
-  const handleSigninBtnClick = async () => {
+  const handleSigninBtnClick = async (e: FormEvent) => {
+    e.preventDefault();
     if (actionBtnLoadingState.isLoading) {
       return;
     }
