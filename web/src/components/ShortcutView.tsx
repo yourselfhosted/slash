@@ -149,7 +149,7 @@ const ShortcutView = (props: Props) => {
           <Tooltip title="Creator" variant="solid" placement="top" arrow>
             <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
               <Icon.User className="w-4 h-auto mr-1" />
-              {shortcut.creator.nickname}
+              <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{shortcut.creator.nickname}</span>
             </div>
           </Tooltip>
           <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>

@@ -1,4 +1,5 @@
 import { Button, Divider, Input, Modal, ModalDialog, Radio, RadioGroup, Textarea } from "@mui/joy";
+import classnames from "classnames";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -227,14 +228,15 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           <Divider className="text-gray-500">Optional</Divider>
           <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden my-3">
             <div
-              className={`w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 ${
-                showDescriptionAndTag ? "bg-gray-100" : ""
-              }`}
+              className={classnames(
+                "w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100",
+                showDescriptionAndTag ? "bg-gray-100 border-b" : ""
+              )}
               onClick={() => setShowDescriptionAndTag(!showDescriptionAndTag)}
             >
               <span className="text-sm">Description and tags</span>
               <button className="w-7 h-7 p-1 rounded-md">
-                <Icon.ChevronDown className={`w-4 h-auto text-gray-500 ${showDescriptionAndTag ? "transform rotate-180" : ""}`} />
+                <Icon.ChevronDown className={classnames("w-4 h-auto text-gray-500", showDescriptionAndTag ? "transform rotate-180" : "")} />
               </button>
             </div>
             {showDescriptionAndTag && (
@@ -267,7 +269,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden">
             <div
               className={`w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 ${
-                showOpenGraphMetadata ? "bg-gray-100" : ""
+                showOpenGraphMetadata ? "bg-gray-100 border-b" : ""
               }`}
               onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
             >
@@ -276,7 +278,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
                 <Icon.Sparkles className="ml-1 w-4 h-auto text-blue-600" />
               </span>
               <button className="w-7 h-7 p-1 rounded-md">
-                <Icon.ChevronDown className={`w-4 h-auto text-gray-500 ${showDescriptionAndTag ? "transform rotate-180" : ""}`} />
+                <Icon.ChevronDown className={classnames("w-4 h-auto text-gray-500", showOpenGraphMetadata ? "transform rotate-180" : "")} />
               </button>
             </div>
             {showOpenGraphMetadata && (
