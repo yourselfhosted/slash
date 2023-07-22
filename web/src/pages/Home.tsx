@@ -52,7 +52,7 @@ const Home: React.FC = () => {
             placeholder="Search"
             startDecorator={<Icon.Search className="w-4 h-auto" />}
             endDecorator={
-              filter.search !== "" && <Icon.X className="w-4 h-auto cursor-pointer" onClick={() => viewStore.setFilter({ search: "" })} />
+              filter.search && <Icon.X className="w-4 h-auto cursor-pointer" onClick={() => viewStore.setFilter({ search: "" })} />
             }
             value={filter.search}
             onChange={(e) => viewStore.setFilter({ search: e.target.value })}
