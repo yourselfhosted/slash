@@ -1,4 +1,4 @@
-import { Button, Tab, TabList, Tabs } from "@mui/joy";
+import { Button, Input, Tab, TabList, Tabs } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { shortcutService } from "../services";
 import { useAppSelector } from "../stores";
@@ -43,8 +43,20 @@ const Home: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start">
-        <div className="w-full flex flex-row justify-start items-center mb-4">
+        <div className="w-full flex flex-row justify-between items-center mb-4">
           <span className="font-mono text-gray-400 mr-2">Shortcuts</span>
+          <Input
+            className="w-32"
+            type="text"
+            size="sm"
+            placeholder="Search"
+            startDecorator={<Icon.Search className="w-4 h-auto" />}
+            endDecorator={
+              filter.search !== "" && <Icon.X className="w-4 h-auto cursor-pointer" onClick={() => viewStore.setFilter({ search: "" })} />
+            }
+            value={filter.search}
+            onChange={(e) => viewStore.setFilter({ search: e.target.value })}
+          />
         </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
