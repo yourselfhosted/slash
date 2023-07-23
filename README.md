@@ -2,9 +2,15 @@
 
 <img align="right" src="./resources/logo.png" height="64px" alt="logo">
 
-**Slash** is a bookmarking and short link service that allows you to save and share links easily. It lets you store and categorize links, generate short URLs for easy sharing, search and filter your saved links, and access them from any device.
+`Slash` is a bookmarking and link shortening service that enables easy saving and sharing of links. It allows you to store, categorize, and share links with custom short URLs. You can search, filter, and access your saved links from any device. It also supports team sharing of link libraries for easy collaboration.
 
 Try it out on <a href="https://slash.stevenlgtm.com">Live Demo</a>.
+
+<p>
+  <a href="https://github.com/boojack/slash/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/boojack/slash?logo=github" /></a>
+  <a href="https://hub.docker.com/r/stevenlgtm/slash"><img alt="Docker pull" src="https://img.shields.io/docker/pulls/stevenlgtm/slash.svg" /></a>
+  <a href="https://discord.gg/QZqUuUAhDV"><img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord&logoColor=f5f5f5" /></a>
+</p>
 
 ## Features
 
@@ -15,8 +21,8 @@ Try it out on <a href="https://slash.stevenlgtm.com">Live Demo</a>.
 
 ## Deploy with Docker in seconds
 
-> This project is under active development.
-
 ```bash
 docker run -d --name slash -p 5231:5231 -v ~/.slash/:/var/opt/slash stevenlgtm/slash:latest
 ```
+
+Learn more in [Self-hosting Slash with Docker](https://github.com/boojack/slash/blob/main/docs/install.md).
