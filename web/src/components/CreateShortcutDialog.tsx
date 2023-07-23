@@ -183,7 +183,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             <Icon.X className="w-5 h-auto text-gray-600" />
           </Button>
         </div>
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto overflow-x-hidden">
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Name <span className="text-red-600">*</span>

@@ -19,12 +19,11 @@ const AboutDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="max-w-full w-80 sm:w-96">
           <p>
-            <span className="font-medium">Slash</span> is a bookmarking and short link service that allows you to save and share links
-            easily.
+            <span className="font-medium">Slash</span>: A bookmarking and url shortener, save and share your links very easily.
           </p>
           <div className="mt-1">
-            <span className="mr-2">See more in:</span>
-            <Link variant="plain" href="https://github.com/boojack/slash">
+            <span className="mr-2">See more in</span>
+            <Link variant="plain" href="https://github.com/boojack/slash" target="_blank">
               GitHub
             </Link>
           </div>
