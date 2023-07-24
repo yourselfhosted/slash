@@ -3,6 +3,7 @@ package v1
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"net/http"
 	"net/url"
 	"strings"
@@ -49,7 +50,7 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 
 func redirectToShortcut(c echo.Context, shortcut *store.Shortcut) error {
 	isValidURL := isValidURLString(shortcut.Link)
-	if shortcut.OpenGraphMetadata == nil {
+	if shortcut.OpenGraphMetadata == nil || (shortcut.OpenGraphMetadata.Title == "" && shortcut.OpenGraphMetadata.Description == "" && shortcut.OpenGraphMetadata.Image == "") {
 		if isValidURL {
 			return c.Redirect(http.StatusSeeOther, shortcut.Link)
 		}
@@ -63,6 +64,7 @@ func redirectToShortcut(c echo.Context, shortcut *store.Shortcut) error {
 		fmt.Sprintf(`<meta property="og:title" content="%s" />`, shortcut.OpenGraphMetadata.Title),
 		fmt.Sprintf(`<meta property="og:description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
 		fmt.Sprintf(`<meta property="og:image" content="%s" />`, shortcut.OpenGraphMetadata.Image),
+		`<meta property="og:type" content="website" />`,
 		// Twitter related metadata.
 		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, shortcut.OpenGraphMetadata.Title),
 		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
@@ -76,7 +78,7 @@ func redirectToShortcut(c echo.Context, shortcut *store.Shortcut) error {
 	if isValidURL {
 		body = fmt.Sprintf(`<script>window.location.href = "%s";</script>`, shortcut.Link)
 	} else {
-		body = shortcut.Link
+		body = html.EscapeString(shortcut.Link)
 	}
 	htmlString := fmt.Sprintf(htmlTemplate, strings.Join(metadataList, ""), body)
 	return c.HTML(http.StatusOK, htmlString)
