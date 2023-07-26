@@ -130,13 +130,13 @@ const ShortcutView = (props: Props) => {
         </div>
         {shortcut.description && <p className="mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
         {shortcut.tags.length > 0 && (
-          <div className="mt-2 ml-1 flex flex-row justify-start items-start gap-2">
+          <div className="mt-2 ml-1 flex flex-row justify-start items-start flex-wrap gap-2">
             <Icon.Tag className="text-gray-400 w-4 h-auto" />
             {shortcut.tags.map((tag) => {
               return (
                 <span
                   key={tag}
-                  className="text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
+                  className="max-w-xs truncate text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
                   onClick={() => viewStore.setFilter({ tag: tag })}
                 >
                   #{tag}
