@@ -1,5 +1,5 @@
+import classNames from "classnames";
 import { uniq } from "lodash-es";
-import { Button } from "@mui/joy";
 import { useAppSelector } from "../stores";
 import useViewStore from "../stores/v1/view";
 import Icon from "./Icon";
@@ -12,36 +12,39 @@ const Navigator = () => {
   const sortedTagMap = sortTags(tags);
 
   return (
-    <div className="w-full flex flex-row justify-start items-center gap-1 flex-wrap mb-4">
-      <Button
-        variant={currentTab === "tab:all" ? "solid" : "plain"}
-        color="neutral"
-        size="sm"
+    <div className="w-full flex flex-row justify-start items-center mb-4 gap-1 sm:flex-wrap overflow-x-auto no-scrollbar">
+      <button
+        className={classNames(
+          "flex flex-row justify-center items-center px-2 leading-7 text-sm rounded-md hover:bg-gray-200",
+          currentTab === "tab:all" ? "!bg-gray-600 text-white shadow" : ""
+        )}
         onClick={() => viewStore.setFilter({ tab: "tab:all" })}
       >
         <Icon.CircleSlash className="w-4 h-auto mr-1" />
         <span className="font-normal">All</span>
-      </Button>
-      <Button
-        variant={currentTab === "tab:mine" ? "solid" : "plain"}
-        color="neutral"
-        size="sm"
+      </button>
+      <button
+        className={classNames(
+          "flex flex-row justify-center items-center px-2 leading-7 text-sm rounded-md hover:bg-gray-200",
+          currentTab === "tab:mine" ? "!bg-gray-600 text-white shadow" : ""
+        )}
         onClick={() => viewStore.setFilter({ tab: "tab:mine" })}
       >
         <Icon.User className="w-4 h-auto mr-1" />
         <span className="font-normal">Mine</span>
-      </Button>
+      </button>
       {Array.from(sortedTagMap.keys()).map((tag) => (
-        <Button
+        <button
           key={tag}
-          variant={currentTab === `tag:${tag}` ? "solid" : "plain"}
-          color="neutral"
-          size="sm"
+          className={classNames(
+            "flex flex-row justify-center items-center px-2 leading-7 text-sm rounded-md hover:bg-gray-200",
+            currentTab === `tag:${tag}` ? "!bg-gray-600 text-white shadow" : ""
+          )}
           onClick={() => viewStore.setFilter({ tab: `tag:${tag}`, tag: undefined })}
         >
           <Icon.Hash className="w-4 h-auto mr-1" />
           <span className="max-w-[8rem] truncate font-normal">{tag}</span>
-        </Button>
+        </button>
       ))}
     </div>
   );
