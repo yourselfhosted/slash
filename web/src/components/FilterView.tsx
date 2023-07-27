@@ -21,7 +21,8 @@ const FilterView = () => {
           className="ml-2 px-2 py-1 flex flex-row justify-center items-center bg-gray-100 rounded-full text-gray-500 text-sm hover:line-through"
           onClick={() => viewStore.setFilter({ tag: undefined })}
         >
-          <Icon.Tag className="w-4 h-auto mr-1" />#{filter.tag}
+          <Icon.Tag className="w-4 h-auto mr-1" />
+          <span className="max-w-[12rem] truncate">#{filter.tag}</span>
           <Icon.X className="w-4 h-auto ml-1" />
         </button>
       )}

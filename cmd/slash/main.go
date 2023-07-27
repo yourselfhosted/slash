@@ -30,7 +30,7 @@ var (
 
 	rootCmd = &cobra.Command{
 		Use:   "slash",
-		Short: `A bookmarking and url shortener, save and share your links very easily.`,
+		Short: `An open source, self-hosted bookmarks and link sharing solution.`,
 		Run: func(_cmd *cobra.Command, _args []string) {
 			ctx, cancel := context.WithCancel(context.Background())
 			db := db.NewDB(profile)

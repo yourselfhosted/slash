@@ -2,7 +2,7 @@
 
 <img align="right" src="./resources/logo.png" height="64px" alt="logo">
 
-`Slash` is a bookmarking and link shortening service that enables easy saving and sharing of links. It allows you to store, categorize, and share links with custom short URLs. You can search, filter, and access your saved links from any device. It also supports team sharing of link libraries for easy collaboration.
+**Slash** is an open source, self-hosted bookmarks and link sharing solution. It allows you to organize your links with tags, and share them using custom shortened URLs. Slash also supports team sharing of link libraries for easy collaboration.
 
 Try it out on <a href="https://slash.stevenlgtm.com">Live Demo</a>.
 
@@ -15,8 +15,8 @@ Try it out on <a href="https://slash.stevenlgtm.com">Live Demo</a>.
 ## Features
 
 - Create customizable `/s/` short links for any URL.
-- Share short links privately or with others.
-- View analytics on short link traffic and sources.
+- Share short links privately or with teammates.
+- View analytics on link traffic and sources.
 - Open source self-hosted solution.
 
 ## Deploy with Docker in seconds
