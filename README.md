@@ -2,7 +2,7 @@
 
 <img align="right" src="./resources/logo.png" height="64px" alt="logo">
 
-**Slash** is an open source, self-hosted bookmarks and link sharing solution. It allows you to organize your links with tags, and share them using custom shortened URLs. Slash also supports team sharing of link libraries for easy collaboration.
+**Slash** is an open source, self-hosted bookmarks and link sharing platform. It allows you to organize your links with tags, and share them using custom shortened URLs. Slash also supports team sharing of link libraries for easy collaboration.
 
 Try it out on <a href="https://slash.stevenlgtm.com">Live Demo</a>.
 

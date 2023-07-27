@@ -299,7 +299,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
                   <Input
                     className="w-full"
                     type="text"
-                    placeholder="Slash - An open source, self-hosted bookmarks and link sharing solution"
+                    placeholder="Slash - An open source, self-hosted bookmarks and link sharing platform"
                     size="sm"
                     value={state.shortcutCreate.openGraphMetadata.title}
                     onChange={handleOpenGraphMetadataTitleChange}
@@ -309,7 +309,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
                   <span className="mb-2 text-sm">Description</span>
                   <Textarea
                     className="w-full"
-                    placeholder="An open source, self-hosted bookmarks and link sharing solution."
+                    placeholder="An open source, self-hosted bookmarks and link sharing platform."
                     size="sm"
                     maxRows={3}
                     value={state.shortcutCreate.openGraphMetadata.description}

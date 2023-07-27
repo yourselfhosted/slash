@@ -19,7 +19,7 @@ const AboutDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="max-w-full w-80 sm:w-96">
           <p>
-            <span className="font-medium">Slash</span>: An open source, self-hosted bookmarks and link sharing solution.
+            <span className="font-medium">Slash</span>: An open source, self-hosted bookmarks and link sharing platform.
           </p>
           <div className="mt-1">
             <span className="mr-2">See more in</span>
