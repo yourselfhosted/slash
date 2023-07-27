@@ -45,21 +45,6 @@ const Home: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start">
-        <div className="w-full flex flex-row justify-start items-center gap-2 flex-wrap mb-4">
-          {tags.map((tag) => (
-            <Button
-              key={tag}
-              className="hover:shadow"
-              variant="plain"
-              color="neutral"
-              size="sm"
-              onClick={() => viewStore.setFilter({ tag: tag })}
-            >
-              <Icon.Tag className="w-4 h-auto mr-1" />
-              <span className="max-w-xs truncate">#{tag}</span>
-            </Button>
-          ))}
-        </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <span className="font-mono text-gray-400 mr-2">Shortcuts</span>
           <Input
