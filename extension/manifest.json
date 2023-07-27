@@ -13,6 +13,6 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["tabs", "activeTab", "storage"],
+  "permissions": ["tabs", "activeTab", "storage", "cookies", "scripting"],
   "host_permissions": ["*://s/*"]
 }
