@@ -37,7 +37,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
       },
     },
   });
-  const [showDescriptionAndTag, setShowDescriptionAndTag] = useState<boolean>(false);
+  const [showAdditionalFields, setShowAdditionalFields] = useState<boolean>(false);
   const [showOpenGraphMetadata, setShowOpenGraphMetadata] = useState<boolean>(false);
   const [tag, setTag] = useState<string>("");
   const requestState = useLoading(false);
@@ -185,9 +185,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="overflow-y-auto overflow-x-hidden">
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Name <span className="text-red-600">*</span>
-            </span>
+            <span className="mb-2">Name</span>
             <div className="relative w-full">
               <Input
                 className="w-full"
@@ -199,21 +197,21 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Destination URL <span className="text-red-600">*</span>
-            </span>
+            <span className="mb-2">Destination URL</span>
             <Input
               className="w-full"
               type="text"
-              placeholder="e.g. https://github.com/boojack/slash"
+              placeholder="https://github.com/boojack/slash"
               value={state.shortcutCreate.link}
               onChange={handleLinkInputChange}
             />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Visibility <span className="text-red-600">*</span>
-            </span>
+            <span className="mb-2">Tags</span>
+            <Input className="w-full" type="text" placeholder="github slash" value={tag} onChange={handleTagsInputChange} />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">Visibility</span>
             <div className="w-full flex flex-row justify-start items-center text-base">
               <RadioGroup orientation="horizontal" value={state.shortcutCreate.visibility} onChange={handleVisibilityInputChange}>
                 {visibilities.map((visibility) => (
@@ -230,37 +228,26 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             <div
               className={classnames(
                 "w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100",
-                showDescriptionAndTag ? "bg-gray-100 border-b" : ""
+                showAdditionalFields ? "bg-gray-100 border-b" : ""
               )}
-              onClick={() => setShowDescriptionAndTag(!showDescriptionAndTag)}
+              onClick={() => setShowAdditionalFields(!showAdditionalFields)}
             >
-              <span className="text-sm">Description and tags</span>
+              <span className="text-sm">Additional fields</span>
               <button className="w-7 h-7 p-1 rounded-md">
-                <Icon.ChevronDown className={classnames("w-4 h-auto text-gray-500", showDescriptionAndTag ? "transform rotate-180" : "")} />
+                <Icon.ChevronDown className={classnames("w-4 h-auto text-gray-500", showAdditionalFields ? "transform rotate-180" : "")} />
               </button>
             </div>
-            {showDescriptionAndTag && (
+            {showAdditionalFields && (
               <div className="w-full px-2 py-1">
                 <div className="w-full flex flex-col justify-start items-start mb-3">
                   <span className="mb-2 text-sm">Description</span>
                   <Input
                     className="w-full"
                     type="text"
-                    placeholder="Something to describe the url"
+                    placeholder="Github repo for slash"
                     size="sm"
                     value={state.shortcutCreate.description}
                     onChange={handleDescriptionInputChange}
-                  />
-                </div>
-                <div className="w-full flex flex-col justify-start items-start mb-3">
-                  <span className="mb-2 text-sm">Tags</span>
-                  <Input
-                    className="w-full"
-                    type="text"
-                    placeholder="Separated by spaces"
-                    size="sm"
-                    value={tag}
-                    onChange={handleTagsInputChange}
                   />
                 </div>
               </div>
@@ -288,7 +275,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
                   <Input
                     className="w-full"
                     type="text"
-                    placeholder="The image url"
+                    placeholder="https://the.link.to/the/image.png"
                     size="sm"
                     value={state.shortcutCreate.openGraphMetadata.image}
                     onChange={handleOpenGraphMetadataImageChange}
