@@ -9,6 +9,7 @@ const Navigator = () => {
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const tags = uniq(shortcutList.map((shortcut) => shortcut.tags).flat());
   const currentTab = viewStore.filter.tab || `tab:all`;
+  const sortedTagMap = sortTags(tags);
 
   return (
     <div className="w-full flex flex-row justify-start items-center gap-1 flex-wrap mb-4">
@@ -30,7 +31,7 @@ const Navigator = () => {
         <Icon.User className="w-4 h-auto mr-1" />
         <span className="font-normal">Mine</span>
       </Button>
-      {tags.map((tag) => (
+      {Array.from(sortedTagMap.keys()).map((tag) => (
         <Button
           key={tag}
           variant={currentTab === `tag:${tag}` ? "solid" : "plain"}
@@ -44,6 +45,16 @@ const Navigator = () => {
       ))}
     </div>
   );
+};
+
+const sortTags = (tags: string[]): Map<string, number> => {
+  const map = new Map<string, number>();
+  for (const tag of tags) {
+    const count = map.get(tag) || 0;
+    map.set(tag, count + 1);
+  }
+  const sortedMap = new Map([...map.entries()].sort((a, b) => b[1] - a[1]));
+  return sortedMap;
 };
 
 export default Navigator;

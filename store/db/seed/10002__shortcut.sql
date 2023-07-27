@@ -32,7 +32,7 @@ VALUES
     'ai-infra',
     'https://star-history.com/blog/open-source-ai-infra-projects',
     'PUBLIC',
-    'star-history AI',
+    'star-history ai',
     '{"title":"Open Source AI Infra for Your Next Project","description":"Some open-source infra projects that can be directly used for your next project. 💡","image":"https://star-history.com/blog/assets/open-source-ai-infra-projects/banner.webp"}'
   );
 
@@ -72,7 +72,7 @@ VALUES
     101,
     'sqlchat',
     'https://www.sqlchat.ai',
-    'ai chatbot',
+    'ai chatbot sql',
     'WORKSPACE'
   );
 
