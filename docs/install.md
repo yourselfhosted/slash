@@ -11,7 +11,7 @@ The only requirement is a server with Docker installed.
 To deploy Slash using docker run, just one command is needed:
 
 ```bash
-docker run -d --name slash --publish 5231:5231 --volume ~/.slash/:/var/opt/slash stevenlgtm/slash:latest
+docker run -d --name slash --publish 5231:5231 --volume ~/.slash/:/var/opt/slash yourselfhosted/slash:latest
 ```
 
 This will start Slash in the background and expose it on port `5231`. Data is stored in `~/.slash/`. You can customize the port and data directory.
@@ -33,7 +33,7 @@ cp -r ~/.slash/slash_prod.db ~/.slash/slash_prod.db.bak
 Then pull the latest image:
 
 ```bash
-docker pull stevenlgtm/slash:latest
+docker pull yourselfhosted/slash:latest
 ```
 
 Finally, restart Slash by following the steps in [Docker Run](#docker-run).
