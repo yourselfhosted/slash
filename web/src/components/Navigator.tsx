@@ -19,7 +19,7 @@ const Navigator = () => {
         onClick={() => viewStore.setFilter({ tab: "tab:all" })}
       >
         <Icon.CircleSlash className="w-4 h-auto mr-1" />
-        <span>All</span>
+        <span className="font-normal">All</span>
       </Button>
       <Button
         variant={currentTab === "tab:mine" ? "solid" : "plain"}
@@ -28,7 +28,7 @@ const Navigator = () => {
         onClick={() => viewStore.setFilter({ tab: "tab:mine" })}
       >
         <Icon.User className="w-4 h-auto mr-1" />
-        <span>Mine</span>
+        <span className="font-normal">Mine</span>
       </Button>
       {tags.map((tag) => (
         <Button
@@ -39,7 +39,7 @@ const Navigator = () => {
           onClick={() => viewStore.setFilter({ tab: `tag:${tag}` })}
         >
           <Icon.Hash className="w-4 h-auto mr-1" />
-          <span className="max-w-[8rem] truncate">{tag}</span>
+          <span className="max-w-[8rem] truncate font-normal">{tag}</span>
         </Button>
       ))}
     </div>
