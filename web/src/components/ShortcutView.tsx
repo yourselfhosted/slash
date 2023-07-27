@@ -135,7 +135,7 @@ const ShortcutView = (props: Props) => {
               return (
                 <span
                   key={tag}
-                  className="max-w-xs truncate text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
+                  className="max-w-[8rem] truncate text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
                   onClick={() => viewStore.setFilter({ tag: tag })}
                 >
                   #{tag}

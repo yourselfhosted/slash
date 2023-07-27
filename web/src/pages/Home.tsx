@@ -47,15 +47,8 @@ const Home: React.FC = () => {
         <Navigator />
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
-            <span className="font-mono text-gray-400 mr-2">Shortcuts</span>
-            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
-              <Icon.Plus className="w-5 h-auto" />
-            </Button>
-          </div>
-          <div className="flex flex-row justify-end items-center">
-            <OrderSetting />
             <Input
-              className="w-32"
+              className="w-32 mr-2"
               type="text"
               size="sm"
               placeholder="Search"
@@ -66,6 +59,13 @@ const Home: React.FC = () => {
               value={filter.search}
               onChange={(e) => viewStore.setFilter({ search: e.target.value })}
             />
+            <OrderSetting />
+          </div>
+          <div className="flex flex-row justify-end items-center">
+            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
+              <Icon.Plus className="w-5 h-auto" />
+              <span className="hidden sm:block ml-0.5">Create</span>
+            </Button>
           </div>
         </div>
         <FilterView />

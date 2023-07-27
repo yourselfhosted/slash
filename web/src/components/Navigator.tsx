@@ -36,7 +36,7 @@ const Navigator = () => {
           variant={currentTab === `tag:${tag}` ? "solid" : "plain"}
           color="neutral"
           size="sm"
-          onClick={() => viewStore.setFilter({ tab: `tag:${tag}` })}
+          onClick={() => viewStore.setFilter({ tab: `tag:${tag}`, tag: undefined })}
         >
           <Icon.Hash className="w-4 h-auto mr-1" />
           <span className="max-w-[8rem] truncate font-normal">{tag}</span>

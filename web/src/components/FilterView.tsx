@@ -22,7 +22,7 @@ const FilterView = () => {
           onClick={() => viewStore.setFilter({ tag: undefined })}
         >
           <Icon.Tag className="w-4 h-auto mr-1" />
-          <span className="max-w-[12rem] truncate">#{filter.tag}</span>
+          <span className="max-w-[8rem] truncate">#{filter.tag}</span>
           <Icon.X className="w-4 h-auto ml-1" />
         </button>
       )}

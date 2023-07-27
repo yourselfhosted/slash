@@ -17,10 +17,11 @@ const OrderSetting = () => {
   return (
     <Dropdown
       trigger={
-        <button className="p-1 mr-2">
+        <button className="p-1">
           <Icon.ListFilter className="w-5 h-auto text-gray-500" />
         </button>
       }
+      actionsClassName="right-10 translate-x-full"
       actions={
         <div className="w-52 p-2 pt-0 gap-2 flex flex-col justify-start items-start" onClick={(e) => e.stopPropagation()}>
           <div className="w-full flex flex-row justify-between items-center mt-1">
