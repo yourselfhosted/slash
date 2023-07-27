@@ -130,8 +130,7 @@ const ShortcutView = (props: Props) => {
         </div>
         {shortcut.description && <p className="mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
         {shortcut.tags.length > 0 && (
-          <div className="mt-2 ml-1 flex flex-row justify-start items-start flex-wrap gap-2">
-            <Icon.Tag className="text-gray-400 w-4 h-auto" />
+          <div className="mt-2 flex flex-row justify-start items-start flex-wrap gap-2">
             {shortcut.tags.map((tag) => {
               return (
                 <span

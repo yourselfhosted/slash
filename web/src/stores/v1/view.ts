@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export interface Filter {
+  tab?: string;
   tag?: string;
-  mineOnly?: boolean;
   visibility?: Visibility;
   search?: string;
 }
@@ -49,15 +49,10 @@ const useViewStore = create<ViewState>()(
 );
 
 export const getFilteredShortcutList = (shortcutList: Shortcut[], filter: Filter, currentUser: User) => {
-  const { tag, mineOnly, visibility, search } = filter;
+  const { tab, tag, visibility, search } = filter;
   const filteredShortcutList = shortcutList.filter((shortcut) => {
     if (tag) {
       if (!shortcut.tags.includes(tag)) {
-        return false;
-      }
-    }
-    if (mineOnly) {
-      if (shortcut.creatorId !== currentUser.id) {
         return false;
       }
     }
@@ -74,6 +69,14 @@ export const getFilteredShortcutList = (shortcutList: Shortcut[], filter: Filter
         !shortcut.link.toLowerCase().includes(search.toLowerCase())
       ) {
         return false;
+      }
+    }
+    if (tab) {
+      if (tab === "tab:mine") {
+        return shortcut.creatorId === currentUser.id;
+      } else if (tab.startsWith("tag:")) {
+        const tag = tab.split(":")[1];
+        return shortcut.tags.includes(tag);
       }
     }
     return true;
