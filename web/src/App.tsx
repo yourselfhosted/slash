@@ -28,13 +28,13 @@ function App() {
     initialState();
   }, []);
 
-  return (
-    !loading && (
-      <>
-        <DemoBanner />
-        <Outlet />
-      </>
-    )
+  return !loading ? (
+    <>
+      <DemoBanner />
+      <Outlet />
+    </>
+  ) : (
+    <></>
   );
 }
 
