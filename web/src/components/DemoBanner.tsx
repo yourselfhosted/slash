@@ -12,7 +12,7 @@ const DemoBanner: React.FC = () => {
   if (!shouldShow) return null;
 
   return (
-    <div className="z-10 flex flex-row items-center justify-center w-full py-2 text-sm sm:text-lg font-medium dark:text-gray-300 bg-white dark:bg-zinc-700 shadow">
+    <div className="z-10 relative flex flex-row items-center justify-center w-full py-2 text-sm sm:text-lg font-medium dark:text-gray-300 bg-white dark:bg-zinc-700 shadow">
       <div className="w-full max-w-4xl px-4 flex flex-row justify-between items-center gap-x-3">
         <span>✨Slash - An open source, self-hosted bookmarks and link sharing platform</span>
         <a

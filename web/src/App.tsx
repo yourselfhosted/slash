@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { globalService } from "./services";
 import useUserStore from "./stores/v1/user";
+import DemoBanner from "./components/DemoBanner";
 
 function App() {
   const userStore = useUserStore();
@@ -27,7 +28,14 @@ function App() {
     initialState();
   }, []);
 
-  return <>{!loading && <Outlet />}</>;
+  return (
+    !loading && (
+      <>
+        <DemoBanner />
+        <Outlet />
+      </>
+    )
+  );
 }
 
 export default App;
