@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { uniq } from "lodash-es";
 import { useAppSelector } from "../stores";
 import useViewStore from "../stores/v1/view";
 import Icon from "./Icon";
@@ -7,7 +6,7 @@ import Icon from "./Icon";
 const Navigator = () => {
   const viewStore = useViewStore();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
-  const tags = uniq(shortcutList.map((shortcut) => shortcut.tags).flat());
+  const tags = shortcutList.map((shortcut) => shortcut.tags).flat();
   const currentTab = viewStore.filter.tab || `tab:all`;
   const sortedTagMap = sortTags(tags);
 
@@ -42,7 +41,7 @@ const Navigator = () => {
           )}
           onClick={() => viewStore.setFilter({ tab: `tag:${tag}`, tag: undefined })}
         >
-          <Icon.Hash className="w-4 h-auto mr-1" />
+          <Icon.Hash className="w-4 h-auto mr-0.5" />
           <span className="max-w-[8rem] truncate font-normal">{tag}</span>
         </button>
       ))}
