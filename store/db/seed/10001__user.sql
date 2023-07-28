@@ -10,7 +10,7 @@ VALUES
   (
     101,
     'ADMIN',
-    'slash@stevenlgtm.com',
+    'slash@yourselfhosted.com',
     'Slasher',
     '$2a$10$H8HBWGcG/hoePhFy5SiNKOHxMD6omIpyEEWbl/fIorFC814bXW.Ua'
   );
