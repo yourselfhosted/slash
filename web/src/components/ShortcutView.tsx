@@ -75,7 +75,7 @@ const ShortcutView = (props: Props) => {
               href={shortcutLink}
             >
               <span className="text-gray-400">s/</span>
-              {shortcut.name}
+              <span className="max-w-[14rem] truncate">{shortcut.name}</span>
               <span className="hidden group-hover:block ml-1 cursor-pointer">
                 <Icon.ExternalLink className="w-4 h-auto text-gray-600" />
               </span>
@@ -129,7 +129,7 @@ const ShortcutView = (props: Props) => {
             )}
           </div>
         </div>
-        {shortcut.description && !compactStyle && <p className="mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
+        {shortcut.description && !compactStyle && <p className="w-full break-all mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
         <div className="mt-2 flex flex-row justify-start items-start flex-wrap gap-2">
           {shortcut.tags.map((tag) => {
             return (
