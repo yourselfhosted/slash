@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/boojack/slash/api/v1/auth"
 	"github.com/boojack/slash/internal/util"
@@ -105,12 +104,12 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 			return nil, errors.Errorf("unexpected access token kid=%v", t.Header["kid"])
 		})
 
-		generateToken := time.Until(claims.ExpiresAt.Time) < auth.RefreshThresholdDuration
+		generateToken := false
 		if err != nil {
 			var ve *jwt.ValidationError
 			if errors.As(err, &ve) {
-				// If expiration error is the only error, we will clear the err
-				// and generate new access token and refresh token
+				// If expiration error is the only error, we will ignore the err
+				// and generate new access token and refresh token.
 				if ve.Errors == jwt.ValidationErrorExpired {
 					generateToken = true
 				}
