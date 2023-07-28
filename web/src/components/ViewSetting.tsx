@@ -4,10 +4,11 @@ import useViewStore from "../stores/v1/view";
 import Dropdown from "./common/Dropdown";
 import Icon from "./Icon";
 
-const OrderSetting = () => {
+const ViewSetting = () => {
   const viewStore = useViewStore();
   const order = viewStore.getOrder();
   const { field, direction } = order;
+  const layout = viewStore.layout || "list";
 
   const handleReset = () => {
     viewStore.setOrder({ field: "name", direction: "asc" });
@@ -46,10 +47,17 @@ const OrderSetting = () => {
               <Option value={"desc"}>DESC</Option>
             </Select>
           </div>
+          <div className="w-full flex flex-row justify-between items-center">
+            <span className="text-sm shrink-0 mr-2">Layout</span>
+            <Select size="sm" value={layout} onChange={(_, value) => viewStore.setLayout(value as any)}>
+              <Option value={"list"}>List</Option>
+              <Option value={"grid"}>Grid</Option>
+            </Select>
+          </div>
         </div>
       }
     ></Dropdown>
   );
 };
 
-export default OrderSetting;
+export default ViewSetting;

@@ -13,12 +13,16 @@ export interface Order {
   direction: "asc" | "desc";
 }
 
+export type Layout = "grid" | "list";
+
 interface ViewState {
   filter: Filter;
   order: Order;
+  layout: Layout;
   setFilter: (filter: Partial<Filter>) => void;
   getOrder: () => Order;
   setOrder: (order: Partial<Order>) => void;
+  setLayout: (layout: Layout) => void;
 }
 
 const useViewStore = create<ViewState>()(
@@ -29,6 +33,7 @@ const useViewStore = create<ViewState>()(
         field: "name",
         direction: "asc",
       },
+      layout: "list",
       setFilter: (filter: Partial<Filter>) => {
         set({ filter: { ...get().filter, ...filter } });
       },
@@ -40,6 +45,9 @@ const useViewStore = create<ViewState>()(
       },
       setOrder: (order: Partial<Order>) => {
         set({ order: { ...get().order, ...order } });
+      },
+      setLayout: (layout: Layout) => {
+        set({ layout });
       },
     }),
     {

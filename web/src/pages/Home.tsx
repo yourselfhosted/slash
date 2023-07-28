@@ -6,10 +6,10 @@ import useViewStore, { getFilteredShortcutList, getOrderedShortcutList } from ".
 import useUserStore from "../stores/v1/user";
 import useLoading from "../hooks/useLoading";
 import Icon from "../components/Icon";
-import ShortcutListView from "../components/ShortcutListView";
+import ShortcutsContainer from "../components/ShortcutsContainer";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
 import FilterView from "../components/FilterView";
-import OrderSetting from "../components/OrderSetting";
+import ViewSetting from "../components/ViewSetting";
 import Navigator from "../components/Navigator";
 
 interface State {
@@ -59,7 +59,7 @@ const Home: React.FC = () => {
               value={filter.search}
               onChange={(e) => viewStore.setFilter({ search: e.target.value })}
             />
-            <OrderSetting />
+            <ViewSetting />
           </div>
           <div className="flex flex-row justify-end items-center">
             <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
@@ -80,7 +80,7 @@ const Home: React.FC = () => {
             <p className="mt-4">No shortcuts found.</p>
           </div>
         ) : (
-          <ShortcutListView shortcutList={orderedShortcutList} />
+          <ShortcutsContainer shortcutList={orderedShortcutList} />
         )}
       </div>
 

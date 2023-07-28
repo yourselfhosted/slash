@@ -31,6 +31,7 @@ const ShortcutView = (props: Props) => {
   const [showAnalyticsDialog, setShowAnalyticsDialog] = useState<boolean>(false);
   const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
+  const compactStyle = viewStore.layout === "grid";
 
   useEffect(() => {
     faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
@@ -58,7 +59,7 @@ const ShortcutView = (props: Props) => {
 
   return (
     <>
-      <div className="w-full flex flex-col justify-start items-start border px-4 py-3 mb-2 rounded-lg hover:shadow">
+      <div className="w-full flex flex-col justify-start items-start border px-4 py-3 rounded-lg hover:shadow">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="group flex flex-row justify-start items-center pr-2 mr-1 shrink-0">
             <div className="w-6 h-6 mr-1 flex justify-center items-center overflow-clip">
@@ -128,22 +129,21 @@ const ShortcutView = (props: Props) => {
             )}
           </div>
         </div>
-        {shortcut.description && <p className="mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
-        {shortcut.tags.length > 0 && (
-          <div className="mt-2 flex flex-row justify-start items-start flex-wrap gap-2">
-            {shortcut.tags.map((tag) => {
-              return (
-                <span
-                  key={tag}
-                  className="max-w-[8rem] truncate text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
-                  onClick={() => viewStore.setFilter({ tag: tag })}
-                >
-                  #{tag}
-                </span>
-              );
-            })}
-          </div>
-        )}
+        {shortcut.description && !compactStyle && <p className="mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
+        <div className="mt-2 flex flex-row justify-start items-start flex-wrap gap-2">
+          {shortcut.tags.map((tag) => {
+            return (
+              <span
+                key={tag}
+                className="max-w-[8rem] truncate text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
+                onClick={() => viewStore.setFilter({ tag: tag })}
+              >
+                #{tag}
+              </span>
+            );
+          })}
+          {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm font-mono leading-4 italic">No tags</span>}
+        </div>
         <div className="w-full flex mt-2 gap-2">
           <Tooltip title="Creator" variant="solid" placement="top" arrow>
             <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
