@@ -69,14 +69,14 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center items-center w-full h-screen bg-white">
+    <div className="flex flex-row justify-center items-center w-full h-auto mt-12 sm:mt-24 bg-white">
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
-          <div className="flex flex-col justify-start items-center w-full gap-y-2 mb-4">
-            <img src="/logo.png" className="w-16 h-auto" alt="logo" />
-            <span className="text-2xl font-medium font-mono opacity-80">Slash</span>
+          <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
+            <img src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
+            <span className="text-3xl font-medium font-mono opacity-80">Slash</span>
           </div>
-          <form className="w-full" onSubmit={handleSigninBtnClick}>
+          <form className="w-full mt-6" onSubmit={handleSigninBtnClick}>
             <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
               <div className="w-full flex flex-col mb-2">
                 <span className="leading-8 mb-1 text-gray-600">Email</span>

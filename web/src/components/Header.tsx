@@ -40,18 +40,18 @@ const Header: React.FC = () => {
                 <>
                   <Link
                     to="/setting"
-                    className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                   >
                     <Icon.Settings className="w-4 h-auto mr-2" /> Setting
                   </Link>
                   <button
-                    className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     onClick={() => setShowAboutDialog(true)}
                   >
                     <Icon.Info className="w-4 h-auto mr-2" /> About
                   </button>
                   <button
-                    className="w-full flex flex-row justify-start items-center px-3 leading-10 text-left cursor-pointer rounded whitespace-nowrap hover:bg-gray-100"
+                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     onClick={() => handleSignOutButtonClick()}
                   >
                     <Icon.LogOut className="w-4 h-auto mr-2" /> Sign out

@@ -1,4 +1,4 @@
-import { Tooltip } from "@mui/joy";
+import { Divider, Tooltip } from "@mui/joy";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -115,6 +115,7 @@ const ShortcutView = (props: Props) => {
                     >
                       <Icon.BarChart2 className="w-4 h-auto mr-2" /> Analytics
                     </button>
+                    <Divider className="!my-1" />
                     <button
                       className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       onClick={() => {

@@ -18,7 +18,7 @@ const Root: React.FC = () => {
   return (
     <>
       {currentUser && (
-        <div className="w-full h-full flex flex-col justify-start items-start">
+        <div className="w-full h-auto flex flex-col justify-start items-start">
           <Header />
           <Outlet />
         </div>
