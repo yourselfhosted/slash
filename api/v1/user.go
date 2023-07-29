@@ -231,6 +231,16 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 			updateUser.RowStatus = &rowStatus
 		}
 		if userPatch.Role != nil {
+			adminRole := store.RoleAdmin
+			adminUsers, err := s.Store.ListUsers(ctx, &store.FindUser{
+				Role: &adminRole,
+			})
+			if err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to list admin users, err: %s", err)).SetInternal(err)
+			}
+			if len(adminUsers) == 1 && adminUsers[0].ID == userID && *userPatch.Role != RoleAdmin {
+				return echo.NewHTTPError(http.StatusBadRequest, "cannot remove admin role from the last admin user")
+			}
 			role := store.Role(*userPatch.Role)
 			updateUser.Role = &role
 		}
