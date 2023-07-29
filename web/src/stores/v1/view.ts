@@ -33,7 +33,7 @@ const useViewStore = create<ViewState>()(
         field: "name",
         direction: "asc",
       },
-      layout: "list",
+      layout: "grid",
       setFilter: (filter: Partial<Filter>) => {
         set({ filter: { ...get().filter, ...filter } });
       },

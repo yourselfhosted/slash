@@ -11,7 +11,7 @@ interface Props {
 const ShortcutsContainer: React.FC<Props> = (props: Props) => {
   const { shortcutList } = props;
   const viewStore = useViewStore();
-  const layout = viewStore.layout || "list";
+  const layout = viewStore.layout || "grid";
   const [editingShortcutId, setEditingShortcutId] = useState<ShortcutId | undefined>();
 
   return (

@@ -1,4 +1,4 @@
-import { Select, Option, Button } from "@mui/joy";
+import { Select, Option, Button, Divider } from "@mui/joy";
 import { toast } from "react-hot-toast";
 import useViewStore from "../stores/v1/view";
 import Dropdown from "./common/Dropdown";
@@ -8,7 +8,7 @@ const ViewSetting = () => {
   const viewStore = useViewStore();
   const order = viewStore.getOrder();
   const { field, direction } = order;
-  const layout = viewStore.layout || "list";
+  const layout = viewStore.layout || "grid";
 
   const handleReset = () => {
     viewStore.setOrder({ field: "name", direction: "asc" });
@@ -47,11 +47,12 @@ const ViewSetting = () => {
               <Option value={"desc"}>DESC</Option>
             </Select>
           </div>
+          <Divider />
           <div className="w-full flex flex-row justify-between items-center">
             <span className="text-sm shrink-0 mr-2">Layout</span>
             <Select size="sm" value={layout} onChange={(_, value) => viewStore.setLayout(value as any)}>
-              <Option value={"list"}>List</Option>
               <Option value={"grid"}>Grid</Option>
+              <Option value={"list"}>List</Option>
             </Select>
           </div>
         </div>
