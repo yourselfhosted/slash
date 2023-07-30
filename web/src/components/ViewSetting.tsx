@@ -22,7 +22,7 @@ const ViewSetting = () => {
           <Icon.Settings2 className="w-4 h-auto text-gray-500" />
         </button>
       }
-      actionsClassName="top-7 !-right-2"
+      actionsClassName="top-8 !-right-2"
       actions={
         <div className="w-52 p-2 pt-0 gap-2 flex flex-col justify-start items-start" onClick={(e) => e.stopPropagation()}>
           <div className="w-full flex flex-row justify-between items-center mt-1">

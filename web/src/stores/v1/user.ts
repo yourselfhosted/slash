@@ -10,9 +10,7 @@ const convertResponseModelUser = (user: User): User => {
 };
 
 interface UserState {
-  userMap: {
-    [key: UserId]: User;
-  };
+  userMapById: Record<UserId, User>;
   currentUserId?: UserId;
   fetchUserList: () => Promise<User[]>;
   fetchCurrentUser: () => Promise<User>;
@@ -24,10 +22,10 @@ interface UserState {
 }
 
 const useUserStore = create<UserState>()((set, get) => ({
-  userMap: {},
+  userMapById: {},
   fetchUserList: async () => {
     const { data: userList } = await api.getUserList();
-    const userMap = get().userMap;
+    const userMap = get().userMapById;
     userList.forEach((user) => {
       userMap[user.id] = convertResponseModelUser(user);
     });
@@ -37,13 +35,13 @@ const useUserStore = create<UserState>()((set, get) => ({
   fetchCurrentUser: async () => {
     const { data } = await api.getMyselfUser();
     const user = convertResponseModelUser(data);
-    const userMap = get().userMap;
+    const userMap = get().userMapById;
     userMap[user.id] = user;
-    set({ userMap, currentUserId: user.id });
+    set({ userMapById: userMap, currentUserId: user.id });
     return user;
   },
   getOrFetchUserById: async (id: UserId) => {
-    const userMap = get().userMap;
+    const userMap = get().userMapById;
     if (userMap[id]) {
       return userMap[id] as User;
     }
@@ -57,7 +55,7 @@ const useUserStore = create<UserState>()((set, get) => ({
   createUser: async (userCreate: UserCreate) => {
     const { data } = await api.createUser(userCreate);
     const user = convertResponseModelUser(data);
-    const userMap = get().userMap;
+    const userMap = get().userMapById;
     userMap[user.id] = user;
     set(userMap);
     return user;
@@ -65,16 +63,16 @@ const useUserStore = create<UserState>()((set, get) => ({
   patchUser: async (userPatch: UserPatch) => {
     const { data } = await api.patchUser(userPatch);
     const user = convertResponseModelUser(data);
-    const userMap = get().userMap;
+    const userMap = get().userMapById;
     userMap[user.id] = user;
     set(userMap);
   },
   getUserById: (id: UserId) => {
-    const userMap = get().userMap;
+    const userMap = get().userMapById;
     return userMap[id] as User;
   },
   getCurrentUser: () => {
-    const userMap = get().userMap;
+    const userMap = get().userMapById;
     const currentUserId = get().currentUserId;
     return userMap[currentUserId as UserId];
   },

@@ -7,7 +7,7 @@ const MemberSection = () => {
   const userStore = useUserStore();
   const [showCreateUserDialog, setShowCreateUserDialog] = useState<boolean>(false);
   const [currentEditingUser, setCurrentEditingUser] = useState<User | undefined>(undefined);
-  const userList = Object.values(userStore.userMap);
+  const userList = Object.values(userStore.userMapById);
 
   useEffect(() => {
     userStore.fetchUserList();
