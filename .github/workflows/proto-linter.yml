@@ -1,6 +1,10 @@
 name: Proto linter
 
 on:
+  push:
+    branches:
+      - main
+      - "release/v*.*.*"
   pull_request:
     branches:
       - main

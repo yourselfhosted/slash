@@ -28,43 +28,6 @@ jobs:
           args: -v
           skip-cache: true
 
-  eslint-checks:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.4
-        with:
-          version: 8
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-          cache: pnpm
-          cache-dependency-path: "web/pnpm-lock.yaml"
-      - run: pnpm install
-        working-directory: web
-      - name: Run eslint check
-        run: pnpm lint
-        working-directory: web
-
-  frontend-build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.4
-        with:
-          version: 8
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-          cache: pnpm
-          cache-dependency-path: "web/pnpm-lock.yaml"
-      - run: pnpm install
-        working-directory: web
-      - name: Run frontend build
-        run: pnpm build
-        working-directory: web
-
   go-tests:
     runs-on: ubuntu-latest
     steps:
