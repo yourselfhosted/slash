@@ -7,7 +7,8 @@ on:
       - "release/v*.*.*"
   pull_request:
     branches: [main]
-    - "web/**"
+    paths:
+      - "web/**"
 
 jobs:
   eslint-checks:
