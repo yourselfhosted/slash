@@ -50,6 +50,7 @@ type Shortcut struct {
 	// Domain specific fields
 	Name              string
 	Link              string
+	Title             string
 	Description       string
 	Visibility        Visibility
 	Tag               string
@@ -62,6 +63,7 @@ type UpdateShortcut struct {
 	RowStatus         *RowStatus
 	Name              *string
 	Link              *string
+	Title             *string
 	Description       *string
 	Visibility        *Visibility
 	Tag               *string
@@ -82,9 +84,9 @@ type DeleteShortcut struct {
 }
 
 func (s *Store) CreateShortcut(ctx context.Context, create *Shortcut) (*Shortcut, error) {
-	set := []string{"creator_id", "name", "link", "description", "visibility", "tag"}
-	args := []any{create.CreatorID, create.Name, create.Link, create.Description, create.Visibility, create.Tag}
-	placeholder := []string{"?", "?", "?", "?", "?", "?"}
+	set := []string{"creator_id", "name", "link", "title", "description", "visibility", "tag"}
+	args := []any{create.CreatorID, create.Name, create.Link, create.Title, create.Description, create.Visibility, create.Tag}
+	placeholder := []string{"?", "?", "?", "?", "?", "?", "?"}
 	if create.OpenGraphMetadata != nil {
 		set = append(set, "og_metadata")
 		openGraphMetadataBytes, err := json.Marshal(create.OpenGraphMetadata)
@@ -125,6 +127,9 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 	if update.Link != nil {
 		set, args = append(set, "link = ?"), append(args, *update.Link)
 	}
+	if update.Title != nil {
+		set, args = append(set, "title = ?"), append(args, *update.Title)
+	}
 	if update.Description != nil {
 		set, args = append(set, "description = ?"), append(args, *update.Description)
 	}
@@ -152,7 +157,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 			` + strings.Join(set, ", ") + `
 		WHERE
 			id = ?
-		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, description, visibility, tag, og_metadata
+		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, title, description, visibility, tag, og_metadata
 	`
 	shortcut := &Shortcut{}
 	openGraphMetadataString := ""
@@ -164,6 +169,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*Sh
 		&shortcut.RowStatus,
 		&shortcut.Name,
 		&shortcut.Link,
+		&shortcut.Title,
 		&shortcut.Description,
 		&shortcut.Visibility,
 		&shortcut.Tag,
@@ -217,6 +223,7 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Short
 			row_status,
 			name,
 			link,
+			title,
 			description,
 			visibility,
 			tag,
@@ -243,6 +250,7 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Short
 			&shortcut.RowStatus,
 			&shortcut.Name,
 			&shortcut.Link,
+			&shortcut.Title,
 			&shortcut.Description,
 			&shortcut.Visibility,
 			&shortcut.Tag,

@@ -49,6 +49,7 @@ type Shortcut struct {
 	// Domain specific fields
 	Name              string             `json:"name"`
 	Link              string             `json:"link"`
+	Title             string             `json:"title"`
 	Description       string             `json:"description"`
 	Visibility        Visibility         `json:"visibility"`
 	Tags              []string           `json:"tags"`
@@ -59,6 +60,7 @@ type Shortcut struct {
 type CreateShortcutRequest struct {
 	Name              string             `json:"name"`
 	Link              string             `json:"link"`
+	Title             string             `json:"title"`
 	Description       string             `json:"description"`
 	Visibility        Visibility         `json:"visibility"`
 	Tags              []string           `json:"tags"`
@@ -69,6 +71,7 @@ type PatchShortcutRequest struct {
 	RowStatus         *RowStatus         `json:"rowStatus"`
 	Name              *string            `json:"name"`
 	Link              *string            `json:"link"`
+	Title             *string            `json:"title"`
 	Description       *string            `json:"description"`
 	Visibility        *Visibility        `json:"visibility"`
 	Tags              []string           `json:"tags"`
@@ -91,6 +94,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			CreatorID:   userID,
 			Name:        strings.ToLower(create.Name),
 			Link:        create.Link,
+			Title:       create.Title,
 			Description: create.Description,
 			Visibility:  store.Visibility(create.Visibility.String()),
 			Tag:         strings.Join(create.Tags, " "),
@@ -158,6 +162,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			ID:          shortcutID,
 			Name:        patch.Name,
 			Link:        patch.Link,
+			Title:       patch.Title,
 			Description: patch.Description,
 		}
 		if patch.RowStatus != nil {
@@ -332,6 +337,7 @@ func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
 		CreatorID:   shortcut.CreatorID,
 		Name:        shortcut.Name,
 		Link:        shortcut.Link,
+		Title:       shortcut.Title,
 		Description: shortcut.Description,
 		Visibility:  Visibility(shortcut.Visibility),
 		RowStatus:   RowStatus(shortcut.RowStatus),

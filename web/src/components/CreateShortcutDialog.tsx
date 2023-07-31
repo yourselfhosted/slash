@@ -27,6 +27,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     shortcutCreate: {
       name: "",
       link: "",
+      title: "",
       description: "",
       visibility: "PRIVATE",
       tags: [],
@@ -81,6 +82,14 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
         link: e.target.value,
+      }),
+    });
+  };
+
+  const handleTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPartialState({
+      shortcutCreate: Object.assign(state.shortcutCreate, {
+        title: e.target.value,
       }),
     });
   };
@@ -184,6 +193,18 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           </Button>
         </div>
         <div className="overflow-y-auto overflow-x-hidden">
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">Title</span>
+            <div className="relative w-full">
+              <Input
+                className="w-full"
+                type="text"
+                placeholder="Title"
+                value={state.shortcutCreate.title}
+                onChange={handleTitleInputChange}
+              />
+            </div>
+          </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Name</span>
             <div className="relative w-full">

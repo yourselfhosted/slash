@@ -41,6 +41,7 @@ CREATE TABLE shortcut (
   row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',
   name TEXT NOT NULL UNIQUE,
   link TEXT NOT NULL,
+  title TEXT NOT NULL DEFAULT '',
   description TEXT NOT NULL DEFAULT '',
   visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE',
   tag TEXT NOT NULL DEFAULT '',
