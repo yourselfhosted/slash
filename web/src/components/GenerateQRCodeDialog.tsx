@@ -1,7 +1,7 @@
 import { Button, Modal, ModalDialog } from "@mui/joy";
+import { QRCodeCanvas } from "qrcode.react";
 import { useRef } from "react";
 import { toast } from "react-hot-toast";
-import { QRCodeCanvas } from "qrcode.react";
 import { absolutifyLink } from "../helpers/utils";
 import Icon from "./Icon";
 

@@ -1,8 +1,8 @@
 import { Button } from "@mui/joy";
 import { useState } from "react";
-import useUserStore from "../stores/v1/user";
 import ChangePasswordDialog from "../components/ChangePasswordDialog";
 import EditUserinfoDialog from "../components/EditUserinfoDialog";
+import useUserStore from "../stores/v1/user";
 
 const Account: React.FC = () => {
   const currentUser = useUserStore().getCurrentUser();

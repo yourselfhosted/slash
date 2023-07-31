@@ -1,8 +1,8 @@
+import classNames from "classnames";
 import { useState } from "react";
+import useViewStore from "../stores/v1/view";
 import CreateShortcutDialog from "./CreateShortcutDialog";
 import ShortcutView from "./ShortcutView";
-import useViewStore from "../stores/v1/view";
-import classNames from "classnames";
 
 interface Props {
   shortcutList: Shortcut[];

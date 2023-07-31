@@ -1,7 +1,7 @@
-import useUserStore from "../stores/v1/user";
 import AccountSection from "../components/setting/AccountSection";
-import WorkspaceSection from "../components/setting/WorkspaceSection";
 import UserSection from "../components/setting/UserSection";
+import WorkspaceSection from "../components/setting/WorkspaceSection";
+import useUserStore from "../stores/v1/user";
 
 const Setting: React.FC = () => {
   const currentUser = useUserStore().getCurrentUser();

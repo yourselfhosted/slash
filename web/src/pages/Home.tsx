@@ -1,16 +1,16 @@
 import { Button, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
-import { shortcutService } from "../services";
-import { useAppSelector } from "../stores";
-import useViewStore, { getFilteredShortcutList, getOrderedShortcutList } from "../stores/v1/view";
-import useUserStore from "../stores/v1/user";
-import useLoading from "../hooks/useLoading";
-import Icon from "../components/Icon";
-import ShortcutsContainer from "../components/ShortcutsContainer";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
 import FilterView from "../components/FilterView";
-import ViewSetting from "../components/ViewSetting";
+import Icon from "../components/Icon";
 import Navigator from "../components/Navigator";
+import ShortcutsContainer from "../components/ShortcutsContainer";
+import ViewSetting from "../components/ViewSetting";
+import useLoading from "../hooks/useLoading";
+import { shortcutService } from "../services";
+import { useAppSelector } from "../stores";
+import useUserStore from "../stores/v1/user";
+import useViewStore, { getFilteredShortcutList, getOrderedShortcutList } from "../stores/v1/view";
 
 interface State {
   showCreateShortcutDialog: boolean;

@@ -2,10 +2,10 @@ import { Button, Divider, Input, Modal, ModalDialog, Radio, RadioGroup, Textarea
 import classnames from "classnames";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
-import { shortcutService } from "../services";
+import { useTranslation } from "react-i18next";
 import useLoading from "../hooks/useLoading";
+import { shortcutService } from "../services";
 import Icon from "./Icon";
 
 interface Props {
