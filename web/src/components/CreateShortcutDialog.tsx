@@ -194,18 +194,6 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="overflow-y-auto overflow-x-hidden">
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Title</span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="Title"
-                value={state.shortcutCreate.title}
-                onChange={handleTitleInputChange}
-              />
-            </div>
-          </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Name</span>
             <div className="relative w-full">
               <Input
@@ -260,6 +248,17 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             </div>
             {showAdditionalFields && (
               <div className="w-full px-2 py-1">
+                <div className="w-full flex flex-col justify-start items-start mb-3">
+                  <span className="mb-2 text-sm">Title</span>
+                  <Input
+                    className="w-full"
+                    type="text"
+                    placeholder="Title"
+                    size="sm"
+                    value={state.shortcutCreate.title}
+                    onChange={handleTitleInputChange}
+                  />
+                </div>
                 <div className="w-full flex flex-col justify-start items-start mb-3">
                   <span className="mb-2 text-sm">Description</span>
                   <Input
