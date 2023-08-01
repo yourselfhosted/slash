@@ -7,8 +7,8 @@ import (
 	"net/mail"
 	"strconv"
 
+	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/store"
-
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -84,7 +84,7 @@ type PatchUserRequest struct {
 func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	g.POST("/user", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(getUserIDContextKey()).(int)
+		userID, ok := c.Get(auth.UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
 		}
@@ -145,7 +145,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	// GET /api/user/me is used to check if the user is logged in.
 	g.GET("/user/me", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(getUserIDContextKey()).(int)
+		userID, ok := c.Get(auth.UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing auth session")
 		}
@@ -183,7 +183,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
-		currentUserID, ok := c.Get(getUserIDContextKey()).(int)
+		currentUserID, ok := c.Get(auth.UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -255,7 +255,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 
 	g.DELETE("/user/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		currentUserID, ok := c.Get(getUserIDContextKey()).(int)
+		currentUserID, ok := c.Get(auth.UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}

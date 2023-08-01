@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/boojack/slash/api/v1/auth"
 	"github.com/boojack/slash/store"
-
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -48,7 +46,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusUnauthorized, "unmatched email and password")
 		}
 
-		if err := auth.GenerateTokensAndSetCookies(c, user, secret); err != nil {
+		if err := GenerateTokensAndSetCookies(c, user, secret); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to generate tokens, err: %s", err)).SetInternal(err)
 		}
 		return c.JSON(http.StatusOK, convertUserFromStore(user))
@@ -97,7 +95,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create user, err: %s", err)).SetInternal(err)
 		}
 
-		if err := auth.GenerateTokensAndSetCookies(c, user, secret); err != nil {
+		if err := GenerateTokensAndSetCookies(c, user, secret); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to generate tokens, err: %s", err)).SetInternal(err)
 		}
 
@@ -105,7 +103,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 	})
 
 	g.POST("/auth/logout", func(c echo.Context) error {
-		auth.RemoveTokensAndCookies(c)
+		RemoveTokensAndCookies(c)
 		c.Response().WriteHeader(http.StatusOK)
 		return nil
 	})

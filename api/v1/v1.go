@@ -3,7 +3,6 @@ package v1
 import (
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
-
 	"github.com/labstack/echo/v4"
 )
 
