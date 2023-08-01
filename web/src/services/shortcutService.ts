@@ -29,13 +29,25 @@ const shortcutService = {
   },
 
   getShortcutById: (id: ShortcutId) => {
-    for (const s of shortcutService.getState().shortcutList) {
-      if (s.id === id) {
-        return s;
+    for (const shortcut of shortcutService.getState().shortcutList) {
+      if (shortcut.id === id) {
+        return shortcut;
+      }
+    }
+    return null;
+  },
+
+  getOrFetchShortcutById: async (id: ShortcutId) => {
+    for (const shortcut of shortcutService.getState().shortcutList) {
+      if (shortcut.id === id) {
+        return shortcut;
       }
     }
 
-    return null;
+    const data = (await api.getShortcutById(id)).data;
+    const shortcut = convertResponseModelShortcut(data);
+    store.dispatch(createShortcut(shortcut));
+    return shortcut;
   },
 
   createShortcut: async (shortcutCreate: ShortcutCreate) => {

@@ -55,6 +55,10 @@ export function getShortcutList(shortcutFind?: ShortcutFind) {
   return axios.get<Shortcut[]>(`/api/v1/shortcut?${queryList.join("&")}`);
 }
 
+export function getShortcutById(id: number) {
+  return axios.get<Shortcut>(`/api/v1/shortcut/${id}`);
+}
+
 export function createShortcut(shortcutCreate: ShortcutCreate) {
   return axios.post<Shortcut>("/api/v1/shortcut", shortcutCreate);
 }

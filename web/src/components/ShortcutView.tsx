@@ -3,6 +3,7 @@ import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { absolutifyLink } from "../helpers/utils";
 import { shortcutService } from "../services";
 import useFaviconStore from "../stores/v1/favicon";
@@ -31,7 +32,6 @@ const ShortcutView = (props: Props) => {
   const [showAnalyticsDialog, setShowAnalyticsDialog] = useState<boolean>(false);
   const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
-  const compactStyle = viewStore.layout === "grid";
 
   useEffect(() => {
     faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
@@ -62,40 +62,47 @@ const ShortcutView = (props: Props) => {
       <div className="w-full flex flex-col justify-start items-start border px-4 py-3 rounded-lg hover:shadow">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="group flex flex-row justify-start items-center pr-2 mr-1 shrink-0">
-            <div className="w-6 h-6 mr-1 flex justify-center items-center overflow-clip">
+            <Link to={`/shortcut/${shortcut.id}`} className="w-8 h-8 mr-1 flex justify-center items-center overflow-clip">
               {favicon ? (
                 <img className="w-full h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
               ) : (
-                <Icon.CircleSlash className="w-6 h-auto text-gray-400" />
+                <Icon.CircleSlash className="w-8 h-auto text-gray-400" />
               )}
+            </Link>
+            <div className="flex flex-col justify-start items-start">
+              <div className="flex flex-row justify-start items-center">
+                <a
+                  className="flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
+                  target="_blank"
+                  href={shortcutLink}
+                >
+                  <span className="text-gray-400">s/</span>
+                  <span className="max-w-[14rem] truncate">{shortcut.name}</span>
+                  <span className="hidden group-hover:block ml-1 cursor-pointer">
+                    <Icon.ExternalLink className="w-4 h-auto text-gray-600" />
+                  </span>
+                </a>
+                <Tooltip title="Copy" variant="solid" placement="top" arrow>
+                  <button
+                    className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow"
+                    onClick={() => handleCopyButtonClick()}
+                  >
+                    <Icon.Clipboard className="w-4 h-auto mx-auto" />
+                  </button>
+                </Tooltip>
+                <Tooltip title="QR Code" variant="solid" placement="top" arrow>
+                  <button
+                    className="hidden group-hover:block ml-1 w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow"
+                    onClick={() => setShowQRCodeDialog(true)}
+                  >
+                    <Icon.QrCode className="w-4 h-auto mx-auto" />
+                  </button>
+                </Tooltip>
+              </div>
+              <a className="ml-1 text-sm max-w-[16rem] truncate text-gray-400 hover:underline" href={shortcut.link} target="_blank">
+                {shortcut.link}
+              </a>
             </div>
-            <a
-              className="flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
-              target="_blank"
-              href={shortcutLink}
-            >
-              <span className="text-gray-400">s/</span>
-              <span className="max-w-[14rem] truncate">{shortcut.name}</span>
-              <span className="hidden group-hover:block ml-1 cursor-pointer">
-                <Icon.ExternalLink className="w-4 h-auto text-gray-600" />
-              </span>
-            </a>
-            <Tooltip title="Copy" variant="solid" placement="top" arrow>
-              <button
-                className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow"
-                onClick={() => handleCopyButtonClick()}
-              >
-                <Icon.Clipboard className="w-4 h-auto mx-auto" />
-              </button>
-            </Tooltip>
-            <Tooltip title="QR Code" variant="solid" placement="top" arrow>
-              <button
-                className="hidden group-hover:block ml-1 w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow"
-                onClick={() => setShowQRCodeDialog(true)}
-              >
-                <Icon.QrCode className="w-4 h-auto mx-auto" />
-              </button>
-            </Tooltip>
           </div>
           <div className="flex flex-row justify-end items-center space-x-2">
             {havePermission && (
@@ -128,21 +135,6 @@ const ShortcutView = (props: Props) => {
               ></Dropdown>
             )}
           </div>
-        </div>
-        {shortcut.description && !compactStyle && <p className="w-full break-all mt-1 text-gray-400 text-sm">{shortcut.description}</p>}
-        <div className="mt-2 flex flex-row justify-start items-start flex-wrap gap-2">
-          {shortcut.tags.map((tag) => {
-            return (
-              <span
-                key={tag}
-                className="max-w-[8rem] truncate text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
-                onClick={() => viewStore.setFilter({ tag: tag })}
-              >
-                #{tag}
-              </span>
-            );
-          })}
-          {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm font-mono leading-4 italic">No tags</span>}
         </div>
         <div className="w-full flex mt-2 gap-2">
           <Tooltip title="Creator" variant="solid" placement="top" arrow>
