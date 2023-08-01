@@ -11,7 +11,7 @@ const Account: React.FC = () => {
 
   return (
     <>
-      <div className="mx-auto max-w-4xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
+      <div className="mx-auto max-w-6xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
         <p className="text-3xl my-2">{currentUser.nickname}</p>
         <p className="leading-8 flex flex-row justify-start items-center">
           <span className="mr-3 text-gray-500 font-mono">Email: </span>
