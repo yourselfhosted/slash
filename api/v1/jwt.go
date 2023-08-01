@@ -15,6 +15,12 @@ import (
 	"github.com/pkg/errors"
 )
 
+const (
+	// The key name used to store user id in the context
+	// user id is extracted from the jwt token subject field.
+	UserIDContextKey = "user-id"
+)
+
 type claimsMessage struct {
 	Name string `json:"name"`
 	jwt.RegisteredClaims
@@ -183,7 +189,7 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 		}
 
 		// Stores userID into context.
-		c.Set(auth.UserIDContextKey, userID)
+		c.Set(UserIDContextKey, userID)
 		return next(c)
 	}
 }

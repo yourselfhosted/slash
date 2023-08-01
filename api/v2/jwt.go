@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/pkg/errors"
 	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/store"
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"

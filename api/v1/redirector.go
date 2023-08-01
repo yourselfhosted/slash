@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -32,7 +31,7 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("not found shortcut with name: %s", shortcutName))
 		}
 		if shortcut.Visibility != store.VisibilityPublic {
-			userID, ok := c.Get(auth.UserIDContextKey).(int)
+			userID, ok := c.Get(UserIDContextKey).(int)
 			if !ok {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
 			}

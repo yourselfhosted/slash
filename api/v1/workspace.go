@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
@@ -63,7 +62,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 
 	g.POST("/workspace/setting", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(auth.UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -98,7 +97,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 
 	g.GET("/workspace/setting", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(auth.UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}

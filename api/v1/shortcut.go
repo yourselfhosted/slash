@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -81,7 +80,7 @@ type PatchShortcutRequest struct {
 func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 	g.POST("/shortcut", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(auth.UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -125,7 +124,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("shortcut ID is not a number: %s", c.Param("shortcutId"))).SetInternal(err)
 		}
-		userID, ok := c.Get(auth.UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -196,7 +195,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 	g.GET("/shortcut", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(auth.UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -263,7 +262,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("shortcut id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
-		userID, ok := c.Get(auth.UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}

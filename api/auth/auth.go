@@ -5,9 +5,6 @@ import (
 )
 
 const (
-	// The key name used to store user id in the context
-	// user id is extracted from the jwt token subject field.
-	UserIDContextKey = "user-id"
 	// issuer is the issuer of the jwt token.
 	Issuer = "slash"
 	// Signing key section. For now, this is only used for signing, not for verifying since we only
