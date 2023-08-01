@@ -20,7 +20,7 @@ const MemberSection = () => {
 
   return (
     <>
-      <div className="mx-auto max-w-6xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
+      <div className="mx-auto max-w-6xl w-full px-3 md:px-12 py-6 flex flex-col justify-start items-start space-y-4">
         <div className="w-full">
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">

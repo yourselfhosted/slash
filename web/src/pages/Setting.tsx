@@ -8,7 +8,7 @@ const Setting: React.FC = () => {
   const isAdmin = currentUser.role === "ADMIN";
 
   return (
-    <div className="mx-auto max-w-6xl w-full px-3 py-6 flex flex-col justify-start items-start space-y-4">
+    <div className="mx-auto max-w-6xl w-full px-3 md:px-12 py-6 flex flex-col justify-start items-start space-y-4">
       <AccountSection />
       {isAdmin && (
         <>

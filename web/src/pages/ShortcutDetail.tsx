@@ -3,7 +3,7 @@ import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { showCommonDialog } from "../components/Alert";
 import AnalyticsDialog from "../components/AnalyticsDialog";
 import Dropdown from "../components/common/Dropdown";
@@ -22,6 +22,7 @@ interface State {
 
 const ShortcutDetail = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const shortcutId = (useLoaderData() as Shortcut).id;
   const shortcut = shortcutService.getShortcutById(shortcutId) as Shortcut;
   const currentUser = useUserStore().getCurrentUser();
@@ -55,13 +56,16 @@ const ShortcutDetail = () => {
       style: "danger",
       onConfirm: async () => {
         await shortcutService.deleteShortcutById(shortcut.id);
+        navigate("/", {
+          replace: true,
+        });
       },
     });
   };
 
   return (
     <>
-      <div className="mx-auto max-w-6xl w-full px-3 pt-4 pb-6 flex flex-col justify-start items-start">
+      <div className="mx-auto max-w-6xl w-full px-3 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
         <div className="mt-8 w-12 h-12 flex justify-center items-center overflow-clip">
           {favicon ? (
             <img className="w-full h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
