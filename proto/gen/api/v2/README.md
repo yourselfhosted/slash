@@ -63,7 +63,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| email | [string](#string) |  |  |
+| id | [int32](#int32) |  |  |
 
 
 

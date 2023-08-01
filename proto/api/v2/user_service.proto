@@ -10,8 +10,8 @@ option go_package = "gen/api/v2";
 
 service UserService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {
-    option (google.api.http) = {get: "/api/v2/users/{email}"};
-    option (google.api.method_signature) = "email";
+    option (google.api.http) = {get: "/api/v2/users/{id}"};
+    option (google.api.method_signature) = "id";
   }
 }
 
@@ -40,7 +40,7 @@ enum Role {
 }
 
 message GetUserRequest {
-  string email = 1;
+  int32 id = 1;
 }
 
 message GetUserResponse {

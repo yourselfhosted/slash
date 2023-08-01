@@ -3,13 +3,14 @@ package server
 import (
 	"context"
 	"fmt"
+	"net"
 	"time"
 
 	apiv1 "github.com/boojack/slash/api/v1"
+	apiv2 "github.com/boojack/slash/api/v2"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
 	"github.com/google/uuid"
-
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -19,6 +20,9 @@ type Server struct {
 
 	Profile *profile.Profile
 	Store   *store.Store
+
+	// API services.
+	apiV2Service *apiv2.APIV2Service
 }
 
 func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store) (*Server, error) {
@@ -66,10 +70,27 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	apiV1Service := apiv1.NewAPIV1Service(profile, store)
 	apiV1Service.Start(rootGroup, secret)
 
+	s.apiV2Service = apiv2.NewAPIV2Service(secret, profile, store, s.Profile.Port+1)
+	// Register gRPC gateway as api v2.
+	if err := s.apiV2Service.RegisterGateway(ctx, e); err != nil {
+		return nil, fmt.Errorf("failed to register gRPC gateway: %w", err)
+	}
+
 	return s, nil
 }
 
 func (s *Server) Start(_ context.Context) error {
+	// Start gRPC server.
+	listen, err := net.Listen("tcp", fmt.Sprintf(":%d", s.Profile.Port+1))
+	if err != nil {
+		return err
+	}
+	go func() {
+		if err := s.apiV2Service.GetGRPCServer().Serve(listen); err != nil {
+			println("grpc server listen error")
+		}
+	}()
+
 	return s.e.Start(fmt.Sprintf(":%d", s.Profile.Port))
 }
 
