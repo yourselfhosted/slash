@@ -17,7 +17,7 @@ const (
 )
 
 type User struct {
-	ID int
+	ID int32
 
 	// Standard fields
 	CreatedTs int64
@@ -32,7 +32,7 @@ type User struct {
 }
 
 type UpdateUser struct {
-	ID int
+	ID int32
 
 	RowStatus    *RowStatus
 	Email        *string
@@ -42,7 +42,7 @@ type UpdateUser struct {
 }
 
 type FindUser struct {
-	ID        *int
+	ID        *int32
 	RowStatus *RowStatus
 	Email     *string
 	Nickname  *string
@@ -50,7 +50,7 @@ type FindUser struct {
 }
 
 type DeleteUser struct {
-	ID int
+	ID int32
 }
 
 func (s *Store) CreateUser(ctx context.Context, create *User) (*User, error) {

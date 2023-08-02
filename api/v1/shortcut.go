@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 
+	"github.com/boojack/slash/internal/util"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -36,10 +36,10 @@ type OpenGraphMetadata struct {
 }
 
 type Shortcut struct {
-	ID int `json:"id"`
+	ID int32 `json:"id"`
 
 	// Standard fields
-	CreatorID int       `json:"creatorId"`
+	CreatorID int32     `json:"creatorId"`
 	Creator   *User     `json:"creator"`
 	CreatedTs int64     `json:"createdTs"`
 	UpdatedTs int64     `json:"updatedTs"`
@@ -80,7 +80,7 @@ type PatchShortcutRequest struct {
 func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 	g.POST("/shortcut", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -120,11 +120,11 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 	g.PATCH("/shortcut/:shortcutId", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		shortcutID, err := strconv.Atoi(c.Param("shortcutId"))
+		shortcutID, err := util.ConvertStringToInt32(c.Param("shortcutId"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("shortcut ID is not a number: %s", c.Param("shortcutId"))).SetInternal(err)
 		}
-		userID, ok := c.Get(UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -195,7 +195,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 	g.GET("/shortcut", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -234,7 +234,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 	g.GET("/shortcut/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		shortcutID, err := strconv.Atoi(c.Param("id"))
+		shortcutID, err := util.ConvertStringToInt32(c.Param("id"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("shortcut id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
@@ -258,11 +258,11 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 	g.DELETE("/shortcut/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		shortcutID, err := strconv.Atoi(c.Param("id"))
+		shortcutID, err := util.ConvertStringToInt32(c.Param("id"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("shortcut id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
-		userID, ok := c.Get(UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}

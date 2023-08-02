@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/mail"
-	"strconv"
 
+	"github.com/boojack/slash/internal/util"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -38,7 +38,7 @@ func (r Role) String() string {
 }
 
 type User struct {
-	ID int `json:"id"`
+	ID int32 `json:"id"`
 
 	// Standard fields
 	CreatedTs int64     `json:"createdTs"`
@@ -83,7 +83,7 @@ type PatchUserRequest struct {
 func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	g.POST("/user", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
 		}
@@ -144,7 +144,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	// GET /api/user/me is used to check if the user is logged in.
 	g.GET("/user/me", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing auth session")
 		}
@@ -161,7 +161,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 
 	g.GET("/user/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, err := strconv.Atoi(c.Param("id"))
+		userID, err := util.ConvertStringToInt32(c.Param("id"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
@@ -178,11 +178,11 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 
 	g.PATCH("/user/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, err := strconv.Atoi(c.Param("id"))
+		userID, err := util.ConvertStringToInt32(c.Param("id"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
-		currentUserID, ok := c.Get(UserIDContextKey).(int)
+		currentUserID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -254,7 +254,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 
 	g.DELETE("/user/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		currentUserID, ok := c.Get(UserIDContextKey).(int)
+		currentUserID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -271,7 +271,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusForbidden, "access forbidden for current session user").SetInternal(err)
 		}
 
-		userID, err := strconv.Atoi(c.Param("id"))
+		userID, err := util.ConvertStringToInt32(c.Param("id"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}

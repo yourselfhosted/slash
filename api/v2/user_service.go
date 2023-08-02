@@ -23,9 +23,8 @@ func NewUserService(store *store.Store) *UserService {
 }
 
 func (s *UserService) GetUser(ctx context.Context, request *apiv2pb.GetUserRequest) (*apiv2pb.GetUserResponse, error) {
-	id := int(request.Id)
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
-		ID: &id,
+		ID: &request.Id,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list tags: %v", err)

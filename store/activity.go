@@ -48,8 +48,8 @@ func (l ActivityLevel) String() string {
 }
 
 type Activity struct {
-	ID        int
-	CreatorID int
+	ID        int32
+	CreatorID int32
 	CreatedTs int64
 	Type      ActivityType
 	Level     ActivityLevel

@@ -3,7 +3,6 @@ package v1
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -27,7 +26,7 @@ type claimsMessage struct {
 }
 
 // GenerateAccessToken generates an access token for web.
-func GenerateAccessToken(username string, userID int, secret string) (string, error) {
+func GenerateAccessToken(username string, userID int32, secret string) (string, error) {
 	expirationTime := time.Now().Add(auth.AccessTokenDuration)
 	return generateToken(username, userID, auth.AccessTokenAudienceName, expirationTime, []byte(secret))
 }
@@ -64,7 +63,7 @@ func setTokenCookie(c echo.Context, name, token string, expiration time.Time) {
 }
 
 // generateToken generates a jwt token.
-func generateToken(username string, userID int, aud string, expirationTime time.Time, secret []byte) (string, error) {
+func generateToken(username string, userID int32, aud string, expirationTime time.Time, secret []byte) (string, error) {
 	// Create the JWT claims, which includes the username and expiry time.
 	claims := &claimsMessage{
 		Name: username,
@@ -74,7 +73,7 @@ func generateToken(username string, userID int, aud string, expirationTime time.
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			Issuer:    auth.Issuer,
-			Subject:   strconv.Itoa(userID),
+			Subject:   fmt.Sprint(userID),
 		},
 	}
 
@@ -172,9 +171,9 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 		}
 
 		// We either have a valid access token or we will attempt to generate new access token and refresh token
-		userID, err := strconv.Atoi(claims.Subject)
+		userID, err := util.ConvertStringToInt32(claims.Subject)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusUnauthorized, "Malformed ID in the token.")
+			return echo.NewHTTPError(http.StatusUnauthorized, "Malformed ID in the token.").WithInternal(err)
 		}
 
 		// Even if there is no error, we still need to make sure the user still exists.

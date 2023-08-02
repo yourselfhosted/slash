@@ -31,7 +31,7 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("not found shortcut with name: %s", shortcutName))
 		}
 		if shortcut.Visibility != store.VisibilityPublic {
-			userID, ok := c.Get(UserIDContextKey).(int)
+			userID, ok := c.Get(UserIDContextKey).(int32)
 			if !ok {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
 			}

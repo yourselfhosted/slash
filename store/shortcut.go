@@ -39,10 +39,10 @@ type OpenGraphMetadata struct {
 }
 
 type Shortcut struct {
-	ID int
+	ID int32
 
 	// Standard fields
-	CreatorID int
+	CreatorID int32
 	CreatedTs int64
 	UpdatedTs int64
 	RowStatus RowStatus
@@ -58,7 +58,7 @@ type Shortcut struct {
 }
 
 type UpdateShortcut struct {
-	ID int
+	ID int32
 
 	RowStatus         *RowStatus
 	Name              *string
@@ -71,8 +71,8 @@ type UpdateShortcut struct {
 }
 
 type FindShortcut struct {
-	ID             *int
-	CreatorID      *int
+	ID             *int32
+	CreatorID      *int32
 	RowStatus      *RowStatus
 	Name           *string
 	VisibilityList []Visibility
@@ -80,7 +80,7 @@ type FindShortcut struct {
 }
 
 type DeleteShortcut struct {
-	ID int
+	ID int32
 }
 
 func (s *Store) CreateShortcut(ctx context.Context, create *Shortcut) (*Shortcut, error) {

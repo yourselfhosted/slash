@@ -62,7 +62,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 
 	g.POST("/workspace/setting", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -97,7 +97,7 @@ func (s *APIV1Service) registerWorkspaceRoutes(g *echo.Group) {
 
 	g.GET("/workspace/setting", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int)
+		userID, ok := c.Get(UserIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
