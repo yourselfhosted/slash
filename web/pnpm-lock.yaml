@@ -2773,6 +2773,7 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: false
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -3372,7 +3373,7 @@ packages:
     dependencies:
       '@types/node': 20.3.1
       esbuild: 0.17.19
-      postcss: 8.4.27
+      postcss: 8.4.21
       resolve: 1.22.2
       rollup: 3.27.0
     optionalDependencies:
