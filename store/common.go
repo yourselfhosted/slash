@@ -24,7 +24,7 @@ func (e RowStatus) String() string {
 	return ""
 }
 
-func convertStorepbRowStatus(status string) storepb.RowStatus {
+func convertRowStatusStringToStorepb(status string) storepb.RowStatus {
 	switch status {
 	case "NORMAL":
 		return storepb.RowStatus_NORMAL

@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"strings"
 
+	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -30,12 +31,12 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 		if shortcut == nil {
 			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("not found shortcut with name: %s", shortcutName))
 		}
-		if shortcut.Visibility != store.VisibilityPublic {
+		if shortcut.Visibility != storepb.Visibility_PUBLIC {
 			userID, ok := c.Get(UserIDContextKey).(int32)
 			if !ok {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
 			}
-			if shortcut.Visibility == store.VisibilityPrivate && shortcut.CreatorID != userID {
+			if shortcut.Visibility == storepb.Visibility_PRIVATE && shortcut.CreatorId != userID {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized")
 			}
 		}
@@ -48,9 +49,9 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 	})
 }
 
-func redirectToShortcut(c echo.Context, shortcut *store.Shortcut) error {
+func redirectToShortcut(c echo.Context, shortcut *storepb.Shortcut) error {
 	isValidURL := isValidURLString(shortcut.Link)
-	if shortcut.OpenGraphMetadata == nil || (shortcut.OpenGraphMetadata.Title == "" && shortcut.OpenGraphMetadata.Description == "" && shortcut.OpenGraphMetadata.Image == "") {
+	if shortcut.OgMetadata == nil || (shortcut.OgMetadata.Title == "" && shortcut.OgMetadata.Description == "" && shortcut.OgMetadata.Image == "") {
 		if isValidURL {
 			return c.Redirect(http.StatusSeeOther, shortcut.Link)
 		}
@@ -59,16 +60,16 @@ func redirectToShortcut(c echo.Context, shortcut *store.Shortcut) error {
 
 	htmlTemplate := `<html><head>%s</head><body>%s</body></html>`
 	metadataList := []string{
-		fmt.Sprintf(`<title>%s</title>`, shortcut.OpenGraphMetadata.Title),
-		fmt.Sprintf(`<meta name="description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
-		fmt.Sprintf(`<meta property="og:title" content="%s" />`, shortcut.OpenGraphMetadata.Title),
-		fmt.Sprintf(`<meta property="og:description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
-		fmt.Sprintf(`<meta property="og:image" content="%s" />`, shortcut.OpenGraphMetadata.Image),
+		fmt.Sprintf(`<title>%s</title>`, shortcut.OgMetadata.Title),
+		fmt.Sprintf(`<meta name="description" content="%s" />`, shortcut.OgMetadata.Description),
+		fmt.Sprintf(`<meta property="og:title" content="%s" />`, shortcut.OgMetadata.Title),
+		fmt.Sprintf(`<meta property="og:description" content="%s" />`, shortcut.OgMetadata.Description),
+		fmt.Sprintf(`<meta property="og:image" content="%s" />`, shortcut.OgMetadata.Image),
 		`<meta property="og:type" content="website" />`,
 		// Twitter related metadata.
-		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, shortcut.OpenGraphMetadata.Title),
-		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, shortcut.OpenGraphMetadata.Description),
-		fmt.Sprintf(`<meta name="twitter:image" content="%s" />`, shortcut.OpenGraphMetadata.Image),
+		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, shortcut.OgMetadata.Title),
+		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, shortcut.OgMetadata.Description),
+		fmt.Sprintf(`<meta name="twitter:image" content="%s" />`, shortcut.OgMetadata.Image),
 		`<meta name="twitter:card" content="summary_large_image" />`,
 	}
 	if isValidURL {
@@ -84,9 +85,9 @@ func redirectToShortcut(c echo.Context, shortcut *store.Shortcut) error {
 	return c.HTML(http.StatusOK, htmlString)
 }
 
-func (s *APIV1Service) createShortcutViewActivity(c echo.Context, shortcut *store.Shortcut) error {
+func (s *APIV1Service) createShortcutViewActivity(c echo.Context, shortcut *storepb.Shortcut) error {
 	payload := &ActivityShorcutViewPayload{
-		ShortcutID: shortcut.ID,
+		ShortcutID: shortcut.Id,
 		IP:         c.RealIP(),
 		Referer:    c.Request().Referer(),
 		UserAgent:  c.Request().UserAgent(),

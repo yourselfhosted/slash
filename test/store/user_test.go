@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
+	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
-
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -26,11 +26,11 @@ func TestUserStore(t *testing.T) {
 		Nickname: &userPatchNickname,
 	})
 	require.NoError(t, err)
-	_, err = ts.CreateShortcut(ctx, &store.Shortcut{
-		CreatorID:  user.ID,
+	_, err = ts.CreateShortcut(ctx, &storepb.Shortcut{
+		CreatorId:  user.ID,
 		Name:       "test_shortcut",
 		Link:       "https://www.google.com",
-		Visibility: store.VisibilityPublic,
+		Visibility: storepb.Visibility_PUBLIC,
 	})
 	require.NoError(t, err)
 	require.Equal(t, userPatchNickname, user.Nickname)
@@ -41,7 +41,7 @@ func TestUserStore(t *testing.T) {
 	users, err = ts.ListUsers(ctx, &store.FindUser{})
 	require.NoError(t, err)
 	require.Equal(t, 0, len(users))
-	shortcuts, err := ts.ListShortcutsV1(ctx, &store.FindShortcut{})
+	shortcuts, err := ts.ListShortcuts(ctx, &store.FindShortcut{})
 	require.NoError(t, err)
 	require.Equal(t, 0, len(shortcuts))
 }

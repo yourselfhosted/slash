@@ -90,15 +90,15 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("malformatted post shortcut request, err: %s", err)).SetInternal(err)
 		}
 
-		shortcut, err := s.Store.CreateShortcut(ctx, &store.Shortcut{
-			CreatorID:   userID,
+		shortcut, err := s.Store.CreateShortcut(ctx, &storepb.Shortcut{
+			CreatorId:   userID,
 			Name:        strings.ToLower(create.Name),
 			Link:        create.Link,
 			Title:       create.Title,
 			Description: create.Description,
-			Visibility:  store.Visibility(create.Visibility.String()),
-			Tag:         strings.Join(create.Tags, " "),
-			OpenGraphMetadata: &store.OpenGraphMetadata{
+			Visibility:  convertVisibilityToStorepb(create.Visibility),
+			Tags:        create.Tags,
+			OgMetadata: &storepb.OpenGraphMetadata{
 				Title:       create.OpenGraphMetadata.Title,
 				Description: create.OpenGraphMetadata.Description,
 				Image:       create.OpenGraphMetadata.Image,
@@ -112,7 +112,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create shortcut activity, err: %s", err)).SetInternal(err)
 		}
 
-		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
+		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStorepb(shortcut))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to compose shortcut, err: %s", err)).SetInternal(err)
 		}
@@ -145,7 +145,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if shortcut == nil {
 			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("not found shortcut with id: %d", shortcutID))
 		}
-		if shortcut.CreatorID != userID && currentUser.Role != store.RoleAdmin {
+		if shortcut.CreatorId != userID && currentUser.Role != store.RoleAdmin {
 			return echo.NewHTTPError(http.StatusForbidden, "unauthorized to update shortcut")
 		}
 
@@ -187,7 +187,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to patch shortcut, err: %s", err)).SetInternal(err)
 		}
 
-		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
+		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStorepb(shortcut))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to compose shortcut, err: %s", err)).SetInternal(err)
 		}
@@ -208,7 +208,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 		list := []*storepb.Shortcut{}
 		find.VisibilityList = []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic}
-		visibleShortcutList, err := s.Store.ListShortcutsV1(ctx, find)
+		visibleShortcutList, err := s.Store.ListShortcuts(ctx, find)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to fetch shortcut list, err: %s", err)).SetInternal(err)
 		}
@@ -216,7 +216,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 		find.VisibilityList = []store.Visibility{store.VisibilityPrivate}
 		find.CreatorID = &userID
-		privateShortcutList, err := s.Store.ListShortcutsV1(ctx, find)
+		privateShortcutList, err := s.Store.ListShortcuts(ctx, find)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to fetch private shortcut list, err: %s", err)).SetInternal(err)
 		}
@@ -250,7 +250,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("not found shortcut with id: %d", shortcutID))
 		}
 
-		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
+		shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStorepb(shortcut))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to compose shortcut, err: %s", err)).SetInternal(err)
 		}
@@ -283,7 +283,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if shortcut == nil {
 			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("not found shortcut with id: %d", shortcutID))
 		}
-		if shortcut.CreatorID != userID && currentUser.Role != store.RoleAdmin {
+		if shortcut.CreatorId != userID && currentUser.Role != store.RoleAdmin {
 			return echo.NewHTTPError(http.StatusForbidden, "Unauthorized to delete shortcut")
 		}
 
@@ -324,32 +324,6 @@ func (s *APIV1Service) composeShortcut(ctx context.Context, shortcut *Shortcut) 
 	return shortcut, nil
 }
 
-func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
-	tags := []string{}
-	if shortcut.Tag != "" {
-		tags = append(tags, strings.Split(shortcut.Tag, " ")...)
-	}
-
-	return &Shortcut{
-		ID:          shortcut.ID,
-		CreatedTs:   shortcut.CreatedTs,
-		UpdatedTs:   shortcut.UpdatedTs,
-		CreatorID:   shortcut.CreatorID,
-		Name:        shortcut.Name,
-		Link:        shortcut.Link,
-		Title:       shortcut.Title,
-		Description: shortcut.Description,
-		Visibility:  Visibility(shortcut.Visibility),
-		RowStatus:   RowStatus(shortcut.RowStatus),
-		Tags:        tags,
-		OpenGraphMetadata: &OpenGraphMetadata{
-			Title:       shortcut.OpenGraphMetadata.Title,
-			Description: shortcut.OpenGraphMetadata.Description,
-			Image:       shortcut.OpenGraphMetadata.Image,
-		},
-	}
-}
-
 func convertShortcutFromStorepb(shortcut *storepb.Shortcut) *Shortcut {
 	return &Shortcut{
 		ID:          shortcut.Id,
@@ -371,16 +345,27 @@ func convertShortcutFromStorepb(shortcut *storepb.Shortcut) *Shortcut {
 	}
 }
 
-func (s *APIV1Service) createShortcutCreateActivity(ctx context.Context, shortcut *store.Shortcut) error {
+func convertVisibilityToStorepb(visibility Visibility) storepb.Visibility {
+	switch visibility {
+	case VisibilityPublic:
+		return storepb.Visibility_PUBLIC
+	case VisibilityPrivate:
+		return storepb.Visibility_PRIVATE
+	default:
+		return storepb.Visibility_PUBLIC
+	}
+}
+
+func (s *APIV1Service) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
 	payload := &ActivityShorcutCreatePayload{
-		ShortcutID: shortcut.ID,
+		ShortcutID: shortcut.Id,
 	}
 	payloadStr, err := json.Marshal(payload)
 	if err != nil {
 		return errors.Wrap(err, "Failed to marshal activity payload")
 	}
 	activity := &store.Activity{
-		CreatorID: shortcut.CreatorID,
+		CreatorID: shortcut.CreatorId,
 		Type:      store.ActivityShortcutCreate,
 		Level:     store.ActivityInfo,
 		Payload:   string(payloadStr),

@@ -14,7 +14,7 @@ func TestShortcutStore(t *testing.T) {
 	ts := NewTestingStore(ctx, t)
 	user, err := createTestingAdminUser(ctx, ts)
 	require.NoError(t, err)
-	shortcut, err := ts.CreateShortcutV1(ctx, &storepb.Shortcut{
+	shortcut, err := ts.CreateShortcut(ctx, &storepb.Shortcut{
 		CreatorId:   user.ID,
 		Name:        "test",
 		Link:        "https://test.link",
@@ -24,7 +24,7 @@ func TestShortcutStore(t *testing.T) {
 		OgMetadata:  &storepb.OpenGraphMetadata{},
 	})
 	require.NoError(t, err)
-	shortcuts, err := ts.ListShortcutsV1(ctx, &store.FindShortcut{
+	shortcuts, err := ts.ListShortcuts(ctx, &store.FindShortcut{
 		CreatorID: &user.ID,
 	})
 	require.NoError(t, err)
@@ -38,7 +38,7 @@ func TestShortcutStore(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, newLink, updatedShortcut.Link)
 	tag := "test"
-	shortcut, err = ts.GetShortcutV1(ctx, &store.FindShortcut{
+	shortcut, err = ts.GetShortcut(ctx, &store.FindShortcut{
 		Tag: &tag,
 	})
 	require.NoError(t, err)
@@ -46,7 +46,7 @@ func TestShortcutStore(t *testing.T) {
 		ID: shortcut.Id,
 	})
 	require.NoError(t, err)
-	shortcuts, err = ts.ListShortcutsV1(ctx, &store.FindShortcut{
+	shortcuts, err = ts.ListShortcuts(ctx, &store.FindShortcut{
 		CreatorID: &user.ID,
 	})
 	require.NoError(t, err)
