@@ -166,6 +166,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*st
 	}
 	shortcut.RowStatus = convertRowStatusStringToStorepb(rowStatus)
 	shortcut.Visibility = convertVisibilityStringToStorepb(visibility)
+	shortcut.Tags = filterTags(strings.Split(tags, " "))
 	var ogMetadata storepb.OpenGraphMetadata
 	if err := protojson.Unmarshal([]byte(openGraphMetadataString), &ogMetadata); err != nil {
 		return nil, err
@@ -247,7 +248,7 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*store
 		}
 		shortcut.RowStatus = convertRowStatusStringToStorepb(rowStatus)
 		shortcut.Visibility = storepb.Visibility(storepb.Visibility_value[visibility])
-		shortcut.Tags = strings.Split(tags, " ")
+		shortcut.Tags = filterTags(strings.Split(tags, " "))
 		var ogMetadata storepb.OpenGraphMetadata
 		if err := protojson.Unmarshal([]byte(openGraphMetadataString), &ogMetadata); err != nil {
 			return nil, err
@@ -313,6 +314,16 @@ func vacuumShortcut(ctx context.Context, tx *sql.Tx) error {
 	}
 
 	return nil
+}
+
+func filterTags(tags []string) []string {
+	result := []string{}
+	for _, tag := range tags {
+		if tag != "" {
+			result = append(result, tag)
+		}
+	}
+	return result
 }
 
 func convertVisibilityStringToStorepb(visibility string) storepb.Visibility {
