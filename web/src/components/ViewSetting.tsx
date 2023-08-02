@@ -8,7 +8,7 @@ const ViewSetting = () => {
   const viewStore = useViewStore();
   const order = viewStore.getOrder();
   const { field, direction } = order;
-  const layout = viewStore.layout || "grid";
+  const displayStyle = viewStore.displayStyle || "full";
 
   const handleReset = () => {
     viewStore.setOrder({ field: "name", direction: "asc" });
@@ -49,10 +49,10 @@ const ViewSetting = () => {
           </div>
           <Divider />
           <div className="w-full flex flex-row justify-between items-center">
-            <span className="text-sm shrink-0 mr-2">Layout</span>
-            <Select size="sm" value={layout} onChange={(_, value) => viewStore.setLayout(value as any)}>
-              <Option value={"grid"}>Grid</Option>
-              <Option value={"list"}>List</Option>
+            <span className="text-sm shrink-0 mr-2">Display</span>
+            <Select size="sm" value={displayStyle} onChange={(_, value) => viewStore.setDisplayStyle(value as any)}>
+              <Option value={"full"}>Full</Option>
+              <Option value={"compact"}>Compact</Option>
             </Select>
           </div>
         </div>
