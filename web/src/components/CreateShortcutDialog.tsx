@@ -53,6 +53,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           shortcutCreate: Object.assign(state.shortcutCreate, {
             name: shortcut.name,
             link: shortcut.link,
+            title: shortcut.title,
             description: shortcut.description,
             visibility: shortcut.visibility,
             openGraphMetadata: shortcut.openGraphMetadata,
