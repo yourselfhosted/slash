@@ -41,7 +41,7 @@ func TestUserStore(t *testing.T) {
 	users, err = ts.ListUsers(ctx, &store.FindUser{})
 	require.NoError(t, err)
 	require.Equal(t, 0, len(users))
-	shortcuts, err := ts.ListShortcuts(ctx, &store.FindShortcut{})
+	shortcuts, err := ts.ListShortcutsV1(ctx, &store.FindShortcut{})
 	require.NoError(t, err)
 	require.Equal(t, 0, len(shortcuts))
 }

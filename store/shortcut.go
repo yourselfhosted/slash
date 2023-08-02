@@ -6,6 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	storepb "github.com/boojack/slash/proto/gen/store"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 // Visibility is the type of a visibility.
@@ -112,6 +115,41 @@ func (s *Store) CreateShortcut(ctx context.Context, create *Shortcut) (*Shortcut
 	); err != nil {
 		return nil, err
 	}
+
+	return create, nil
+}
+
+func (s *Store) CreateShortcutV1(ctx context.Context, create *storepb.Shortcut) (*storepb.Shortcut, error) {
+	set := []string{"creator_id", "name", "link", "title", "description", "visibility", "tag"}
+	args := []any{create.CreatorId, create.Name, create.Link, create.Title, create.Description, create.Visibility.String(), strings.Join(create.Tags, " ")}
+	placeholder := []string{"?", "?", "?", "?", "?", "?", "?"}
+	if create.OgMetadata != nil {
+		set = append(set, "og_metadata")
+		openGraphMetadataBytes, err := protojson.Marshal(create.OgMetadata)
+		if err != nil {
+			return nil, err
+		}
+		args = append(args, string(openGraphMetadataBytes))
+		placeholder = append(placeholder, "?")
+	}
+
+	stmt := `
+		INSERT INTO shortcut (
+			` + strings.Join(set, ", ") + `
+		)
+		VALUES (` + strings.Join(placeholder, ",") + `)
+		RETURNING id, created_ts, updated_ts, row_status
+	`
+	var rowStatus string
+	if err := s.db.QueryRowContext(ctx, stmt, args...).Scan(
+		&create.Id,
+		&create.CreatedTs,
+		&create.UpdatedTs,
+		&rowStatus,
+	); err != nil {
+		return nil, err
+	}
+	create.RowStatus = convertStorepbRowStatus(rowStatus)
 
 	return create, nil
 }
@@ -277,6 +315,93 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*Short
 	return list, nil
 }
 
+func (s *Store) ListShortcutsV1(ctx context.Context, find *FindShortcut) ([]*storepb.Shortcut, error) {
+	where, args := []string{"1 = 1"}, []any{}
+	if v := find.ID; v != nil {
+		where, args = append(where, "id = ?"), append(args, *v)
+	}
+	if v := find.CreatorID; v != nil {
+		where, args = append(where, "creator_id = ?"), append(args, *v)
+	}
+	if v := find.RowStatus; v != nil {
+		where, args = append(where, "row_status = ?"), append(args, *v)
+	}
+	if v := find.Name; v != nil {
+		where, args = append(where, "name = ?"), append(args, *v)
+	}
+	if v := find.VisibilityList; len(v) != 0 {
+		list := []string{}
+		for _, visibility := range v {
+			list = append(list, fmt.Sprintf("$%d", len(args)+1))
+			args = append(args, visibility)
+		}
+		where = append(where, fmt.Sprintf("visibility in (%s)", strings.Join(list, ",")))
+	}
+	if v := find.Tag; v != nil {
+		where, args = append(where, "tag LIKE ?"), append(args, "%"+*v+"%")
+	}
+
+	rows, err := s.db.QueryContext(ctx, `
+		SELECT
+			id,
+			creator_id,
+			created_ts,
+			updated_ts,
+			row_status,
+			name,
+			link,
+			title,
+			description,
+			visibility,
+			tag,
+			og_metadata
+		FROM shortcut
+		WHERE `+strings.Join(where, " AND ")+`
+		ORDER BY created_ts DESC`,
+		args...,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	list := make([]*storepb.Shortcut, 0)
+	for rows.Next() {
+		shortcut := &storepb.Shortcut{}
+		var rowStatus, visibility, tags, openGraphMetadataString string
+		if err := rows.Scan(
+			&shortcut.Id,
+			&shortcut.CreatorId,
+			&shortcut.CreatedTs,
+			&shortcut.UpdatedTs,
+			&rowStatus,
+			&shortcut.Name,
+			&shortcut.Link,
+			&shortcut.Title,
+			&shortcut.Description,
+			&visibility,
+			&tags,
+			&openGraphMetadataString,
+		); err != nil {
+			return nil, err
+		}
+		shortcut.RowStatus = convertStorepbRowStatus(rowStatus)
+		shortcut.Visibility = storepb.Visibility(storepb.Visibility_value[visibility])
+		shortcut.Tags = strings.Split(tags, " ")
+		var ogMetadata storepb.OpenGraphMetadata
+		if err := protojson.Unmarshal([]byte(openGraphMetadataString), &ogMetadata); err != nil {
+			return nil, err
+		}
+		shortcut.OgMetadata = &ogMetadata
+		list = append(list, shortcut)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
 func (s *Store) GetShortcut(ctx context.Context, find *FindShortcut) (*Shortcut, error) {
 	if find.ID != nil {
 		if cache, ok := s.shortcutCache.Load(*find.ID); ok {
@@ -295,6 +420,20 @@ func (s *Store) GetShortcut(ctx context.Context, find *FindShortcut) (*Shortcut,
 
 	shortcut := shortcuts[0]
 	s.shortcutCache.Store(shortcut.ID, shortcut)
+	return shortcut, nil
+}
+
+func (s *Store) GetShortcutV1(ctx context.Context, find *FindShortcut) (*storepb.Shortcut, error) {
+	shortcuts, err := s.ListShortcutsV1(ctx, find)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(shortcuts) == 0 {
+		return nil, nil
+	}
+
+	shortcut := shortcuts[0]
 	return shortcut, nil
 }
 

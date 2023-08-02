@@ -8,7 +8,7 @@ import (
 func convertRowStatusFromStore(rowStatus store.RowStatus) apiv2pb.RowStatus {
 	switch rowStatus {
 	case store.Normal:
-		return apiv2pb.RowStatus_ACTIVE
+		return apiv2pb.RowStatus_NORMAL
 	case store.Archived:
 		return apiv2pb.RowStatus_ARCHIVED
 	default:

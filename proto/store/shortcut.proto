@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package slash.store;
+
+import "store/common.proto";
+
+option go_package = "gen/store";
+
+message Shortcut {
+  int32 id = 1;
+
+  int32 creator_id = 2;
+
+  int64 created_ts = 3;
+
+  int64 updated_ts = 4;
+
+  RowStatus row_status = 5;
+
+  string name = 6;
+
+  string link = 7;
+
+  string title = 8;
+
+  repeated string tags = 9;
+
+  string description = 10;
+
+  Visibility visibility = 11;
+
+  OpenGraphMetadata og_metadata = 12;
+}
+
+message OpenGraphMetadata {
+  string title = 1;
+
+  string description = 2;
+
+  string image = 3;
+}
+
+enum Visibility {
+  VISIBILITY_UNSPECIFIED = 0;
+
+  PRIVATE = 1;
+
+  WORKSPACE = 2;
+
+  PUBLIC = 3;
+}

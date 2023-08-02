@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/boojack/slash/internal/util"
+	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
@@ -205,9 +206,9 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			find.Tag = &tag
 		}
 
-		list := []*store.Shortcut{}
+		list := []*storepb.Shortcut{}
 		find.VisibilityList = []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic}
-		visibleShortcutList, err := s.Store.ListShortcuts(ctx, find)
+		visibleShortcutList, err := s.Store.ListShortcutsV1(ctx, find)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to fetch shortcut list, err: %s", err)).SetInternal(err)
 		}
@@ -215,7 +216,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 		find.VisibilityList = []store.Visibility{store.VisibilityPrivate}
 		find.CreatorID = &userID
-		privateShortcutList, err := s.Store.ListShortcuts(ctx, find)
+		privateShortcutList, err := s.Store.ListShortcutsV1(ctx, find)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to fetch private shortcut list, err: %s", err)).SetInternal(err)
 		}
@@ -223,7 +224,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 		shortcutMessageList := []*Shortcut{}
 		for _, shortcut := range list {
-			shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStore(shortcut))
+			shortcutMessage, err := s.composeShortcut(ctx, convertShortcutFromStorepb(shortcut))
 			if err != nil {
 				return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to compose shortcut, err: %s", err)).SetInternal(err)
 			}
@@ -345,6 +346,27 @@ func convertShortcutFromStore(shortcut *store.Shortcut) *Shortcut {
 			Title:       shortcut.OpenGraphMetadata.Title,
 			Description: shortcut.OpenGraphMetadata.Description,
 			Image:       shortcut.OpenGraphMetadata.Image,
+		},
+	}
+}
+
+func convertShortcutFromStorepb(shortcut *storepb.Shortcut) *Shortcut {
+	return &Shortcut{
+		ID:          shortcut.Id,
+		CreatedTs:   shortcut.CreatedTs,
+		UpdatedTs:   shortcut.UpdatedTs,
+		CreatorID:   shortcut.CreatorId,
+		RowStatus:   RowStatus(shortcut.RowStatus.String()),
+		Name:        shortcut.Name,
+		Link:        shortcut.Link,
+		Title:       shortcut.Title,
+		Description: shortcut.Description,
+		Visibility:  Visibility(shortcut.Visibility.String()),
+		Tags:        shortcut.Tags,
+		OpenGraphMetadata: &OpenGraphMetadata{
+			Title:       shortcut.OgMetadata.Title,
+			Description: shortcut.OgMetadata.Description,
+			Image:       shortcut.OgMetadata.Image,
 		},
 	}
 }

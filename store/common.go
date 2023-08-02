@@ -1,5 +1,9 @@
 package store
 
+import (
+	storepb "github.com/boojack/slash/proto/gen/store"
+)
+
 // RowStatus is the status for a row.
 type RowStatus string
 
@@ -18,4 +22,14 @@ func (e RowStatus) String() string {
 		return "ARCHIVED"
 	}
 	return ""
+}
+
+func convertStorepbRowStatus(status string) storepb.RowStatus {
+	switch status {
+	case "NORMAL":
+		return storepb.RowStatus_NORMAL
+	case "ARCHIVED":
+		return storepb.RowStatus_ARCHIVED
+	}
+	return storepb.RowStatus_ROW_STATUS_UNSPECIFIED
 }

@@ -3,32 +3,29 @@
 
 ## Table of Contents
 
-- [api/v2/common.proto](#api_v2_common-proto)
-    - [RowStatus](#slash-api-v2-RowStatus)
+- [store/common.proto](#store_common-proto)
+    - [RowStatus](#slash-store-RowStatus)
   
-- [api/v2/user_service.proto](#api_v2_user_service-proto)
-    - [GetUserRequest](#slash-api-v2-GetUserRequest)
-    - [GetUserResponse](#slash-api-v2-GetUserResponse)
-    - [User](#slash-api-v2-User)
+- [store/shortcut.proto](#store_shortcut-proto)
+    - [OpenGraphMetadata](#slash-store-OpenGraphMetadata)
+    - [Shortcut](#slash-store-Shortcut)
   
-    - [Role](#slash-api-v2-Role)
-  
-    - [UserService](#slash-api-v2-UserService)
+    - [Visibility](#slash-store-Visibility)
   
 - [Scalar Value Types](#scalar-value-types)
 
 
 
-<a name="api_v2_common-proto"></a>
+<a name="store_common-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v2/common.proto
+## store/common.proto
 
 
  
 
 
-<a name="slash-api-v2-RowStatus"></a>
+<a name="slash-store-RowStatus"></a>
 
 ### RowStatus
 
@@ -48,58 +45,50 @@
 
 
 
-<a name="api_v2_user_service-proto"></a>
+<a name="store_shortcut-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v2/user_service.proto
+## store/shortcut.proto
 
 
 
-<a name="slash-api-v2-GetUserRequest"></a>
+<a name="slash-store-OpenGraphMetadata"></a>
 
-### GetUserRequest
+### OpenGraphMetadata
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| title | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| image | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-store-Shortcut"></a>
+
+### Shortcut
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-GetUserResponse"></a>
-
-### GetUserResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v2-User) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-User"></a>
-
-### User
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  |  |
-| row_status | [RowStatus](#slash-api-v2-RowStatus) |  |  |
+| creator_id | [int32](#int32) |  |  |
 | created_ts | [int64](#int64) |  |  |
 | updated_ts | [int64](#int64) |  |  |
-| role | [Role](#slash-api-v2-Role) |  |  |
-| email | [string](#string) |  |  |
-| nickname | [string](#string) |  |  |
+| row_status | [RowStatus](#slash-store-RowStatus) |  |  |
+| name | [string](#string) |  |  |
+| link | [string](#string) |  |  |
+| title | [string](#string) |  |  |
+| tags | [string](#string) | repeated |  |
+| description | [string](#string) |  |  |
+| visibility | [Visibility](#slash-store-Visibility) |  |  |
+| og_metadata | [OpenGraphMetadata](#slash-store-OpenGraphMetadata) |  |  |
 
 
 
@@ -108,31 +97,22 @@
  
 
 
-<a name="slash-api-v2-Role"></a>
+<a name="slash-store-Visibility"></a>
 
-### Role
+### Visibility
 
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| ROLE_UNSPECIFIED | 0 |  |
-| ADMIN | 1 |  |
-| USER | 2 |  |
+| VISIBILITY_UNSPECIFIED | 0 |  |
+| PRIVATE | 1 |  |
+| WORKSPACE | 2 |  |
+| PUBLIC | 3 |  |
 
 
  
 
  
-
-
-<a name="slash-api-v2-UserService"></a>
-
-### UserService
-
-
-| Method Name | Request Type | Response Type | Description |
-| ----------- | ------------ | ------------- | ------------|
-| GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) |  |
 
  
 

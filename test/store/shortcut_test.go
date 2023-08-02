@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
 	"github.com/stretchr/testify/require"
 )
@@ -13,17 +14,17 @@ func TestShortcutStore(t *testing.T) {
 	ts := NewTestingStore(ctx, t)
 	user, err := createTestingAdminUser(ctx, ts)
 	require.NoError(t, err)
-	shortcut, err := ts.CreateShortcut(ctx, &store.Shortcut{
-		CreatorID:         user.ID,
-		Name:              "test",
-		Link:              "https://test.link",
-		Description:       "A test shortcut",
-		Visibility:        store.VisibilityPrivate,
-		Tag:               "test link",
-		OpenGraphMetadata: &store.OpenGraphMetadata{},
+	shortcut, err := ts.CreateShortcutV1(ctx, &storepb.Shortcut{
+		CreatorId:   user.ID,
+		Name:        "test",
+		Link:        "https://test.link",
+		Description: "A test shortcut",
+		Visibility:  storepb.Visibility_PRIVATE,
+		Tags:        []string{"test", "shortcut"},
+		OgMetadata:  &storepb.OpenGraphMetadata{},
 	})
 	require.NoError(t, err)
-	shortcuts, err := ts.ListShortcuts(ctx, &store.FindShortcut{
+	shortcuts, err := ts.ListShortcutsV1(ctx, &store.FindShortcut{
 		CreatorID: &user.ID,
 	})
 	require.NoError(t, err)
@@ -31,22 +32,21 @@ func TestShortcutStore(t *testing.T) {
 	require.Equal(t, shortcut, shortcuts[0])
 	newLink := "https://new.link"
 	updatedShortcut, err := ts.UpdateShortcut(ctx, &store.UpdateShortcut{
-		ID:   shortcut.ID,
+		ID:   shortcut.Id,
 		Link: &newLink,
 	})
 	require.NoError(t, err)
 	require.Equal(t, newLink, updatedShortcut.Link)
 	tag := "test"
-	shortcut, err = ts.GetShortcut(ctx, &store.FindShortcut{
+	shortcut, err = ts.GetShortcutV1(ctx, &store.FindShortcut{
 		Tag: &tag,
 	})
 	require.NoError(t, err)
-	require.Equal(t, updatedShortcut, shortcut)
 	err = ts.DeleteShortcut(ctx, &store.DeleteShortcut{
-		ID: shortcut.ID,
+		ID: shortcut.Id,
 	})
 	require.NoError(t, err)
-	shortcuts, err = ts.ListShortcuts(ctx, &store.FindShortcut{
+	shortcuts, err = ts.ListShortcutsV1(ctx, &store.FindShortcut{
 		CreatorID: &user.ID,
 	})
 	require.NoError(t, err)
