@@ -46,8 +46,8 @@ const ShortcutView = (props: Props) => {
                   className={classNames(
                     "max-w-full flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:underline"
                   )}
-                  target="_blank"
                   href={shortcutLink}
+                  target="_blank"
                 >
                   <div className="truncate">
                     <span>{shortcut.title}</span>

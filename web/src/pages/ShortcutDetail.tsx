@@ -1,4 +1,5 @@
 import { Tooltip } from "@mui/joy";
+import classNames from "classnames";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -73,14 +74,25 @@ const ShortcutDetail = () => {
           )}
         </div>
         <a
-          className="mt-4 text-2xl flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
-          target="_blank"
+          className={classNames(
+            "group max-w-full flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:underline"
+          )}
           href={shortcutLink}
+          target="_blank"
         >
-          <span className="text-gray-400">s/</span>
-          <span className="max-w-[14rem] truncate">{shortcut.name}</span>
-          <span className="hidden group-hover:block ml-1 cursor-pointer">
-            <Icon.ExternalLink className="w-4 h-auto text-gray-600" />
+          <div className="truncate text-3xl">
+            <span>{shortcut.title}</span>
+            {shortcut.title ? (
+              <span className="text-gray-400">(s/{shortcut.name})</span>
+            ) : (
+              <>
+                <span className="text-gray-400">s/</span>
+                <span className="truncate">{shortcut.name}</span>
+              </>
+            )}
+          </div>
+          <span className="hidden group-hover:block ml-1 cursor-pointer shrink-0">
+            <Icon.ExternalLink className="w-6 h-auto text-gray-600" />
           </span>
         </a>
         <div className="mt-2 w-full flex flex-row justify-normal items-center space-x-2">

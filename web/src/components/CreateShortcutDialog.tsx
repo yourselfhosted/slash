@@ -161,6 +161,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           id: shortcutId,
           name: state.shortcutCreate.name,
           link: state.shortcutCreate.link,
+          title: state.shortcutCreate.title,
           description: state.shortcutCreate.description,
           visibility: state.shortcutCreate.visibility,
           tags: tag.split(" "),
