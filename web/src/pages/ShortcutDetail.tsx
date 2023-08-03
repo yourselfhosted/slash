@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { showCommonDialog } from "../components/Alert";
-import AnalyticsDialog from "../components/AnalyticsDialog";
+import AnalyticsView from "../components/AnalyticsView";
 import Dropdown from "../components/common/Dropdown";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
 import GenerateQRCodeDialog from "../components/GenerateQRCodeDialog";
@@ -32,7 +32,6 @@ const ShortcutDetail = () => {
   });
   const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
-  const [showAnalyticsDialog, setShowAnalyticsDialog] = useState<boolean>(false);
   const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
 
@@ -70,7 +69,7 @@ const ShortcutDetail = () => {
           {favicon ? (
             <img className="w-full h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
           ) : (
-            <Icon.CircleSlash className="w-6 h-auto text-gray-400" />
+            <Icon.CircleSlash className="w-full h-auto text-gray-400" />
           )}
         </div>
         <a
@@ -119,12 +118,6 @@ const ShortcutDetail = () => {
                     <Icon.Edit className="w-4 h-auto mr-2" /> Edit
                   </button>
                   <button
-                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
-                    onClick={() => setShowAnalyticsDialog(true)}
-                  >
-                    <Icon.BarChart2 className="w-4 h-auto mr-2" /> Analytics
-                  </button>
-                  <button
                     className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     onClick={() => {
                       handleDeleteShortcutButtonClick(shortcut);
@@ -141,7 +134,7 @@ const ShortcutDetail = () => {
         <div className="mt-4 ml-1 flex flex-row justify-start items-start flex-wrap gap-2">
           {shortcut.tags.map((tag) => {
             return (
-              <span key={tag} className="max-w-[8rem] truncate text-gray-400 text font-mono leading-4 cursor-pointer hover:text-gray-600">
+              <span key={tag} className="max-w-[8rem] truncate text-gray-400 text font-mono leading-4">
                 #{tag}
               </span>
             );
@@ -156,20 +149,25 @@ const ShortcutDetail = () => {
             </div>
           </Tooltip>
           <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm">
+            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
               <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
               {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
-            <div
-              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm"
-              onClick={() => setShowAnalyticsDialog(true)}
-            >
+            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
               <Icon.BarChart2 className="w-4 h-auto mr-1" />
               {shortcut.view} visits
             </div>
           </Tooltip>
+        </div>
+
+        <div className="w-full flex flex-col mt-8">
+          <h3 className="pl-1 font-medium text-lg flex flex-row justify-start items-center">
+            <Icon.BarChart2 className="w-6 h-auto mr-1" />
+            Analytics
+          </h3>
+          <AnalyticsView className="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4" shortcutId={shortcut.id} />
         </div>
       </div>
 
@@ -186,8 +184,6 @@ const ShortcutDetail = () => {
           }
         />
       )}
-
-      {showAnalyticsDialog && <AnalyticsDialog shortcutId={shortcut.id} onClose={() => setShowAnalyticsDialog(false)} />}
     </>
   );
 };
