@@ -33,11 +33,16 @@ const Dropdown: React.FC<Props> = (props: Props) => {
     }
   }, [dropdownStatus]);
 
+  const handleToggleDropdownStatus = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+    toggleDropdownStatus();
+  };
+
   return (
     <div
       ref={dropdownWrapperRef}
       className={`relative flex flex-col justify-start items-start select-none ${className ?? ""}`}
-      onClick={() => toggleDropdownStatus()}
+      onClick={handleToggleDropdownStatus}
     >
       {trigger ? (
         trigger
