@@ -37,3 +37,28 @@ docker pull yourselfhosted/slash:latest
 ```
 
 Finally, restart Slash by following the steps in [Docker Run](#docker-run).
+
+# Self-hosting Slash with Docker Compose
+
+## Requirements
+
+The only requirement is a server with Docker installed.
+
+## Docker Compose Run
+
+Assume that docker compose is deployed in the `/opt/slash` directory
+
+```bash
+mkdir -p /opt/slash && cd /opt/slash
+curl -#LO https://github.com/boojack/slash/raw/main/docker-compose.yml
+docker compose up -d
+```
+This will start Slash in the background and expose it on port `5231`. Data is stored in Docker Volume `slash_slash`. You can customize the port and backup your volume.
+
+## Upgrade
+
+```bash
+cd /opt/slash
+docker compose pull
+docker compose up -d
+```
