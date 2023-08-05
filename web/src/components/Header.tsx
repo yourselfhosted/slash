@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import * as api from "../helpers/api";
 import useUserStore from "../stores/v1/user";
 import AboutDialog from "./AboutDialog";
-import Dropdown from "./common/Dropdown";
 import Icon from "./Icon";
+import Dropdown from "./common/Dropdown";
 
 const Header: React.FC = () => {
   const currentUser = useUserStore().getCurrentUser();

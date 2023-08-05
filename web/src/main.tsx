@@ -3,10 +3,10 @@ import { createRoot } from "react-dom/client";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
+import "./css/index.css";
+import "./i18n";
 import router from "./routers";
 import store from "./stores";
-import "./i18n";
-import "./css/index.css";
 
 const container = document.getElementById("root");
 const root = createRoot(container as HTMLElement);

@@ -1,8 +1,8 @@
 import { Button, Divider, Option, Select } from "@mui/joy";
 import { toast } from "react-hot-toast";
 import useViewStore from "../stores/v1/view";
-import Dropdown from "./common/Dropdown";
 import Icon from "./Icon";
+import Dropdown from "./common/Dropdown";
 
 const ViewSetting = () => {
   const viewStore = useViewStore();

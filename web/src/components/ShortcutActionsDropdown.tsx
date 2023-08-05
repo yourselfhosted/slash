@@ -3,10 +3,10 @@ import { shortcutService } from "../services";
 import useUserStore from "../stores/v1/user";
 import { showCommonDialog } from "./Alert";
 import AnalyticsDialog from "./AnalyticsDialog";
-import Dropdown from "./common/Dropdown";
 import CreateShortcutDialog from "./CreateShortcutDialog";
 import GenerateQRCodeDialog from "./GenerateQRCodeDialog";
 import Icon from "./Icon";
+import Dropdown from "./common/Dropdown";
 
 interface Props {
   shortcut: Shortcut;

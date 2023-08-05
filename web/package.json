@@ -30,7 +30,7 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.0",
     "@types/lodash-es": "^4.17.5",
     "@types/node": "^20.3.1",
     "@types/react": "^18.2.18",
@@ -44,7 +44,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
     "postcss": "^8.4.21",
-    "prettier": "2.5.1",
+    "prettier": "2.6.2",
     "typescript": "^5.0.4",
     "vite": "^4.2.1"
   }
