@@ -7,6 +7,9 @@
     - [RowStatus](#slash-api-v2-RowStatus)
   
 - [api/v2/user_service.proto](#api_v2_user_service-proto)
+    - [GetUserAccessTokensRequest](#slash-api-v2-GetUserAccessTokensRequest)
+    - [GetUserAccessTokensResponse](#slash-api-v2-GetUserAccessTokensResponse)
+    - [GetUserAccessTokensResponse.AccessToken](#slash-api-v2-GetUserAccessTokensResponse-AccessToken)
     - [GetUserRequest](#slash-api-v2-GetUserRequest)
     - [GetUserResponse](#slash-api-v2-GetUserResponse)
     - [User](#slash-api-v2-User)
@@ -52,6 +55,54 @@
 <p align="right"><a href="#top">Top</a></p>
 
 ## api/v2/user_service.proto
+
+
+
+<a name="slash-api-v2-GetUserAccessTokensRequest"></a>
+
+### GetUserAccessTokensRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetUserAccessTokensResponse"></a>
+
+### GetUserAccessTokensResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_tokens | [GetUserAccessTokensResponse.AccessToken](#slash-api-v2-GetUserAccessTokensResponse-AccessToken) | repeated |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetUserAccessTokensResponse-AccessToken"></a>
+
+### GetUserAccessTokensResponse.AccessToken
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_token | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| expires_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
 
 
 
@@ -132,7 +183,8 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) |  |
+| GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) | GetUser returns a user by id. |
+| GetUserAccessTokens | [GetUserAccessTokensRequest](#slash-api-v2-GetUserAccessTokensRequest) | [GetUserAccessTokensResponse](#slash-api-v2-GetUserAccessTokensResponse) | GetUserAccessTokens returns a list of access tokens for a user. |
 
  
 

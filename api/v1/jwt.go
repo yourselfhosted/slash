@@ -123,7 +123,6 @@ func JWTMiddleware(s *APIV1Service, next echo.HandlerFunc, secret string) echo.H
 			}
 			return nil, errors.Errorf("unexpected access token kid=%v", t.Header["kid"])
 		})
-
 		if err != nil {
 			return echo.NewHTTPError(http.StatusUnauthorized, errors.Wrap(err, "Invalid or expired access token"))
 		}
@@ -164,7 +163,7 @@ func JWTMiddleware(s *APIV1Service, next echo.HandlerFunc, secret string) echo.H
 
 func validateAccessToken(accessTokenString string, userAccessTokens []*storepb.AccessTokensUserSetting_AccessToken) bool {
 	for _, userAccessToken := range userAccessTokens {
-		if accessTokenString == userAccessToken.AccessToken && userAccessToken.ExpiresTime.AsTime().After(time.Now()) {
+		if accessTokenString == userAccessToken.AccessToken {
 			return true
 		}
 	}

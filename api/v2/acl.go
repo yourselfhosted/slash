@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/internal/util"
@@ -170,7 +169,7 @@ func audienceContains(audience jwt.ClaimStrings, token string) bool {
 
 func validateAccessToken(accessTokenString string, userAccessTokens []*storepb.AccessTokensUserSetting_AccessToken) bool {
 	for _, userAccessToken := range userAccessTokens {
-		if accessTokenString == userAccessToken.AccessToken && userAccessToken.ExpiresTime.AsTime().After(time.Now()) {
+		if accessTokenString == userAccessToken.AccessToken {
 			return true
 		}
 	}

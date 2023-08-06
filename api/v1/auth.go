@@ -13,7 +13,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SignInRequest struct {
@@ -136,8 +135,6 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 	userAccessToken := storepb.AccessTokensUserSetting_AccessToken{
 		AccessToken: accessToken,
 		Description: "user sign in",
-		CreatedTime: timestamppb.Now(),
-		ExpiresTime: timestamppb.New(time.Now().Add(auth.AccessTokenDuration)),
 	}
 	userAccessTokens = append(userAccessTokens, &userAccessToken)
 	if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{

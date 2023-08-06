@@ -5,12 +5,19 @@ package slash.api.v2;
 import "api/v2/common.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "gen/api/v2";
 
 service UserService {
+  // GetUser returns a user by id.
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {
     option (google.api.http) = {get: "/api/v2/users/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+  // GetUserAccessTokens returns a list of access tokens for a user.
+  rpc GetUserAccessTokens(GetUserAccessTokensRequest) returns (GetUserAccessTokensResponse) {
+    option (google.api.http) = {get: "/api/v2/users/{id}/access_tokens"};
     option (google.api.method_signature) = "id";
   }
 }
@@ -45,4 +52,18 @@ message GetUserRequest {
 
 message GetUserResponse {
   User user = 1;
+}
+
+message GetUserAccessTokensRequest {
+  int32 id = 1;
+}
+
+message GetUserAccessTokensResponse {
+  message AccessToken {
+    string access_token = 1;
+    string description = 2;
+    google.protobuf.Timestamp created_time = 3;
+    google.protobuf.Timestamp expires_time = 4;
+  }
+  repeated AccessToken access_tokens = 1;
 }

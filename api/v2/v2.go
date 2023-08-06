@@ -29,7 +29,7 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 			authProvider.AuthenticationInterceptor,
 		),
 	)
-	apiv2pb.RegisterUserServiceServer(grpcServer, NewUserService(store))
+	apiv2pb.RegisterUserServiceServer(grpcServer, NewUserService(secret, store))
 
 	return &APIV2Service{
 		Secret:         secret,
