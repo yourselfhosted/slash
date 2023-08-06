@@ -71,8 +71,8 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
-| description | [string](#string) |  |  |
-| expiration | [google.protobuf.Duration](#google-protobuf-Duration) |  |  |
+| description | [string](#string) |  | description is the title/description of the access token. |
+| expiration | [google.protobuf.Duration](#google-protobuf-Duration) |  | expiration is the expires duration of the access token. |
 
 
 

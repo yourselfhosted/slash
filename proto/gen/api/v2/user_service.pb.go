@@ -362,9 +362,11 @@ type CreateUserAccessTokenRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// id is the user id.
-	Id          int32                `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Description string               `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	Expiration  *durationpb.Duration `protobuf:"bytes,3,opt,name=expiration,proto3" json:"expiration,omitempty"`
+	Id int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// description is the title/description of the access token.
+	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	// expiration is the expires duration of the access token.
+	Expiration *durationpb.Duration `protobuf:"bytes,3,opt,name=expiration,proto3" json:"expiration,omitempty"`
 }
 
 func (x *CreateUserAccessTokenRequest) Reset() {
