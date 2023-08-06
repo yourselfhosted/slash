@@ -1,5 +1,6 @@
+import AccessTokenSection from "../components/setting/AccessTokenSection";
 import AccountSection from "../components/setting/AccountSection";
-import UserSection from "../components/setting/UserSection";
+import MemberSection from "../components/setting/MemberSection";
 import WorkspaceSection from "../components/setting/WorkspaceSection";
 import useUserStore from "../stores/v1/user";
 
@@ -10,9 +11,10 @@ const Setting: React.FC = () => {
   return (
     <div className="mx-auto max-w-6xl w-full px-3 md:px-12 py-6 flex flex-col justify-start items-start space-y-4">
       <AccountSection />
+      <AccessTokenSection />
       {isAdmin && (
         <>
-          <UserSection />
+          <MemberSection />
           <WorkspaceSection />
         </>
       )}

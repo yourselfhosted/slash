@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, Duration, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { RowStatus } from "./common_pb.js";
 
@@ -191,18 +191,9 @@ export declare class CreateUserAccessTokenRequest extends Message<CreateUserAcce
   id: number;
 
   /**
-   *  description is the title/description of the access token.
-   *
-   * @generated from field: string description = 2;
+   * @generated from field: slash.api.v2.UserAccessToken user_access_token = 2;
    */
-  description: string;
-
-  /**
-   * expiration is the expires duration of the access token.
-   *
-   * @generated from field: google.protobuf.Duration expiration = 3;
-   */
-  expiration?: Duration;
+  userAccessToken?: UserAccessToken;
 
   constructor(data?: PartialMessage<CreateUserAccessTokenRequest>);
 

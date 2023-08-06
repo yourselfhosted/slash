@@ -134,7 +134,7 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 	}
 	userAccessToken := storepb.AccessTokensUserSetting_AccessToken{
 		AccessToken: accessToken,
-		Description: "user sign in",
+		Description: "Account sign in",
 	}
 	userAccessTokens = append(userAccessTokens, &userAccessToken)
 	if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{

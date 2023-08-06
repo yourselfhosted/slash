@@ -2,7 +2,7 @@ package v2
 
 import (
 	"context"
-	"time"
+	"fmt"
 
 	"github.com/boojack/slash/api/auth"
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
@@ -108,7 +108,9 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2p
 		return nil, status.Errorf(codes.NotFound, "user not found")
 	}
 
-	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, time.Now().Add(request.Expiration.AsDuration()), s.Secret)
+	fmt.Println(request.UserAccessToken)
+
+	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, request.UserAccessToken.ExpiresAt.AsTime(), s.Secret)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to generate access token: %v", err)
 	}
@@ -130,14 +132,14 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2p
 	}
 
 	// Upsert the access token to user setting store.
-	if err := s.UpsertAccessTokenToStore(ctx, user, accessToken); err != nil {
+	if err := s.UpsertAccessTokenToStore(ctx, user, accessToken, request.UserAccessToken.Description); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to upsert access token to store: %v", err)
 	}
 
 	response := &apiv2pb.CreateUserAccessTokenResponse{
 		AccessToken: &apiv2pb.UserAccessToken{
 			AccessToken: accessToken,
-			Description: request.Description,
+			Description: request.UserAccessToken.Description,
 			IssuedAt:    timestamppb.New(claims.IssuedAt.Time),
 			ExpiresAt:   timestamppb.New(claims.ExpiresAt.Time),
 		},
@@ -177,14 +179,14 @@ func (s *UserService) DeleteUserAccessToken(ctx context.Context, request *apiv2p
 	return &apiv2pb.DeleteUserAccessTokenResponse{}, nil
 }
 
-func (s *UserService) UpsertAccessTokenToStore(ctx context.Context, user *store.User, accessToken string) error {
+func (s *UserService) UpsertAccessTokenToStore(ctx context.Context, user *store.User, accessToken, description string) error {
 	userAccessTokens, err := s.Store.GetUserAccessTokens(ctx, user.ID)
 	if err != nil {
 		return errors.Wrap(err, "failed to get user access tokens")
 	}
 	userAccessToken := storepb.AccessTokensUserSetting_AccessToken{
 		AccessToken: accessToken,
-		Description: "user sign in",
+		Description: description,
 	}
 	userAccessTokens = append(userAccessTokens, &userAccessToken)
 	if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{

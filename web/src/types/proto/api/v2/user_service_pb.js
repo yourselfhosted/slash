@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Duration, proto3, Timestamp } from "@bufbuild/protobuf";
+import { proto3, Timestamp } from "@bufbuild/protobuf";
 import { RowStatus } from "./common_pb.js";
 
 /**
@@ -81,8 +81,7 @@ export const CreateUserAccessTokenRequest = proto3.makeMessageType(
   "slash.api.v2.CreateUserAccessTokenRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 2, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "expiration", kind: "message", T: Duration },
+    { no: 2, name: "user_access_token", kind: "message", T: UserAccessToken },
   ],
 );
 

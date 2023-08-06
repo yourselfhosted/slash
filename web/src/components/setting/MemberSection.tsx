@@ -31,6 +31,8 @@ const MemberSection = () => {
             </div>
             <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
               <Button
+                variant="outlined"
+                color="neutral"
                 onClick={() => {
                   setShowCreateUserDialog(true);
                   setCurrentEditingUser(undefined);
