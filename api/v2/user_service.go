@@ -2,7 +2,6 @@ package v2
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/boojack/slash/api/auth"
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
@@ -107,8 +106,6 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2p
 	if user == nil {
 		return nil, status.Errorf(codes.NotFound, "user not found")
 	}
-
-	fmt.Println(request.UserAccessToken)
 
 	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, request.UserAccessToken.ExpiresAt.AsTime(), s.Secret)
 	if err != nil {
