@@ -5,6 +5,7 @@ package slash.api.v2;
 import "api/v2/common.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "gen/api/v2";
@@ -76,7 +77,10 @@ message ListUserAccessTokensResponse {
 message CreateUserAccessTokenRequest {
   // id is the user id.
   int32 id = 1;
+  //  description is the title/description of the access token.
   string description = 2;
+  // expiration is the expires duration of the access token.
+  google.protobuf.Duration expiration = 3;
 }
 
 message CreateUserAccessTokenResponse {

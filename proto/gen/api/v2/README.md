@@ -72,6 +72,7 @@
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
 | description | [string](#string) |  |  |
+| expiration | [google.protobuf.Duration](#google-protobuf-Duration) |  |  |
 
 
 

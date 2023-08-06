@@ -31,22 +31,21 @@ type ClaimsMessage struct {
 
 // GenerateAccessToken generates an access token.
 // username is the email of the user.
-func GenerateAccessToken(username string, userID int32, secret string) (string, error) {
-	expirationTime := time.Now().Add(AccessTokenDuration)
-	return generateToken(username, userID, expirationTime, []byte(secret))
+func GenerateAccessToken(username string, userID int32, expirationTime time.Time, secret string) (string, error) {
+	return generateToken(username, userID, AccessTokenAudienceName, expirationTime, []byte(secret))
 }
 
 // generateToken generates a jwt token.
-func generateToken(username string, userID int32, expirationTime time.Time, secret []byte) (string, error) {
+func generateToken(username string, userID int32, audience string, expirationTime time.Time, secret []byte) (string, error) {
 	// Create the JWT claims, which includes the username and expiry time.
 	claims := &ClaimsMessage{
 		Name: username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Audience: jwt.ClaimStrings{AccessTokenAudienceName},
+			Issuer:   Issuer,
+			Audience: jwt.ClaimStrings{audience},
 			// In JWT, the expiry time is expressed as unix milliseconds.
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			Issuer:    Issuer,
 			Subject:   fmt.Sprint(userID),
 		},
 	}

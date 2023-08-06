@@ -2,6 +2,7 @@ package v2
 
 import (
 	"context"
+	"time"
 
 	"github.com/boojack/slash/api/auth"
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
@@ -107,7 +108,7 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2p
 		return nil, status.Errorf(codes.NotFound, "user not found")
 	}
 
-	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, s.Secret)
+	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, time.Now().Add(request.Expiration.AsDuration()), s.Secret)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to generate access token: %v", err)
 	}
