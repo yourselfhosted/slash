@@ -90,7 +90,7 @@ devDependencies:
     version: 6.2.0(eslint@8.46.0)(typescript@5.0.4)
   '@vitejs/plugin-react-swc':
     specifier: ^3.0.0
-    version: 3.0.0(vite@4.2.1)
+    version: 3.0.0(vite@4.2.3)
   autoprefixer:
     specifier: ^10.4.2
     version: 10.4.2(postcss@8.4.21)
@@ -116,8 +116,8 @@ devDependencies:
     specifier: ^5.0.4
     version: 5.0.4
   vite:
-    specifier: ^4.2.1
-    version: 4.2.1(@types/node@20.3.1)
+    specifier: ^4.2.3
+    version: 4.2.3(@types/node@20.3.1)
 
 packages:
 
@@ -1190,13 +1190,13 @@ packages:
       eslint-visitor-keys: 3.4.2
     dev: true
 
-  /@vitejs/plugin-react-swc@3.0.0(vite@4.2.1):
+  /@vitejs/plugin-react-swc@3.0.0(vite@4.2.3):
     resolution: {integrity: sha512-vYlodz/mjYRbxMGbHzDgR8aPR+z8n7K/enWkyBGH096xrL2DIPCuTvQVRYPTXGyy6wO7OFiMxZ3r4nKQD1sH0A==}
     peerDependencies:
       vite: ^4.0.0
     dependencies:
       '@swc/core': 1.3.73
-      vite: 4.2.1(@types/node@20.3.1)
+      vite: 4.2.3(@types/node@20.3.1)
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -2696,7 +2696,6 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
-    dev: false
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -3268,8 +3267,8 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: false
 
-  /vite@4.2.1(@types/node@20.3.1):
-    resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==}
+  /vite@4.2.3(@types/node@20.3.1):
+    resolution: {integrity: sha512-kLU+m2q0Y434Y1kCy3TchefAdtFso0ILi0dLyFV8Us3InXTU11H/B5ZTqCKIQHzSKNxVG/yEx813EA9f1imQ9A==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -3295,7 +3294,7 @@ packages:
     dependencies:
       '@types/node': 20.3.1
       esbuild: 0.17.19
-      postcss: 8.4.21
+      postcss: 8.4.27
       resolve: 1.22.2
       rollup: 3.27.0
     optionalDependencies:
