@@ -12,6 +12,13 @@
   
     - [Visibility](#slash-store-Visibility)
   
+- [store/user_setting.proto](#store_user_setting-proto)
+    - [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting)
+    - [AccessTokensUserSetting.AccessToken](#slash-store-AccessTokensUserSetting-AccessToken)
+    - [UserSetting](#slash-store-UserSetting)
+  
+    - [UserSettingKey](#slash-store-UserSettingKey)
+  
 - [Scalar Value Types](#scalar-value-types)
 
 
@@ -108,6 +115,85 @@
 | PRIVATE | 1 |  |
 | WORKSPACE | 2 |  |
 | PUBLIC | 3 |  |
+
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="store_user_setting-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## store/user_setting.proto
+
+
+
+<a name="slash-store-AccessTokensUserSetting"></a>
+
+### AccessTokensUserSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_tokens | [AccessTokensUserSetting.AccessToken](#slash-store-AccessTokensUserSetting-AccessToken) | repeated |  |
+
+
+
+
+
+
+<a name="slash-store-AccessTokensUserSetting-AccessToken"></a>
+
+### AccessTokensUserSetting.AccessToken
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_token | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| expires_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| revoked | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="slash-store-UserSetting"></a>
+
+### UserSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_id | [int32](#int32) |  |  |
+| key | [UserSettingKey](#slash-store-UserSettingKey) |  |  |
+| access_tokens_user_setting | [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="slash-store-UserSettingKey"></a>
+
+### UserSettingKey
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| USER_SETTING_KEY_UNSPECIFIED | 0 |  |
+| USER_SETTING_ACCESS_TOKENS | 1 |  |
 
 
  

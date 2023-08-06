@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package slash.store;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gen/store";
+
+message UserSetting {
+  int32 user_id = 1;
+
+  UserSettingKey key = 2;
+
+  oneof value {
+    AccessTokensUserSetting access_tokens_user_setting = 3;
+  }
+}
+
+enum UserSettingKey {
+  USER_SETTING_KEY_UNSPECIFIED = 0;
+
+  USER_SETTING_ACCESS_TOKENS = 1;
+}
+
+message AccessTokensUserSetting {
+  message AccessToken {
+    string access_token = 1;
+    string description = 2;
+    google.protobuf.Timestamp created_time = 3;
+    google.protobuf.Timestamp expires_time = 4;
+    bool revoked = 5;
+  }
+  repeated AccessToken access_tokens = 1;
+}
