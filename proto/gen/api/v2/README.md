@@ -7,12 +7,16 @@
     - [RowStatus](#slash-api-v2-RowStatus)
   
 - [api/v2/user_service.proto](#api_v2_user_service-proto)
-    - [GetUserAccessTokensRequest](#slash-api-v2-GetUserAccessTokensRequest)
-    - [GetUserAccessTokensResponse](#slash-api-v2-GetUserAccessTokensResponse)
-    - [GetUserAccessTokensResponse.AccessToken](#slash-api-v2-GetUserAccessTokensResponse-AccessToken)
+    - [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest)
+    - [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse)
+    - [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest)
+    - [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse)
     - [GetUserRequest](#slash-api-v2-GetUserRequest)
     - [GetUserResponse](#slash-api-v2-GetUserResponse)
+    - [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest)
+    - [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse)
     - [User](#slash-api-v2-User)
+    - [UserAccessToken](#slash-api-v2-UserAccessToken)
   
     - [Role](#slash-api-v2-Role)
   
@@ -58,48 +62,57 @@
 
 
 
-<a name="slash-api-v2-GetUserAccessTokensRequest"></a>
+<a name="slash-api-v2-CreateUserAccessTokenRequest"></a>
 
-### GetUserAccessTokensRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-GetUserAccessTokensResponse"></a>
-
-### GetUserAccessTokensResponse
+### CreateUserAccessTokenRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| access_tokens | [GetUserAccessTokensResponse.AccessToken](#slash-api-v2-GetUserAccessTokensResponse-AccessToken) | repeated |  |
-
-
-
-
-
-
-<a name="slash-api-v2-GetUserAccessTokensResponse-AccessToken"></a>
-
-### GetUserAccessTokensResponse.AccessToken
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| access_token | [string](#string) |  |  |
+| id | [int32](#int32) |  | id is the user id. |
 | description | [string](#string) |  |  |
-| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| expires_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateUserAccessTokenResponse"></a>
+
+### CreateUserAccessTokenResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_token | [UserAccessToken](#slash-api-v2-UserAccessToken) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteUserAccessTokenRequest"></a>
+
+### DeleteUserAccessTokenRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  | id is the user id. |
+| access_token | [string](#string) |  | access_token is the access token to delete. |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteUserAccessTokenResponse"></a>
+
+### DeleteUserAccessTokenResponse
+
 
 
 
@@ -136,6 +149,36 @@
 
 
 
+<a name="slash-api-v2-ListUserAccessTokensRequest"></a>
+
+### ListUserAccessTokensRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  | id is the user id. |
+
+
+
+
+
+
+<a name="slash-api-v2-ListUserAccessTokensResponse"></a>
+
+### ListUserAccessTokensResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_tokens | [UserAccessToken](#slash-api-v2-UserAccessToken) | repeated |  |
+
+
+
+
+
+
 <a name="slash-api-v2-User"></a>
 
 ### User
@@ -151,6 +194,24 @@
 | role | [Role](#slash-api-v2-Role) |  |  |
 | email | [string](#string) |  |  |
 | nickname | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UserAccessToken"></a>
+
+### UserAccessToken
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_token | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| issued_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| expires_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 
 
 
@@ -184,7 +245,9 @@
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) | GetUser returns a user by id. |
-| GetUserAccessTokens | [GetUserAccessTokensRequest](#slash-api-v2-GetUserAccessTokensRequest) | [GetUserAccessTokensResponse](#slash-api-v2-GetUserAccessTokensResponse) | GetUserAccessTokens returns a list of access tokens for a user. |
+| ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |
+| CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest) | [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse) | CreateUserAccessToken creates a new access token for a user. |
+| DeleteUserAccessToken | [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest) | [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse) | DeleteUserAccessToken deletes an access token for a user. |
 
  
 

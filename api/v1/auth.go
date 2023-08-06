@@ -51,7 +51,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusUnauthorized, "unmatched email and password")
 		}
 
-		accessToken, err := GenerateAccessToken(user.Email, user.ID, secret)
+		accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, secret)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to generate tokens, err: %s", err)).SetInternal(err)
 		}
@@ -107,7 +107,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create user, err: %s", err)).SetInternal(err)
 		}
 
-		accessToken, err := GenerateAccessToken(user.Email, user.ID, secret)
+		accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, secret)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to generate tokens, err: %s", err)).SetInternal(err)
 		}
@@ -149,12 +149,6 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 		return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to upsert user setting, err: %s", err)).SetInternal(err)
 	}
 	return nil
-}
-
-// GenerateAccessToken generates an access token for web.
-func GenerateAccessToken(username string, userID int32, secret string) (string, error) {
-	expirationTime := time.Now().Add(auth.AccessTokenDuration)
-	return generateToken(username, userID, auth.AccessTokenAudienceName, expirationTime, []byte(secret))
 }
 
 // RemoveTokensAndCookies removes the jwt token from the cookies.

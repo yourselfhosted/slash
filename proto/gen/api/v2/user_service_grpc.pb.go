@@ -19,8 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserService_GetUser_FullMethodName             = "/slash.api.v2.UserService/GetUser"
-	UserService_GetUserAccessTokens_FullMethodName = "/slash.api.v2.UserService/GetUserAccessTokens"
+	UserService_GetUser_FullMethodName               = "/slash.api.v2.UserService/GetUser"
+	UserService_ListUserAccessTokens_FullMethodName  = "/slash.api.v2.UserService/ListUserAccessTokens"
+	UserService_CreateUserAccessToken_FullMethodName = "/slash.api.v2.UserService/CreateUserAccessToken"
+	UserService_DeleteUserAccessToken_FullMethodName = "/slash.api.v2.UserService/DeleteUserAccessToken"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -29,8 +31,12 @@ const (
 type UserServiceClient interface {
 	// GetUser returns a user by id.
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
-	// GetUserAccessTokens returns a list of access tokens for a user.
-	GetUserAccessTokens(ctx context.Context, in *GetUserAccessTokensRequest, opts ...grpc.CallOption) (*GetUserAccessTokensResponse, error)
+	// ListUserAccessTokens returns a list of access tokens for a user.
+	ListUserAccessTokens(ctx context.Context, in *ListUserAccessTokensRequest, opts ...grpc.CallOption) (*ListUserAccessTokensResponse, error)
+	// CreateUserAccessToken creates a new access token for a user.
+	CreateUserAccessToken(ctx context.Context, in *CreateUserAccessTokenRequest, opts ...grpc.CallOption) (*CreateUserAccessTokenResponse, error)
+	// DeleteUserAccessToken deletes an access token for a user.
+	DeleteUserAccessToken(ctx context.Context, in *DeleteUserAccessTokenRequest, opts ...grpc.CallOption) (*DeleteUserAccessTokenResponse, error)
 }
 
 type userServiceClient struct {
@@ -50,9 +56,27 @@ func (c *userServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opt
 	return out, nil
 }
 
-func (c *userServiceClient) GetUserAccessTokens(ctx context.Context, in *GetUserAccessTokensRequest, opts ...grpc.CallOption) (*GetUserAccessTokensResponse, error) {
-	out := new(GetUserAccessTokensResponse)
-	err := c.cc.Invoke(ctx, UserService_GetUserAccessTokens_FullMethodName, in, out, opts...)
+func (c *userServiceClient) ListUserAccessTokens(ctx context.Context, in *ListUserAccessTokensRequest, opts ...grpc.CallOption) (*ListUserAccessTokensResponse, error) {
+	out := new(ListUserAccessTokensResponse)
+	err := c.cc.Invoke(ctx, UserService_ListUserAccessTokens_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) CreateUserAccessToken(ctx context.Context, in *CreateUserAccessTokenRequest, opts ...grpc.CallOption) (*CreateUserAccessTokenResponse, error) {
+	out := new(CreateUserAccessTokenResponse)
+	err := c.cc.Invoke(ctx, UserService_CreateUserAccessToken_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) DeleteUserAccessToken(ctx context.Context, in *DeleteUserAccessTokenRequest, opts ...grpc.CallOption) (*DeleteUserAccessTokenResponse, error) {
+	out := new(DeleteUserAccessTokenResponse)
+	err := c.cc.Invoke(ctx, UserService_DeleteUserAccessToken_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,8 +89,12 @@ func (c *userServiceClient) GetUserAccessTokens(ctx context.Context, in *GetUser
 type UserServiceServer interface {
 	// GetUser returns a user by id.
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
-	// GetUserAccessTokens returns a list of access tokens for a user.
-	GetUserAccessTokens(context.Context, *GetUserAccessTokensRequest) (*GetUserAccessTokensResponse, error)
+	// ListUserAccessTokens returns a list of access tokens for a user.
+	ListUserAccessTokens(context.Context, *ListUserAccessTokensRequest) (*ListUserAccessTokensResponse, error)
+	// CreateUserAccessToken creates a new access token for a user.
+	CreateUserAccessToken(context.Context, *CreateUserAccessTokenRequest) (*CreateUserAccessTokenResponse, error)
+	// DeleteUserAccessToken deletes an access token for a user.
+	DeleteUserAccessToken(context.Context, *DeleteUserAccessTokenRequest) (*DeleteUserAccessTokenResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -77,8 +105,14 @@ type UnimplementedUserServiceServer struct {
 func (UnimplementedUserServiceServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServiceServer) GetUserAccessTokens(context.Context, *GetUserAccessTokensRequest) (*GetUserAccessTokensResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserAccessTokens not implemented")
+func (UnimplementedUserServiceServer) ListUserAccessTokens(context.Context, *ListUserAccessTokensRequest) (*ListUserAccessTokensResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUserAccessTokens not implemented")
+}
+func (UnimplementedUserServiceServer) CreateUserAccessToken(context.Context, *CreateUserAccessTokenRequest) (*CreateUserAccessTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUserAccessToken not implemented")
+}
+func (UnimplementedUserServiceServer) DeleteUserAccessToken(context.Context, *DeleteUserAccessTokenRequest) (*DeleteUserAccessTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserAccessToken not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -111,20 +145,56 @@ func _UserService_GetUser_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_GetUserAccessTokens_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserAccessTokensRequest)
+func _UserService_ListUserAccessTokens_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserAccessTokensRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).GetUserAccessTokens(ctx, in)
+		return srv.(UserServiceServer).ListUserAccessTokens(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserService_GetUserAccessTokens_FullMethodName,
+		FullMethod: UserService_ListUserAccessTokens_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetUserAccessTokens(ctx, req.(*GetUserAccessTokensRequest))
+		return srv.(UserServiceServer).ListUserAccessTokens(ctx, req.(*ListUserAccessTokensRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_CreateUserAccessToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserAccessTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CreateUserAccessToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_CreateUserAccessToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CreateUserAccessToken(ctx, req.(*CreateUserAccessTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_DeleteUserAccessToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserAccessTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).DeleteUserAccessToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_DeleteUserAccessToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).DeleteUserAccessToken(ctx, req.(*DeleteUserAccessTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -141,8 +211,16 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_GetUser_Handler,
 		},
 		{
-			MethodName: "GetUserAccessTokens",
-			Handler:    _UserService_GetUserAccessTokens_Handler,
+			MethodName: "ListUserAccessTokens",
+			Handler:    _UserService_ListUserAccessTokens_Handler,
+		},
+		{
+			MethodName: "CreateUserAccessToken",
+			Handler:    _UserService_CreateUserAccessToken_Handler,
+		},
+		{
+			MethodName: "DeleteUserAccessToken",
+			Handler:    _UserService_DeleteUserAccessToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

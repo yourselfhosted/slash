@@ -15,10 +15,20 @@ service UserService {
     option (google.api.http) = {get: "/api/v2/users/{id}"};
     option (google.api.method_signature) = "id";
   }
-  // GetUserAccessTokens returns a list of access tokens for a user.
-  rpc GetUserAccessTokens(GetUserAccessTokensRequest) returns (GetUserAccessTokensResponse) {
+  // ListUserAccessTokens returns a list of access tokens for a user.
+  rpc ListUserAccessTokens(ListUserAccessTokensRequest) returns (ListUserAccessTokensResponse) {
     option (google.api.http) = {get: "/api/v2/users/{id}/access_tokens"};
     option (google.api.method_signature) = "id";
+  }
+  // CreateUserAccessToken creates a new access token for a user.
+  rpc CreateUserAccessToken(CreateUserAccessTokenRequest) returns (CreateUserAccessTokenResponse) {
+    option (google.api.http) = {post: "/api/v2/users/{id}/access_tokens"};
+    option (google.api.method_signature) = "id";
+  }
+  // DeleteUserAccessToken deletes an access token for a user.
+  rpc DeleteUserAccessToken(DeleteUserAccessTokenRequest) returns (DeleteUserAccessTokenResponse) {
+    option (google.api.http) = {delete: "/api/v2/users/{id}/access_tokens/{access_token}"};
+    option (google.api.method_signature) = "id,access_token";
   }
 }
 
@@ -54,16 +64,37 @@ message GetUserResponse {
   User user = 1;
 }
 
-message GetUserAccessTokensRequest {
+message ListUserAccessTokensRequest {
+  // id is the user id.
   int32 id = 1;
 }
 
-message GetUserAccessTokensResponse {
-  message AccessToken {
-    string access_token = 1;
-    string description = 2;
-    google.protobuf.Timestamp created_time = 3;
-    google.protobuf.Timestamp expires_time = 4;
-  }
-  repeated AccessToken access_tokens = 1;
+message ListUserAccessTokensResponse {
+  repeated UserAccessToken access_tokens = 1;
+}
+
+message CreateUserAccessTokenRequest {
+  // id is the user id.
+  int32 id = 1;
+  string description = 2;
+}
+
+message CreateUserAccessTokenResponse {
+  UserAccessToken access_token = 1;
+}
+
+message DeleteUserAccessTokenRequest {
+  // id is the user id.
+  int32 id = 1;
+  // access_token is the access token to delete.
+  string access_token = 2;
+}
+
+message DeleteUserAccessTokenResponse {}
+
+message UserAccessToken {
+  string access_token = 1;
+  string description = 2;
+  google.protobuf.Timestamp issued_at = 3;
+  google.protobuf.Timestamp expires_at = 4;
 }

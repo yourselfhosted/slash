@@ -1,7 +1,10 @@
 package auth
 
 import (
+	"fmt"
 	"time"
+
+	"github.com/golang-jwt/jwt/v4"
 )
 
 const (
@@ -20,3 +23,43 @@ const (
 	// AccessTokenCookieName is the cookie name of access token.
 	AccessTokenCookieName = "slash.access-token"
 )
+
+type ClaimsMessage struct {
+	Name string `json:"name"`
+	jwt.RegisteredClaims
+}
+
+// GenerateAccessToken generates an access token.
+// username is the email of the user.
+func GenerateAccessToken(username string, userID int32, secret string) (string, error) {
+	expirationTime := time.Now().Add(AccessTokenDuration)
+	return generateToken(username, userID, expirationTime, []byte(secret))
+}
+
+// generateToken generates a jwt token.
+func generateToken(username string, userID int32, expirationTime time.Time, secret []byte) (string, error) {
+	// Create the JWT claims, which includes the username and expiry time.
+	claims := &ClaimsMessage{
+		Name: username,
+		RegisteredClaims: jwt.RegisteredClaims{
+			Audience: jwt.ClaimStrings{AccessTokenAudienceName},
+			// In JWT, the expiry time is expressed as unix milliseconds.
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			Issuer:    Issuer,
+			Subject:   fmt.Sprint(userID),
+		},
+	}
+
+	// Declare the token with the HS256 algorithm used for signing, and the claims.
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token.Header["kid"] = KeyID
+
+	// Create the JWT string.
+	tokenString, err := token.SignedString(secret)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
+}

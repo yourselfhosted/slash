@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/internal/util"
@@ -20,39 +19,6 @@ const (
 	// user id is extracted from the jwt token subject field.
 	UserIDContextKey = "user-id"
 )
-
-type claimsMessage struct {
-	Name string `json:"name"`
-	jwt.RegisteredClaims
-}
-
-// generateToken generates a jwt token.
-func generateToken(username string, userID int32, aud string, expirationTime time.Time, secret []byte) (string, error) {
-	// Create the JWT claims, which includes the username and expiry time.
-	claims := &claimsMessage{
-		Name: username,
-		RegisteredClaims: jwt.RegisteredClaims{
-			Audience: jwt.ClaimStrings{aud},
-			// In JWT, the expiry time is expressed as unix milliseconds.
-			ExpiresAt: jwt.NewNumericDate(expirationTime),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			Issuer:    auth.Issuer,
-			Subject:   fmt.Sprint(userID),
-		},
-	}
-
-	// Declare the token with the HS256 algorithm used for signing, and the claims.
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token.Header["kid"] = auth.KeyID
-
-	// Create the JWT string.
-	tokenString, err := token.SignedString(secret)
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
-}
 
 func extractTokenFromHeader(c echo.Context) (string, error) {
 	authHeader := c.Request().Header.Get("Authorization")
@@ -111,7 +77,7 @@ func JWTMiddleware(s *APIV1Service, next echo.HandlerFunc, secret string) echo.H
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing access token")
 		}
 
-		claims := &claimsMessage{}
+		claims := &auth.ClaimsMessage{}
 		_, err := jwt.ParseWithClaims(token, claims, func(t *jwt.Token) (any, error) {
 			if t.Method.Alg() != jwt.SigningMethodHS256.Name {
 				return nil, errors.Errorf("unexpected access token signing method=%v, expect %v", t.Header["alg"], jwt.SigningMethodHS256)

@@ -38,11 +38,6 @@ const (
 	UserIDContextKey ContextKey = iota
 )
 
-type claimsMessage struct {
-	Name string `json:"name"`
-	jwt.RegisteredClaims
-}
-
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
 type GRPCAuthInterceptor struct {
 	Store  *store.Store
@@ -93,7 +88,7 @@ func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessTokenStr 
 	if accessTokenStr == "" {
 		return 0, status.Errorf(codes.Unauthenticated, "access token not found")
 	}
-	claims := &claimsMessage{}
+	claims := &auth.ClaimsMessage{}
 	_, err := jwt.ParseWithClaims(accessTokenStr, claims, func(t *jwt.Token) (any, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS256.Name {
 			return nil, status.Errorf(codes.Unauthenticated, "unexpected access token signing method=%v, expect %v", t.Header["alg"], jwt.SigningMethodHS256)
