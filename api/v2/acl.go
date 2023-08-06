@@ -3,9 +3,7 @@ package v2
 import (
 	"context"
 	"net/http"
-	"strconv"
 	"strings"
-	"time"
 
 	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/internal/util"
@@ -38,6 +36,11 @@ const (
 	// user id is extracted from the jwt token subject field.
 	UserIDContextKey ContextKey = iota
 )
+
+type claimsMessage struct {
+	Name string `json:"name"`
+	jwt.RegisteredClaims
+}
 
 // GRPCAuthInterceptor is the auth interceptor for gRPC server.
 type GRPCAuthInterceptor struct {
@@ -153,42 +156,4 @@ func audienceContains(audience jwt.ClaimStrings, token string) bool {
 		}
 	}
 	return false
-}
-
-type claimsMessage struct {
-	Name string `json:"name"`
-	jwt.RegisteredClaims
-}
-
-// GenerateAccessToken generates an access token for web.
-func GenerateAccessToken(username string, userID int, secret string) (string, error) {
-	expirationTime := time.Now().Add(auth.AccessTokenDuration)
-	return generateToken(username, userID, auth.AccessTokenAudienceName, expirationTime, []byte(secret))
-}
-
-func generateToken(username string, userID int, aud string, expirationTime time.Time, secret []byte) (string, error) {
-	// Create the JWT claims, which includes the username and expiry time.
-	claims := &claimsMessage{
-		Name: username,
-		RegisteredClaims: jwt.RegisteredClaims{
-			Audience: jwt.ClaimStrings{aud},
-			// In JWT, the expiry time is expressed as unix milliseconds.
-			ExpiresAt: jwt.NewNumericDate(expirationTime),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			Issuer:    auth.Issuer,
-			Subject:   strconv.Itoa(userID),
-		},
-	}
-
-	// Declare the token with the HS256 algorithm used for signing, and the claims.
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token.Header["kid"] = auth.KeyID
-
-	// Create the JWT string.
-	tokenString, err := token.SignedString(secret)
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
 }
