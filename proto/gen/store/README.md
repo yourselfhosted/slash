@@ -159,7 +159,6 @@
 | description | [string](#string) |  |  |
 | created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | expires_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| revoked | [bool](#bool) |  |  |
 
 
 

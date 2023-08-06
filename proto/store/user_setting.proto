@@ -28,7 +28,6 @@ message AccessTokensUserSetting {
     string description = 2;
     google.protobuf.Timestamp created_time = 3;
     google.protobuf.Timestamp expires_time = 4;
-    bool revoked = 5;
   }
   repeated AccessToken access_tokens = 1;
 }

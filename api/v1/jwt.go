@@ -164,7 +164,7 @@ func JWTMiddleware(s *APIV1Service, next echo.HandlerFunc, secret string) echo.H
 
 func validateAccessToken(accessTokenString string, userAccessTokens []*storepb.AccessTokensUserSetting_AccessToken) bool {
 	for _, userAccessToken := range userAccessTokens {
-		if accessTokenString == userAccessToken.AccessToken && !userAccessToken.Revoked {
+		if accessTokenString == userAccessToken.AccessToken && userAccessToken.ExpiresTime.AsTime().After(time.Now()) {
 			return true
 		}
 	}
