@@ -8,6 +8,7 @@ import (
 
 	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/internal/util"
+	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
@@ -23,43 +24,6 @@ const (
 type claimsMessage struct {
 	Name string `json:"name"`
 	jwt.RegisteredClaims
-}
-
-// GenerateAccessToken generates an access token for web.
-func GenerateAccessToken(username string, userID int32, secret string) (string, error) {
-	expirationTime := time.Now().Add(auth.AccessTokenDuration)
-	return generateToken(username, userID, auth.AccessTokenAudienceName, expirationTime, []byte(secret))
-}
-
-// GenerateTokensAndSetCookies generates jwt token and saves it to the http-only cookie.
-func GenerateTokensAndSetCookies(c echo.Context, user *store.User, secret string) error {
-	accessToken, err := GenerateAccessToken(user.Email, user.ID, secret)
-	if err != nil {
-		return errors.Wrap(err, "failed to generate access token")
-	}
-
-	cookieExp := time.Now().Add(auth.CookieExpDuration)
-	setTokenCookie(c, auth.AccessTokenCookieName, accessToken, cookieExp)
-	return nil
-}
-
-// RemoveTokensAndCookies removes the jwt token and refresh token from the cookies.
-func RemoveTokensAndCookies(c echo.Context) {
-	cookieExp := time.Now().Add(-1 * time.Hour)
-	setTokenCookie(c, auth.AccessTokenCookieName, "", cookieExp)
-}
-
-// setTokenCookie sets the token to the cookie.
-func setTokenCookie(c echo.Context, name, token string, expiration time.Time) {
-	cookie := new(http.Cookie)
-	cookie.Name = name
-	cookie.Value = token
-	cookie.Expires = expiration
-	cookie.Path = "/"
-	// Http-only helps mitigate the risk of client side script accessing the protected cookie.
-	cookie.HttpOnly = true
-	cookie.SameSite = http.SameSiteStrictMode
-	c.SetCookie(cookie)
 }
 
 // generateToken generates a jwt token.
@@ -127,9 +91,7 @@ func audienceContains(audience jwt.ClaimStrings, token string) bool {
 }
 
 // JWTMiddleware validates the access token.
-// If the access token is about to expire or has expired and the request has a valid refresh token, it
-// will try to generate new access token and refresh token.
-func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) echo.HandlerFunc {
+func JWTMiddleware(s *APIV1Service, next echo.HandlerFunc, secret string) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()
 		path := c.Request().URL.Path
@@ -163,21 +125,28 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 		})
 
 		if err != nil {
-			RemoveTokensAndCookies(c)
 			return echo.NewHTTPError(http.StatusUnauthorized, errors.Wrap(err, "Invalid or expired access token"))
 		}
 		if !audienceContains(claims.Audience, auth.AccessTokenAudienceName) {
 			return echo.NewHTTPError(http.StatusUnauthorized, fmt.Sprintf("Invalid access token, audience mismatch, got %q, expected %q.", claims.Audience, auth.AccessTokenAudienceName))
 		}
 
-		// We either have a valid access token or we will attempt to generate new access token and refresh token
+		// We either have a valid access token or we will attempt to generate new access token.
 		userID, err := util.ConvertStringToInt32(claims.Subject)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Malformed ID in the token.").WithInternal(err)
 		}
 
+		accessTokens, err := s.Store.GetUserAccessTokens(ctx, userID)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get user access tokens.").WithInternal(err)
+		}
+		if !validateAccessToken(token, accessTokens) {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid access token.")
+		}
+
 		// Even if there is no error, we still need to make sure the user still exists.
-		user, err := server.Store.GetUser(ctx, &store.FindUser{
+		user, err := s.Store.GetUser(ctx, &store.FindUser{
 			ID: &userID,
 		})
 		if err != nil {
@@ -191,4 +160,13 @@ func JWTMiddleware(server *APIV1Service, next echo.HandlerFunc, secret string) e
 		c.Set(UserIDContextKey, userID)
 		return next(c)
 	}
+}
+
+func validateAccessToken(accessTokenString string, userAccessTokens []*storepb.AccessTokensUserSetting_AccessToken) bool {
+	for _, userAccessToken := range userAccessTokens {
+		if accessTokenString == userAccessToken.AccessToken && !userAccessToken.Revoked {
+			return true
+		}
+	}
+	return false
 }

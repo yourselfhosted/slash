@@ -1,13 +1,19 @@
 package v1
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/boojack/slash/api/auth"
+	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type SignInRequest struct {
@@ -46,9 +52,16 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusUnauthorized, "unmatched email and password")
 		}
 
-		if err := GenerateTokensAndSetCookies(c, user, secret); err != nil {
+		accessToken, err := GenerateAccessToken(user.Email, user.ID, secret)
+		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to generate tokens, err: %s", err)).SetInternal(err)
 		}
+		if err := s.UpsertAccessTokenToStore(ctx, user, accessToken); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to upsert access token, err: %s", err)).SetInternal(err)
+		}
+
+		cookieExp := time.Now().Add(auth.CookieExpDuration)
+		setTokenCookie(c, auth.AccessTokenCookieName, accessToken, cookieExp)
 		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
@@ -95,10 +108,16 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create user, err: %s", err)).SetInternal(err)
 		}
 
-		if err := GenerateTokensAndSetCookies(c, user, secret); err != nil {
+		accessToken, err := GenerateAccessToken(user.Email, user.ID, secret)
+		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to generate tokens, err: %s", err)).SetInternal(err)
 		}
+		if err := s.UpsertAccessTokenToStore(ctx, user, accessToken); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to upsert access token, err: %s", err)).SetInternal(err)
+		}
 
+		cookieExp := time.Now().Add(auth.CookieExpDuration)
+		setTokenCookie(c, auth.AccessTokenCookieName, accessToken, cookieExp)
 		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
@@ -107,4 +126,55 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 		c.Response().WriteHeader(http.StatusOK)
 		return nil
 	})
+}
+
+func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store.User, accessToken string) error {
+	userAccessTokens, err := s.Store.GetUserAccessTokens(ctx, user.ID)
+	if err != nil {
+		return errors.Wrap(err, "failed to get user access tokens")
+	}
+	userAccessToken := storepb.AccessTokensUserSetting_AccessToken{
+		AccessToken: accessToken,
+		Description: "user sign in",
+		CreatedTime: timestamppb.Now(),
+		ExpiresTime: timestamppb.New(time.Now().Add(auth.AccessTokenDuration)),
+	}
+	userAccessTokens = append(userAccessTokens, &userAccessToken)
+	if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
+		UserId: user.ID,
+		Key:    storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS,
+		Value: &storepb.UserSetting_AccessTokensUserSetting{
+			AccessTokensUserSetting: &storepb.AccessTokensUserSetting{
+				AccessTokens: userAccessTokens,
+			},
+		},
+	}); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to upsert user setting, err: %s", err)).SetInternal(err)
+	}
+	return nil
+}
+
+// GenerateAccessToken generates an access token for web.
+func GenerateAccessToken(username string, userID int32, secret string) (string, error) {
+	expirationTime := time.Now().Add(auth.AccessTokenDuration)
+	return generateToken(username, userID, auth.AccessTokenAudienceName, expirationTime, []byte(secret))
+}
+
+// RemoveTokensAndCookies removes the jwt token from the cookies.
+func RemoveTokensAndCookies(c echo.Context) {
+	cookieExp := time.Now().Add(-1 * time.Hour)
+	setTokenCookie(c, auth.AccessTokenCookieName, "", cookieExp)
+}
+
+// setTokenCookie sets the token to the cookie.
+func setTokenCookie(c echo.Context, name, token string, expiration time.Time) {
+	cookie := new(http.Cookie)
+	cookie.Name = name
+	cookie.Value = token
+	cookie.Expires = expiration
+	cookie.Path = "/"
+	// Http-only helps mitigate the risk of client side script accessing the protected cookie.
+	cookie.HttpOnly = true
+	cookie.SameSite = http.SameSiteStrictMode
+	c.SetCookie(cookie)
 }

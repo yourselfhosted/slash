@@ -140,3 +140,20 @@ func vacuumUserSetting(ctx context.Context, tx *sql.Tx) error {
 
 	return nil
 }
+
+// GetUserAccessTokens returns the access tokens of the user.
+func (s *Store) GetUserAccessTokens(ctx context.Context, userID int32) ([]*storepb.AccessTokensUserSetting_AccessToken, error) {
+	userSetting, err := s.GetUserSetting(ctx, &FindUserSetting{
+		UserID: &userID,
+		Key:    storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if userSetting == nil {
+		return []*storepb.AccessTokensUserSetting_AccessToken{}, nil
+	}
+
+	accessTokensUserSetting := userSetting.GetAccessTokensUserSetting()
+	return accessTokensUserSetting.AccessTokens, nil
+}
