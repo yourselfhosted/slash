@@ -12,7 +12,7 @@ const AccountSection: React.FC = () => {
 
   return (
     <>
-      <div className="mx-auto max-w-6xl w-full px-3 md:px-12 py-6 flex flex-col justify-start items-start gap-y-2">
+      <div className="w-full flex flex-col justify-start items-start gap-y-2">
         <p className="text-base font-semibold leading-6 text-gray-900">Account</p>
         <p className="flex flex-row justify-start items-center mt-2">
           <span className="text-xl">{currentUser.nickname}</span>
