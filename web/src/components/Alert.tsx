@@ -54,7 +54,7 @@ const Alert: React.FC<Props> = (props: Props) => {
         <div className="w-80">
           <p className="content-text mb-4">{content}</p>
           <div className="w-full flex flex-row justify-end items-center space-x-2">
-            <Button variant="plain" onClick={handleCloseBtnClick}>
+            <Button variant="plain" color="neutral" onClick={handleCloseBtnClick}>
               {closeBtnText}
             </Button>
             <Button color={style} onClick={handleConfirmBtnClick}>

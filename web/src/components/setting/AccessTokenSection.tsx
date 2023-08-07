@@ -98,10 +98,10 @@ const AccessTokenSection = () => {
                   <tbody className="divide-y divide-gray-200">
                     {userAccessTokens.map((userAccessToken) => (
                       <tr key={userAccessToken.accessToken}>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 flex flex-row justify-start items-center gap-x-1">
-                          <span>{getFormatedAccessToken(userAccessToken.accessToken)}</span>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 flex flex-row justify-start items-center gap-x-1">
+                          <span className="font-mono">{getFormatedAccessToken(userAccessToken.accessToken)}</span>
                           <Button color="neutral" variant="plain" size="sm" onClick={() => copyAccessToken(userAccessToken.accessToken)}>
-                            <Icon.Clipboard className="w-4 h-auto" />
+                            <Icon.Clipboard className="w-4 h-auto text-gray-500" />
                           </Button>
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">{userAccessToken.description}</td>
@@ -109,15 +109,17 @@ const AccessTokenSection = () => {
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {String(userAccessToken.expiresAt ?? "Never")}
                         </td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
-                          <button
-                            className="text-indigo-600 hover:text-indigo-900"
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
+                          <Button
+                            color="danger"
+                            variant="plain"
+                            size="sm"
                             onClick={() => {
                               handleDeleteAccessToken(userAccessToken.accessToken);
                             }}
                           >
-                            Delete
-                          </button>
+                            <Icon.Trash className="w-4 h-auto" />
+                          </Button>
                         </td>
                       </tr>
                     ))}
