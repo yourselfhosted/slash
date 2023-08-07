@@ -95,7 +95,9 @@ const AccessTokenSection = () => {
                           {getFormatedAccessToken(userAccessToken.accessToken)}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{String(userAccessToken.issuedAt)}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{String(userAccessToken.expiresAt)}</td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {String(userAccessToken.expiresAt ?? "Never")}
+                        </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                           <button
                             className="text-indigo-600 hover:text-indigo-900"

@@ -9,6 +9,7 @@ import (
 	"github.com/boojack/slash/store"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pkg/errors"
+	"golang.org/x/exp/slices"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -77,14 +78,21 @@ func (s *UserService) ListUserAccessTokens(ctx context.Context, request *apiv2pb
 			continue
 		}
 
-		accessTokens = append(accessTokens, &apiv2pb.UserAccessToken{
+		userAccessToken := &apiv2pb.UserAccessToken{
 			AccessToken: userAccessToken.AccessToken,
 			Description: userAccessToken.Description,
 			IssuedAt:    timestamppb.New(claims.IssuedAt.Time),
-			ExpiresAt:   timestamppb.New(claims.ExpiresAt.Time),
-		})
+		}
+		if claims.ExpiresAt != nil {
+			userAccessToken.ExpiresAt = timestamppb.New(claims.ExpiresAt.Time)
+		}
+		accessTokens = append(accessTokens, userAccessToken)
 	}
 
+	// Sort by issued time in descending order.
+	slices.SortFunc(accessTokens, func(i, j *apiv2pb.UserAccessToken) bool {
+		return i.IssuedAt.Seconds > j.IssuedAt.Seconds
+	})
 	response := &apiv2pb.ListUserAccessTokensResponse{
 		AccessTokens: accessTokens,
 	}
@@ -133,13 +141,16 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2p
 		return nil, status.Errorf(codes.Internal, "failed to upsert access token to store: %v", err)
 	}
 
+	userAccessToken := &apiv2pb.UserAccessToken{
+		AccessToken: accessToken,
+		Description: request.UserAccessToken.Description,
+		IssuedAt:    timestamppb.New(claims.IssuedAt.Time),
+	}
+	if claims.ExpiresAt != nil {
+		userAccessToken.ExpiresAt = timestamppb.New(claims.ExpiresAt.Time)
+	}
 	response := &apiv2pb.CreateUserAccessTokenResponse{
-		AccessToken: &apiv2pb.UserAccessToken{
-			AccessToken: accessToken,
-			Description: request.UserAccessToken.Description,
-			IssuedAt:    timestamppb.New(claims.IssuedAt.Time),
-			ExpiresAt:   timestamppb.New(claims.ExpiresAt.Time),
-		},
+		AccessToken: userAccessToken,
 	}
 	return response, nil
 }

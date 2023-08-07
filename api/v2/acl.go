@@ -17,9 +17,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-var authenticationAllowlistMethods = map[string]bool{
-	"/memos.api.v2.UserService/GetUser": true,
-}
+var authenticationAllowlistMethods = map[string]bool{}
 
 // IsAuthenticationAllowed returns whether the method is exempted from authentication.
 func IsAuthenticationAllowed(fullMethodName string) bool {
@@ -60,7 +58,7 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 	}
 	accessToken, err := getTokenFromMetadata(md)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, err.Error())
+		return nil, status.Errorf(codes.Unauthenticated, "failed to get access token from metadata: %v", err)
 	}
 
 	userID, err := in.authenticate(ctx, accessToken)
@@ -71,11 +69,11 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 		return nil, err
 	}
 
-	accessTokens, err := in.Store.GetUserAccessTokens(ctx, userID)
+	userAccessTokens, err := in.Store.GetUserAccessTokens(ctx, userID)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get user access tokens")
 	}
-	if !validateAccessToken(accessToken, accessTokens) {
+	if !validateAccessToken(accessToken, userAccessTokens) {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid access token")
 	}
 
@@ -132,15 +130,16 @@ func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessTokenStr 
 }
 
 func getTokenFromMetadata(md metadata.MD) (string, error) {
+	// Try to get the token from the authorization header first.
 	authorizationHeaders := md.Get("Authorization")
-	if len(md.Get("Authorization")) > 0 {
+	if len(authorizationHeaders) > 0 {
 		authHeaderParts := strings.Fields(authorizationHeaders[0])
 		if len(authHeaderParts) != 2 || strings.ToLower(authHeaderParts[0]) != "bearer" {
 			return "", errors.Errorf("authorization header format must be Bearer {token}")
 		}
 		return authHeaderParts[1], nil
 	}
-	// check the HTTP cookie
+	// Try to get the token from the cookie header.
 	var accessToken string
 	for _, t := range append(md.Get("grpcgateway-cookie"), md.Get("cookie")...) {
 		header := http.Header{}

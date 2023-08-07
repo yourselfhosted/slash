@@ -25,8 +25,8 @@ const expirationOptions = [
     value: 3600 * 24 * 7,
   },
   {
-    label: "Life time",
-    value: 3600 * 24 * 365 * 100,
+    label: "Never",
+    value: 0,
   },
 ];
 

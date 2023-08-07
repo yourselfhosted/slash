@@ -37,21 +37,21 @@ func GenerateAccessToken(username string, userID int32, expirationTime time.Time
 
 // generateToken generates a jwt token.
 func generateToken(username string, userID int32, audience string, expirationTime time.Time, secret []byte) (string, error) {
-	// Create the JWT claims, which includes the username and expiry time.
-	claims := &ClaimsMessage{
-		Name: username,
-		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:   Issuer,
-			Audience: jwt.ClaimStrings{audience},
-			// In JWT, the expiry time is expressed as unix milliseconds.
-			ExpiresAt: jwt.NewNumericDate(expirationTime),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			Subject:   fmt.Sprint(userID),
-		},
+	registeredClaims := jwt.RegisteredClaims{
+		Issuer:   Issuer,
+		Audience: jwt.ClaimStrings{audience},
+		IssuedAt: jwt.NewNumericDate(time.Now()),
+		Subject:  fmt.Sprint(userID),
+	}
+	if expirationTime.After(time.Now()) {
+		registeredClaims.ExpiresAt = jwt.NewNumericDate(expirationTime)
 	}
 
 	// Declare the token with the HS256 algorithm used for signing, and the claims.
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &ClaimsMessage{
+		Name:             username,
+		RegisteredClaims: registeredClaims,
+	})
 	token.Header["kid"] = KeyID
 
 	// Create the JWT string.
