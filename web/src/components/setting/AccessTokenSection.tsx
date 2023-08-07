@@ -1,10 +1,13 @@
 import { Button } from "@mui/joy";
 import axios from "axios";
+import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import useUserStore from "../../stores/v1/user";
 import { ListUserAccessTokensResponse, UserAccessToken } from "../../types/proto/api/v2/user_service_pb";
 import { showCommonDialog } from "../Alert";
 import CreateAccessTokenDialog from "../CreateAccessTokenDialog";
+import Icon from "../Icon";
 
 const listAccessTokens = async (userId: number) => {
   const { data } = await axios.get<ListUserAccessTokensResponse>(`/api/v2/users/${userId}/access_tokens`);
@@ -22,9 +25,14 @@ const AccessTokenSection = () => {
     });
   }, []);
 
-  const handleCreateAccessTokenDialogClose = async () => {
+  const handleCreateAccessTokenDialogConfirm = async () => {
     const accessTokens = await listAccessTokens(currentUser.id);
     setUserAccessTokens(accessTokens);
+  };
+
+  const copyAccessToken = (accessToken: string) => {
+    copy(accessToken);
+    toast.success("Access token copied to clipboard");
   };
 
   const handleDeleteAccessToken = async (accessToken: string) => {
@@ -70,11 +78,11 @@ const AccessTokenSection = () => {
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead>
                     <tr>
-                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
-                        Description
-                      </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                         Token
+                      </th>
+                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
+                        Description
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                         Created At
@@ -90,10 +98,13 @@ const AccessTokenSection = () => {
                   <tbody className="divide-y divide-gray-200">
                     {userAccessTokens.map((userAccessToken) => (
                       <tr key={userAccessToken.accessToken}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">{userAccessToken.description}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {getFormatedAccessToken(userAccessToken.accessToken)}
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 flex flex-row justify-start items-center gap-x-1">
+                          <span>{getFormatedAccessToken(userAccessToken.accessToken)}</span>
+                          <Button color="neutral" variant="plain" size="sm" onClick={() => copyAccessToken(userAccessToken.accessToken)}>
+                            <Icon.Clipboard className="w-4 h-auto" />
+                          </Button>
                         </td>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">{userAccessToken.description}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{String(userAccessToken.issuedAt)}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {String(userAccessToken.expiresAt ?? "Never")}
@@ -119,7 +130,7 @@ const AccessTokenSection = () => {
       </div>
 
       {showCreateDialog && (
-        <CreateAccessTokenDialog onClose={() => setShowCreateDialog(false)} onConfirm={handleCreateAccessTokenDialogClose} />
+        <CreateAccessTokenDialog onClose={() => setShowCreateDialog(false)} onConfirm={handleCreateAccessTokenDialogConfirm} />
       )}
     </>
   );

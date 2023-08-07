@@ -13,16 +13,12 @@ interface Props {
 
 const expirationOptions = [
   {
-    label: "1 hour",
-    value: 3600,
-  },
-  {
     label: "8 hours",
     value: 3600 * 8,
   },
   {
-    label: "1 week",
-    value: 3600 * 24 * 7,
+    label: "1 month",
+    value: 3600 * 24 * 30,
   },
   {
     label: "Never",
@@ -40,7 +36,7 @@ const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
   const currentUser = useUserStore().getCurrentUser();
   const [state, setState] = useState({
     description: "",
-    expiration: 3600,
+    expiration: 3600 * 8,
   });
   const requestState = useLoading(false);
 
