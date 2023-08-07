@@ -84,7 +84,7 @@ const ShortcutView = (props: Props) => {
                   </button>
                 </Tooltip>
               </div>
-              <a className="ml-1 w-full text-sm truncate text-gray-400 hover:underline" href={shortcut.link} target="_blank">
+              <a className="pl-1 pr-4 w-full text-sm truncate text-gray-400 hover:underline" href={shortcut.link} target="_blank">
                 {shortcut.link}
               </a>
             </div>
