@@ -30,6 +30,7 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 		),
 	)
 	apiv2pb.RegisterUserServiceServer(grpcServer, NewUserService(secret, store))
+	apiv2pb.RegisterShortcutServiceServer(grpcServer, NewShortcutService(secret, store))
 
 	return &APIV2Service{
 		Secret:         secret,
@@ -59,6 +60,9 @@ func (s *APIV2Service) RegisterGateway(ctx context.Context, e *echo.Echo) error 
 
 	gwMux := grpcRuntime.NewServeMux()
 	if err := apiv2pb.RegisterUserServiceHandler(context.Background(), gwMux, conn); err != nil {
+		return err
+	}
+	if err := apiv2pb.RegisterShortcutServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
 	e.Any("/api/v2/*", echo.WrapHandler(gwMux))

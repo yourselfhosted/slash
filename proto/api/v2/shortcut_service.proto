@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package slash.api.v2;
+
+import "api/v2/common.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+
+option go_package = "gen/api/v2";
+
+service ShortcutService {
+  // GetShortcut returns a shortcut by name.
+  rpc GetShortcut(GetShortcutRequest) returns (GetShortcutResponse) {
+    option (google.api.http) = {get: "/api/v2/shortcuts/{name}"};
+    option (google.api.method_signature) = "name";
+  }
+}
+
+message Shortcut {
+  int32 id = 1;
+
+  int32 creator_id = 2;
+
+  int64 created_ts = 3;
+
+  int64 updated_ts = 4;
+
+  RowStatus row_status = 5;
+
+  string name = 6;
+
+  string link = 7;
+
+  string title = 8;
+
+  repeated string tags = 9;
+
+  string description = 10;
+
+  Visibility visibility = 11;
+
+  OpenGraphMetadata og_metadata = 12;
+}
+
+message OpenGraphMetadata {
+  string title = 1;
+
+  string description = 2;
+
+  string image = 3;
+}
+
+enum Visibility {
+  VISIBILITY_UNSPECIFIED = 0;
+
+  PRIVATE = 1;
+
+  WORKSPACE = 2;
+
+  PUBLIC = 3;
+}
+
+message GetShortcutRequest {
+  string name = 1;
+}
+
+message GetShortcutResponse {
+  Shortcut shortcut = 1;
+}

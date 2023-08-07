@@ -6,6 +6,16 @@
 - [api/v2/common.proto](#api_v2_common-proto)
     - [RowStatus](#slash-api-v2-RowStatus)
   
+- [api/v2/shortcut_service.proto](#api_v2_shortcut_service-proto)
+    - [GetShortcutRequest](#slash-api-v2-GetShortcutRequest)
+    - [GetShortcutResponse](#slash-api-v2-GetShortcutResponse)
+    - [OpenGraphMetadata](#slash-api-v2-OpenGraphMetadata)
+    - [Shortcut](#slash-api-v2-Shortcut)
+  
+    - [Visibility](#slash-api-v2-Visibility)
+  
+    - [ShortcutService](#slash-api-v2-ShortcutService)
+  
 - [api/v2/user_service.proto](#api_v2_user_service-proto)
     - [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest)
     - [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse)
@@ -50,6 +60,119 @@
  
 
  
+
+ 
+
+
+
+<a name="api_v2_shortcut_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v2/shortcut_service.proto
+
+
+
+<a name="slash-api-v2-GetShortcutRequest"></a>
+
+### GetShortcutRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetShortcutResponse"></a>
+
+### GetShortcutResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| shortcut | [Shortcut](#slash-api-v2-Shortcut) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-OpenGraphMetadata"></a>
+
+### OpenGraphMetadata
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| title | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| image | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-Shortcut"></a>
+
+### Shortcut
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+| creator_id | [int32](#int32) |  |  |
+| created_ts | [int64](#int64) |  |  |
+| updated_ts | [int64](#int64) |  |  |
+| row_status | [RowStatus](#slash-api-v2-RowStatus) |  |  |
+| name | [string](#string) |  |  |
+| link | [string](#string) |  |  |
+| title | [string](#string) |  |  |
+| tags | [string](#string) | repeated |  |
+| description | [string](#string) |  |  |
+| visibility | [Visibility](#slash-api-v2-Visibility) |  |  |
+| og_metadata | [OpenGraphMetadata](#slash-api-v2-OpenGraphMetadata) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="slash-api-v2-Visibility"></a>
+
+### Visibility
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| VISIBILITY_UNSPECIFIED | 0 |  |
+| PRIVATE | 1 |  |
+| WORKSPACE | 2 |  |
+| PUBLIC | 3 |  |
+
+
+ 
+
+ 
+
+
+<a name="slash-api-v2-ShortcutService"></a>
+
+### ShortcutService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by name. |
 
  
 

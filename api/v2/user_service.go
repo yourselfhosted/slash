@@ -35,7 +35,7 @@ func (s *UserService) GetUser(ctx context.Context, request *apiv2pb.GetUserReque
 		ID: &request.Id,
 	})
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to list tags: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to find user: %v", err)
 	}
 	if user == nil {
 		return nil, status.Errorf(codes.NotFound, "user not found")
