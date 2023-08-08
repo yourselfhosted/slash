@@ -1,46 +1,51 @@
 import { Button } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
-import axios from "axios";
-import { Toaster, toast } from "react-hot-toast";
-import Setting from "@/components/Setting";
+import { Toaster } from "react-hot-toast";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service_pb";
 import Icon from "./components/Icon";
+import PullShortcutsButton from "./components/PullShortcutsButton";
+import ShortcutsContainer from "./components/ShortcutsContainer";
 import "./style.css";
 
 function IndexPopup() {
-  const [domain] = useStorage("domain");
-  const [accessToken] = useStorage("access_token");
-  const [shortcuts, setShortcuts] = useStorage("shortcuts");
+  const [domain] = useStorage<string>("domain", "");
+  const [accessToken] = useStorage<string>("access_token", "");
+  const [shortcuts] = useStorage<Shortcut[]>("shortcuts", []);
+  const isInitialized = domain && accessToken;
 
-  const handlePullShortcuts = async () => {
-    try {
-      const { data } = await axios.get<Shortcut[]>(`${domain}/api/v1/shortcut`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setShortcuts(data);
-      toast.success("Shortcuts pulled");
-    } catch (error) {
-      toast.error("Failed to pull shortcuts, error: " + error.message);
-    }
+  const handleSettingButtonClick = () => {
+    chrome.runtime.openOptionsPage();
   };
 
   return (
     <>
-      <div className="w-full min-w-[16rem] p-4">
-        <Setting />
+      <div className="w-full min-w-[480px] p-4">
+        <div className="w-full flex flex-row justify-between items-center text-sm">
+          <div className="flex flex-row justify-start items-center font-mono">
+            <Icon.CircleSlash className="w-5 h-auto mr-1 text-gray-500 -mt-0.5" />
+            <span className="font-mono">Slash</span>
+            {isInitialized && (
+              <>
+                <span className="mx-1 text-gray-400">/</span>
+                <span>Shortcuts</span>
+                <span className="mr-1 text-gray-500">({shortcuts.length})</span>
+                <PullShortcutsButton />
+              </>
+            )}
+          </div>
+          <div>
+            <Button size="sm" variant="plain" color="neutral" onClick={handleSettingButtonClick}>
+              <Icon.Settings className="w-5 h-auto" />
+            </Button>
+          </div>
+        </div>
 
         <div className="w-full mt-4">
-          <Button className="w-full" onClick={handlePullShortcuts}>
-            <Icon.RefreshCcw className="w-5 h-auto mr-1" />
-            <span>Pull</span>
-            <span className="opacity-70 ml-1">{Array.isArray(shortcuts) ? `(${shortcuts.length})` : ""}</span>
-          </Button>
+          <ShortcutsContainer />
         </div>
       </div>
 
-      <Toaster position="top-center" />
+      <Toaster position="top-right" />
     </>
   );
 }

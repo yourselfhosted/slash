@@ -4,13 +4,13 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service_pb";
+import "../style.css";
 import Icon from "./Icon";
-import "./style.css";
 
 function PullShortcutsButton() {
   const [domain] = useStorage("domain");
   const [accessToken] = useStorage("access_token");
-  const [shortcuts, setShortcuts] = useStorage("shortcuts");
+  const [, setShortcuts] = useStorage("shortcuts");
   const [isPulling, setIsPulling] = useState(false);
 
   const handlePullShortcuts = async () => {
@@ -30,13 +30,9 @@ function PullShortcutsButton() {
   };
 
   return (
-    <div className="w-full mt-4">
-      <Button loading={isPulling} className="w-full" onClick={handlePullShortcuts}>
-        <Icon.RefreshCcw className="w-5 h-auto mr-1" />
-        <span>Pull</span>
-        <span className="opacity-70 ml-1">{Array.isArray(shortcuts) ? `(${shortcuts.length})` : ""}</span>
-      </Button>
-    </div>
+    <Button loading={isPulling} color="neutral" variant="plain" size="sm" onClick={handlePullShortcuts}>
+      <Icon.RefreshCcw className="w-4 h-auto" />
+    </Button>
   );
 }
 

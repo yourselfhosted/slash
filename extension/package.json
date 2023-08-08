@@ -17,15 +17,19 @@
     "@mui/joy": "5.0.0-beta.0",
     "@plasmohq/storage": "^1.7.2",
     "axios": "^1.4.0",
+    "classnames": "^2.3.2",
+    "lodash-es": "^4.17.21",
     "lucide-react": "^0.264.0",
     "plasmo": "0.82.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "4.1.0",
     "@types/chrome": "0.0.241",
+    "@types/lodash-es": "^4.17.8",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
