@@ -10,7 +10,7 @@ interface SettingState {
   accessToken: string;
 }
 
-function IndexOptions() {
+const IndexOptions = () => {
   const [domain, setDomain] = useStorage<string>("domain", (v) => (v ? v : ""));
   const [accessToken, setAccessToken] = useStorage<string>("access_token", (v) => (v ? v : ""));
   const [settingState, setSettingState] = useState<SettingState>({
@@ -33,11 +33,6 @@ function IndexOptions() {
   };
 
   const handleSaveSetting = () => {
-    if (!settingState.domain || !settingState.accessToken) {
-      toast.error("Domain and access token are required");
-      return;
-    }
-
     setDomain(settingState.domain);
     setAccessToken(settingState.accessToken);
     toast.success("Setting saved");
@@ -89,6 +84,6 @@ function IndexOptions() {
       <Toaster position="top-center" />
     </>
   );
-}
+};
 
 export default IndexOptions;

@@ -7,7 +7,7 @@ import PullShortcutsButton from "./components/PullShortcutsButton";
 import ShortcutsContainer from "./components/ShortcutsContainer";
 import "./style.css";
 
-function IndexPopup() {
+const IndexPopup = () => {
   const [domain] = useStorage<string>("domain", "");
   const [accessToken] = useStorage<string>("access_token", "");
   const [shortcuts] = useStorage<Shortcut[]>("shortcuts", []);
@@ -15,6 +15,10 @@ function IndexPopup() {
 
   const handleSettingButtonClick = () => {
     chrome.runtime.openOptionsPage();
+  };
+
+  const handleRefreshButtonClick = () => {
+    chrome.runtime.reload();
   };
 
   return (
@@ -41,13 +45,34 @@ function IndexPopup() {
         </div>
 
         <div className="w-full mt-4">
-          <ShortcutsContainer />
+          {isInitialized ? (
+            shortcuts.length !== 0 ? (
+              <ShortcutsContainer />
+            ) : (
+              <div className="w-full flex flex-col justify-center items-center">
+                <p>No shortcut found.</p>
+              </div>
+            )
+          ) : (
+            <div className="w-full flex flex-col justify-start items-center">
+              <p>No domain and access token found.</p>
+              <div className="w-full flex flex-row justify-center items-center py-4">
+                <Button size="sm" color="primary" onClick={handleSettingButtonClick}>
+                  <Icon.Settings className="w-5 h-auto mr-1" /> Setting
+                </Button>
+                <span className="mx-2">Or</span>
+                <Button size="sm" variant="outlined" color="neutral" onClick={handleRefreshButtonClick}>
+                  <Icon.RefreshCcw className="w-5 h-auto mr-1" /> Refresh
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       <Toaster position="top-right" />
     </>
   );
-}
+};
 
 export default IndexPopup;
