@@ -24,7 +24,7 @@ const PullShortcutsButton = () => {
       setIsPulling(true);
       const {
         data: { shortcuts },
-      } = await axios.get<ListShortcutsResponse>(`${domain}/api/v2/shortcut`, {
+      } = await axios.get<ListShortcutsResponse>(`${domain}/api/v2/shortcuts`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
