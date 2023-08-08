@@ -17,6 +17,7 @@
 - Create customizable `/s/` short links for any URL.
 - Share short links privately or with teammates.
 - View analytics on link traffic and sources.
+- Easy access to your shortcuts with browser extension.
 - Open source self-hosted solution.
 
 ## Deploy with Docker in seconds
@@ -26,3 +27,11 @@ docker run -d --name slash -p 5231:5231 -v ~/.slash/:/var/opt/slash yourselfhost
 ```
 
 Learn more in [Self-hosting Slash with Docker](https://github.com/boojack/slash/blob/main/docs/install.md).
+
+## Browser Extension
+
+Slash provides a browser extension to help you use your shortcuts in the search bar to go to the corresponding URL.
+
+![browser-extension-example](./resources/browser-extension-example.png)
+
+Learn more in [The Browser Extension of Slash](https://github.com/boojack/slash/blob/main/docs/install-browser-extension.md).
