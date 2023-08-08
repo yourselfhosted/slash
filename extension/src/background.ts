@@ -6,11 +6,10 @@ const urlRegex = /https?:\/\/s\/(.+)/;
 
 chrome.tabs.onUpdated.addListener(async (tabId, _, tab) => {
   if (typeof tab.url === "string") {
-    const matchResult = urlRegex.exec(tab.url);
-    const sname = Array.isArray(matchResult) ? matchResult[1] : null;
-    if (sname) {
+    const shortcutName = getShortcutNameFromUrl(tab.url);
+    if (shortcutName) {
       const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
-      const shortcut = shortcuts.find((shortcut) => shortcut.name === sname);
+      const shortcut = shortcuts.find((shortcut) => shortcut.name === shortcutName);
       if (!shortcut) {
         return;
       }
@@ -18,3 +17,35 @@ chrome.tabs.onUpdated.addListener(async (tabId, _, tab) => {
     }
   }
 });
+
+const getShortcutNameFromUrl = (urlString: string) => {
+  const matchResult = urlRegex.exec(urlString);
+  if (matchResult === null) {
+    return getShortcutNameFromSearchUrl(urlString);
+  }
+  return matchResult[1];
+};
+
+const getShortcutNameFromSearchUrl = (urlString: string) => {
+  const url = new URL(urlString);
+  if ((url.hostname === "www.google.com" || url.hostname === "www.bing.com") && url.pathname === "/search") {
+    const params = new URLSearchParams(url.search);
+    const shortcutName = params.get("q");
+    if (typeof shortcutName === "string" && shortcutName.startsWith("s/")) {
+      return shortcutName.slice(2);
+    }
+  } else if (url.hostname === "www.baidu.com" && url.pathname === "/s") {
+    const params = new URLSearchParams(url.search);
+    const shortcutName = params.get("wd");
+    if (typeof shortcutName === "string" && shortcutName.startsWith("s/")) {
+      return shortcutName.slice(2);
+    }
+  } else if (url.hostname === "duckduckgo.com" && url.pathname === "/") {
+    const params = new URLSearchParams(url.search);
+    const shortcutName = params.get("q");
+    if (typeof shortcutName === "string" && shortcutName.startsWith("s/")) {
+      return shortcutName.slice(2);
+    }
+  }
+  return "";
+};
