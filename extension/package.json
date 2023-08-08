@@ -47,10 +47,12 @@
   },
   "manifest": {
     "host_permissions": [
+      "http://*/*",
       "https://*/*"
     ],
     "permissions": [
       "tabs",
+      "activeTab",
       "scripting",
       "storage"
     ]

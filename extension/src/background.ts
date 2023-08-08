@@ -5,16 +5,18 @@ const storage = new Storage();
 const urlRegex = /https?:\/\/s\/(.+)/;
 
 chrome.tabs.onUpdated.addListener(async (tabId, _, tab) => {
-  if (typeof tab.url === "string") {
-    const shortcutName = getShortcutNameFromUrl(tab.url);
-    if (shortcutName) {
-      const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
-      const shortcut = shortcuts.find((shortcut) => shortcut.name === shortcutName);
-      if (!shortcut) {
-        return;
-      }
-      return chrome.tabs.update(tabId, { url: shortcut.link });
+  if (!tab.url) {
+    return;
+  }
+
+  const shortcutName = getShortcutNameFromUrl(tab.url);
+  if (shortcutName) {
+    const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
+    const shortcut = shortcuts.find((shortcut) => shortcut.name === shortcutName);
+    if (!shortcut) {
+      return;
     }
+    return chrome.tabs.update(tabId, { url: shortcut.link });
   }
 });
 
