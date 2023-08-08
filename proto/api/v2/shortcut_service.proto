@@ -9,6 +9,9 @@ import "google/api/client.proto";
 option go_package = "gen/api/v2";
 
 service ShortcutService {
+  rpc ListShortcuts(ListShortcutsRequest) returns (ListShortcutsResponse) {
+    option (google.api.http) = {get: "/api/v2/shortcuts"};
+  }
   // GetShortcut returns a shortcut by name.
   rpc GetShortcut(GetShortcutRequest) returns (GetShortcutResponse) {
     option (google.api.http) = {get: "/api/v2/shortcuts/{name}"};
@@ -58,6 +61,12 @@ enum Visibility {
   WORKSPACE = 2;
 
   PUBLIC = 3;
+}
+
+message ListShortcutsRequest {}
+
+message ListShortcutsResponse {
+  repeated Shortcut shortcuts = 1;
 }
 
 message GetShortcutRequest {

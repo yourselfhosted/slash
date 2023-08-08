@@ -25,6 +25,34 @@ func NewShortcutService(secret string, store *store.Store) *ShortcutService {
 	}
 }
 
+func (s *ShortcutService) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShortcutsRequest) (*apiv2pb.ListShortcutsResponse, error) {
+	userID := ctx.Value(UserIDContextKey).(int32)
+	find := &store.FindShortcut{}
+	find.VisibilityList = []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic}
+	visibleShortcutList, err := s.Store.ListShortcuts(ctx, find)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to fetch visible shortcut list, err: %v", err)
+	}
+
+	find.VisibilityList = []store.Visibility{store.VisibilityPrivate}
+	find.CreatorID = &userID
+	shortcutList, err := s.Store.ListShortcuts(ctx, find)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to fetch private shortcut list, err: %v", err)
+	}
+
+	shortcutList = append(shortcutList, visibleShortcutList...)
+	shortcuts := []*apiv2pb.Shortcut{}
+	for _, shortcut := range shortcutList {
+		shortcuts = append(shortcuts, convertShortcutFromStorepb(shortcut))
+	}
+
+	response := &apiv2pb.ListShortcutsResponse{
+		Shortcuts: shortcuts,
+	}
+	return response, nil
+}
+
 func (s *ShortcutService) GetShortcut(ctx context.Context, request *apiv2pb.GetShortcutRequest) (*apiv2pb.GetShortcutResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		Name: &request.Name,

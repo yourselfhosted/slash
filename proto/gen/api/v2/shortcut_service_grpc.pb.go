@@ -19,13 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ShortcutService_GetShortcut_FullMethodName = "/slash.api.v2.ShortcutService/GetShortcut"
+	ShortcutService_ListShortcuts_FullMethodName = "/slash.api.v2.ShortcutService/ListShortcuts"
+	ShortcutService_GetShortcut_FullMethodName   = "/slash.api.v2.ShortcutService/GetShortcut"
 )
 
 // ShortcutServiceClient is the client API for ShortcutService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShortcutServiceClient interface {
+	ListShortcuts(ctx context.Context, in *ListShortcutsRequest, opts ...grpc.CallOption) (*ListShortcutsResponse, error)
 	// GetShortcut returns a shortcut by name.
 	GetShortcut(ctx context.Context, in *GetShortcutRequest, opts ...grpc.CallOption) (*GetShortcutResponse, error)
 }
@@ -36,6 +38,15 @@ type shortcutServiceClient struct {
 
 func NewShortcutServiceClient(cc grpc.ClientConnInterface) ShortcutServiceClient {
 	return &shortcutServiceClient{cc}
+}
+
+func (c *shortcutServiceClient) ListShortcuts(ctx context.Context, in *ListShortcutsRequest, opts ...grpc.CallOption) (*ListShortcutsResponse, error) {
+	out := new(ListShortcutsResponse)
+	err := c.cc.Invoke(ctx, ShortcutService_ListShortcuts_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *shortcutServiceClient) GetShortcut(ctx context.Context, in *GetShortcutRequest, opts ...grpc.CallOption) (*GetShortcutResponse, error) {
@@ -51,6 +62,7 @@ func (c *shortcutServiceClient) GetShortcut(ctx context.Context, in *GetShortcut
 // All implementations must embed UnimplementedShortcutServiceServer
 // for forward compatibility
 type ShortcutServiceServer interface {
+	ListShortcuts(context.Context, *ListShortcutsRequest) (*ListShortcutsResponse, error)
 	// GetShortcut returns a shortcut by name.
 	GetShortcut(context.Context, *GetShortcutRequest) (*GetShortcutResponse, error)
 	mustEmbedUnimplementedShortcutServiceServer()
@@ -60,6 +72,9 @@ type ShortcutServiceServer interface {
 type UnimplementedShortcutServiceServer struct {
 }
 
+func (UnimplementedShortcutServiceServer) ListShortcuts(context.Context, *ListShortcutsRequest) (*ListShortcutsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListShortcuts not implemented")
+}
 func (UnimplementedShortcutServiceServer) GetShortcut(context.Context, *GetShortcutRequest) (*GetShortcutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetShortcut not implemented")
 }
@@ -74,6 +89,24 @@ type UnsafeShortcutServiceServer interface {
 
 func RegisterShortcutServiceServer(s grpc.ServiceRegistrar, srv ShortcutServiceServer) {
 	s.RegisterService(&ShortcutService_ServiceDesc, srv)
+}
+
+func _ShortcutService_ListShortcuts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListShortcutsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShortcutServiceServer).ListShortcuts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShortcutService_ListShortcuts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShortcutServiceServer).ListShortcuts(ctx, req.(*ListShortcutsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ShortcutService_GetShortcut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -101,6 +134,10 @@ var ShortcutService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "slash.api.v2.ShortcutService",
 	HandlerType: (*ShortcutServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ListShortcuts",
+			Handler:    _ShortcutService_ListShortcuts_Handler,
+		},
 		{
 			MethodName: "GetShortcut",
 			Handler:    _ShortcutService_GetShortcut_Handler,

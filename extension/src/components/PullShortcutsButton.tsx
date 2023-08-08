@@ -3,7 +3,7 @@ import { useStorage } from "@plasmohq/storage/hook";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service_pb";
+import { ListShortcutsResponse } from "@/types/proto/api/v2/shortcut_service_pb";
 import "../style.css";
 import Icon from "./Icon";
 
@@ -22,12 +22,14 @@ const PullShortcutsButton = () => {
   const handlePullShortcuts = async (silence = false) => {
     try {
       setIsPulling(true);
-      const { data } = await axios.get<Shortcut[]>(`${domain}/api/v1/shortcut`, {
+      const {
+        data: { shortcuts },
+      } = await axios.get<ListShortcutsResponse>(`${domain}/api/v2/shortcut`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      setShortcuts(data);
+      setShortcuts(shortcuts);
       if (!silence) {
         toast.success("Shortcuts pulled");
       }

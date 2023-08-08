@@ -53,6 +53,24 @@ export const OpenGraphMetadata = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message slash.api.v2.ListShortcutsRequest
+ */
+export const ListShortcutsRequest = proto3.makeMessageType(
+  "slash.api.v2.ListShortcutsRequest",
+  [],
+);
+
+/**
+ * @generated from message slash.api.v2.ListShortcutsResponse
+ */
+export const ListShortcutsResponse = proto3.makeMessageType(
+  "slash.api.v2.ListShortcutsResponse",
+  () => [
+    { no: 1, name: "shortcuts", kind: "message", T: Shortcut, repeated: true },
+  ],
+);
+
+/**
  * @generated from message slash.api.v2.GetShortcutRequest
  */
 export const GetShortcutRequest = proto3.makeMessageType(

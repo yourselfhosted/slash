@@ -146,6 +146,49 @@ export declare class OpenGraphMetadata extends Message<OpenGraphMetadata> {
 }
 
 /**
+ * @generated from message slash.api.v2.ListShortcutsRequest
+ */
+export declare class ListShortcutsRequest extends Message<ListShortcutsRequest> {
+  constructor(data?: PartialMessage<ListShortcutsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.ListShortcutsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListShortcutsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListShortcutsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListShortcutsRequest;
+
+  static equals(a: ListShortcutsRequest | PlainMessage<ListShortcutsRequest> | undefined, b: ListShortcutsRequest | PlainMessage<ListShortcutsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message slash.api.v2.ListShortcutsResponse
+ */
+export declare class ListShortcutsResponse extends Message<ListShortcutsResponse> {
+  /**
+   * @generated from field: repeated slash.api.v2.Shortcut shortcuts = 1;
+   */
+  shortcuts: Shortcut[];
+
+  constructor(data?: PartialMessage<ListShortcutsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.ListShortcutsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListShortcutsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListShortcutsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListShortcutsResponse;
+
+  static equals(a: ListShortcutsResponse | PlainMessage<ListShortcutsResponse> | undefined, b: ListShortcutsResponse | PlainMessage<ListShortcutsResponse> | undefined): boolean;
+}
+
+/**
  * @generated from message slash.api.v2.GetShortcutRequest
  */
 export declare class GetShortcutRequest extends Message<GetShortcutRequest> {

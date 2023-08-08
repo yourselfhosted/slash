@@ -9,6 +9,8 @@
 - [api/v2/shortcut_service.proto](#api_v2_shortcut_service-proto)
     - [GetShortcutRequest](#slash-api-v2-GetShortcutRequest)
     - [GetShortcutResponse](#slash-api-v2-GetShortcutResponse)
+    - [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest)
+    - [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse)
     - [OpenGraphMetadata](#slash-api-v2-OpenGraphMetadata)
     - [Shortcut](#slash-api-v2-Shortcut)
   
@@ -102,6 +104,31 @@
 
 
 
+<a name="slash-api-v2-ListShortcutsRequest"></a>
+
+### ListShortcutsRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-ListShortcutsResponse"></a>
+
+### ListShortcutsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| shortcuts | [Shortcut](#slash-api-v2-Shortcut) | repeated |  |
+
+
+
+
+
+
 <a name="slash-api-v2-OpenGraphMetadata"></a>
 
 ### OpenGraphMetadata
@@ -172,6 +199,7 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
+| ListShortcuts | [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest) | [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse) |  |
 | GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by name. |
 
  
