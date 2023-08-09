@@ -66,6 +66,11 @@ export declare class User extends Message<User> {
    */
   nickname: string;
 
+  /**
+   * @generated from field: string password = 9;
+   */
+  password: string;
+
   constructor(data?: PartialMessage<User>);
 
   static readonly runtime: typeof proto3;
@@ -127,6 +132,54 @@ export declare class GetUserResponse extends Message<GetUserResponse> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetUserResponse;
 
   static equals(a: GetUserResponse | PlainMessage<GetUserResponse> | undefined, b: GetUserResponse | PlainMessage<GetUserResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message slash.api.v2.CreateUserRequest
+ */
+export declare class CreateUserRequest extends Message<CreateUserRequest> {
+  /**
+   * @generated from field: slash.api.v2.User user = 1;
+   */
+  user?: User;
+
+  constructor(data?: PartialMessage<CreateUserRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.CreateUserRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateUserRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateUserRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateUserRequest;
+
+  static equals(a: CreateUserRequest | PlainMessage<CreateUserRequest> | undefined, b: CreateUserRequest | PlainMessage<CreateUserRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message slash.api.v2.CreateUserResponse
+ */
+export declare class CreateUserResponse extends Message<CreateUserResponse> {
+  /**
+   * @generated from field: slash.api.v2.User user = 1;
+   */
+  user?: User;
+
+  constructor(data?: PartialMessage<CreateUserResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.CreateUserResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateUserResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateUserResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateUserResponse;
+
+  static equals(a: CreateUserResponse | PlainMessage<CreateUserResponse> | undefined, b: CreateUserResponse | PlainMessage<CreateUserResponse> | undefined): boolean;
 }
 
 /**

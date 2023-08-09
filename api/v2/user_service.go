@@ -9,6 +9,7 @@ import (
 	"github.com/boojack/slash/store"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pkg/errors"
+	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/exp/slices"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -44,6 +45,27 @@ func (s *UserService) GetUser(ctx context.Context, request *apiv2pb.GetUserReque
 	userMessage := convertUserFromStore(user)
 	response := &apiv2pb.GetUserResponse{
 		User: userMessage,
+	}
+	return response, nil
+}
+
+func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUserRequest) (*apiv2pb.CreateUserResponse, error) {
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
+	}
+
+	user, err := s.Store.CreateUser(ctx, &store.User{
+		Email:        request.User.Email,
+		Nickname:     request.User.Nickname,
+		Role:         store.RoleUser,
+		PasswordHash: string(passwordHash),
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create user: %v", err)
+	}
+	response := &apiv2pb.CreateUserResponse{
+		User: convertUserFromStore(user),
 	}
 	return response, nil
 }

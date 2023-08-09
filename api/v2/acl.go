@@ -17,16 +17,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-var authenticationAllowlistMethods = map[string]bool{}
-
-// IsAuthenticationAllowed returns whether the method is exempted from authentication.
-func IsAuthenticationAllowed(fullMethodName string) bool {
-	if strings.HasPrefix(fullMethodName, "/grpc.reflection") {
-		return true
-	}
-	return authenticationAllowlistMethods[fullMethodName]
-}
-
 // ContextKey is the key type of context value.
 type ContextKey int
 
@@ -63,10 +53,22 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 
 	userID, err := in.authenticate(ctx, accessToken)
 	if err != nil {
-		if IsAuthenticationAllowed(serverInfo.FullMethod) {
+		if isUnauthorizeAllowedMethod(serverInfo.FullMethod) {
 			return handler(ctx, request)
 		}
 		return nil, err
+	}
+	user, err := in.Store.GetUser(ctx, &store.FindUser{
+		ID: &userID,
+	})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get user")
+	}
+	if user == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "user ID %q not exists in the access token", userID)
+	}
+	if isOnlyForAdminAllowedMethod(serverInfo.FullMethod) && user.Role != store.RoleAdmin {
+		return nil, status.Errorf(codes.PermissionDenied, "user ID %q is not admin", userID)
 	}
 
 	userAccessTokens, err := in.Store.GetUserAccessTokens(ctx, userID)

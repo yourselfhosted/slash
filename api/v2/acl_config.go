@@ -1,0 +1,22 @@
+package v2
+
+import "strings"
+
+var allowedMethodsWhenUnauthorized = map[string]bool{}
+
+// isUnauthorizeAllowedMethod returns true if the method is allowed to be called when the user is not authorized.
+func isUnauthorizeAllowedMethod(methodName string) bool {
+	if strings.HasPrefix(methodName, "/grpc.reflection") {
+		return true
+	}
+	return allowedMethodsWhenUnauthorized[methodName]
+}
+
+var allowedMethodsOnlyForAdmin = map[string]bool{
+	"/slash.v2.UserService/CreateUser": true,
+}
+
+// isOnlyForAdminAllowedMethod returns true if the method is allowed to be called only by admin.
+func isOnlyForAdminAllowedMethod(methodName string) bool {
+	return allowedMethodsOnlyForAdmin[methodName]
+}

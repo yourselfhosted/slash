@@ -15,6 +15,12 @@ service UserService {
     option (google.api.http) = {get: "/api/v2/users/{id}"};
     option (google.api.method_signature) = "id";
   }
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/api/v2/users"
+      body: "user"
+    };
+  }
   // ListUserAccessTokens returns a list of access tokens for a user.
   rpc ListUserAccessTokens(ListUserAccessTokensRequest) returns (ListUserAccessTokensResponse) {
     option (google.api.http) = {get: "/api/v2/users/{id}/access_tokens"};
@@ -49,6 +55,8 @@ message User {
   string email = 7;
 
   string nickname = 8;
+
+  string password = 9;
 }
 
 enum Role {
@@ -64,6 +72,14 @@ message GetUserRequest {
 }
 
 message GetUserResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message CreateUserResponse {
   User user = 1;
 }
 

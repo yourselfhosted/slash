@@ -21,6 +21,8 @@
 - [api/v2/user_service.proto](#api_v2_user_service-proto)
     - [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest)
     - [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse)
+    - [CreateUserRequest](#slash-api-v2-CreateUserRequest)
+    - [CreateUserResponse](#slash-api-v2-CreateUserResponse)
     - [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest)
     - [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse)
     - [GetUserRequest](#slash-api-v2-GetUserRequest)
@@ -244,6 +246,36 @@
 
 
 
+<a name="slash-api-v2-CreateUserRequest"></a>
+
+### CreateUserRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateUserResponse"></a>
+
+### CreateUserResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+
+
+
+
+
+
 <a name="slash-api-v2-DeleteUserAccessTokenRequest"></a>
 
 ### DeleteUserAccessTokenRequest
@@ -345,6 +377,7 @@
 | role | [Role](#slash-api-v2-Role) |  |  |
 | email | [string](#string) |  |  |
 | nickname | [string](#string) |  |  |
+| password | [string](#string) |  |  |
 
 
 
@@ -396,6 +429,7 @@
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) | GetUser returns a user by id. |
+| CreateUser | [CreateUserRequest](#slash-api-v2-CreateUserRequest) | [CreateUserResponse](#slash-api-v2-CreateUserResponse) |  |
 | ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |
 | CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest) | [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse) | CreateUserAccessToken creates a new access token for a user. |
 | DeleteUserAccessToken | [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest) | [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse) | DeleteUserAccessToken deletes an access token for a user. |

@@ -31,6 +31,7 @@ export const User = proto3.makeMessageType(
     { no: 6, name: "role", kind: "enum", T: proto3.getEnumType(Role) },
     { no: 7, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 8, name: "nickname", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 9, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -49,6 +50,26 @@ export const GetUserRequest = proto3.makeMessageType(
  */
 export const GetUserResponse = proto3.makeMessageType(
   "slash.api.v2.GetUserResponse",
+  () => [
+    { no: 1, name: "user", kind: "message", T: User },
+  ],
+);
+
+/**
+ * @generated from message slash.api.v2.CreateUserRequest
+ */
+export const CreateUserRequest = proto3.makeMessageType(
+  "slash.api.v2.CreateUserRequest",
+  () => [
+    { no: 1, name: "user", kind: "message", T: User },
+  ],
+);
+
+/**
+ * @generated from message slash.api.v2.CreateUserResponse
+ */
+export const CreateUserResponse = proto3.makeMessageType(
+  "slash.api.v2.CreateUserResponse",
   () => [
     { no: 1, name: "user", kind: "message", T: User },
   ],
