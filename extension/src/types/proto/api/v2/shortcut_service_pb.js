@@ -90,3 +90,23 @@ export const GetShortcutResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message slash.api.v2.CreateShortcutRequest
+ */
+export const CreateShortcutRequest = proto3.makeMessageType(
+  "slash.api.v2.CreateShortcutRequest",
+  () => [
+    { no: 1, name: "shortcut", kind: "message", T: Shortcut },
+  ],
+);
+
+/**
+ * @generated from message slash.api.v2.CreateShortcutResponse
+ */
+export const CreateShortcutResponse = proto3.makeMessageType(
+  "slash.api.v2.CreateShortcutResponse",
+  () => [
+    { no: 1, name: "shortcut", kind: "message", T: Shortcut },
+  ],
+);
+

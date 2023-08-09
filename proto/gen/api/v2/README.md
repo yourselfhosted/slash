@@ -7,6 +7,8 @@
     - [RowStatus](#slash-api-v2-RowStatus)
   
 - [api/v2/shortcut_service.proto](#api_v2_shortcut_service-proto)
+    - [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest)
+    - [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse)
     - [GetShortcutRequest](#slash-api-v2-GetShortcutRequest)
     - [GetShortcutResponse](#slash-api-v2-GetShortcutResponse)
     - [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest)
@@ -73,6 +75,36 @@
 <p align="right"><a href="#top">Top</a></p>
 
 ## api/v2/shortcut_service.proto
+
+
+
+<a name="slash-api-v2-CreateShortcutRequest"></a>
+
+### CreateShortcutRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| shortcut | [Shortcut](#slash-api-v2-Shortcut) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateShortcutResponse"></a>
+
+### CreateShortcutResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| shortcut | [Shortcut](#slash-api-v2-Shortcut) |  |  |
+
+
+
 
 
 
@@ -201,8 +233,9 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| ListShortcuts | [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest) | [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse) |  |
+| ListShortcuts | [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest) | [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse) | ListShortcuts returns a list of shortcuts. |
 | GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by name. |
+| CreateShortcut | [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest) | [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse) | CreateShortcut creates a shortcut. |
 
  
 
@@ -429,7 +462,7 @@
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) | GetUser returns a user by id. |
-| CreateUser | [CreateUserRequest](#slash-api-v2-CreateUserRequest) | [CreateUserResponse](#slash-api-v2-CreateUserResponse) |  |
+| CreateUser | [CreateUserRequest](#slash-api-v2-CreateUserRequest) | [CreateUserResponse](#slash-api-v2-CreateUserResponse) | CreateUser creates a new user. |
 | ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |
 | CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest) | [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse) | CreateUserAccessToken creates a new access token for a user. |
 | DeleteUserAccessToken | [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest) | [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse) | DeleteUserAccessToken deletes an access token for a user. |

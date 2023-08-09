@@ -236,3 +236,51 @@ export declare class GetShortcutResponse extends Message<GetShortcutResponse> {
   static equals(a: GetShortcutResponse | PlainMessage<GetShortcutResponse> | undefined, b: GetShortcutResponse | PlainMessage<GetShortcutResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message slash.api.v2.CreateShortcutRequest
+ */
+export declare class CreateShortcutRequest extends Message<CreateShortcutRequest> {
+  /**
+   * @generated from field: slash.api.v2.Shortcut shortcut = 1;
+   */
+  shortcut?: Shortcut;
+
+  constructor(data?: PartialMessage<CreateShortcutRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.CreateShortcutRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateShortcutRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateShortcutRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateShortcutRequest;
+
+  static equals(a: CreateShortcutRequest | PlainMessage<CreateShortcutRequest> | undefined, b: CreateShortcutRequest | PlainMessage<CreateShortcutRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message slash.api.v2.CreateShortcutResponse
+ */
+export declare class CreateShortcutResponse extends Message<CreateShortcutResponse> {
+  /**
+   * @generated from field: slash.api.v2.Shortcut shortcut = 1;
+   */
+  shortcut?: Shortcut;
+
+  constructor(data?: PartialMessage<CreateShortcutResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.CreateShortcutResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateShortcutResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateShortcutResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateShortcutResponse;
+
+  static equals(a: CreateShortcutResponse | PlainMessage<CreateShortcutResponse> | undefined, b: CreateShortcutResponse | PlainMessage<CreateShortcutResponse> | undefined): boolean;
+}
+

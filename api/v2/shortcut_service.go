@@ -6,8 +6,10 @@ import (
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 type ShortcutService struct {
@@ -73,6 +75,56 @@ func (s *ShortcutService) GetShortcut(ctx context.Context, request *apiv2pb.GetS
 		Shortcut: shortcutMessage,
 	}
 	return response, nil
+}
+
+func (s *ShortcutService) CreateShortcut(ctx context.Context, request *apiv2pb.CreateShortcutRequest) (*apiv2pb.CreateShortcutResponse, error) {
+	userID := ctx.Value(UserIDContextKey).(int32)
+	shortcut, err := s.Store.CreateShortcut(ctx, &storepb.Shortcut{
+		CreatorId:   userID,
+		Name:        request.Shortcut.Name,
+		Link:        request.Shortcut.Link,
+		Title:       request.Shortcut.Title,
+		Tags:        request.Shortcut.Tags,
+		Description: request.Shortcut.Description,
+		Visibility:  storepb.Visibility(request.Shortcut.Visibility),
+		OgMetadata: &storepb.OpenGraphMetadata{
+			Title:       request.Shortcut.OgMetadata.Title,
+			Description: request.Shortcut.OgMetadata.Description,
+			Image:       request.Shortcut.OgMetadata.Image,
+		},
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create shortcut, err: %v", err)
+	}
+	if err := s.createShortcutCreateActivity(ctx, shortcut); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create activity, err: %v", err)
+	}
+
+	response := &apiv2pb.CreateShortcutResponse{
+		Shortcut: convertShortcutFromStorepb(shortcut),
+	}
+	return response, nil
+}
+
+func (s *ShortcutService) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
+	payload := &storepb.ActivityShorcutCreatePayload{
+		ShortcutId: shortcut.Id,
+	}
+	payloadStr, err := protojson.Marshal(payload)
+	if err != nil {
+		return errors.Wrap(err, "Failed to marshal activity payload")
+	}
+	activity := &store.Activity{
+		CreatorID: shortcut.CreatorId,
+		Type:      store.ActivityShortcutCreate,
+		Level:     store.ActivityInfo,
+		Payload:   string(payloadStr),
+	}
+	_, err = s.Store.CreateActivity(ctx, activity)
+	if err != nil {
+		return errors.Wrap(err, "Failed to create activity")
+	}
+	return nil
 }
 
 func convertShortcutFromStorepb(shortcut *storepb.Shortcut) *apiv2pb.Shortcut {

@@ -32,6 +32,7 @@ const (
 type UserServiceClient interface {
 	// GetUser returns a user by id.
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	// CreateUser creates a new user.
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	// ListUserAccessTokens returns a list of access tokens for a user.
 	ListUserAccessTokens(ctx context.Context, in *ListUserAccessTokensRequest, opts ...grpc.CallOption) (*ListUserAccessTokensResponse, error)
@@ -100,6 +101,7 @@ func (c *userServiceClient) DeleteUserAccessToken(ctx context.Context, in *Delet
 type UserServiceServer interface {
 	// GetUser returns a user by id.
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	// CreateUser creates a new user.
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	// ListUserAccessTokens returns a list of access tokens for a user.
 	ListUserAccessTokens(context.Context, *ListUserAccessTokensRequest) (*ListUserAccessTokensResponse, error)

@@ -3,6 +3,9 @@
 
 ## Table of Contents
 
+- [store/activity.proto](#store_activity-proto)
+    - [ActivityShorcutCreatePayload](#slash-store-ActivityShorcutCreatePayload)
+  
 - [store/common.proto](#store_common-proto)
     - [RowStatus](#slash-store-RowStatus)
   
@@ -20,6 +23,37 @@
     - [UserSettingKey](#slash-store-UserSettingKey)
   
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="store_activity-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## store/activity.proto
+
+
+
+<a name="slash-store-ActivityShorcutCreatePayload"></a>
+
+### ActivityShorcutCreatePayload
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| shortcut_id | [int32](#int32) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
 
 
 
