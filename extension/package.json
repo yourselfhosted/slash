@@ -47,6 +47,9 @@
     "typescript": "5.1.6"
   },
   "manifest": {
+    "omnibox": {
+      "keyword": "s"
+    },
     "permissions": [
       "tabs",
       "storage"

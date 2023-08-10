@@ -110,7 +110,7 @@ const IndexOptions = () => {
             </div>
           </div>
 
-          {isInitialized && shortcuts.length > 0 && (
+          {isInitialized && (
             <>
               <Divider className="!my-6" />
 

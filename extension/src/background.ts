@@ -20,6 +20,15 @@ chrome.tabs.onUpdated.addListener(async (tabId, _, tab) => {
   }
 });
 
+chrome.omnibox.onInputEntered.addListener(async (text) => {
+  const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
+  const shortcut = shortcuts.find((shortcut) => shortcut.name === text);
+  if (!shortcut) {
+    return;
+  }
+  return chrome.tabs.update({ url: shortcut.link });
+});
+
 const getShortcutNameFromUrl = (urlString: string) => {
   const matchResult = urlRegex.exec(urlString);
   if (matchResult === null) {
