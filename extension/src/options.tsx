@@ -21,6 +21,7 @@ const IndexOptions = () => {
     accessToken,
   });
   const [shortcuts] = useStorage<Shortcut[]>("shortcuts", []);
+  const isInitialized = domain && accessToken;
 
   useEffect(() => {
     setSettingState({
@@ -109,7 +110,7 @@ const IndexOptions = () => {
             </div>
           </div>
 
-          {shortcuts.length > 0 && (
+          {isInitialized && shortcuts.length > 0 && (
             <>
               <Divider className="!my-6" />
 
