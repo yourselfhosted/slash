@@ -79,7 +79,7 @@ func (s *ShortcutService) GetShortcut(ctx context.Context, request *apiv2pb.GetS
 
 func (s *ShortcutService) CreateShortcut(ctx context.Context, request *apiv2pb.CreateShortcutRequest) (*apiv2pb.CreateShortcutResponse, error) {
 	userID := ctx.Value(UserIDContextKey).(int32)
-	shortcut, err := s.Store.CreateShortcut(ctx, &storepb.Shortcut{
+	shortcut := &storepb.Shortcut{
 		CreatorId:   userID,
 		Name:        request.Shortcut.Name,
 		Link:        request.Shortcut.Link,
@@ -87,12 +87,16 @@ func (s *ShortcutService) CreateShortcut(ctx context.Context, request *apiv2pb.C
 		Tags:        request.Shortcut.Tags,
 		Description: request.Shortcut.Description,
 		Visibility:  storepb.Visibility(request.Shortcut.Visibility),
-		OgMetadata: &storepb.OpenGraphMetadata{
+		OgMetadata:  &storepb.OpenGraphMetadata{},
+	}
+	if request.Shortcut.OgMetadata != nil {
+		shortcut.OgMetadata = &storepb.OpenGraphMetadata{
 			Title:       request.Shortcut.OgMetadata.Title,
 			Description: request.Shortcut.OgMetadata.Description,
 			Image:       request.Shortcut.OgMetadata.Image,
-		},
-	})
+		}
+	}
+	shortcut, err := s.Store.CreateShortcut(ctx, shortcut)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create shortcut, err: %v", err)
 	}
