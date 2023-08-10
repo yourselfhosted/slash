@@ -4,6 +4,12 @@ Slash provides a browser extension to help you use your shortcuts in the search 
 
 ## How to use
 
+### Install the extension
+
+For Chromuim based browsers, you can install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg).
+
+For Firefox, we don't support the Firefox Add-ons platform yet. And we are working on it.
+
 ### Generate an access token
 
 1. Go to your Slash instance and sign in with your account.
@@ -15,14 +21,6 @@ Slash provides a browser extension to help you use your shortcuts in the search 
 3. Copy the access token and save it somewhere safe.
 
    ![](./assets/extension-usage/copy-access-token.png)
-
-### Install the extension
-
-> **Note**: The extension is not published to the Chrome Web Store yet. You can install it from the source code.
-
-For Chromuim based browsers, you can download the packed extension from the [resources](https://github.com/boojack/slash/tree/main/extension/resources).
-
-For Firefox, we don't support the Firefox Add-ons platform yet. And we are working on it.
 
 ### Configure the extension
 
