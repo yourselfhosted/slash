@@ -55,7 +55,7 @@ const ShortcutView = (props: Props) => {
               <div className="w-full flex flex-row justify-start items-center">
                 <a
                   className={classNames(
-                    "max-w-[calc(100%-24px) flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
+                    "max-w-[calc(100%-36px)] flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
                   )}
                   target="_blank"
                   href={shortcutLink}
