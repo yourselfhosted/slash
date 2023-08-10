@@ -1,7 +1,7 @@
 {
   "name": "slash-extexnsion",
   "displayName": "Slash",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An open source, self-hosted bookmarks and link sharing platform. Save and share your links very easily.",
   "author": "steven",
   "scripts": {
