@@ -111,6 +111,10 @@ func (s *Server) Shutdown(ctx context.Context) {
 	fmt.Printf("server stopped properly\n")
 }
 
+func (s *Server) GetEcho() *echo.Echo {
+	return s.e
+}
+
 func (s *Server) getSystemSecretSessionName(ctx context.Context) (string, error) {
 	secretSessionNameValue, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: store.WorkspaceDisallowSignUp,

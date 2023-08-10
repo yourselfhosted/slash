@@ -90,7 +90,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("malformatted post shortcut request, err: %s", err)).SetInternal(err)
 		}
 
-		shortcut, err := s.Store.CreateShortcut(ctx, &storepb.Shortcut{
+		shortcut := &storepb.Shortcut{
 			CreatorId:   userID,
 			Name:        strings.ToLower(create.Name),
 			Link:        create.Link,
@@ -98,12 +98,16 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			Description: create.Description,
 			Visibility:  convertVisibilityToStorepb(create.Visibility),
 			Tags:        create.Tags,
-			OgMetadata: &storepb.OpenGraphMetadata{
+			OgMetadata:  &storepb.OpenGraphMetadata{},
+		}
+		if create.OpenGraphMetadata != nil {
+			shortcut.OgMetadata = &storepb.OpenGraphMetadata{
 				Title:       create.OpenGraphMetadata.Title,
 				Description: create.OpenGraphMetadata.Description,
 				Image:       create.OpenGraphMetadata.Image,
-			},
-		})
+			}
+		}
+		shortcut, err := s.Store.CreateShortcut(ctx, shortcut)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create shortcut, err: %s", err)).SetInternal(err)
 		}
@@ -349,6 +353,8 @@ func convertVisibilityToStorepb(visibility Visibility) storepb.Visibility {
 	switch visibility {
 	case VisibilityPublic:
 		return storepb.Visibility_PUBLIC
+	case VisibilityWorkspace:
+		return storepb.Visibility_WORKSPACE
 	case VisibilityPrivate:
 		return storepb.Visibility_PRIVATE
 	default:
