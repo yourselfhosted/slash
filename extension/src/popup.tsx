@@ -1,11 +1,12 @@
-import { Button } from "@mui/joy";
+import { Button, Divider, IconButton } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
 import { Toaster } from "react-hot-toast";
+import CreateShortcutsButton from "@/components/CreateShortcutsButton";
+import Icon from "@/components/Icon";
+import Logo from "@/components/Logo";
+import PullShortcutsButton from "@/components/PullShortcutsButton";
+import ShortcutsContainer from "@/components/ShortcutsContainer";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service_pb";
-import CreateShortcutsButton from "./components/CreateShortcutsButton";
-import Icon from "./components/Icon";
-import PullShortcutsButton from "./components/PullShortcutsButton";
-import ShortcutsContainer from "./components/ShortcutsContainer";
 import "./style.css";
 
 const IndexPopup = () => {
@@ -20,6 +21,7 @@ const IndexPopup = () => {
 
   const handleRefreshButtonClick = () => {
     chrome.runtime.reload();
+    chrome.browserAction.setPopup({ popup: "" });
   };
 
   return (
@@ -27,7 +29,7 @@ const IndexPopup = () => {
       <div className="w-full min-w-[512px] p-6">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center">
-            <Icon.CircleSlash className="w-5 h-auto mr-1 text-gray-500" />
+            <Logo className="w-6 h-auto mr-2" />
             <span className="">Slash</span>
             {isInitialized && (
               <>
@@ -52,18 +54,15 @@ const IndexPopup = () => {
                 </div>
               )}
 
-              <div className="mt-4 w-full flex flex-row justify-start items-center">
-                <Button size="sm" variant="plain" color="neutral" onClick={handleSettingButtonClick}>
+              <Divider className="!mt-4 !mb-3" />
+
+              <div className="w-full flex flex-row justify-start items-center">
+                <IconButton size="sm" variant="plain" color="neutral" onClick={handleSettingButtonClick}>
                   <Icon.Settings className="w-5 h-auto text-gray-500" />
-                </Button>
-                <a
-                  className="flex flex-row justify-start items-center text-sm rounded-md py-1 px-2 text-gray-500 cursor-pointer hover:text-blue-600 hover:underline"
-                  href="https://github.com/boojack/slash"
-                  target="_blank"
-                >
-                  <Icon.Github className="w-5 h-auto mr-1" />
-                  <span>GitHub</span>
-                </a>
+                </IconButton>
+                <IconButton size="sm" variant="plain" color="neutral" component="a" href="https://github.com/boojack/slash" target="_blank">
+                  <Icon.Github className="w-5 h-auto text-gray-500" />
+                </IconButton>
               </div>
             </>
           ) : (

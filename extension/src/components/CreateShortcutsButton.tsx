@@ -1,10 +1,9 @@
-import { Button, Input, Modal, ModalDialog } from "@mui/joy";
+import { Button, IconButton, Input, Modal, ModalDialog } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { CreateShortcutResponse, OpenGraphMetadata, Visibility } from "@/types/proto/api/v2/shortcut_service_pb";
-import "../style.css";
 import Icon from "./Icon";
 
 const generateTempName = (length = 6) => {
@@ -116,9 +115,9 @@ const CreateShortcutsButton = () => {
 
   return (
     <>
-      <Button size="sm" onClick={() => handleCreateShortcutButtonClick()}>
+      <IconButton color="primary" variant="solid" size="sm" onClick={() => handleCreateShortcutButtonClick()}>
         <Icon.Plus className="w-5 h-auto" />
-      </Button>
+      </IconButton>
 
       <Modal open={showModal}>
         <ModalDialog layout="fullscreen">

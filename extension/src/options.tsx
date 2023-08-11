@@ -4,6 +4,7 @@ import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import Icon from "./components/Icon";
+import Logo from "./components/Logo";
 import PullShortcutsButton from "./components/PullShortcutsButton";
 import ShortcutsContainer from "./components/ShortcutsContainer";
 import "./style.css";
@@ -59,11 +60,11 @@ const IndexOptions = () => {
         </div>
 
         <div className="w-full max-w-lg mx-auto flex flex-col justify-start items-start mt-12">
-          <h2 className="flex flex-row justify-start items-center mb-6 font-mono">
-            <Icon.CircleSlash className="w-8 h-auto mr-2 text-gray-500" />
-            <span className="text-lg">Slash</span>
+          <h2 className="flex flex-row justify-start items-center mb-6 text-2xl">
+            <Logo className="w-10 h-auto mr-2" />
+            <span>Slash</span>
             <span className="mx-2 text-gray-400">/</span>
-            <span className="text-lg">Setting</span>
+            <span>Setting</span>
           </h2>
 
           <div className="w-full flex flex-col justify-start items-start">
@@ -114,7 +115,7 @@ const IndexOptions = () => {
             <>
               <Divider className="!my-6" />
 
-              <h2 className="flex flex-row justify-start items-center mb-4 font-mono">
+              <h2 className="flex flex-row justify-start items-center mb-4">
                 <span className="text-lg">Shortcuts</span>
                 <span className="text-gray-500 mr-1">({shortcuts.length})</span>
                 <PullShortcutsButton />
