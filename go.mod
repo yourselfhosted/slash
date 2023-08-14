@@ -70,6 +70,7 @@ require (
 require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.2
+	github.com/h2non/filetype v1.1.3
 	github.com/mssola/useragent v1.0.0
 	github.com/pkg/errors v0.9.1
 	go.deanishe.net/favicon v0.1.0

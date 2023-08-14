@@ -8,10 +8,12 @@ import (
 type WorkspaceSettingKey string
 
 const (
-	// WorkspaceDisallowSignUp is the key type for disallow sign up in workspace level.
-	WorkspaceDisallowSignUp WorkspaceSettingKey = "disallow-signup"
 	// WorkspaceSecretSessionName is the key type for secret session name.
 	WorkspaceSecretSessionName WorkspaceSettingKey = "secret-session-name"
+	// WorkspaceDisallowSignUp is the key type for disallow sign up in workspace level.
+	WorkspaceDisallowSignUp WorkspaceSettingKey = "disallow-signup"
+	// WorkspaceResourceRelativePath is the key type for resource relative path.
+	WorkspaceResourceRelativePath WorkspaceSettingKey = "resource-relative-path"
 )
 
 // String returns the string format of WorkspaceSettingKey type.

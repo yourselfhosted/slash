@@ -76,6 +76,10 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 		return nil, fmt.Errorf("failed to register gRPC gateway: %w", err)
 	}
 
+	// Register resource service.
+	resourceService := NewResourceService(profile, store)
+	resourceService.Register(rootGroup)
+
 	return s, nil
 }
 
