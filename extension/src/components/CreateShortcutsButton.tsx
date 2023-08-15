@@ -1,7 +1,7 @@
 import { Button, IconButton, Input, Modal, ModalDialog } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { CreateShortcutResponse, OpenGraphMetadata, Visibility } from "@/types/proto/api/v2/shortcut_service_pb";
 import Icon from "./Icon";
@@ -35,6 +35,14 @@ const CreateShortcutsButton = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.height = "384px";
+    } else {
+      document.body.style.height = "auto";
+    }
+  }, [showModal]);
 
   const handleCreateShortcutButtonClick = async () => {
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
@@ -119,15 +127,15 @@ const CreateShortcutsButton = () => {
         <Icon.Plus className="w-5 h-auto" />
       </IconButton>
 
-      <Modal open={showModal}>
-        <ModalDialog layout="fullscreen">
+      <Modal container={() => document.body} open={showModal} onClose={() => setShowModal(false)}>
+        <ModalDialog>
           <div className="w-full flex flex-row justify-between items-center mb-2">
             <span className="text-base font-medium">Create Shortcut</span>
             <Button size="sm" variant="plain" onClick={() => setShowModal(false)}>
               <Icon.X className="w-5 h-auto text-gray-600" />
             </Button>
           </div>
-          <div className="overflow-y-auto overflow-x-hidden px-2 w-full h-full flex flex-col justify-center items-center">
+          <div className="overflow-x-hidden px-2 w-full flex flex-col justify-start items-center">
             <div className="w-full flex flex-row justify-start items-center mb-2">
               <span className="block w-16 shrink-0">Name</span>
               <Input className="grow" type="text" placeholder="Unique shortcut name" value={state.name} onChange={handleNameInputChange} />
