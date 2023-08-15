@@ -33,18 +33,22 @@ func (s *ResourceService) Register(g *echo.Group) {
 			Key: store.WorkspaceResourceRelativePath,
 		})
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "Failed to workspace resource relative path setting").SetInternal(err)
+			return echo.NewHTTPError(http.StatusBadRequest, "failed to workspace resource relative path setting").SetInternal(err)
 		}
+		if resourceRelativePathSetting == nil || resourceRelativePathSetting.Value == "" {
+			return echo.NewHTTPError(http.StatusBadRequest, "found no workspace resource relative path setting")
+		}
+
 		resourceRelativePath := resourceRelativePathSetting.Value
 		resourcePath := fmt.Sprintf("%s/%s", resourceRelativePath, resourceID)
 		buf, err := os.ReadFile(resourcePath)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to read the local resource: %s", resourcePath)).SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to read the local resource: %s", resourcePath)).SetInternal(err)
 		}
 
 		kind, err := filetype.Match(buf)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to match the local resource: %s", resourcePath)).SetInternal(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to match the local resource: %s", resourcePath)).SetInternal(err)
 		}
 		resourceMimeType := kind.MIME.Value
 		c.Response().Writer.Header().Set(echo.HeaderCacheControl, "max-age=31536000, immutable")

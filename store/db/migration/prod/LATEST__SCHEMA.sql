@@ -59,3 +59,12 @@ CREATE TABLE activity (
   level TEXT NOT NULL CHECK (level IN ('INFO', 'WARN', 'ERROR')) DEFAULT 'INFO',
   payload TEXT NOT NULL DEFAULT '{}'
 );
+
+-- idp
+CREATE TABLE idp (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  type TEXT NOT NULL,
+  identifier_filter TEXT NOT NULL DEFAULT '',
+  config TEXT NOT NULL DEFAULT '{}'
+);
