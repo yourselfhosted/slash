@@ -71,7 +71,7 @@ func JWTMiddleware(s *APIV1Service, next echo.HandlerFunc, secret string) echo.H
 		token := findAccessToken(c)
 		if token == "" {
 			// When the request is not authenticated, we allow the user to access the shortcut endpoints for those public shortcuts.
-			if util.HasPrefixes(path, "/s/*") && method == http.MethodGet {
+			if util.HasPrefixes(path, "/s/") && method == http.MethodGet {
 				return next(c)
 			}
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing access token")
