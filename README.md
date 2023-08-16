@@ -34,4 +34,8 @@ Slash provides a browser extension to help you use your shortcuts in the search 
 
 ![browser-extension-example](./resources/browser-extension-example.png)
 
+### Chromium based browsers
+
+For Chromium based browsers(Chrome, Edge, Arc, ...), you can install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg).
+
 Learn more in [The Browser Extension of Slash](https://github.com/boojack/slash/blob/main/docs/install-browser-extension.md).

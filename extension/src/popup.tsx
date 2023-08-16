@@ -26,7 +26,7 @@ const IndexPopup = () => {
 
   return (
     <>
-      <div className="w-full min-w-[512px] p-6">
+      <div className="w-full min-w-[512px] px-4 pt-4">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center">
             <Logo className="w-6 h-auto mr-2" />
@@ -54,15 +54,34 @@ const IndexPopup = () => {
                 </div>
               )}
 
-              <Divider className="!mt-4 !mb-3" />
+              <Divider className="!mt-4 !mb-2 opacity-40" />
 
-              <div className="w-full flex flex-row justify-start items-center">
-                <IconButton size="sm" variant="plain" color="neutral" onClick={handleSettingButtonClick}>
-                  <Icon.Settings className="w-5 h-auto text-gray-500" />
-                </IconButton>
-                <IconButton size="sm" variant="plain" color="neutral" component="a" href="https://github.com/boojack/slash" target="_blank">
-                  <Icon.Github className="w-5 h-auto text-gray-500" />
-                </IconButton>
+              <div className="w-full flex flex-row justify-between items-center mb-2">
+                <div className="flex flex-row justify-start items-center">
+                  <IconButton size="sm" variant="plain" color="neutral" onClick={handleSettingButtonClick}>
+                    <Icon.Settings className="w-5 h-auto text-gray-500" />
+                  </IconButton>
+                  <IconButton
+                    size="sm"
+                    variant="plain"
+                    color="neutral"
+                    component="a"
+                    href="https://github.com/boojack/slash"
+                    target="_blank"
+                  >
+                    <Icon.Github className="w-5 h-auto text-gray-500" />
+                  </IconButton>
+                </div>
+                <div className="flex flex-row justify-end items-center">
+                  <a
+                    className="text-sm flex flex-row justify-start items-center text-gray-500 hover:underline hover:text-blue-600"
+                    href={domain}
+                    target="_blank"
+                  >
+                    <span className="mr-1">Go to my Slash</span>
+                    <Icon.ExternalLink className="w-4 h-auto" />
+                  </a>
+                </div>
               </div>
             </>
           ) : (
