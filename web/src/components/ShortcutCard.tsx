@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { absolutifyLink } from "../helpers/utils";
 import useFaviconStore from "../stores/v1/favicon";
 import useViewStore from "../stores/v1/view";
-import AnalyticsDialog from "./AnalyticsDialog";
 import Icon from "./Icon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";
 import VisibilityIcon from "./VisibilityIcon";
@@ -23,7 +22,6 @@ const ShortcutView = (props: Props) => {
   const viewStore = useViewStore();
   const faviconStore = useFaviconStore();
   const [favicon, setFavicon] = useState<string | undefined>(undefined);
-  const [showAnalyticsDialog, setShowAnalyticsDialog] = useState<boolean>(false);
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
 
   useEffect(() => {
@@ -124,18 +122,16 @@ const ShortcutView = (props: Props) => {
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
-            <div
+            <Link
+              to={`/shortcut/${shortcut.id}#analytics`}
               className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm"
-              onClick={() => setShowAnalyticsDialog(true)}
             >
               <Icon.BarChart2 className="w-4 h-auto mr-1" />
               {shortcut.view} visits
-            </div>
+            </Link>
           </Tooltip>
         </div>
       </div>
-
-      {showAnalyticsDialog && <AnalyticsDialog shortcutId={shortcut.id} onClose={() => setShowAnalyticsDialog(false)} />}
     </>
   );
 };

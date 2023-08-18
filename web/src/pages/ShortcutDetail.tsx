@@ -175,7 +175,7 @@ const ShortcutDetail = () => {
         </div>
 
         <div className="w-full flex flex-col mt-8">
-          <h3 className="pl-1 font-medium text-lg flex flex-row justify-start items-center">
+          <h3 id="analytics" className="pl-1 font-medium text-lg flex flex-row justify-start items-center">
             <Icon.BarChart2 className="w-6 h-auto mr-1" />
             Analytics
           </h3>
