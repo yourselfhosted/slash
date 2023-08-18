@@ -2,6 +2,7 @@ import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import useLoading from "../hooks/useLoading";
 import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
@@ -20,6 +21,7 @@ const roles: Role[] = ["USER", "ADMIN"];
 
 const CreateUserDialog: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, user } = props;
+  const { t } = useTranslation();
   const userStore = useUserStore();
   const [state, setState] = useState<State>({
     userCreate: {
@@ -185,10 +187,10 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
           </div>
           <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
             <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              Save
+              {t("common.save")}
             </Button>
           </div>
         </div>

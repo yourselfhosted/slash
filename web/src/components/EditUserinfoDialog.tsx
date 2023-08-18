@@ -1,6 +1,7 @@
 import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import useLoading from "../hooks/useLoading";
 import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
@@ -11,6 +12,7 @@ interface Props {
 
 const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
   const { onClose } = props;
+  const { t } = useTranslation();
   const userStore = useUserStore();
   const currentUser = userStore.getCurrentUser();
   const [email, setEmail] = useState(currentUser.email);
@@ -73,10 +75,10 @@ const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
           </div>
           <div className="w-full flex flex-row justify-end items-center space-x-2">
             <Button variant="plain" disabled={requestState.isLoading} onClick={handleCloseBtnClick}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              Save
+              {t("common.save")}
             </Button>
           </div>
         </div>

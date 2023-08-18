@@ -1,4 +1,5 @@
 import { Button, Modal, ModalDialog } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import AnalyticsView from "./AnalyticsView";
 import Icon from "./Icon";
 
@@ -9,12 +10,13 @@ interface Props {
 
 const AnalyticsDialog: React.FC<Props> = (props: Props) => {
   const { shortcutId, onClose } = props;
+  const { t } = useTranslation();
 
   return (
     <Modal open={true}>
       <ModalDialog>
         <div className="w-full flex flex-row justify-between items-center">
-          <span className="text-lg font-medium">Analytics</span>
+          <span className="text-lg font-medium">{t("analytics.self")}</span>
           <Button variant="plain" onClick={onClose}>
             <Icon.X className="w-5 h-auto text-gray-600" />
           </Button>

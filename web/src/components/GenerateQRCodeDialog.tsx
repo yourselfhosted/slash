@@ -2,6 +2,7 @@ import { Button, Modal, ModalDialog } from "@mui/joy";
 import { QRCodeCanvas } from "qrcode.react";
 import { useRef } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { absolutifyLink } from "../helpers/utils";
 import Icon from "./Icon";
 
@@ -12,6 +13,7 @@ interface Props {
 
 const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
   const { shortcut, onClose } = props;
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
 
@@ -49,7 +51,7 @@ const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
           <div className="w-full flex flex-row justify-center items-center px-4">
             <Button className="w-full" color="neutral" onClick={handleDownloadQRCodeClick}>
               <Icon.Download className="w-4 h-auto mr-1" />
-              Download
+              {t("common.download")}
             </Button>
           </div>
         </div>

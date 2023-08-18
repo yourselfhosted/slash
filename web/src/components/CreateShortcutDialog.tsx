@@ -331,10 +331,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
 
           <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
             <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              Save
+              {t("common.save")}
             </Button>
           </div>
         </div>

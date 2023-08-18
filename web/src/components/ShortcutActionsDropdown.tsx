@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { shortcutService } from "../services";
 import useUserStore from "../stores/v1/user";
 import { showCommonDialog } from "./Alert";
@@ -14,6 +15,7 @@ interface Props {
 
 const ShortcutActionsDropdown = (props: Props) => {
   const { shortcut } = props;
+  const { t } = useTranslation();
   const currentUser = useUserStore().getCurrentUser();
   const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
@@ -42,7 +44,7 @@ const ShortcutActionsDropdown = (props: Props) => {
                 className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                 onClick={() => setShowEditDialog(true)}
               >
-                <Icon.Edit className="w-4 h-auto mr-2" /> Edit
+                <Icon.Edit className="w-4 h-auto mr-2" /> {t("common.edit")}
               </button>
             )}
             <button
@@ -55,7 +57,7 @@ const ShortcutActionsDropdown = (props: Props) => {
               className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
               onClick={() => setShowAnalyticsDialog(true)}
             >
-              <Icon.BarChart2 className="w-4 h-auto mr-2" /> Analytics
+              <Icon.BarChart2 className="w-4 h-auto mr-2" /> {t("analytics.self")}
             </button>
             {havePermission && (
               <button
@@ -64,7 +66,7 @@ const ShortcutActionsDropdown = (props: Props) => {
                   handleDeleteShortcutButtonClick(shortcut);
                 }}
               >
-                <Icon.Trash className="w-4 h-auto mr-2" /> Delete
+                <Icon.Trash className="w-4 h-auto mr-2" /> {t("common.delete")}
               </button>
             )}
           </>

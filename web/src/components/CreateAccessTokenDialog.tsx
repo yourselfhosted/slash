@@ -2,6 +2,7 @@ import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import useLoading from "../hooks/useLoading";
 import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
@@ -33,6 +34,7 @@ interface State {
 
 const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm } = props;
+  const { t } = useTranslation();
   const currentUser = useUserStore().getCurrentUser();
   const [state, setState] = useState({
     description: "",
@@ -119,10 +121,10 @@ const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
           </div>
           <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
             <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              Create
+              {t("common.create")}
             </Button>
           </div>
         </div>
