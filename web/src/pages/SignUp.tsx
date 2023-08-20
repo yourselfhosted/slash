@@ -78,7 +78,7 @@ const SignUp: React.FC = () => {
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
             <img src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
-            <span className="text-3xl font-medium font-mono opacity-80">Slash</span>
+            <span className="text-3xl opacity-80">Slash</span>
           </div>
           <p className="w-full text-2xl mt-6">Create your account</p>
           <form className="w-full mt-4" onSubmit={handleSignupBtnClick}>

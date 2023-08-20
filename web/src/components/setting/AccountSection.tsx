@@ -19,7 +19,7 @@ const AccountSection: React.FC = () => {
           {isAdmin && <span className="ml-2 bg-blue-600 text-white px-2 leading-6 text-sm rounded-full">Admin</span>}
         </p>
         <p className="flex flex-row justify-start items-center">
-          <span className="mr-3 text-gray-500 font-mono">Email: </span>
+          <span className="mr-3 text-gray-500">Email: </span>
           {currentUser.email}
         </p>
         <div className="flex flex-row justify-start items-center gap-2 mt-2">
