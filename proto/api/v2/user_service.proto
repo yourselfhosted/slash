@@ -10,6 +10,10 @@ import "google/protobuf/timestamp.proto";
 option go_package = "gen/api/v2";
 
 service UserService {
+  // ListUsers returns a list of users.
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {get: "/api/v2/users"};
+  }
   // GetUser returns a user by id.
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {
     option (google.api.http) = {get: "/api/v2/users/{id}"};
@@ -66,6 +70,12 @@ enum Role {
   ADMIN = 1;
 
   USER = 2;
+}
+
+message ListUsersRequest {}
+
+message ListUsersResponse {
+  repeated User users = 1;
 }
 
 message GetUserRequest {

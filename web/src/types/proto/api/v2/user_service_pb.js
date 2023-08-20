@@ -36,6 +36,24 @@ export const User = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message slash.api.v2.ListUsersRequest
+ */
+export const ListUsersRequest = proto3.makeMessageType(
+  "slash.api.v2.ListUsersRequest",
+  [],
+);
+
+/**
+ * @generated from message slash.api.v2.ListUsersResponse
+ */
+export const ListUsersResponse = proto3.makeMessageType(
+  "slash.api.v2.ListUsersResponse",
+  () => [
+    { no: 1, name: "users", kind: "message", T: User, repeated: true },
+  ],
+);
+
+/**
  * @generated from message slash.api.v2.GetUserRequest
  */
 export const GetUserRequest = proto3.makeMessageType(

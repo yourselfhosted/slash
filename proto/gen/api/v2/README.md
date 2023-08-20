@@ -31,6 +31,8 @@
     - [GetUserResponse](#slash-api-v2-GetUserResponse)
     - [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest)
     - [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse)
+    - [ListUsersRequest](#slash-api-v2-ListUsersRequest)
+    - [ListUsersResponse](#slash-api-v2-ListUsersResponse)
     - [User](#slash-api-v2-User)
     - [UserAccessToken](#slash-api-v2-UserAccessToken)
   
@@ -395,6 +397,31 @@
 
 
 
+<a name="slash-api-v2-ListUsersRequest"></a>
+
+### ListUsersRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-ListUsersResponse"></a>
+
+### ListUsersResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| users | [User](#slash-api-v2-User) | repeated |  |
+
+
+
+
+
+
 <a name="slash-api-v2-User"></a>
 
 ### User
@@ -461,6 +488,7 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
+| ListUsers | [ListUsersRequest](#slash-api-v2-ListUsersRequest) | [ListUsersResponse](#slash-api-v2-ListUsersResponse) | ListUsers returns a list of users. |
 | GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) | GetUser returns a user by id. |
 | CreateUser | [CreateUserRequest](#slash-api-v2-CreateUserRequest) | [CreateUserResponse](#slash-api-v2-CreateUserResponse) | CreateUser creates a new user. |
 | ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |

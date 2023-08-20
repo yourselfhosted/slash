@@ -31,6 +31,22 @@ func NewUserService(secret string, store *store.Store) *UserService {
 	}
 }
 
+func (s *UserService) ListUsers(ctx context.Context, request *apiv2pb.ListShortcutsRequest) (*apiv2pb.ListUsersResponse, error) {
+	users, err := s.Store.ListUsers(ctx, &store.FindUser{})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
+	}
+
+	userMessages := []*apiv2pb.User{}
+	for _, user := range users {
+		userMessages = append(userMessages, convertUserFromStore(user))
+	}
+	response := &apiv2pb.ListUsersResponse{
+		Users: userMessages,
+	}
+	return response, nil
+}
+
 func (s *UserService) GetUser(ctx context.Context, request *apiv2pb.GetUserRequest) (*apiv2pb.GetUserResponse, error) {
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
 		ID: &request.Id,

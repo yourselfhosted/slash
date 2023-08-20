@@ -87,6 +87,49 @@ export declare class User extends Message<User> {
 }
 
 /**
+ * @generated from message slash.api.v2.ListUsersRequest
+ */
+export declare class ListUsersRequest extends Message<ListUsersRequest> {
+  constructor(data?: PartialMessage<ListUsersRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.ListUsersRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListUsersRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListUsersRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListUsersRequest;
+
+  static equals(a: ListUsersRequest | PlainMessage<ListUsersRequest> | undefined, b: ListUsersRequest | PlainMessage<ListUsersRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message slash.api.v2.ListUsersResponse
+ */
+export declare class ListUsersResponse extends Message<ListUsersResponse> {
+  /**
+   * @generated from field: repeated slash.api.v2.User users = 1;
+   */
+  users: User[];
+
+  constructor(data?: PartialMessage<ListUsersResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.ListUsersResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListUsersResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListUsersResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListUsersResponse;
+
+  static equals(a: ListUsersResponse | PlainMessage<ListUsersResponse> | undefined, b: ListUsersResponse | PlainMessage<ListUsersResponse> | undefined): boolean;
+}
+
+/**
  * @generated from message slash.api.v2.GetUserRequest
  */
 export declare class GetUserRequest extends Message<GetUserRequest> {
