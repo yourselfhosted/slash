@@ -164,13 +164,13 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           title: state.shortcutCreate.title,
           description: state.shortcutCreate.description,
           visibility: state.shortcutCreate.visibility,
-          tags: tag.split(" "),
+          tags: tag.split(" ").filter(Boolean),
           openGraphMetadata: state.shortcutCreate.openGraphMetadata,
         });
       } else {
         await shortcutService.createShortcut({
           ...state.shortcutCreate,
-          tags: tag.split(" "),
+          tags: tag.split(" ").filter(Boolean),
         });
       }
 
