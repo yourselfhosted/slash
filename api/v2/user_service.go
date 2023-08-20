@@ -31,7 +31,7 @@ func NewUserService(secret string, store *store.Store) *UserService {
 	}
 }
 
-func (s *UserService) ListUsers(ctx context.Context, request *apiv2pb.ListShortcutsRequest) (*apiv2pb.ListUsersResponse, error) {
+func (s *UserService) ListUsers(ctx context.Context, request *apiv2pb.ListUsersRequest) (*apiv2pb.ListUsersResponse, error) {
 	users, err := s.Store.ListUsers(ctx, &store.FindUser{})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
