@@ -8,14 +8,15 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	_ "modernc.org/sqlite"
-
+	"github.com/boojack/slash/internal/log"
 	"github.com/boojack/slash/server"
 	_profile "github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
 	"github.com/boojack/slash/store/db"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
+	_ "modernc.org/sqlite"
 )
 
 const (
@@ -36,7 +37,7 @@ var (
 			db := db.NewDB(profile)
 			if err := db.Open(ctx); err != nil {
 				cancel()
-				fmt.Printf("failed to open db, error: %+v\n", err)
+				log.Error("failed to open database", zap.Error(err))
 				return
 			}
 
@@ -44,7 +45,7 @@ var (
 			s, err := server.NewServer(ctx, profile, storeInstance)
 			if err != nil {
 				cancel()
-				fmt.Printf("failed to create server, error: %+v\n", err)
+				log.Error("failed to create server", zap.Error(err))
 				return
 			}
 
@@ -55,16 +56,16 @@ var (
 			signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 			go func() {
 				sig := <-c
-				fmt.Printf("%s received.\n", sig.String())
+				log.Info(fmt.Sprintf("%s received.\n", sig.String()))
 				s.Shutdown(ctx)
 				cancel()
 			}()
 
-			println(greetingBanner)
-			fmt.Printf("Version %s has started at :%d\n", profile.Version, profile.Port)
+			printGreetings()
+
 			if err := s.Start(ctx); err != nil {
 				if err != http.ErrServerClosed {
-					fmt.Printf("failed to start server, error: %+v\n", err)
+					log.Error("failed to start server", zap.Error(err))
 					cancel()
 				}
 			}
@@ -76,6 +77,7 @@ var (
 )
 
 func Execute() error {
+	defer log.Sync()
 	return rootCmd.Execute()
 }
 
@@ -109,7 +111,7 @@ func initConfig() {
 	var err error
 	profile, err = _profile.GetProfile()
 	if err != nil {
-		fmt.Printf("failed to get profile, error: %+v\n", err)
+		log.Error("failed to get profile", zap.Error(err))
 		return
 	}
 
@@ -120,6 +122,15 @@ func initConfig() {
 	println("mode:", profile.Mode)
 	println("version:", profile.Version)
 	println("---")
+}
+
+func printGreetings() {
+	fmt.Println(greetingBanner)
+	fmt.Printf("Version %s has been started on port %d\n", profile.Version, profile.Port)
+	fmt.Println("---")
+	fmt.Println("See more in:")
+	fmt.Printf("👉GitHub: %s\n", "https://github.com/boojack/slash")
+	fmt.Println("---")
 }
 
 func main() {
