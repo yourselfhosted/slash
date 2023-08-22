@@ -2,36 +2,36 @@
   "common": {
     "about": "关于",
     "loading": "加载中",
-    "cancel": "Cancel",
-    "save": "Save",
-    "create": "Create",
-    "download": "Download",
-    "edit": "Edit",
-    "delete": "Delete"
+    "cancel": "取消",
+    "save": "保存",
+    "create": "创建",
+    "download": "下载",
+    "edit": "编辑",
+    "delete": "删除"
   },
   "analytics": {
-    "self": "Analytics",
-    "top-sources": "Top Sources",
-    "source": "Source",
-    "visitors": "Visitors",
-    "devices": "Devices",
-    "browser": "Browser",
-    "browsers": "Browsers",
-    "operating-system": "Operating System"
+    "self": "分析",
+    "top-sources": "热门来源",
+    "source": "来源",
+    "visitors": "访客数",
+    "devices": "设备",
+    "browser": "浏览器",
+    "browsers": "浏览器",
+    "operating-system": "操作系统"
   },
   "shortcut": {
     "visibility": {
       "private": {
-        "self": "Private",
-        "description": "Only you can access"
+        "self": "私有的",
+        "description": "仅您可以访问"
       },
       "workspace": {
-        "self": "Workspace",
-        "description": "Workspace members can access"
+        "self": "工作区",
+        "description": "工作区成员可以访问"
       },
       "public": {
-        "self": "Public",
-        "description": "Available to Everyone on the Internet"
+        "self": "公开的",
+        "description": "对任何人可见"
       }
     }
   }
