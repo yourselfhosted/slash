@@ -128,24 +128,24 @@ const CreateShortcutsButton = () => {
       </IconButton>
 
       <Modal container={() => document.body} open={showModal} onClose={() => setShowModal(false)}>
-        <ModalDialog>
+        <ModalDialog className="w-3/4">
           <div className="w-full flex flex-row justify-between items-center mb-2">
             <span className="text-base font-medium">Create Shortcut</span>
             <Button size="sm" variant="plain" onClick={() => setShowModal(false)}>
               <Icon.X className="w-5 h-auto text-gray-600" />
             </Button>
           </div>
-          <div className="overflow-x-hidden px-2 w-full flex flex-col justify-start items-center">
+          <div className="overflow-x-hidden w-full flex flex-col justify-start items-center">
             <div className="w-full flex flex-row justify-start items-center mb-2">
-              <span className="block w-16 shrink-0">Name</span>
+              <span className="block w-12 mr-2 shrink-0">Name</span>
               <Input className="grow" type="text" placeholder="Unique shortcut name" value={state.name} onChange={handleNameInputChange} />
             </div>
             <div className="w-full flex flex-row justify-start items-center mb-2">
-              <span className="block w-16 shrink-0">Title</span>
+              <span className="block w-12 mr-2 shrink-0">Title</span>
               <Input className="grow" type="text" placeholder="Shortcut title" value={state.title} onChange={handleTitleInputChange} />
             </div>
             <div className="w-full flex flex-row justify-start items-center mb-2">
-              <span className="block w-16 shrink-0">Link</span>
+              <span className="block w-12 mr-2 shrink-0">Link</span>
               <Input
                 className="grow"
                 type="text"
