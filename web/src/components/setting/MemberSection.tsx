@@ -1,7 +1,10 @@
-import { Button } from "@mui/joy";
+import { Button, IconButton } from "@mui/joy";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import useUserStore from "../../stores/v1/user";
+import { showCommonDialog } from "../Alert";
 import CreateUserDialog from "../CreateUserDialog";
+import Icon from "../Icon";
 
 const MemberSection = () => {
   const userStore = useUserStore();
@@ -16,6 +19,22 @@ const MemberSection = () => {
   const handleCreateUserDialogClose = () => {
     setShowCreateUserDialog(false);
     setCurrentEditingUser(undefined);
+  };
+
+  const handleDeleteUser = async (user: User) => {
+    showCommonDialog({
+      title: "Delete User",
+      content: `Are you sure to delete user \`${user.nickname}\`? You cannot undo this action.`,
+      style: "danger",
+      onConfirm: async () => {
+        try {
+          await userStore.deleteUser(user.id);
+          toast.success(`User \`${user.nickname}\` deleted successfully`);
+        } catch (error: any) {
+          toast.error(`Failed to delete user \`${user.nickname}\`: ${error.response.data.message}`);
+        }
+      },
+    });
   };
 
   return (
@@ -68,16 +87,20 @@ const MemberSection = () => {
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">{user.nickname}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.email}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.role}</td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
-                          <button
-                            className="text-indigo-600 hover:text-indigo-900"
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
+                          <IconButton
+                            size="sm"
+                            variant="plain"
                             onClick={() => {
                               setCurrentEditingUser(user);
                               setShowCreateUserDialog(true);
                             }}
                           >
-                            Edit
-                          </button>
+                            <Icon.PenBox className="w-4 h-auto" />
+                          </IconButton>
+                          <IconButton size="sm" color="danger" variant="plain" onClick={() => handleDeleteUser(user)}>
+                            <Icon.Trash className="w-4 h-auto" />
+                          </IconButton>
                         </td>
                       </tr>
                     ))}

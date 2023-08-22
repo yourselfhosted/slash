@@ -43,8 +43,8 @@ export function patchUser(userPatch: UserPatch) {
   return axios.patch<User>(`/api/v1/user/${userPatch.id}`, userPatch);
 }
 
-export function deleteUser(userDelete: UserDelete) {
-  return axios.delete(`/api/v1/user/${userDelete.id}`);
+export function deleteUser(userId: UserId) {
+  return axios.delete(`/api/v2/users/${userId}`);
 }
 
 export function getShortcutList(shortcutFind?: ShortcutFind) {

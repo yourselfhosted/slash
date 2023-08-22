@@ -89,7 +89,7 @@ func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUse
 func (s *UserService) DeleteUser(ctx context.Context, request *apiv2pb.DeleteUserRequest) (*apiv2pb.DeleteUserResponse, error) {
 	userID := ctx.Value(UserIDContextKey).(int32)
 	if userID == request.Id {
-		return nil, status.Errorf(codes.InvalidArgument, "cannot delete self")
+		return nil, status.Errorf(codes.InvalidArgument, "cannot delete yourself")
 	}
 
 	err := s.Store.DeleteUser(ctx, &store.DeleteUser{

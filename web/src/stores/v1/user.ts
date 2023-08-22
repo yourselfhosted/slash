@@ -19,6 +19,7 @@ interface UserState {
   getCurrentUser: () => User;
   createUser: (userCreate: UserCreate) => Promise<User>;
   patchUser: (userPatch: UserPatch) => Promise<void>;
+  deleteUser: (id: UserId) => Promise<void>;
 }
 
 const useUserStore = create<UserState>()((set, get) => ({
@@ -65,6 +66,12 @@ const useUserStore = create<UserState>()((set, get) => ({
     const user = convertResponseModelUser(data);
     const userMap = get().userMapById;
     userMap[user.id] = user;
+    set(userMap);
+  },
+  deleteUser: async (userId: UserId) => {
+    await api.deleteUser(userId);
+    const userMap = get().userMapById;
+    delete userMap[userId];
     set(userMap);
   },
   getUserById: (id: UserId) => {

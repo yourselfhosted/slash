@@ -1,4 +1,4 @@
-import { Button } from "@mui/joy";
+import { Button, IconButton } from "@mui/joy";
 import axios from "axios";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
@@ -110,7 +110,7 @@ const AccessTokenSection = () => {
                           {String(userAccessToken.expiresAt ?? "Never")}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
-                          <Button
+                          <IconButton
                             color="danger"
                             variant="plain"
                             size="sm"
@@ -119,7 +119,7 @@ const AccessTokenSection = () => {
                             }}
                           >
                             <Icon.Trash className="w-4 h-auto" />
-                          </Button>
+                          </IconButton>
                         </td>
                       </tr>
                     ))}
