@@ -1,0 +1,38 @@
+{
+  "common": {
+    "about": "关于",
+    "loading": "加载中",
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create",
+    "download": "Download",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "analytics": {
+    "self": "Analytics",
+    "top-sources": "Top Sources",
+    "source": "Source",
+    "visitors": "Visitors",
+    "devices": "Devices",
+    "browser": "Browser",
+    "browsers": "Browsers",
+    "operating-system": "Operating System"
+  },
+  "shortcut": {
+    "visibility": {
+      "private": {
+        "self": "Private",
+        "description": "Only you can access"
+      },
+      "workspace": {
+        "self": "Workspace",
+        "description": "Workspace members can access"
+      },
+      "public": {
+        "self": "Public",
+        "description": "Available to Everyone on the Internet"
+      }
+    }
+  }
+}
