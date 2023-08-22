@@ -1,7 +1,7 @@
 {
   "common": {
-    "about": "About",
-    "loading": "Loading",
+    "about": "关于",
+    "loading": "加载中",
     "cancel": "Cancel",
     "save": "Save",
     "create": "Create",
@@ -11,7 +11,7 @@
   },
   "analytics": {
     "self": "Analytics",
-    "top-sources": "Top sources",
+    "top-sources": "Top Sources",
     "source": "Source",
     "visitors": "Visitors",
     "devices": "Devices",
@@ -31,7 +31,7 @@
       },
       "public": {
         "self": "Public",
-        "description": "Visible to everyone on the internet"
+        "description": "Available to Everyone on the Internet"
       }
     }
   }
