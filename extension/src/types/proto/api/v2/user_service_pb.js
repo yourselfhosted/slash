@@ -94,6 +94,24 @@ export const CreateUserResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message slash.api.v2.DeleteUserRequest
+ */
+export const DeleteUserRequest = proto3.makeMessageType(
+  "slash.api.v2.DeleteUserRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ],
+);
+
+/**
+ * @generated from message slash.api.v2.DeleteUserResponse
+ */
+export const DeleteUserResponse = proto3.makeMessageType(
+  "slash.api.v2.DeleteUserResponse",
+  [],
+);
+
+/**
  * @generated from message slash.api.v2.ListUserAccessTokensRequest
  */
 export const ListUserAccessTokensRequest = proto3.makeMessageType(

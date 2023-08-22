@@ -86,6 +86,22 @@ func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUse
 	return response, nil
 }
 
+func (s *UserService) DeleteUser(ctx context.Context, request *apiv2pb.DeleteUserRequest) (*apiv2pb.DeleteUserResponse, error) {
+	userID := ctx.Value(UserIDContextKey).(int32)
+	if userID == request.Id {
+		return nil, status.Errorf(codes.InvalidArgument, "cannot delete self")
+	}
+
+	err := s.Store.DeleteUser(ctx, &store.DeleteUser{
+		ID: request.Id,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to delete user: %v", err)
+	}
+	response := &apiv2pb.DeleteUserResponse{}
+	return response, nil
+}
+
 func (s *UserService) ListUserAccessTokens(ctx context.Context, request *apiv2pb.ListUserAccessTokensRequest) (*apiv2pb.ListUserAccessTokensResponse, error) {
 	userID := ctx.Value(UserIDContextKey).(int32)
 	if userID != request.Id {

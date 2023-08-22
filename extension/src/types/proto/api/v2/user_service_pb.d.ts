@@ -226,6 +226,49 @@ export declare class CreateUserResponse extends Message<CreateUserResponse> {
 }
 
 /**
+ * @generated from message slash.api.v2.DeleteUserRequest
+ */
+export declare class DeleteUserRequest extends Message<DeleteUserRequest> {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  constructor(data?: PartialMessage<DeleteUserRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.DeleteUserRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteUserRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteUserRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteUserRequest;
+
+  static equals(a: DeleteUserRequest | PlainMessage<DeleteUserRequest> | undefined, b: DeleteUserRequest | PlainMessage<DeleteUserRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message slash.api.v2.DeleteUserResponse
+ */
+export declare class DeleteUserResponse extends Message<DeleteUserResponse> {
+  constructor(data?: PartialMessage<DeleteUserResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.DeleteUserResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteUserResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteUserResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteUserResponse;
+
+  static equals(a: DeleteUserResponse | PlainMessage<DeleteUserResponse> | undefined, b: DeleteUserResponse | PlainMessage<DeleteUserResponse> | undefined): boolean;
+}
+
+/**
  * @generated from message slash.api.v2.ListUserAccessTokensRequest
  */
 export declare class ListUserAccessTokensRequest extends Message<ListUserAccessTokensRequest> {

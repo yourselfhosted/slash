@@ -26,6 +26,11 @@ service UserService {
       body: "user"
     };
   }
+  // DeleteUser deletes a user by id.
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (google.api.http) = {delete: "/api/v2/users/{id}"};
+    option (google.api.method_signature) = "id";
+  }
   // ListUserAccessTokens returns a list of access tokens for a user.
   rpc ListUserAccessTokens(ListUserAccessTokensRequest) returns (ListUserAccessTokensResponse) {
     option (google.api.http) = {get: "/api/v2/users/{id}/access_tokens"};
@@ -93,6 +98,12 @@ message CreateUserRequest {
 message CreateUserResponse {
   User user = 1;
 }
+
+message DeleteUserRequest {
+  int32 id = 1;
+}
+
+message DeleteUserResponse {}
 
 message ListUserAccessTokensRequest {
   // id is the user id.
