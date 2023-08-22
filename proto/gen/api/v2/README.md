@@ -9,6 +9,8 @@
 - [api/v2/shortcut_service.proto](#api_v2_shortcut_service-proto)
     - [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest)
     - [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse)
+    - [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest)
+    - [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse)
     - [GetShortcutRequest](#slash-api-v2-GetShortcutRequest)
     - [GetShortcutResponse](#slash-api-v2-GetShortcutResponse)
     - [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest)
@@ -106,6 +108,31 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | shortcut | [Shortcut](#slash-api-v2-Shortcut) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteShortcutRequest"></a>
+
+### DeleteShortcutRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteShortcutResponse"></a>
+
+### DeleteShortcutResponse
+
 
 
 
@@ -240,6 +267,7 @@
 | ListShortcuts | [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest) | [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse) | ListShortcuts returns a list of shortcuts. |
 | GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by name. |
 | CreateShortcut | [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest) | [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse) | CreateShortcut creates a shortcut. |
+| DeleteShortcut | [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest) | [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse) | DeleteShortcut deletes a shortcut by name. |
 
  
 

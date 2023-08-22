@@ -110,6 +110,37 @@ func (s *ShortcutService) CreateShortcut(ctx context.Context, request *apiv2pb.C
 	return response, nil
 }
 
+func (s *ShortcutService) DeleteShortcut(ctx context.Context, request *apiv2pb.DeleteShortcutRequest) (*apiv2pb.DeleteShortcutResponse, error) {
+	userID := ctx.Value(UserIDContextKey).(int32)
+	currentUser, err := s.Store.GetUser(ctx, &store.FindUser{
+		ID: &userID,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get current user, err: %v", err)
+	}
+	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
+		Name: &request.Name,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get shortcut by name: %v", err)
+	}
+	if shortcut == nil {
+		return nil, status.Errorf(codes.NotFound, "shortcut not found")
+	}
+	if shortcut.CreatorId != userID && currentUser.Role != store.RoleAdmin {
+		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+	}
+
+	err = s.Store.DeleteShortcut(ctx, &store.DeleteShortcut{
+		ID: shortcut.Id,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to delete shortcut, err: %v", err)
+	}
+	response := &apiv2pb.DeleteShortcutResponse{}
+	return response, nil
+}
+
 func (s *ShortcutService) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
 	payload := &storepb.ActivityShorcutCreatePayload{
 		ShortcutId: shortcut.Id,

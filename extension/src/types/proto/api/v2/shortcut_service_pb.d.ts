@@ -284,3 +284,46 @@ export declare class CreateShortcutResponse extends Message<CreateShortcutRespon
   static equals(a: CreateShortcutResponse | PlainMessage<CreateShortcutResponse> | undefined, b: CreateShortcutResponse | PlainMessage<CreateShortcutResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message slash.api.v2.DeleteShortcutRequest
+ */
+export declare class DeleteShortcutRequest extends Message<DeleteShortcutRequest> {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  constructor(data?: PartialMessage<DeleteShortcutRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.DeleteShortcutRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteShortcutRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteShortcutRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteShortcutRequest;
+
+  static equals(a: DeleteShortcutRequest | PlainMessage<DeleteShortcutRequest> | undefined, b: DeleteShortcutRequest | PlainMessage<DeleteShortcutRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message slash.api.v2.DeleteShortcutResponse
+ */
+export declare class DeleteShortcutResponse extends Message<DeleteShortcutResponse> {
+  constructor(data?: PartialMessage<DeleteShortcutResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.DeleteShortcutResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteShortcutResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteShortcutResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteShortcutResponse;
+
+  static equals(a: DeleteShortcutResponse | PlainMessage<DeleteShortcutResponse> | undefined, b: DeleteShortcutResponse | PlainMessage<DeleteShortcutResponse> | undefined): boolean;
+}
+

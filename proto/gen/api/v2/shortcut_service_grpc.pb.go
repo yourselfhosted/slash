@@ -22,6 +22,7 @@ const (
 	ShortcutService_ListShortcuts_FullMethodName  = "/slash.api.v2.ShortcutService/ListShortcuts"
 	ShortcutService_GetShortcut_FullMethodName    = "/slash.api.v2.ShortcutService/GetShortcut"
 	ShortcutService_CreateShortcut_FullMethodName = "/slash.api.v2.ShortcutService/CreateShortcut"
+	ShortcutService_DeleteShortcut_FullMethodName = "/slash.api.v2.ShortcutService/DeleteShortcut"
 )
 
 // ShortcutServiceClient is the client API for ShortcutService service.
@@ -34,6 +35,8 @@ type ShortcutServiceClient interface {
 	GetShortcut(ctx context.Context, in *GetShortcutRequest, opts ...grpc.CallOption) (*GetShortcutResponse, error)
 	// CreateShortcut creates a shortcut.
 	CreateShortcut(ctx context.Context, in *CreateShortcutRequest, opts ...grpc.CallOption) (*CreateShortcutResponse, error)
+	// DeleteShortcut deletes a shortcut by name.
+	DeleteShortcut(ctx context.Context, in *DeleteShortcutRequest, opts ...grpc.CallOption) (*DeleteShortcutResponse, error)
 }
 
 type shortcutServiceClient struct {
@@ -71,6 +74,15 @@ func (c *shortcutServiceClient) CreateShortcut(ctx context.Context, in *CreateSh
 	return out, nil
 }
 
+func (c *shortcutServiceClient) DeleteShortcut(ctx context.Context, in *DeleteShortcutRequest, opts ...grpc.CallOption) (*DeleteShortcutResponse, error) {
+	out := new(DeleteShortcutResponse)
+	err := c.cc.Invoke(ctx, ShortcutService_DeleteShortcut_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShortcutServiceServer is the server API for ShortcutService service.
 // All implementations must embed UnimplementedShortcutServiceServer
 // for forward compatibility
@@ -81,6 +93,8 @@ type ShortcutServiceServer interface {
 	GetShortcut(context.Context, *GetShortcutRequest) (*GetShortcutResponse, error)
 	// CreateShortcut creates a shortcut.
 	CreateShortcut(context.Context, *CreateShortcutRequest) (*CreateShortcutResponse, error)
+	// DeleteShortcut deletes a shortcut by name.
+	DeleteShortcut(context.Context, *DeleteShortcutRequest) (*DeleteShortcutResponse, error)
 	mustEmbedUnimplementedShortcutServiceServer()
 }
 
@@ -96,6 +110,9 @@ func (UnimplementedShortcutServiceServer) GetShortcut(context.Context, *GetShort
 }
 func (UnimplementedShortcutServiceServer) CreateShortcut(context.Context, *CreateShortcutRequest) (*CreateShortcutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateShortcut not implemented")
+}
+func (UnimplementedShortcutServiceServer) DeleteShortcut(context.Context, *DeleteShortcutRequest) (*DeleteShortcutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteShortcut not implemented")
 }
 func (UnimplementedShortcutServiceServer) mustEmbedUnimplementedShortcutServiceServer() {}
 
@@ -164,6 +181,24 @@ func _ShortcutService_CreateShortcut_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShortcutService_DeleteShortcut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteShortcutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShortcutServiceServer).DeleteShortcut(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShortcutService_DeleteShortcut_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShortcutServiceServer).DeleteShortcut(ctx, req.(*DeleteShortcutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ShortcutService_ServiceDesc is the grpc.ServiceDesc for ShortcutService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -182,6 +217,10 @@ var ShortcutService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateShortcut",
 			Handler:    _ShortcutService_CreateShortcut_Handler,
+		},
+		{
+			MethodName: "DeleteShortcut",
+			Handler:    _ShortcutService_DeleteShortcut_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

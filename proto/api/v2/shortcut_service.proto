@@ -25,6 +25,11 @@ service ShortcutService {
       body: "shortcut"
     };
   }
+  // DeleteShortcut deletes a shortcut by name.
+  rpc DeleteShortcut(DeleteShortcutRequest) returns (DeleteShortcutResponse) {
+    option (google.api.http) = {delete: "/api/v2/shortcuts/{name}"};
+    option (google.api.method_signature) = "name";
+  }
 }
 
 message Shortcut {
@@ -92,3 +97,9 @@ message CreateShortcutRequest {
 message CreateShortcutResponse {
   Shortcut shortcut = 1;
 }
+
+message DeleteShortcutRequest {
+  string name = 1;
+}
+
+message DeleteShortcutResponse {}

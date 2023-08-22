@@ -110,3 +110,21 @@ export const CreateShortcutResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message slash.api.v2.DeleteShortcutRequest
+ */
+export const DeleteShortcutRequest = proto3.makeMessageType(
+  "slash.api.v2.DeleteShortcutRequest",
+  () => [
+    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message slash.api.v2.DeleteShortcutResponse
+ */
+export const DeleteShortcutResponse = proto3.makeMessageType(
+  "slash.api.v2.DeleteShortcutResponse",
+  [],
+);
+
