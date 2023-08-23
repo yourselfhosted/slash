@@ -8,7 +8,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "extension/**"
+      - "frontend/extension/**"
 
 jobs:
   eslint-checks:
@@ -23,12 +23,12 @@ jobs:
         with:
           node-version: "18"
           cache: pnpm
-          cache-dependency-path: "extension/pnpm-lock.yaml"
+          cache-dependency-path: "frontend/extension/pnpm-lock.yaml"
       - run: pnpm install
-        working-directory: extension
+        working-directory: frontend/extension
       - name: Run eslint check
         run: pnpm lint
-        working-directory: extension
+        working-directory: frontend/extension
 
   extension-build:
     runs-on: ubuntu-latest
@@ -41,9 +41,9 @@ jobs:
         with:
           node-version: "18"
           cache: pnpm
-          cache-dependency-path: "extension/pnpm-lock.yaml"
+          cache-dependency-path: "frontend/extension/pnpm-lock.yaml"
       - run: pnpm install
-        working-directory: extension
+        working-directory: frontend/extension
       - name: Run extension build
         run: pnpm build
-        working-directory: extension
+        working-directory: frontend/extension

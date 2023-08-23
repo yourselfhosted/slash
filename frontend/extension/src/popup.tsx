@@ -1,3 +1,4 @@
+import type { Shortcut } from "../../types/proto/api/v2/shortcut_service_pb";
 import { Button, Divider, IconButton } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
 import { Toaster } from "react-hot-toast";
@@ -6,7 +7,6 @@ import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import PullShortcutsButton from "@/components/PullShortcutsButton";
 import ShortcutsContainer from "@/components/ShortcutsContainer";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service_pb";
 import "./style.css";
 
 const IndexPopup = () => {

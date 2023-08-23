@@ -2,11 +2,11 @@
 FROM node:18.12.1-alpine3.16 AS frontend
 WORKDIR /frontend-build
 
-COPY ./web/package.json ./web/pnpm-lock.yaml ./
+COPY ./frontend/web/package.json ./frontend/web/pnpm-lock.yaml ./
 
 RUN corepack enable && pnpm i --frozen-lockfile
 
-COPY ./web/ .
+COPY ./frontend/web/ .
 
 RUN pnpm build
 

@@ -3,7 +3,7 @@ import { useStorage } from "@plasmohq/storage/hook";
 import axios from "axios";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { ListShortcutsResponse } from "@/types/proto/api/v2/shortcut_service_pb";
+import { ListShortcutsResponse } from "../../../types/proto/api/v2/shortcut_service_pb";
 import Icon from "./Icon";
 
 const PullShortcutsButton = () => {
