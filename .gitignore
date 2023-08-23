@@ -4,9 +4,6 @@
 # temp folder
 tmp
 
-# Frontend asset
-web/dist
-
 # build folder
 build
 

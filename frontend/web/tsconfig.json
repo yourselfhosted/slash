@@ -14,7 +14,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@pbtypes/*": [
+        "../types/*"
+      ]
+    },
+    "baseUrl": "."
   },
-  "include": ["./src"]
+  "include": ["./src", "../types"]
 }

@@ -1,4 +1,4 @@
-import type { Shortcut } from "../../../types/proto/api/v2/shortcut_service_pb";
+import type { Shortcut } from "@pbtypes/proto/api/v2/shortcut_service_pb";
 import { useStorage } from "@plasmohq/storage/hook";
 import classNames from "classnames";
 import { useEffect, useState } from "react";

@@ -1,5 +1,5 @@
-import type { Shortcut } from "../../types/proto/api/v2/shortcut_service_pb";
 import { Button, Divider, IconButton } from "@mui/joy";
+import type { Shortcut } from "@pbtypes/proto/api/v2/shortcut_service_pb";
 import { useStorage } from "@plasmohq/storage/hook";
 import { Toaster } from "react-hot-toast";
 import CreateShortcutsButton from "@/components/CreateShortcutsButton";
