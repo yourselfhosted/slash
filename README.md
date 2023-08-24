@@ -17,7 +17,7 @@
 ## Features
 
 - Create customizable `/s/` short links for any URL.
-- Share short links privately or with teammates.
+- Share short links public or only with your teammates.
 - View analytics on link traffic and sources.
 - Easy access to your shortcuts with browser extension.
 - Open source self-hosted solution.
