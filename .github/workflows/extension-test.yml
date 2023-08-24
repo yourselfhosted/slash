@@ -43,6 +43,8 @@ jobs:
           cache: pnpm
           cache-dependency-path: "frontend/extension/pnpm-lock.yaml"
       - run: pnpm install
+        working-directory: frontend/types
+      - run: pnpm install
         working-directory: frontend/extension
       - name: Run extension build
         run: pnpm build
