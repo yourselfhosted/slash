@@ -23,6 +23,12 @@
     - [LocaleUserSetting](#slash-store-LocaleUserSetting)
     - [UserSettingKey](#slash-store-UserSettingKey)
   
+- [store/workspace_setting.proto](#store_workspace_setting-proto)
+    - [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting)
+    - [WorkspaceSetting](#slash-store-WorkspaceSetting)
+  
+    - [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey)
+  
 - [Scalar Value Types](#scalar-value-types)
 
 
@@ -241,6 +247,67 @@
 | USER_SETTING_KEY_UNSPECIFIED | 0 |  |
 | USER_SETTING_ACCESS_TOKENS | 1 |  |
 | USER_SETTING_LOCALE | 2 |  |
+
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="store_workspace_setting-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## store/workspace_setting.proto
+
+
+
+<a name="slash-store-AutoBackupWorkspaceSetting"></a>
+
+### AutoBackupWorkspaceSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| enabled | [bool](#bool) |  | Whether auto backup is enabled. |
+| cron_expression | [string](#string) |  | The cron expression for auto backup. For example, &#34;0 0 0 * * *&#34; means backup at 00:00:00 every day. See https://en.wikipedia.org/wiki/Cron for more details. |
+| max_keep | [int32](#int32) |  | The maximum number of backups to keep. |
+
+
+
+
+
+
+<a name="slash-store-WorkspaceSetting"></a>
+
+### WorkspaceSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey) |  |  |
+| auto_backup | [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="slash-store-WorkspaceSettingKey"></a>
+
+### WorkspaceSettingKey
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| WORKSPACE_SETTING_KEY_UNSPECIFIED | 0 |  |
+| WORKSPACE_SETTING_AUTO_BACKUP | 1 |  |
 
 
  
