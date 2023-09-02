@@ -20,6 +20,7 @@
     - [AccessTokensUserSetting.AccessToken](#slash-store-AccessTokensUserSetting-AccessToken)
     - [UserSetting](#slash-store-UserSetting)
   
+    - [LocaleUserSetting](#slash-store-LocaleUserSetting)
     - [UserSettingKey](#slash-store-UserSettingKey)
   
 - [Scalar Value Types](#scalar-value-types)
@@ -208,12 +209,26 @@
 | user_id | [int32](#int32) |  |  |
 | key | [UserSettingKey](#slash-store-UserSettingKey) |  |  |
 | access_tokens_user_setting | [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting) |  |  |
+| locale_user_setting | [LocaleUserSetting](#slash-store-LocaleUserSetting) |  |  |
 
 
 
 
 
  
+
+
+<a name="slash-store-LocaleUserSetting"></a>
+
+### LocaleUserSetting
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| LOCALE_USER_SETTING_UNSPECIFIED | 0 |  |
+| LOCALE_USER_SETTING_EN | 1 |  |
+| LOCALE_USER_SETTING_ZH | 2 |  |
+
 
 
 <a name="slash-store-UserSettingKey"></a>
@@ -225,6 +240,7 @@
 | ---- | ------ | ----------- |
 | USER_SETTING_KEY_UNSPECIFIED | 0 |  |
 | USER_SETTING_ACCESS_TOKENS | 1 |  |
+| USER_SETTING_LOCALE | 2 |  |
 
 
  

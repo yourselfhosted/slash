@@ -19,6 +19,31 @@ export declare enum UserSettingKey {
    * @generated from enum value: USER_SETTING_ACCESS_TOKENS = 1;
    */
   USER_SETTING_ACCESS_TOKENS = 1,
+
+  /**
+   * @generated from enum value: USER_SETTING_LOCALE = 2;
+   */
+  USER_SETTING_LOCALE = 2,
+}
+
+/**
+ * @generated from enum slash.store.LocaleUserSetting
+ */
+export declare enum LocaleUserSetting {
+  /**
+   * @generated from enum value: LOCALE_USER_SETTING_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: LOCALE_USER_SETTING_EN = 1;
+   */
+  EN = 1,
+
+  /**
+   * @generated from enum value: LOCALE_USER_SETTING_ZH = 2;
+   */
+  ZH = 2,
 }
 
 /**
@@ -44,6 +69,12 @@ export declare class UserSetting extends Message<UserSetting> {
      */
     value: AccessTokensUserSetting;
     case: "accessTokensUserSetting";
+  } | {
+    /**
+     * @generated from field: slash.store.LocaleUserSetting locale_user_setting = 4;
+     */
+    value: LocaleUserSetting;
+    case: "localeUserSetting";
   } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<UserSetting>);

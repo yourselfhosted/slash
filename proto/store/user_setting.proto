@@ -11,6 +11,8 @@ message UserSetting {
 
   oneof value {
     AccessTokensUserSetting access_tokens_user_setting = 3;
+
+    LocaleUserSetting locale_user_setting = 4;
   }
 }
 
@@ -18,6 +20,8 @@ enum UserSettingKey {
   USER_SETTING_KEY_UNSPECIFIED = 0;
 
   USER_SETTING_ACCESS_TOKENS = 1;
+
+  USER_SETTING_LOCALE = 2;
 }
 
 message AccessTokensUserSetting {
@@ -26,4 +30,10 @@ message AccessTokensUserSetting {
     string description = 2;
   }
   repeated AccessToken access_tokens = 1;
+}
+
+enum LocaleUserSetting {
+  LOCALE_USER_SETTING_UNSPECIFIED = 0;
+  LOCALE_USER_SETTING_EN = 1;
+  LOCALE_USER_SETTING_ZH = 2;
 }

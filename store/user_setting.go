@@ -31,6 +31,8 @@ func (s *Store) UpsertUserSetting(ctx context.Context, upsert *storepb.UserSetti
 			return nil, err
 		}
 		valueString = string(valueBytes)
+	} else if upsert.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
+		valueString = upsert.GetLocaleUserSetting().String()
 	} else {
 		return nil, errors.New("invalid user setting key")
 	}

@@ -19,6 +19,8 @@ func TestUserSettingStore(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, 0, len(userSettings))
+
+	// Test for access tokens user setting.
 	accessTokensUserSetting, err := ts.UpsertUserSetting(ctx, &storepb.UserSetting{
 		UserId: user.ID,
 		Key:    storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS,
@@ -70,4 +72,26 @@ func TestUserSettingStore(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, accessTokensUserSetting)
 	require.Equal(t, 2, len(accessTokensUserSetting.GetAccessTokensUserSetting().AccessTokens))
+
+	// Test for locale user setting.
+	localeUserSetting, err := ts.UpsertUserSetting(ctx, &storepb.UserSetting{
+		UserId: user.ID,
+		Key:    storepb.UserSettingKey_USER_SETTING_LOCALE,
+		Value: &storepb.UserSetting_LocaleUserSetting{
+			LocaleUserSetting: storepb.LocaleUserSetting_LOCALE_USER_SETTING_ZH,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, localeUserSetting)
+	require.Equal(t, storepb.UserSettingKey_USER_SETTING_LOCALE, localeUserSetting.Key)
+	require.Equal(t, storepb.LocaleUserSetting_LOCALE_USER_SETTING_ZH, localeUserSetting.GetLocaleUserSetting())
+	localeUserSetting, err = ts.UpsertUserSetting(ctx, &storepb.UserSetting{
+		UserId: user.ID,
+		Key:    storepb.UserSettingKey_USER_SETTING_LOCALE,
+		Value: &storepb.UserSetting_LocaleUserSetting{
+			LocaleUserSetting: storepb.LocaleUserSetting_LOCALE_USER_SETTING_EN,
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t, storepb.LocaleUserSetting_LOCALE_USER_SETTING_EN, localeUserSetting.GetLocaleUserSetting())
 }

@@ -13,6 +13,19 @@ export const UserSettingKey = proto3.makeEnum(
   [
     {no: 0, name: "USER_SETTING_KEY_UNSPECIFIED"},
     {no: 1, name: "USER_SETTING_ACCESS_TOKENS"},
+    {no: 2, name: "USER_SETTING_LOCALE"},
+  ],
+);
+
+/**
+ * @generated from enum slash.store.LocaleUserSetting
+ */
+export const LocaleUserSetting = proto3.makeEnum(
+  "slash.store.LocaleUserSetting",
+  [
+    {no: 0, name: "LOCALE_USER_SETTING_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "LOCALE_USER_SETTING_EN", localName: "EN"},
+    {no: 2, name: "LOCALE_USER_SETTING_ZH", localName: "ZH"},
   ],
 );
 
@@ -25,6 +38,7 @@ export const UserSetting = proto3.makeMessageType(
     { no: 1, name: "user_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "key", kind: "enum", T: proto3.getEnumType(UserSettingKey) },
     { no: 3, name: "access_tokens_user_setting", kind: "message", T: AccessTokensUserSetting, oneof: "value" },
+    { no: 4, name: "locale_user_setting", kind: "enum", T: proto3.getEnumType(LocaleUserSetting), oneof: "value" },
   ],
 );
 
