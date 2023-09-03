@@ -37,8 +37,8 @@ export const UserSetting = proto3.makeMessageType(
   () => [
     { no: 1, name: "user_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "key", kind: "enum", T: proto3.getEnumType(UserSettingKey) },
-    { no: 3, name: "access_tokens_user_setting", kind: "message", T: AccessTokensUserSetting, oneof: "value" },
-    { no: 4, name: "locale_user_setting", kind: "enum", T: proto3.getEnumType(LocaleUserSetting), oneof: "value" },
+    { no: 3, name: "access_tokens", kind: "message", T: AccessTokensUserSetting, oneof: "value" },
+    { no: 4, name: "locale", kind: "enum", T: proto3.getEnumType(LocaleUserSetting), oneof: "value" },
   ],
 );
 

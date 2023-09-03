@@ -16,11 +16,15 @@ export declare enum UserSettingKey {
   USER_SETTING_KEY_UNSPECIFIED = 0,
 
   /**
+   * Access tokens for the user.
+   *
    * @generated from enum value: USER_SETTING_ACCESS_TOKENS = 1;
    */
   USER_SETTING_ACCESS_TOKENS = 1,
 
   /**
+   * Locale for the user.
+   *
    * @generated from enum value: USER_SETTING_LOCALE = 2;
    */
   USER_SETTING_LOCALE = 2,
@@ -65,16 +69,16 @@ export declare class UserSetting extends Message<UserSetting> {
    */
   value: {
     /**
-     * @generated from field: slash.store.AccessTokensUserSetting access_tokens_user_setting = 3;
+     * @generated from field: slash.store.AccessTokensUserSetting access_tokens = 3;
      */
     value: AccessTokensUserSetting;
-    case: "accessTokensUserSetting";
+    case: "accessTokens";
   } | {
     /**
-     * @generated from field: slash.store.LocaleUserSetting locale_user_setting = 4;
+     * @generated from field: slash.store.LocaleUserSetting locale = 4;
      */
     value: LocaleUserSetting;
-    case: "localeUserSetting";
+    case: "locale";
   } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<UserSetting>);
@@ -121,11 +125,16 @@ export declare class AccessTokensUserSetting extends Message<AccessTokensUserSet
  */
 export declare class AccessTokensUserSetting_AccessToken extends Message<AccessTokensUserSetting_AccessToken> {
   /**
+   * The access token is a JWT token.
+   * Including expiration time, issuer, etc.
+   *
    * @generated from field: string access_token = 1;
    */
   accessToken: string;
 
   /**
+   * A description for the access token.
+   *
    * @generated from field: string description = 2;
    */
   description: string;

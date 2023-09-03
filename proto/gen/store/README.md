@@ -196,8 +196,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| access_token | [string](#string) |  |  |
-| description | [string](#string) |  |  |
+| access_token | [string](#string) |  | The access token is a JWT token. Including expiration time, issuer, etc. |
+| description | [string](#string) |  | A description for the access token. |
 
 
 
@@ -214,8 +214,8 @@
 | ----- | ---- | ----- | ----------- |
 | user_id | [int32](#int32) |  |  |
 | key | [UserSettingKey](#slash-store-UserSettingKey) |  |  |
-| access_tokens_user_setting | [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting) |  |  |
-| locale_user_setting | [LocaleUserSetting](#slash-store-LocaleUserSetting) |  |  |
+| access_tokens | [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting) |  |  |
+| locale | [LocaleUserSetting](#slash-store-LocaleUserSetting) |  |  |
 
 
 
@@ -245,8 +245,8 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | USER_SETTING_KEY_UNSPECIFIED | 0 |  |
-| USER_SETTING_ACCESS_TOKENS | 1 |  |
-| USER_SETTING_LOCALE | 2 |  |
+| USER_SETTING_ACCESS_TOKENS | 1 | Access tokens for the user. |
+| USER_SETTING_LOCALE | 2 | Locale for the user. |
 
 
  

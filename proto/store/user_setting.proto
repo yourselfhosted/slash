@@ -10,23 +10,26 @@ message UserSetting {
   UserSettingKey key = 2;
 
   oneof value {
-    AccessTokensUserSetting access_tokens_user_setting = 3;
+    AccessTokensUserSetting access_tokens = 3;
 
-    LocaleUserSetting locale_user_setting = 4;
+    LocaleUserSetting locale = 4;
   }
 }
 
 enum UserSettingKey {
   USER_SETTING_KEY_UNSPECIFIED = 0;
-
+  // Access tokens for the user.
   USER_SETTING_ACCESS_TOKENS = 1;
-
+  // Locale for the user.
   USER_SETTING_LOCALE = 2;
 }
 
 message AccessTokensUserSetting {
   message AccessToken {
+    // The access token is a JWT token.
+    // Including expiration time, issuer, etc.
     string access_token = 1;
+    // A description for the access token.
     string description = 2;
   }
   repeated AccessToken access_tokens = 1;

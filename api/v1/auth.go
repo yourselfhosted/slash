@@ -140,8 +140,8 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 	if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
 		UserId: user.ID,
 		Key:    storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS,
-		Value: &storepb.UserSetting_AccessTokensUserSetting{
-			AccessTokensUserSetting: &storepb.AccessTokensUserSetting{
+		Value: &storepb.UserSetting_AccessTokens{
+			AccessTokens: &storepb.AccessTokensUserSetting{
 				AccessTokens: userAccessTokens,
 			},
 		},

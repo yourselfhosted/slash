@@ -26,13 +26,13 @@ func (s *Store) UpsertUserSetting(ctx context.Context, upsert *storepb.UserSetti
 	`
 	var valueString string
 	if upsert.Key == storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS {
-		valueBytes, err := protojson.Marshal(upsert.GetAccessTokensUserSetting())
+		valueBytes, err := protojson.Marshal(upsert.GetAccessTokens())
 		if err != nil {
 			return nil, err
 		}
 		valueString = string(valueBytes)
 	} else if upsert.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
-		valueString = upsert.GetLocaleUserSetting().String()
+		valueString = upsert.GetLocale().String()
 	} else {
 		return nil, errors.New("invalid user setting key")
 	}
@@ -86,9 +86,15 @@ func (s *Store) ListUserSettings(ctx context.Context, find *FindUserSetting) ([]
 			if err := protojson.Unmarshal([]byte(valueString), accessTokensUserSetting); err != nil {
 				return nil, err
 			}
-			userSetting.Value = &storepb.UserSetting_AccessTokensUserSetting{
-				AccessTokensUserSetting: accessTokensUserSetting,
+			userSetting.Value = &storepb.UserSetting_AccessTokens{
+				AccessTokens: accessTokensUserSetting,
 			}
+		} else if userSetting.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
+			userSetting.Value = &storepb.UserSetting_Locale{
+				Locale: convertUserSettingLocaleFromString(valueString),
+			}
+		} else {
+			return nil, errors.New("invalid user setting key")
 		}
 		userSettingList = append(userSettingList, userSetting)
 	}
@@ -156,6 +162,17 @@ func (s *Store) GetUserAccessTokens(ctx context.Context, userID int32) ([]*store
 		return []*storepb.AccessTokensUserSetting_AccessToken{}, nil
 	}
 
-	accessTokensUserSetting := userSetting.GetAccessTokensUserSetting()
+	accessTokensUserSetting := userSetting.GetAccessTokens()
 	return accessTokensUserSetting.AccessTokens, nil
+}
+
+func convertUserSettingLocaleFromString(s string) storepb.LocaleUserSetting {
+	switch s {
+	case "LOCALE_USER_SETTING_EN":
+		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_EN
+	case "LOCALE_USER_SETTING_ZH":
+		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_ZH
+	default:
+		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_UNSPECIFIED
+	}
 }
