@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
-import { UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service";
+import { UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service_pb";
 import Header from "../components/Header";
 import useUserStore from "../stores/v1/user";
 
@@ -29,9 +29,9 @@ const Root: React.FC = () => {
       return;
     }
 
-    if (currentUserSetting.locale === UserSetting_Locale.LOCALE_EN) {
+    if (currentUserSetting.locale === UserSetting_Locale.EN) {
       i18n.changeLanguage("en");
-    } else if (currentUserSetting.locale === UserSetting_Locale.LOCALE_ZH) {
+    } else if (currentUserSetting.locale === UserSetting_Locale.ZH) {
       i18n.changeLanguage("zh");
     }
   }, [currentUserSetting]);

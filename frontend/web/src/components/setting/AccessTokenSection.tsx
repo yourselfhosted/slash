@@ -3,7 +3,7 @@ import axios from "axios";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { ListUserAccessTokensResponse, UserAccessToken } from "@/types/proto/api/v2/user_service";
+import { ListUserAccessTokensResponse, UserAccessToken } from "@/types/proto/api/v2/user_service_pb";
 import useUserStore from "../../stores/v1/user";
 import { showCommonDialog } from "../Alert";
 import CreateAccessTokenDialog from "../CreateAccessTokenDialog";
