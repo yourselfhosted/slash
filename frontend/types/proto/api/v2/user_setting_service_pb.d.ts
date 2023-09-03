@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
@@ -101,9 +101,18 @@ export declare class UpdateUserSettingRequest extends Message<UpdateUserSettingR
   id: number;
 
   /**
+   * user_setting is the user setting to update.
+   *
    * @generated from field: slash.api.v2.UserSetting user_setting = 2;
    */
   userSetting?: UserSetting;
+
+  /**
+   * update_mask is the field mask to update the user setting.
+   *
+   * @generated from field: google.protobuf.FieldMask update_mask = 3;
+   */
+  updateMask?: FieldMask;
 
   constructor(data?: PartialMessage<UpdateUserSettingRequest>);
 

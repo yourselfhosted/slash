@@ -610,7 +610,8 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
-| user_setting | [UserSetting](#slash-api-v2-UserSetting) |  |  |
+| user_setting | [UserSetting](#slash-api-v2-UserSetting) |  | user_setting is the user setting to update. |
+| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  | update_mask is the field mask to update the user setting. |
 
 
 

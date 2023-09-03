@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3 } from "@bufbuild/protobuf";
+import { FieldMask, proto3 } from "@bufbuild/protobuf";
 
 /**
  * @generated from message slash.api.v2.UserSetting
@@ -44,6 +44,7 @@ export const UpdateUserSettingRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "user_setting", kind: "message", T: UserSetting },
+    { no: 3, name: "update_mask", kind: "message", T: FieldMask },
   ],
 );
 
