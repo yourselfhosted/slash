@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package slash.api.v2;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+
+option go_package = "gen/api/v2";
+
+service UserSettingService {
+  // GetUserSetting returns the user setting.
+  rpc GetUserSetting(GetUserSettingRequest) returns (GetUserSettingResponse) {
+    option (google.api.http) = {get: "/api/v2/user/{id}/setting"};
+    option (google.api.method_signature) = "id";
+  }
+  // UpdateUserSetting updates the user setting.
+  rpc UpdateUserSetting(UpdateUserSettingRequest) returns (UpdateUserSettingResponse) {
+    option (google.api.http) = {
+      put: "/api/v2/user/{id}/settins"
+      body: "*"
+    };
+    option (google.api.method_signature) = "id";
+  }
+}
+
+message UserSetting {
+  // id is the user id.
+  int32 id = 1;
+
+  // locale is the user locale.
+  string locale = 2;
+}
+
+message GetUserSettingRequest {
+  // id is the user id.
+  int32 id = 1;
+}
+
+message GetUserSettingResponse {
+  UserSetting user_setting = 1;
+}
+
+message UpdateUserSettingRequest {
+  // id is the user id.
+  int32 id = 1;
+
+  UserSetting user_setting = 2;
+}
+
+message UpdateUserSettingResponse {
+  UserSetting user_setting = 1;
+}

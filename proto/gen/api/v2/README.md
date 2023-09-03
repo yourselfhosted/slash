@@ -44,6 +44,15 @@
   
     - [UserService](#slash-api-v2-UserService)
   
+- [api/v2/user_setting_service.proto](#api_v2_user_setting_service-proto)
+    - [GetUserSettingRequest](#slash-api-v2-GetUserSettingRequest)
+    - [GetUserSettingResponse](#slash-api-v2-GetUserSettingResponse)
+    - [UpdateUserSettingRequest](#slash-api-v2-UpdateUserSettingRequest)
+    - [UpdateUserSettingResponse](#slash-api-v2-UpdateUserSettingResponse)
+    - [UserSetting](#slash-api-v2-UserSetting)
+  
+    - [UserSettingService](#slash-api-v2-UserSettingService)
+  
 - [Scalar Value Types](#scalar-value-types)
 
 
@@ -550,6 +559,110 @@
 | ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |
 | CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest) | [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse) | CreateUserAccessToken creates a new access token for a user. |
 | DeleteUserAccessToken | [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest) | [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse) | DeleteUserAccessToken deletes an access token for a user. |
+
+ 
+
+
+
+<a name="api_v2_user_setting_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v2/user_setting_service.proto
+
+
+
+<a name="slash-api-v2-GetUserSettingRequest"></a>
+
+### GetUserSettingRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  | id is the user id. |
+
+
+
+
+
+
+<a name="slash-api-v2-GetUserSettingResponse"></a>
+
+### GetUserSettingResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_setting | [UserSetting](#slash-api-v2-UserSetting) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateUserSettingRequest"></a>
+
+### UpdateUserSettingRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  | id is the user id. |
+| user_setting | [UserSetting](#slash-api-v2-UserSetting) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateUserSettingResponse"></a>
+
+### UpdateUserSettingResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_setting | [UserSetting](#slash-api-v2-UserSetting) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UserSetting"></a>
+
+### UserSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  | id is the user id. |
+| locale | [string](#string) |  | locale is the user locale. |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="slash-api-v2-UserSettingService"></a>
+
+### UserSettingService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| GetUserSetting | [GetUserSettingRequest](#slash-api-v2-GetUserSettingRequest) | [GetUserSettingResponse](#slash-api-v2-GetUserSettingResponse) | GetUserSetting returns the user setting. |
+| UpdateUserSetting | [UpdateUserSettingRequest](#slash-api-v2-UpdateUserSettingRequest) | [UpdateUserSettingResponse](#slash-api-v2-UpdateUserSettingResponse) | UpdateUserSetting updates the user setting. |
 
  
 
