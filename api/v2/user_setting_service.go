@@ -46,7 +46,7 @@ func (s *UserSettingService) UpdateUserSetting(ctx context.Context, request *api
 				UserId: userID,
 				Key:    storepb.UserSettingKey_USER_SETTING_LOCALE,
 				Value: &storepb.UserSetting_Locale{
-					Locale: convertLocaleStringToStore(request.UserSetting.Locale),
+					Locale: convertUserSettingLocaleToStore(request.UserSetting.Locale),
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update user setting: %v", err)
@@ -76,19 +76,30 @@ func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*apiv2pb
 	userSetting := &apiv2pb.UserSetting{}
 	for _, setting := range userSettings {
 		if setting.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
-			userSetting.Locale = setting.GetLocale().String()
+			userSetting.Locale = convertUserSettingLocaleFromStore(setting.GetLocale())
 		}
 	}
 	return userSetting, nil
 }
 
-func convertLocaleStringToStore(locale string) storepb.LocaleUserSetting {
+func convertUserSettingLocaleToStore(locale apiv2pb.UserSetting_Locale) storepb.LocaleUserSetting {
 	switch locale {
-	case "en":
+	case apiv2pb.UserSetting_LOCALE_EN:
 		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_EN
-	case "zh":
+	case apiv2pb.UserSetting_LOCALE_ZH:
 		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_ZH
 	default:
 		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_UNSPECIFIED
+	}
+}
+
+func convertUserSettingLocaleFromStore(locale storepb.LocaleUserSetting) apiv2pb.UserSetting_Locale {
+	switch locale {
+	case storepb.LocaleUserSetting_LOCALE_USER_SETTING_EN:
+		return apiv2pb.UserSetting_LOCALE_EN
+	case storepb.LocaleUserSetting_LOCALE_USER_SETTING_ZH:
+		return apiv2pb.UserSetting_LOCALE_ZH
+	default:
+		return apiv2pb.UserSetting_LOCALE_UNSPECIFIED
 	}
 }

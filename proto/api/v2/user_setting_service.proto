@@ -28,8 +28,13 @@ message UserSetting {
   // id is the user id.
   int32 id = 1;
 
+  enum Locale {
+    LOCALE_UNSPECIFIED = 0;
+    LOCALE_EN = 1;
+    LOCALE_ZH = 2;
+  }
   // locale is the user locale.
-  string locale = 2;
+  Locale locale = 2;
 }
 
 message GetUserSettingRequest {

@@ -51,6 +51,8 @@
     - [UpdateUserSettingResponse](#slash-api-v2-UpdateUserSettingResponse)
     - [UserSetting](#slash-api-v2-UserSetting)
   
+    - [UserSetting.Locale](#slash-api-v2-UserSetting-Locale)
+  
     - [UserSettingService](#slash-api-v2-UserSettingService)
   
 - [Scalar Value Types](#scalar-value-types)
@@ -642,13 +644,26 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
-| locale | [string](#string) |  | locale is the user locale. |
+| locale | [UserSetting.Locale](#slash-api-v2-UserSetting-Locale) |  | locale is the user locale. |
 
 
 
 
 
  
+
+
+<a name="slash-api-v2-UserSetting-Locale"></a>
+
+### UserSetting.Locale
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| LOCALE_UNSPECIFIED | 0 |  |
+| LOCALE_EN | 1 |  |
+| LOCALE_ZH | 2 |  |
+
 
  
 

@@ -20,9 +20,9 @@ export declare class UserSetting extends Message<UserSetting> {
   /**
    * locale is the user locale.
    *
-   * @generated from field: string locale = 2;
+   * @generated from field: slash.api.v2.UserSetting.Locale locale = 2;
    */
-  locale: string;
+  locale: UserSetting_Locale;
 
   constructor(data?: PartialMessage<UserSetting>);
 
@@ -37,6 +37,26 @@ export declare class UserSetting extends Message<UserSetting> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UserSetting;
 
   static equals(a: UserSetting | PlainMessage<UserSetting> | undefined, b: UserSetting | PlainMessage<UserSetting> | undefined): boolean;
+}
+
+/**
+ * @generated from enum slash.api.v2.UserSetting.Locale
+ */
+export declare enum UserSetting_Locale {
+  /**
+   * @generated from enum value: LOCALE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: LOCALE_EN = 1;
+   */
+  EN = 1,
+
+  /**
+   * @generated from enum value: LOCALE_ZH = 2;
+   */
+  ZH = 2,
 }
 
 /**
