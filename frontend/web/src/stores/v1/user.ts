@@ -1,4 +1,6 @@
+import axios from "axios";
 import { create } from "zustand";
+import { GetUserSettingResponse, UserSetting } from "@/types/proto/api/v2/user_setting_service";
 import * as api from "../../helpers/api";
 
 const convertResponseModelUser = (user: User): User => {
@@ -11,7 +13,10 @@ const convertResponseModelUser = (user: User): User => {
 
 interface UserState {
   userMapById: Record<UserId, User>;
+  userSettingMapById: Record<UserId, UserSetting>;
   currentUserId?: UserId;
+
+  // User related actions.
   fetchUserList: () => Promise<User[]>;
   fetchCurrentUser: () => Promise<User>;
   getOrFetchUserById: (id: UserId) => Promise<User>;
@@ -20,10 +25,15 @@ interface UserState {
   createUser: (userCreate: UserCreate) => Promise<User>;
   patchUser: (userPatch: UserPatch) => Promise<void>;
   deleteUser: (id: UserId) => Promise<void>;
+
+  // User setting related actions.
+  fetchUserSetting: (userId: UserId) => Promise<UserSetting>;
+  getCurrentUserSetting: () => UserSetting;
 }
 
 const useUserStore = create<UserState>()((set, get) => ({
   userMapById: {},
+  userSettingMapById: {},
   fetchUserList: async () => {
     const { data: userList } = await api.getUserList();
     const userMap = get().userMapById;
@@ -82,6 +92,23 @@ const useUserStore = create<UserState>()((set, get) => ({
     const userMap = get().userMapById;
     const currentUserId = get().currentUserId;
     return userMap[currentUserId as UserId];
+  },
+  fetchUserSetting: async (userId: UserId) => {
+    const {
+      data: { userSetting },
+    } = await axios.get<GetUserSettingResponse>(`api/v2/users/${userId}/settings`);
+    if (!userSetting) {
+      throw new Error(`User setting not found for user ${userId}`);
+    }
+    const userSettingMap = get().userSettingMapById;
+    userSettingMap[userId] = userSetting;
+    set(userSettingMap);
+    return userSetting;
+  },
+  getCurrentUserSetting: () => {
+    const userSettingMap = get().userSettingMapById;
+    const currentUserId = get().currentUserId;
+    return userSettingMap[currentUserId as UserId];
   },
 }));
 

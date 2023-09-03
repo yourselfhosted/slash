@@ -5,7 +5,7 @@
     "types": ["vite/client"],
     "allowJs": false,
     "skipLibCheck": false,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -19,11 +19,8 @@
       "@/*": [
         "./src/*"
       ],
-      "@pbtypes/*": [
-        "../types/*"
-      ]
     },
     "baseUrl": "."
   },
-  "include": ["./src", "../types"]
+  "include": ["./src"]
 }
