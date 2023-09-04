@@ -4,7 +4,6 @@ package slash.api.v2;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
-import "google/protobuf/field_mask.proto";
 
 option go_package = "gen/api/v2";
 
@@ -17,7 +16,7 @@ service UserSettingService {
   // UpdateUserSetting updates the user setting.
   rpc UpdateUserSetting(UpdateUserSettingRequest) returns (UpdateUserSettingResponse) {
     option (google.api.http) = {
-      put: "/api/v2/users/{id}/settings"
+      post: "/api/v2/users/{id}/settings"
       body: "*"
     };
     option (google.api.method_signature) = "id";
@@ -53,8 +52,8 @@ message UpdateUserSettingRequest {
   // user_setting is the user setting to update.
   UserSetting user_setting = 2;
 
-  // update_mask is the field mask to update the user setting.
-  google.protobuf.FieldMask update_mask = 3;
+  // update_mask is the field mask to update.
+  repeated string update_mask = 3;
 }
 
 message UpdateUserSettingResponse {

@@ -86,6 +86,34 @@ func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUse
 	return response, nil
 }
 
+func (s *UserService) UpdateUser(ctx context.Context, request *apiv2pb.UpdateUserRequest) (*apiv2pb.UpdateUserResponse, error) {
+	userID := ctx.Value(UserIDContextKey).(int32)
+	if userID != request.User.Id {
+		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+	}
+	if request.UpdateMask == nil || len(request.UpdateMask) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "UpdateMask is empty")
+	}
+
+	userUpdate := &store.UpdateUser{
+		ID: request.User.Id,
+	}
+	for _, path := range request.UpdateMask {
+		if path == "email" {
+			userUpdate.Email = &request.User.Email
+		} else if path == "nickname" {
+			userUpdate.Nickname = &request.User.Nickname
+		}
+	}
+	user, err := s.Store.UpdateUser(ctx, userUpdate)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update user: %v", err)
+	}
+	return &apiv2pb.UpdateUserResponse{
+		User: convertUserFromStore(user),
+	}, nil
+}
+
 func (s *UserService) DeleteUser(ctx context.Context, request *apiv2pb.DeleteUserRequest) (*apiv2pb.DeleteUserResponse, error) {
 	userID := ctx.Value(UserIDContextKey).(int32)
 	if userID == request.Id {

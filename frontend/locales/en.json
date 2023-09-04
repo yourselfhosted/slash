@@ -7,7 +7,8 @@
     "create": "Create",
     "download": "Download",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "language": "Language"
   },
   "analytics": {
     "self": "Analytics",

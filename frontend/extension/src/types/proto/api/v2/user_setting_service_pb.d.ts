@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
@@ -128,11 +128,11 @@ export declare class UpdateUserSettingRequest extends Message<UpdateUserSettingR
   userSetting?: UserSetting;
 
   /**
-   * update_mask is the field mask to update the user setting.
+   * update_mask is the field mask to update.
    *
-   * @generated from field: google.protobuf.FieldMask update_mask = 3;
+   * @generated from field: repeated string update_mask = 3;
    */
-  updateMask?: FieldMask;
+  updateMask: string[];
 
   constructor(data?: PartialMessage<UpdateUserSettingRequest>);
 

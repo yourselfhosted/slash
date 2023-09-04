@@ -94,6 +94,28 @@ export const CreateUserResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message slash.api.v2.UpdateUserRequest
+ */
+export const UpdateUserRequest = proto3.makeMessageType(
+  "slash.api.v2.UpdateUserRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "user", kind: "message", T: User },
+    { no: 3, name: "update_mask", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message slash.api.v2.UpdateUserResponse
+ */
+export const UpdateUserResponse = proto3.makeMessageType(
+  "slash.api.v2.UpdateUserResponse",
+  () => [
+    { no: 1, name: "user", kind: "message", T: User },
+  ],
+);
+
+/**
  * @generated from message slash.api.v2.DeleteUserRequest
  */
 export const DeleteUserRequest = proto3.makeMessageType(

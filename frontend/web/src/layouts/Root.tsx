@@ -1,7 +1,7 @@
+import { isEqual } from "lodash-es";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
-import { UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service_pb";
 import Header from "../components/Header";
 import useUserStore from "../stores/v1/user";
 
@@ -11,6 +11,7 @@ const Root: React.FC = () => {
   const userStore = useUserStore();
   const currentUser = userStore.getCurrentUser();
   const currentUserSetting = userStore.getCurrentUserSetting();
+  const isInitialized = Boolean(currentUser) && Boolean(currentUserSetting);
 
   useEffect(() => {
     if (!currentUser) {
@@ -29,16 +30,16 @@ const Root: React.FC = () => {
       return;
     }
 
-    if (currentUserSetting.locale === UserSetting_Locale.EN) {
+    if (isEqual(currentUserSetting.locale, "LOCALE_EN")) {
       i18n.changeLanguage("en");
-    } else if (currentUserSetting.locale === UserSetting_Locale.ZH) {
+    } else if (isEqual(currentUserSetting.locale, "LOCALE_ZH")) {
       i18n.changeLanguage("zh");
     }
   }, [currentUserSetting]);
 
   return (
     <>
-      {currentUser && (
+      {isInitialized && (
         <div className="w-full h-auto flex flex-col justify-start items-start">
           <Header />
           <Outlet />

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import { GetUserSettingResponse, UserSetting } from "@/types/proto/api/v2/user_setting_service_pb";
+import { GetUserSettingResponse, UpdateUserSettingResponse, UserSetting } from "@/types/proto/api/v2/user_setting_service_pb";
 import * as api from "../../helpers/api";
 
 const convertResponseModelUser = (user: User): User => {
@@ -28,6 +28,7 @@ interface UserState {
 
   // User setting related actions.
   fetchUserSetting: (userId: UserId) => Promise<UserSetting>;
+  updateUserSetting: (userSetting: UserSetting, updateMask: string[]) => Promise<UserSetting>;
   getCurrentUserSetting: () => UserSetting;
 }
 
@@ -104,6 +105,23 @@ const useUserStore = create<UserState>()((set, get) => ({
     userSettingMap[userId] = userSetting;
     set(userSettingMap);
     return userSetting;
+  },
+  updateUserSetting: async (userSetting: UserSetting, updateMask: string[]) => {
+    const userId = userSetting.id;
+    const {
+      data: { userSetting: updatedUserSetting },
+    } = await axios.post<UpdateUserSettingResponse>(`api/v2/users/${userId}/settings`, {
+      id: userId,
+      userSetting,
+      updateMask,
+    });
+    if (!updatedUserSetting) {
+      throw new Error(`User setting not found for user ${userId}`);
+    }
+    const userSettingMap = get().userSettingMapById;
+    userSettingMap[userId] = updatedUserSetting;
+    set(userSettingMap);
+    return updatedUserSetting;
   },
   getCurrentUserSetting: () => {
     const userSettingMap = get().userSettingMapById;

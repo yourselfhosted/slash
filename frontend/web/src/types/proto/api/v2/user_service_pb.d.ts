@@ -226,6 +226,64 @@ export declare class CreateUserResponse extends Message<CreateUserResponse> {
 }
 
 /**
+ * @generated from message slash.api.v2.UpdateUserRequest
+ */
+export declare class UpdateUserRequest extends Message<UpdateUserRequest> {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  /**
+   * @generated from field: slash.api.v2.User user = 2;
+   */
+  user?: User;
+
+  /**
+   * @generated from field: repeated string update_mask = 3;
+   */
+  updateMask: string[];
+
+  constructor(data?: PartialMessage<UpdateUserRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.UpdateUserRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateUserRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateUserRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateUserRequest;
+
+  static equals(a: UpdateUserRequest | PlainMessage<UpdateUserRequest> | undefined, b: UpdateUserRequest | PlainMessage<UpdateUserRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message slash.api.v2.UpdateUserResponse
+ */
+export declare class UpdateUserResponse extends Message<UpdateUserResponse> {
+  /**
+   * @generated from field: slash.api.v2.User user = 1;
+   */
+  user?: User;
+
+  constructor(data?: PartialMessage<UpdateUserResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "slash.api.v2.UpdateUserResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateUserResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateUserResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateUserResponse;
+
+  static equals(a: UpdateUserResponse | PlainMessage<UpdateUserResponse> | undefined, b: UpdateUserResponse | PlainMessage<UpdateUserResponse> | undefined): boolean;
+}
+
+/**
  * @generated from message slash.api.v2.DeleteUserRequest
  */
 export declare class DeleteUserRequest extends Message<DeleteUserRequest> {

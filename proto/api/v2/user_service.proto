@@ -26,6 +26,13 @@ service UserService {
       body: "user"
     };
   }
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      put: "/api/v2/users/{id}"
+      body: "user"
+    };
+    option (google.api.method_signature) = "id";
+  }
   // DeleteUser deletes a user by id.
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
     option (google.api.http) = {delete: "/api/v2/users/{id}"};
@@ -96,6 +103,18 @@ message CreateUserRequest {
 }
 
 message CreateUserResponse {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  int32 id = 1;
+
+  User user = 2;
+
+  repeated string update_mask = 3;
+}
+
+message UpdateUserResponse {
   User user = 1;
 }
 

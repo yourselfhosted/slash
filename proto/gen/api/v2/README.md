@@ -37,6 +37,8 @@
     - [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse)
     - [ListUsersRequest](#slash-api-v2-ListUsersRequest)
     - [ListUsersResponse](#slash-api-v2-ListUsersResponse)
+    - [UpdateUserRequest](#slash-api-v2-UpdateUserRequest)
+    - [UpdateUserResponse](#slash-api-v2-UpdateUserResponse)
     - [User](#slash-api-v2-User)
     - [UserAccessToken](#slash-api-v2-UserAccessToken)
   
@@ -488,6 +490,38 @@
 
 
 
+<a name="slash-api-v2-UpdateUserRequest"></a>
+
+### UpdateUserRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+| user | [User](#slash-api-v2-User) |  |  |
+| update_mask | [string](#string) | repeated |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateUserResponse"></a>
+
+### UpdateUserResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+
+
+
+
+
+
 <a name="slash-api-v2-User"></a>
 
 ### User
@@ -557,6 +591,7 @@
 | ListUsers | [ListUsersRequest](#slash-api-v2-ListUsersRequest) | [ListUsersResponse](#slash-api-v2-ListUsersResponse) | ListUsers returns a list of users. |
 | GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) | GetUser returns a user by id. |
 | CreateUser | [CreateUserRequest](#slash-api-v2-CreateUserRequest) | [CreateUserResponse](#slash-api-v2-CreateUserResponse) | CreateUser creates a new user. |
+| UpdateUser | [UpdateUserRequest](#slash-api-v2-UpdateUserRequest) | [UpdateUserResponse](#slash-api-v2-UpdateUserResponse) |  |
 | DeleteUser | [DeleteUserRequest](#slash-api-v2-DeleteUserRequest) | [DeleteUserResponse](#slash-api-v2-DeleteUserResponse) | DeleteUser deletes a user by id. |
 | ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |
 | CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest) | [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse) | CreateUserAccessToken creates a new access token for a user. |
@@ -613,7 +648,7 @@
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
 | user_setting | [UserSetting](#slash-api-v2-UserSetting) |  | user_setting is the user setting to update. |
-| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  | update_mask is the field mask to update the user setting. |
+| update_mask | [string](#string) | repeated | update_mask is the field mask to update. |
 
 
 

@@ -1,3 +1,4 @@
+import PreferenceSection from "@/components/setting/PreferenceSection";
 import AccessTokenSection from "../components/setting/AccessTokenSection";
 import AccountSection from "../components/setting/AccountSection";
 import MemberSection from "../components/setting/MemberSection";
@@ -12,6 +13,7 @@ const Setting: React.FC = () => {
     <div className="mx-auto max-w-6xl w-full px-3 md:px-12 py-6 flex flex-col justify-start items-start gap-y-12">
       <AccountSection />
       <AccessTokenSection />
+      <PreferenceSection />
       {isAdmin && (
         <>
           <MemberSection />
