@@ -2,6 +2,7 @@ import { Option, Select } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { UserSetting, UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service_pb";
 import useUserStore from "../../stores/v1/user";
+import BetaBadge from "../BetaBadge";
 
 const PreferenceSection: React.FC = () => {
   const { t } = useTranslation();
@@ -65,7 +66,10 @@ const PreferenceSection: React.FC = () => {
       <div className="w-full flex flex-col justify-start items-start gap-y-2">
         <p className="text-base font-semibold leading-6 text-gray-900">Preference</p>
         <div className="w-full flex flex-row justify-between items-center">
-          <span>{t("common.language")}</span>
+          <div className="flex flex-row justify-start items-center gap-x-1">
+            <span>{t("common.language")}</span>
+            <BetaBadge />
+          </div>
           <Select defaultValue={language} onChange={(_, value) => handleSelectLanguage(value as UserSetting_Locale)}>
             {languageOptions.map((option) => {
               return (
@@ -77,7 +81,10 @@ const PreferenceSection: React.FC = () => {
           </Select>
         </div>
         <div className="w-full flex flex-row justify-between items-center">
-          <span>Color Theme</span>
+          <div className="flex flex-row justify-start items-center gap-x-1">
+            <span>Color Theme</span>
+            <BetaBadge />
+          </div>
           <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value as UserSetting_ColorTheme)}>
             {colorThemeOptions.map((option) => {
               return (
