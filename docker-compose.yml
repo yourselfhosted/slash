@@ -1,0 +1,13 @@
+version: '3'
+services:
+  slash:
+    image: yourselfhosted/slash:latest
+    container_name: slash
+    ports:
+      - 5231:5231
+    volumes:
+      - slash:/var/opt/slash
+    restart: unless-stopped
+
+volumes:
+  slash:
