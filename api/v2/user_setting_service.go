@@ -51,6 +51,16 @@ func (s *UserSettingService) UpdateUserSetting(ctx context.Context, request *api
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update user setting: %v", err)
 			}
+		} else if path == "color_theme" {
+			if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
+				UserId: userID,
+				Key:    storepb.UserSettingKey_USER_SETTING_COLOR_THEME,
+				Value: &storepb.UserSetting_ColorTheme{
+					ColorTheme: convertUserSettingColorThemeToStore(request.UserSetting.ColorTheme),
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update user setting: %v", err)
+			}
 		} else {
 			return nil, status.Errorf(codes.InvalidArgument, "invalid path: %s", path)
 		}
@@ -80,6 +90,8 @@ func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*apiv2pb
 	for _, setting := range userSettings {
 		if setting.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
 			userSetting.Locale = convertUserSettingLocaleFromStore(setting.GetLocale())
+		} else if setting.Key == storepb.UserSettingKey_USER_SETTING_COLOR_THEME {
+			userSetting.ColorTheme = convertUserSettingColorThemeFromStore(setting.GetColorTheme())
 		}
 	}
 	return userSetting, nil
@@ -104,5 +116,27 @@ func convertUserSettingLocaleFromStore(locale storepb.LocaleUserSetting) apiv2pb
 		return apiv2pb.UserSetting_LOCALE_ZH
 	default:
 		return apiv2pb.UserSetting_LOCALE_UNSPECIFIED
+	}
+}
+
+func convertUserSettingColorThemeToStore(colorTheme apiv2pb.UserSetting_ColorTheme) storepb.ColorThemeUserSetting {
+	switch colorTheme {
+	case apiv2pb.UserSetting_COLOR_THEME_LIGHT:
+		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT
+	case apiv2pb.UserSetting_COLOR_THEME_DARK:
+		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_DARK
+	default:
+		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_UNSPECIFIED
+	}
+}
+
+func convertUserSettingColorThemeFromStore(colorTheme storepb.ColorThemeUserSetting) apiv2pb.UserSetting_ColorTheme {
+	switch colorTheme {
+	case storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT:
+		return apiv2pb.UserSetting_COLOR_THEME_LIGHT
+	case storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_DARK:
+		return apiv2pb.UserSetting_COLOR_THEME_DARK
+	default:
+		return apiv2pb.UserSetting_COLOR_THEME_UNSPECIFIED
 	}
 }
