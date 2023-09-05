@@ -34,6 +34,14 @@ message UserSetting {
   }
   // locale is the user locale.
   Locale locale = 2;
+
+  enum ColorTheme {
+    COLOR_THEME_UNSPECIFIED = 0;
+    COLOR_THEME_LIGHT = 1;
+    COLOR_THEME_DARK = 2;
+  }
+  // color_theme is the user color theme.
+  ColorTheme color_theme = 3;
 }
 
 message GetUserSettingRequest {

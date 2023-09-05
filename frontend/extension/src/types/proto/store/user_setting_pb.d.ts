@@ -28,6 +28,13 @@ export declare enum UserSettingKey {
    * @generated from enum value: USER_SETTING_LOCALE = 2;
    */
   USER_SETTING_LOCALE = 2,
+
+  /**
+   * Color theme for the user.
+   *
+   * @generated from enum value: USER_SETTING_COLOR_THEME = 3;
+   */
+  USER_SETTING_COLOR_THEME = 3,
 }
 
 /**
@@ -48,6 +55,26 @@ export declare enum LocaleUserSetting {
    * @generated from enum value: LOCALE_USER_SETTING_ZH = 2;
    */
   ZH = 2,
+}
+
+/**
+ * @generated from enum slash.store.ColorThemeUserSetting
+ */
+export declare enum ColorThemeUserSetting {
+  /**
+   * @generated from enum value: COLOR_THEME_USER_SETTING_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: COLOR_THEME_USER_SETTING_LIGHT = 1;
+   */
+  LIGHT = 1,
+
+  /**
+   * @generated from enum value: COLOR_THEME_USER_SETTING_DARK = 2;
+   */
+  DARK = 2,
 }
 
 /**
@@ -79,6 +106,12 @@ export declare class UserSetting extends Message<UserSetting> {
      */
     value: LocaleUserSetting;
     case: "locale";
+  } | {
+    /**
+     * @generated from field: slash.store.ColorThemeUserSetting color_theme = 5;
+     */
+    value: ColorThemeUserSetting;
+    case: "colorTheme";
   } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<UserSetting>);

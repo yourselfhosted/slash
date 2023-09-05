@@ -33,6 +33,8 @@ func (s *Store) UpsertUserSetting(ctx context.Context, upsert *storepb.UserSetti
 		valueString = string(valueBytes)
 	} else if upsert.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
 		valueString = upsert.GetLocale().String()
+	} else if upsert.Key == storepb.UserSettingKey_USER_SETTING_COLOR_THEME {
+		valueString = upsert.GetColorTheme().String()
 	} else {
 		return nil, errors.New("invalid user setting key")
 	}
@@ -92,6 +94,10 @@ func (s *Store) ListUserSettings(ctx context.Context, find *FindUserSetting) ([]
 		} else if userSetting.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
 			userSetting.Value = &storepb.UserSetting_Locale{
 				Locale: convertUserSettingLocaleFromString(valueString),
+			}
+		} else if userSetting.Key == storepb.UserSettingKey_USER_SETTING_COLOR_THEME {
+			userSetting.Value = &storepb.UserSetting_ColorTheme{
+				ColorTheme: convertUserSettingColorThemeFromString(valueString),
 			}
 		} else {
 			return nil, errors.New("invalid user setting key")
@@ -174,5 +180,16 @@ func convertUserSettingLocaleFromString(s string) storepb.LocaleUserSetting {
 		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_ZH
 	default:
 		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_UNSPECIFIED
+	}
+}
+
+func convertUserSettingColorThemeFromString(s string) storepb.ColorThemeUserSetting {
+	switch s {
+	case "COLOR_THEME_USER_SETTING_LIGHT":
+		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT
+	case "COLOR_THEME_USER_SETTING_DARK":
+		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_DARK
+	default:
+		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_UNSPECIFIED
 	}
 }

@@ -13,6 +13,7 @@ export const UserSetting = proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "locale", kind: "enum", T: proto3.getEnumType(UserSetting_Locale) },
+    { no: 3, name: "color_theme", kind: "enum", T: proto3.getEnumType(UserSetting_ColorTheme) },
   ],
 );
 
@@ -25,6 +26,18 @@ export const UserSetting_Locale = proto3.makeEnum(
     {no: 0, name: "LOCALE_UNSPECIFIED", localName: "UNSPECIFIED"},
     {no: 1, name: "LOCALE_EN", localName: "EN"},
     {no: 2, name: "LOCALE_ZH", localName: "ZH"},
+  ],
+);
+
+/**
+ * @generated from enum slash.api.v2.UserSetting.ColorTheme
+ */
+export const UserSetting_ColorTheme = proto3.makeEnum(
+  "slash.api.v2.UserSetting.ColorTheme",
+  [
+    {no: 0, name: "COLOR_THEME_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "COLOR_THEME_LIGHT", localName: "LIGHT"},
+    {no: 2, name: "COLOR_THEME_DARK", localName: "DARK"},
   ],
 );
 

@@ -20,6 +20,7 @@
     - [AccessTokensUserSetting.AccessToken](#slash-store-AccessTokensUserSetting-AccessToken)
     - [UserSetting](#slash-store-UserSetting)
   
+    - [ColorThemeUserSetting](#slash-store-ColorThemeUserSetting)
     - [LocaleUserSetting](#slash-store-LocaleUserSetting)
     - [UserSettingKey](#slash-store-UserSettingKey)
   
@@ -216,12 +217,26 @@
 | key | [UserSettingKey](#slash-store-UserSettingKey) |  |  |
 | access_tokens | [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting) |  |  |
 | locale | [LocaleUserSetting](#slash-store-LocaleUserSetting) |  |  |
+| color_theme | [ColorThemeUserSetting](#slash-store-ColorThemeUserSetting) |  |  |
 
 
 
 
 
  
+
+
+<a name="slash-store-ColorThemeUserSetting"></a>
+
+### ColorThemeUserSetting
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| COLOR_THEME_USER_SETTING_UNSPECIFIED | 0 |  |
+| COLOR_THEME_USER_SETTING_LIGHT | 1 |  |
+| COLOR_THEME_USER_SETTING_DARK | 2 |  |
+
 
 
 <a name="slash-store-LocaleUserSetting"></a>
@@ -247,6 +262,7 @@
 | USER_SETTING_KEY_UNSPECIFIED | 0 |  |
 | USER_SETTING_ACCESS_TOKENS | 1 | Access tokens for the user. |
 | USER_SETTING_LOCALE | 2 | Locale for the user. |
+| USER_SETTING_COLOR_THEME | 3 | Color theme for the user. |
 
 
  

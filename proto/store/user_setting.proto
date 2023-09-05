@@ -13,6 +13,8 @@ message UserSetting {
     AccessTokensUserSetting access_tokens = 3;
 
     LocaleUserSetting locale = 4;
+
+    ColorThemeUserSetting color_theme = 5;
   }
 }
 
@@ -22,6 +24,8 @@ enum UserSettingKey {
   USER_SETTING_ACCESS_TOKENS = 1;
   // Locale for the user.
   USER_SETTING_LOCALE = 2;
+  // Color theme for the user.
+  USER_SETTING_COLOR_THEME = 3;
 }
 
 message AccessTokensUserSetting {
@@ -39,4 +43,10 @@ enum LocaleUserSetting {
   LOCALE_USER_SETTING_UNSPECIFIED = 0;
   LOCALE_USER_SETTING_EN = 1;
   LOCALE_USER_SETTING_ZH = 2;
+}
+
+enum ColorThemeUserSetting {
+  COLOR_THEME_USER_SETTING_UNSPECIFIED = 0;
+  COLOR_THEME_USER_SETTING_LIGHT = 1;
+  COLOR_THEME_USER_SETTING_DARK = 2;
 }

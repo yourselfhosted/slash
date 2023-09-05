@@ -53,6 +53,7 @@
     - [UpdateUserSettingResponse](#slash-api-v2-UpdateUserSettingResponse)
     - [UserSetting](#slash-api-v2-UserSetting)
   
+    - [UserSetting.ColorTheme](#slash-api-v2-UserSetting-ColorTheme)
     - [UserSetting.Locale](#slash-api-v2-UserSetting-Locale)
   
     - [UserSettingService](#slash-api-v2-UserSettingService)
@@ -680,12 +681,26 @@
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
 | locale | [UserSetting.Locale](#slash-api-v2-UserSetting-Locale) |  | locale is the user locale. |
+| color_theme | [UserSetting.ColorTheme](#slash-api-v2-UserSetting-ColorTheme) |  | color_theme is the user color theme. |
 
 
 
 
 
  
+
+
+<a name="slash-api-v2-UserSetting-ColorTheme"></a>
+
+### UserSetting.ColorTheme
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| COLOR_THEME_UNSPECIFIED | 0 |  |
+| COLOR_THEME_LIGHT | 1 |  |
+| COLOR_THEME_DARK | 2 |  |
+
 
 
 <a name="slash-api-v2-UserSetting-Locale"></a>

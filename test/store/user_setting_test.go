@@ -94,4 +94,26 @@ func TestUserSettingStore(t *testing.T) {
 	})
 	require.NoError(t, err)
 	require.Equal(t, storepb.LocaleUserSetting_LOCALE_USER_SETTING_EN, localeUserSetting.GetLocale())
+
+	// Test for color theme user setting.
+	colorThemeUserSetting, err := ts.UpsertUserSetting(ctx, &storepb.UserSetting{
+		UserId: user.ID,
+		Key:    storepb.UserSettingKey_USER_SETTING_COLOR_THEME,
+		Value: &storepb.UserSetting_ColorTheme{
+			ColorTheme: storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, colorThemeUserSetting)
+	require.Equal(t, storepb.UserSettingKey_USER_SETTING_COLOR_THEME, colorThemeUserSetting.Key)
+	require.Equal(t, storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT, colorThemeUserSetting.GetColorTheme())
+	colorThemeUserSetting, err = ts.UpsertUserSetting(ctx, &storepb.UserSetting{
+		UserId: user.ID,
+		Key:    storepb.UserSettingKey_USER_SETTING_COLOR_THEME,
+		Value: &storepb.UserSetting_ColorTheme{
+			ColorTheme: storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_DARK,
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t, storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_DARK, colorThemeUserSetting.GetColorTheme())
 }

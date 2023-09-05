@@ -14,6 +14,7 @@ export const UserSettingKey = proto3.makeEnum(
     {no: 0, name: "USER_SETTING_KEY_UNSPECIFIED"},
     {no: 1, name: "USER_SETTING_ACCESS_TOKENS"},
     {no: 2, name: "USER_SETTING_LOCALE"},
+    {no: 3, name: "USER_SETTING_COLOR_THEME"},
   ],
 );
 
@@ -30,6 +31,18 @@ export const LocaleUserSetting = proto3.makeEnum(
 );
 
 /**
+ * @generated from enum slash.store.ColorThemeUserSetting
+ */
+export const ColorThemeUserSetting = proto3.makeEnum(
+  "slash.store.ColorThemeUserSetting",
+  [
+    {no: 0, name: "COLOR_THEME_USER_SETTING_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "COLOR_THEME_USER_SETTING_LIGHT", localName: "LIGHT"},
+    {no: 2, name: "COLOR_THEME_USER_SETTING_DARK", localName: "DARK"},
+  ],
+);
+
+/**
  * @generated from message slash.store.UserSetting
  */
 export const UserSetting = proto3.makeMessageType(
@@ -39,6 +52,7 @@ export const UserSetting = proto3.makeMessageType(
     { no: 2, name: "key", kind: "enum", T: proto3.getEnumType(UserSettingKey) },
     { no: 3, name: "access_tokens", kind: "message", T: AccessTokensUserSetting, oneof: "value" },
     { no: 4, name: "locale", kind: "enum", T: proto3.getEnumType(LocaleUserSetting), oneof: "value" },
+    { no: 5, name: "color_theme", kind: "enum", T: proto3.getEnumType(ColorThemeUserSetting), oneof: "value" },
   ],
 );
 

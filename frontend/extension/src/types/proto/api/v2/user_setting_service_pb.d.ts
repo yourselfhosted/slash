@@ -24,6 +24,13 @@ export declare class UserSetting extends Message<UserSetting> {
    */
   locale: UserSetting_Locale;
 
+  /**
+   * color_theme is the user color theme.
+   *
+   * @generated from field: slash.api.v2.UserSetting.ColorTheme color_theme = 3;
+   */
+  colorTheme: UserSetting_ColorTheme;
+
   constructor(data?: PartialMessage<UserSetting>);
 
   static readonly runtime: typeof proto3;
@@ -57,6 +64,26 @@ export declare enum UserSetting_Locale {
    * @generated from enum value: LOCALE_ZH = 2;
    */
   ZH = 2,
+}
+
+/**
+ * @generated from enum slash.api.v2.UserSetting.ColorTheme
+ */
+export declare enum UserSetting_ColorTheme {
+  /**
+   * @generated from enum value: COLOR_THEME_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: COLOR_THEME_LIGHT = 1;
+   */
+  LIGHT = 1,
+
+  /**
+   * @generated from enum value: COLOR_THEME_DARK = 2;
+   */
+  DARK = 2,
 }
 
 /**
