@@ -74,7 +74,8 @@ func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*apiv2pb
 	}
 
 	userSetting := &apiv2pb.UserSetting{
-		Id: userID,
+		Id:     userID,
+		Locale: apiv2pb.UserSetting_LOCALE_EN,
 	}
 	for _, setting := range userSettings {
 		if setting.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {

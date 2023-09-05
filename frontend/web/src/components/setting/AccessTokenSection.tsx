@@ -3,6 +3,7 @@ import axios from "axios";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { ListUserAccessTokensResponse, UserAccessToken } from "@/types/proto/api/v2/user_service_pb";
 import useUserStore from "../../stores/v1/user";
 import { showCommonDialog } from "../Alert";
@@ -15,6 +16,7 @@ const listAccessTokens = async (userId: number) => {
 };
 
 const AccessTokenSection = () => {
+  const { t } = useTranslation();
   const currentUser = useUserStore().getCurrentUser();
   const [userAccessTokens, setUserAccessTokens] = useState<UserAccessToken[]>([]);
   const [showCreateDialog, setShowCreateDialog] = useState<boolean>(false);
@@ -68,7 +70,7 @@ const AccessTokenSection = () => {
                   setShowCreateDialog(true);
                 }}
               >
-                Create
+                {t("common.create")}
               </Button>
             </div>
           </div>
@@ -91,7 +93,7 @@ const AccessTokenSection = () => {
                         Expires At
                       </th>
                       <th scope="col" className="relative py-3.5 pl-3 pr-4">
-                        <span className="sr-only">Delete</span>
+                        <span className="sr-only">{t("common.delete")}</span>
                       </th>
                     </tr>
                   </thead>

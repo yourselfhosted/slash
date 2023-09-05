@@ -8,7 +8,10 @@
     "download": "Download",
     "edit": "Edit",
     "delete": "Delete",
-    "language": "Language"
+    "language": "Language",
+    "search": "Search",
+    "email": "Email",
+    "password": "Password"
   },
   "analytics": {
     "self": "Analytics",

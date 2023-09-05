@@ -1,5 +1,6 @@
 import { Button, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
 import FilterView from "../components/FilterView";
 import Icon from "../components/Icon";
@@ -17,6 +18,7 @@ interface State {
 }
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
   const loadingState = useLoading();
   const currentUser = useUserStore().getCurrentUser();
   const viewStore = useViewStore();
@@ -49,7 +51,7 @@ const Home: React.FC = () => {
           <div className="flex flex-row justify-start items-center">
             <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
               <Icon.Plus className="w-5 h-auto" />
-              <span className="hidden sm:block ml-0.5">Create</span>
+              <span className="hidden sm:block ml-0.5">{t("common.create")}</span>
             </Button>
           </div>
           <div className="flex flex-row justify-end items-center">
@@ -57,7 +59,7 @@ const Home: React.FC = () => {
               className="w-32 ml-2"
               type="text"
               size="sm"
-              placeholder="Search"
+              placeholder={t("common.search")}
               startDecorator={<Icon.Search className="w-4 h-auto" />}
               endDecorator={<ViewSetting />}
               value={filter.search}

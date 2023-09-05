@@ -1,10 +1,12 @@
 import { Button } from "@mui/joy";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import useUserStore from "../../stores/v1/user";
 import ChangePasswordDialog from "../ChangePasswordDialog";
 import EditUserinfoDialog from "../EditUserinfoDialog";
 
 const AccountSection: React.FC = () => {
+  const { t } = useTranslation();
   const currentUser = useUserStore().getCurrentUser();
   const [showEditUserinfoDialog, setShowEditUserinfoDialog] = useState<boolean>(false);
   const [showChangePasswordDialog, setShowChangePasswordDialog] = useState<boolean>(false);
@@ -19,12 +21,12 @@ const AccountSection: React.FC = () => {
           {isAdmin && <span className="ml-2 bg-blue-600 text-white px-2 leading-6 text-sm rounded-full">Admin</span>}
         </p>
         <p className="flex flex-row justify-start items-center">
-          <span className="mr-3 text-gray-500">Email: </span>
+          <span className="mr-3 text-gray-500">{t("common.email")}: </span>
           {currentUser.email}
         </p>
         <div className="flex flex-row justify-start items-center gap-2 mt-2">
           <Button variant="outlined" color="neutral" onClick={() => setShowEditUserinfoDialog(true)}>
-            Edit
+            {t("common.edit")}
           </Button>
           <Button variant="outlined" color="neutral" onClick={() => setShowChangePasswordDialog(true)}>
             Change password

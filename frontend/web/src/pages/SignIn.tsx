@@ -1,6 +1,7 @@
 import { Button, Input } from "@mui/joy";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
@@ -8,6 +9,7 @@ import { useAppSelector } from "../stores";
 import useUserStore from "../stores/v1/user";
 
 const SignIn: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const userStore = useUserStore();
   const {
@@ -79,7 +81,7 @@ const SignIn: React.FC = () => {
           <form className="w-full mt-6" onSubmit={handleSigninBtnClick}>
             <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
               <div className="w-full flex flex-col mb-2">
-                <span className="leading-8 mb-1 text-gray-600">Email</span>
+                <span className="leading-8 mb-1 text-gray-600">{t("common.email")}</span>
                 <Input
                   className="w-full py-3"
                   type="email"
@@ -89,7 +91,7 @@ const SignIn: React.FC = () => {
                 />
               </div>
               <div className="w-full flex flex-col mb-2">
-                <span className="leading-8 text-gray-600">Password</span>
+                <span className="leading-8 text-gray-600">{t("common.password")}</span>
                 <Input className="w-full py-3" type="password" value={password} placeholder="····" onChange={handlePasswordInputChanged} />
               </div>
             </div>

@@ -127,7 +127,7 @@ const ShortcutDetail = () => {
                       });
                     }}
                   >
-                    <Icon.Edit className="w-4 h-auto mr-2" /> Edit
+                    <Icon.Edit className="w-4 h-auto mr-2" /> {t("common.edit")}
                   </button>
                   <button
                     className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
@@ -135,7 +135,7 @@ const ShortcutDetail = () => {
                       handleDeleteShortcutButtonClick(shortcut);
                     }}
                   >
-                    <Icon.Trash className="w-4 h-auto mr-2" /> Delete
+                    <Icon.Trash className="w-4 h-auto mr-2" /> {t("common.delete")}
                   </button>
                 </>
               }
@@ -177,7 +177,7 @@ const ShortcutDetail = () => {
         <div className="w-full flex flex-col mt-8">
           <h3 id="analytics" className="pl-1 font-medium text-lg flex flex-row justify-start items-center">
             <Icon.BarChart2 className="w-6 h-auto mr-1" />
-            Analytics
+            {t("analytics.self")}
           </h3>
           <AnalyticsView className="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4" shortcutId={shortcut.id} />
         </div>
