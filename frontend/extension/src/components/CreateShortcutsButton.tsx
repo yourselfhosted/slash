@@ -8,7 +8,7 @@ import Icon from "./Icon";
 
 const generateTempName = (length = 6) => {
   let result = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
   let counter = 0;
   while (counter < length) {
@@ -53,7 +53,7 @@ const CreateShortcutsButton = () => {
       const tab = tabs[0];
       setState((state) => ({
         ...state,
-        name: generateTempName().toLowerCase() + "-temp",
+        name: generateTempName() + "-temp",
         title: tab.title || "",
         link: tab.url || "",
       }));

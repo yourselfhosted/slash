@@ -74,7 +74,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        name: e.target.value.replace(/\s+/g, "-").toLowerCase(),
+        name: e.target.value.replace(/\s+/g, "-"),
       }),
     });
   };

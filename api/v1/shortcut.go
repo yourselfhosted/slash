@@ -92,7 +92,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 		shortcut := &storepb.Shortcut{
 			CreatorId:   userID,
-			Name:        strings.ToLower(create.Name),
+			Name:        create.Name,
 			Link:        create.Link,
 			Title:       create.Title,
 			Description: create.Description,
@@ -156,10 +156,6 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		patch := &PatchShortcutRequest{}
 		if err := json.NewDecoder(c.Request().Body).Decode(patch); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("failed to decode patch shortcut request, err: %s", err)).SetInternal(err)
-		}
-		if patch.Name != nil {
-			name := strings.ToLower(*patch.Name)
-			patch.Name = &name
 		}
 
 		shortcutUpdate := &store.UpdateShortcut{
