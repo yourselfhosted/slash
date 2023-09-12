@@ -18,10 +18,6 @@ const Setting: React.FC = () => {
       {isAdmin && (
         <>
           <Divider />
-          <div>
-            <h2 className="text-2xl font-bold">Workspace setting</h2>
-            <p className="text-gray-500 text-sm">Manage your workspace.</p>
-          </div>
           <MemberSection />
           <WorkspaceSection />
         </>

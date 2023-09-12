@@ -74,8 +74,8 @@ const Home: React.FC = () => {
             loading
           </div>
         ) : orderedShortcutList.length === 0 ? (
-          <div className="py-16 w-full flex flex-col justify-center items-center">
-            <Icon.PackageOpen className="w-16 h-auto text-gray-400" />
+          <div className="py-16 w-full flex flex-col justify-center items-center text-gray-400">
+            <Icon.PackageOpen className="w-16 h-auto" strokeWidth="1" />
             <p className="mt-4">No shortcuts found.</p>
           </div>
         ) : (

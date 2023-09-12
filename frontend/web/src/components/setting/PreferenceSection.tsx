@@ -8,7 +8,7 @@ const PreferenceSection: React.FC = () => {
   const { t } = useTranslation();
   const userStore = useUserStore();
   const userSetting = userStore.getCurrentUserSetting();
-  const language = userSetting.locale || UserSetting_Locale.EN;
+  const language = userSetting.locale;
   const colorTheme = userSetting.colorTheme;
 
   const languageOptions = [
@@ -23,10 +23,6 @@ const PreferenceSection: React.FC = () => {
   ];
 
   const colorThemeOptions = [
-    {
-      value: "COLOR_THEME_UNSPECIFIED",
-      label: "Auto",
-    },
     {
       value: "COLOR_THEME_LIGHT",
       label: "Light",
@@ -52,6 +48,10 @@ const PreferenceSection: React.FC = () => {
   };
 
   const handleSelectColorTheme = async (colorTheme: UserSetting_ColorTheme) => {
+    if (!colorTheme) {
+      return;
+    }
+
     await userStore.updateUserSetting(
       {
         ...userSetting,
