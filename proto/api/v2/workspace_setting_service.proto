@@ -3,7 +3,6 @@ syntax = "proto3";
 package slash.api.v2;
 
 import "google/api/annotations.proto";
-import "google/api/client.proto";
 
 option go_package = "gen/api/v2";
 
