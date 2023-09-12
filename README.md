@@ -1,3 +1,6 @@
+<p align="center">
+<a href="https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg"><b>🧩 Browser extension now available!</b></a></p>
+
 # Slash
 
 <img align="right" src="./resources/logo.png" height="64px" alt="logo">
@@ -9,7 +12,6 @@
 <p>
   <a href="https://hub.docker.com/r/yourselfhosted/slash"><img alt="Docker pull" src="https://img.shields.io/docker/pulls/yourselfhosted/slash.svg"/></a>
   <a href="https://github.com/boojack/slash/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/boojack/slash?logo=github"/></a>
-  <a href="https://crowdin.com/project/slash-i18n"><img alt="Crowdin" src="https://badges.crowdin.net/slash-i18n/localized.svg"/></a>
 </p>
 
 ![demo](./resources/demo.png)
