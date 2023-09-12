@@ -58,6 +58,16 @@
   
     - [UserSettingService](#slash-api-v2-UserSettingService)
   
+- [api/v2/workspace_setting_service.proto](#api_v2_workspace_setting_service-proto)
+    - [AutoBackupWorkspaceSetting](#slash-api-v2-AutoBackupWorkspaceSetting)
+    - [GetWorkspaceSettingRequest](#slash-api-v2-GetWorkspaceSettingRequest)
+    - [GetWorkspaceSettingResponse](#slash-api-v2-GetWorkspaceSettingResponse)
+    - [UpdateWorkspaceSettingRequest](#slash-api-v2-UpdateWorkspaceSettingRequest)
+    - [UpdateWorkspaceSettingResponse](#slash-api-v2-UpdateWorkspaceSettingResponse)
+    - [WorkspaceSetting](#slash-api-v2-WorkspaceSetting)
+  
+    - [WorkspaceSettingService](#slash-api-v2-WorkspaceSettingService)
+  
 - [Scalar Value Types](#scalar-value-types)
 
 
@@ -729,6 +739,123 @@
 | ----------- | ------------ | ------------- | ------------|
 | GetUserSetting | [GetUserSettingRequest](#slash-api-v2-GetUserSettingRequest) | [GetUserSettingResponse](#slash-api-v2-GetUserSettingResponse) | GetUserSetting returns the user setting. |
 | UpdateUserSetting | [UpdateUserSettingRequest](#slash-api-v2-UpdateUserSettingRequest) | [UpdateUserSettingResponse](#slash-api-v2-UpdateUserSettingResponse) | UpdateUserSetting updates the user setting. |
+
+ 
+
+
+
+<a name="api_v2_workspace_setting_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v2/workspace_setting_service.proto
+
+
+
+<a name="slash-api-v2-AutoBackupWorkspaceSetting"></a>
+
+### AutoBackupWorkspaceSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| enabled | [bool](#bool) |  | Whether auto backup is enabled. |
+| cron_expression | [string](#string) |  | The cron expression for auto backup. For example, &#34;0 0 0 * * *&#34; means backup at 00:00:00 every day. See https://en.wikipedia.org/wiki/Cron for more details. |
+| max_keep | [int32](#int32) |  | The maximum number of backups to keep. |
+
+
+
+
+
+
+<a name="slash-api-v2-GetWorkspaceSettingRequest"></a>
+
+### GetWorkspaceSettingRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-GetWorkspaceSettingResponse"></a>
+
+### GetWorkspaceSettingResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| setting | [WorkspaceSetting](#slash-api-v2-WorkspaceSetting) |  | The user setting. |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateWorkspaceSettingRequest"></a>
+
+### UpdateWorkspaceSettingRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| setting | [WorkspaceSetting](#slash-api-v2-WorkspaceSetting) |  | The user setting. |
+| update_mask | [string](#string) | repeated | The update mask. |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateWorkspaceSettingResponse"></a>
+
+### UpdateWorkspaceSettingResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| setting | [WorkspaceSetting](#slash-api-v2-WorkspaceSetting) |  | The user setting. |
+
+
+
+
+
+
+<a name="slash-api-v2-WorkspaceSetting"></a>
+
+### WorkspaceSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
+| resource_relative_path | [string](#string) |  | The relative path of the resource directory. |
+| auto_backup | [AutoBackupWorkspaceSetting](#slash-api-v2-AutoBackupWorkspaceSetting) |  | The auto backup setting. |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="slash-api-v2-WorkspaceSettingService"></a>
+
+### WorkspaceSettingService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| GetWorkspaceSetting | [GetWorkspaceSettingRequest](#slash-api-v2-GetWorkspaceSettingRequest) | [GetWorkspaceSettingResponse](#slash-api-v2-GetWorkspaceSettingResponse) |  |
+| UpdateWorkspaceSetting | [UpdateWorkspaceSettingRequest](#slash-api-v2-UpdateWorkspaceSettingRequest) | [UpdateWorkspaceSettingResponse](#slash-api-v2-UpdateWorkspaceSettingResponse) |  |
 
  
 

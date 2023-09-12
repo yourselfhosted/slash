@@ -8,14 +8,23 @@ message WorkspaceSetting {
   WorkspaceSettingKey key = 1;
 
   oneof value {
-    AutoBackupWorkspaceSetting auto_backup = 2;
+    string secret_session = 2;
+    bool enable_signup = 3;
+    string resource_relative_path = 4;
+    AutoBackupWorkspaceSetting auto_backup = 5;
   }
 }
 
 enum WorkspaceSettingKey {
   WORKSPACE_SETTING_KEY_UNSPECIFIED = 0;
-
-  WORKSPACE_SETTING_AUTO_BACKUP = 1;
+  // The secret session key used to encrypt session data.
+  WORKSPACE_SETTING_SECRET_SESSION = 1;
+  // Whether to enable other users to sign up.
+  WORKSAPCE_SETTING_ENABLE_SIGNUP = 2;
+  // The relative path of the resource directory.
+  WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH = 3;
+  // The auto backup setting.
+  WORKSPACE_SETTING_AUTO_BACKUP = 4;
 }
 
 message AutoBackupWorkspaceSetting {

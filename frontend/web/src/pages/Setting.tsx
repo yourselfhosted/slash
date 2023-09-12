@@ -1,3 +1,4 @@
+import { Divider } from "@mui/joy";
 import PreferenceSection from "@/components/setting/PreferenceSection";
 import AccessTokenSection from "../components/setting/AccessTokenSection";
 import AccountSection from "../components/setting/AccountSection";
@@ -16,6 +17,11 @@ const Setting: React.FC = () => {
       <PreferenceSection />
       {isAdmin && (
         <>
+          <Divider />
+          <div>
+            <h2 className="text-2xl font-bold">Workspace setting</h2>
+            <p className="text-gray-500 text-sm">Manage your workspace.</p>
+          </div>
           <MemberSection />
           <WorkspaceSection />
         </>

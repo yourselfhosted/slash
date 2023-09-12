@@ -16,9 +16,32 @@ export declare enum WorkspaceSettingKey {
   WORKSPACE_SETTING_KEY_UNSPECIFIED = 0,
 
   /**
-   * @generated from enum value: WORKSPACE_SETTING_AUTO_BACKUP = 1;
+   * The secret session key used to encrypt session data.
+   *
+   * @generated from enum value: WORKSPACE_SETTING_SECRET_SESSION = 1;
    */
-  WORKSPACE_SETTING_AUTO_BACKUP = 1,
+  WORKSPACE_SETTING_SECRET_SESSION = 1,
+
+  /**
+   * Whether to enable other users to sign up.
+   *
+   * @generated from enum value: WORKSAPCE_SETTING_ENABLE_SIGNUP = 2;
+   */
+  WORKSAPCE_SETTING_ENABLE_SIGNUP = 2,
+
+  /**
+   * The relative path of the resource directory.
+   *
+   * @generated from enum value: WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH = 3;
+   */
+  WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH = 3,
+
+  /**
+   * The auto backup setting.
+   *
+   * @generated from enum value: WORKSPACE_SETTING_AUTO_BACKUP = 4;
+   */
+  WORKSPACE_SETTING_AUTO_BACKUP = 4,
 }
 
 /**
@@ -35,7 +58,25 @@ export declare class WorkspaceSetting extends Message<WorkspaceSetting> {
    */
   value: {
     /**
-     * @generated from field: slash.store.AutoBackupWorkspaceSetting auto_backup = 2;
+     * @generated from field: string secret_session = 2;
+     */
+    value: string;
+    case: "secretSession";
+  } | {
+    /**
+     * @generated from field: bool enable_signup = 3;
+     */
+    value: boolean;
+    case: "enableSignup";
+  } | {
+    /**
+     * @generated from field: string resource_relative_path = 4;
+     */
+    value: string;
+    case: "resourceRelativePath";
+  } | {
+    /**
+     * @generated from field: slash.store.AutoBackupWorkspaceSetting auto_backup = 5;
      */
     value: AutoBackupWorkspaceSetting;
     case: "autoBackup";

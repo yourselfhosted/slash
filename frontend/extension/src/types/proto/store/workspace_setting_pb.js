@@ -12,7 +12,10 @@ export const WorkspaceSettingKey = proto3.makeEnum(
   "slash.store.WorkspaceSettingKey",
   [
     {no: 0, name: "WORKSPACE_SETTING_KEY_UNSPECIFIED"},
-    {no: 1, name: "WORKSPACE_SETTING_AUTO_BACKUP"},
+    {no: 1, name: "WORKSPACE_SETTING_SECRET_SESSION"},
+    {no: 2, name: "WORKSAPCE_SETTING_ENABLE_SIGNUP"},
+    {no: 3, name: "WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH"},
+    {no: 4, name: "WORKSPACE_SETTING_AUTO_BACKUP"},
   ],
 );
 
@@ -23,7 +26,10 @@ export const WorkspaceSetting = proto3.makeMessageType(
   "slash.store.WorkspaceSetting",
   () => [
     { no: 1, name: "key", kind: "enum", T: proto3.getEnumType(WorkspaceSettingKey) },
-    { no: 2, name: "auto_backup", kind: "message", T: AutoBackupWorkspaceSetting, oneof: "value" },
+    { no: 2, name: "secret_session", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "value" },
+    { no: 3, name: "enable_signup", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "value" },
+    { no: 4, name: "resource_relative_path", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "value" },
+    { no: 5, name: "auto_backup", kind: "message", T: AutoBackupWorkspaceSetting, oneof: "value" },
   ],
 );
 
