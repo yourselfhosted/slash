@@ -2,35 +2,19 @@ package store
 
 import (
 	"context"
+	"errors"
+	"strconv"
 	"strings"
+
+	storepb "github.com/boojack/slash/proto/gen/store"
+	"google.golang.org/protobuf/encoding/protojson"
 )
-
-type WorkspaceSettingKey string
-
-const (
-	// WorkspaceSecretSessionName is the key type for secret session name.
-	WorkspaceSecretSessionName WorkspaceSettingKey = "secret-session-name"
-	// WorkspaceDisallowSignUp is the key type for disallow sign up in workspace level.
-	WorkspaceDisallowSignUp WorkspaceSettingKey = "disallow-signup"
-	// WorkspaceResourceRelativePath is the key type for resource relative path.
-	WorkspaceResourceRelativePath WorkspaceSettingKey = "resource-relative-path"
-)
-
-// String returns the string format of WorkspaceSettingKey type.
-func (key WorkspaceSettingKey) String() string {
-	return string(key)
-}
-
-type WorkspaceSetting struct {
-	Key   WorkspaceSettingKey
-	Value string
-}
 
 type FindWorkspaceSetting struct {
-	Key WorkspaceSettingKey
+	Key storepb.WorkspaceSettingKey
 }
 
-func (s *Store) UpsertWorkspaceSetting(ctx context.Context, upsert *WorkspaceSetting) (*WorkspaceSetting, error) {
+func (s *Store) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.WorkspaceSetting) (*storepb.WorkspaceSetting, error) {
 	stmt := `
 		INSERT INTO workspace_setting (
 			key,
@@ -40,7 +24,24 @@ func (s *Store) UpsertWorkspaceSetting(ctx context.Context, upsert *WorkspaceSet
 		ON CONFLICT(key) DO UPDATE 
 		SET value = EXCLUDED.value
 	`
-	if _, err := s.db.ExecContext(ctx, stmt, upsert.Key, upsert.Value); err != nil {
+	var valueString string
+	if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION {
+		valueString = upsert.GetSecretSession()
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
+		valueString = strconv.FormatBool(upsert.GetEnableSignup())
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
+		valueString = upsert.GetResourceRelativePath()
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_AUTO_BACKUP {
+		valueBytes, err := protojson.Marshal(upsert.GetAutoBackup())
+		if err != nil {
+			return nil, err
+		}
+		valueString = string(valueBytes)
+	} else {
+		return nil, errors.New("invalid workspace setting key")
+	}
+
+	if _, err := s.db.ExecContext(ctx, stmt, upsert.Key.String(), valueString); err != nil {
 		return nil, err
 	}
 
@@ -49,11 +50,11 @@ func (s *Store) UpsertWorkspaceSetting(ctx context.Context, upsert *WorkspaceSet
 	return workspaceSetting, nil
 }
 
-func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSetting) ([]*WorkspaceSetting, error) {
+func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSetting) ([]*storepb.WorkspaceSetting, error) {
 	where, args := []string{"1 = 1"}, []any{}
 
-	if find.Key != "" {
-		where, args = append(where, "key = ?"), append(args, find.Key)
+	if find.Key != storepb.WorkspaceSettingKey_WORKSPACE_SETTING_KEY_UNSPECIFIED {
+		where, args = append(where, "key = ?"), append(args, find.Key.String())
 	}
 
 	query := `
@@ -69,14 +70,35 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 
 	defer rows.Close()
 
-	list := []*WorkspaceSetting{}
+	list := []*storepb.WorkspaceSetting{}
 	for rows.Next() {
-		workspaceSetting := &WorkspaceSetting{}
+		workspaceSetting := &storepb.WorkspaceSetting{}
+		var keyString, valueString string
 		if err := rows.Scan(
-			&workspaceSetting.Key,
-			&workspaceSetting.Value,
+			&keyString,
+			&valueString,
 		); err != nil {
 			return nil, err
+		}
+		workspaceSetting.Key = storepb.WorkspaceSettingKey(storepb.WorkspaceSettingKey_value[keyString])
+		if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION {
+			workspaceSetting.Value = &storepb.WorkspaceSetting_SecretSession{SecretSession: valueString}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
+			enableSignup, err := strconv.ParseBool(valueString)
+			if err != nil {
+				return nil, err
+			}
+			workspaceSetting.Value = &storepb.WorkspaceSetting_EnableSignup{EnableSignup: enableSignup}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
+			workspaceSetting.Value = &storepb.WorkspaceSetting_ResourceRelativePath{ResourceRelativePath: valueString}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_AUTO_BACKUP {
+			autoBackupSetting := &storepb.AutoBackupWorkspaceSetting{}
+			if err := protojson.Unmarshal([]byte(valueString), autoBackupSetting); err != nil {
+				return nil, err
+			}
+			workspaceSetting.Value = &storepb.WorkspaceSetting_AutoBackup{AutoBackup: autoBackupSetting}
+		} else {
+			return nil, errors.New("invalid workspace setting key")
 		}
 
 		list = append(list, workspaceSetting)
@@ -93,10 +115,10 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 	return list, nil
 }
 
-func (s *Store) GetWorkspaceSetting(ctx context.Context, find *FindWorkspaceSetting) (*WorkspaceSetting, error) {
-	if find.Key != "" {
+func (s *Store) GetWorkspaceSetting(ctx context.Context, find *FindWorkspaceSetting) (*storepb.WorkspaceSetting, error) {
+	if find.Key != storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
 		if cache, ok := s.workspaceSettingCache.Load(find.Key); ok {
-			return cache.(*WorkspaceSetting), nil
+			return cache.(*storepb.WorkspaceSetting), nil
 		}
 	}
 

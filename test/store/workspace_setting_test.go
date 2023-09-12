@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
@@ -13,13 +14,13 @@ func TestWorkspaceSettingStore(t *testing.T) {
 	ctx := context.Background()
 	ts := NewTestingStore(ctx, t)
 	tempSecret := uuid.New().String()
-	workspaceSetting, err := ts.UpsertWorkspaceSetting(ctx, &store.WorkspaceSetting{
-		Key:   store.WorkspaceSecretSessionName,
-		Value: string(tempSecret),
+	workspaceSetting, err := ts.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+		Key:   storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
+		Value: &storepb.WorkspaceSetting_SecretSession{SecretSession: tempSecret},
 	})
 	require.NoError(t, err)
 	foundWorkspaceSetting, err := ts.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-		Key: store.WorkspaceSecretSessionName,
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
 	})
 	require.NoError(t, err)
 	require.Equal(t, workspaceSetting, foundWorkspaceSetting)

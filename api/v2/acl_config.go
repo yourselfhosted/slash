@@ -13,8 +13,9 @@ func isUnauthorizeAllowedMethod(methodName string) bool {
 }
 
 var allowedMethodsOnlyForAdmin = map[string]bool{
-	"/slash.api.v2.UserService/CreateUser": true,
-	"/slash.api.v2.UserService/DeleteUser": true,
+	"/slash.api.v2.UserService/CreateUser":                         true,
+	"/slash.api.v2.UserService/DeleteUser":                         true,
+	"/slash.api.v2.WorkspaceSettingService/UpdateWorkspaceSetting": true,
 }
 
 // isOnlyForAdminAllowedMethod returns true if the method is allowed to be called only by admin.

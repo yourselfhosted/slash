@@ -1,4 +1,9 @@
 import axios from "axios";
+import {
+  GetWorkspaceSettingResponse,
+  UpdateWorkspaceSettingResponse,
+  WorkspaceSetting,
+} from "@/types/proto/api/v2/workspace_setting_service_pb";
 
 export function getWorkspaceProfile() {
   return axios.get<WorkspaceProfile>("/api/v1/workspace/profile");
@@ -75,10 +80,14 @@ export function deleteShortcutById(shortcutId: ShortcutId) {
   return axios.delete(`/api/v1/shortcut/${shortcutId}`);
 }
 
-export function upsertWorkspaceSetting(key: string, value: string) {
-  return axios.post(`/api/v1/workspace/setting`, {
-    key,
-    value,
+export function getWorkspaceSetting() {
+  return axios.get<GetWorkspaceSettingResponse>(`/api/v2/workspace/settings`);
+}
+
+export function updateWorkspaceSetting(setting: WorkspaceSetting, updateMask: string[]) {
+  return axios.post<UpdateWorkspaceSettingResponse>(`/api/v2/workspace/settings`, {
+    setting,
+    updateMask,
   });
 }
 

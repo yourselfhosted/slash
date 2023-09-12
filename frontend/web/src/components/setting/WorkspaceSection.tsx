@@ -1,31 +1,40 @@
 import { Checkbox } from "@mui/joy";
 import { useEffect, useState } from "react";
-import { getWorkspaceProfile, upsertWorkspaceSetting } from "../../helpers/api";
+import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_setting_service_pb";
+import { getWorkspaceSetting, updateWorkspaceSetting } from "../../helpers/api";
 
 const WorkspaceSection: React.FC = () => {
-  const [disallowSignUp, setDisallowSignUp] = useState<boolean>(false);
+  const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>();
 
   useEffect(() => {
-    getWorkspaceProfile().then(({ data }) => {
-      setDisallowSignUp(data.disallowSignUp);
+    getWorkspaceSetting().then(({ data }) => {
+      setWorkspaceSetting(data.setting);
     });
   }, []);
 
   const handleDisallowSignUpChange = async (value: boolean) => {
-    await upsertWorkspaceSetting("disallow-signup", JSON.stringify(value));
-    setDisallowSignUp(value);
+    const { data } = await updateWorkspaceSetting(
+      {
+        ...workspaceSetting,
+        enableSignup: value,
+      } as WorkspaceSetting,
+      ["enable_signup"]
+    );
+    setWorkspaceSetting(data.setting);
   };
+
+  if (!workspaceSetting) return <></>;
 
   return (
     <div className="w-full flex flex-col justify-start items-start space-y-4">
       <p className="text-base font-semibold leading-6 text-gray-900">Workspace settings</p>
       <div className="w-full flex flex-col justify-start items-start">
         <Checkbox
-          label="Disable user signup"
-          checked={disallowSignUp}
+          label="Enable user signup"
+          checked={workspaceSetting.enableSignup}
           onChange={(event) => handleDisallowSignUpChange(event.target.checked)}
         />
-        <p className="mt-2 text-gray-500">Once disabled, other users cannot signup.</p>
+        <p className="mt-2 text-gray-500">Once enabled, other users can signup.</p>
       </div>
     </div>
   );

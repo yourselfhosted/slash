@@ -66,13 +66,13 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 
 	g.POST("/auth/signup", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		disallowSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-			Key: store.WorkspaceDisallowSignUp,
+		enableSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+			Key: storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP,
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to get workspace setting, err: %s", err)).SetInternal(err)
 		}
-		if disallowSignUpSetting != nil && disallowSignUpSetting.Value == "true" {
+		if enableSignUpSetting != nil && !enableSignUpSetting.GetEnableSignup() {
 			return echo.NewHTTPError(http.StatusForbidden, "sign up has been disabled")
 		}
 

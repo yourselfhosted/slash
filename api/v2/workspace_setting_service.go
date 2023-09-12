@@ -24,7 +24,7 @@ func NewWorkspaceSettingService(store *store.Store) *WorkspaceSettingService {
 }
 
 func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.GetWorkspaceSettingRequest) (*apiv2pb.GetWorkspaceSettingResponse, error) {
-	workspaceSettings, err := s.Store.ListWorkspaceSettingsV1(ctx, &store.FindWorkspaceSettingV1{})
+	workspaceSettings, err := s.Store.ListWorkspaceSettings(ctx, &store.FindWorkspaceSetting{})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list workspace settings: %v", err)
 	}
@@ -50,7 +50,7 @@ func (s *WorkspaceSettingService) UpdateWorkspaceSetting(ctx context.Context, re
 
 	for _, path := range request.UpdateMask {
 		if path == "enable_signup" {
-			if _, err := s.Store.UpsertWorkspaceSettingV1(ctx, &storepb.WorkspaceSetting{
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP,
 				Value: &storepb.WorkspaceSetting_EnableSignup{
 					EnableSignup: request.Setting.EnableSignup,
@@ -59,7 +59,7 @@ func (s *WorkspaceSettingService) UpdateWorkspaceSetting(ctx context.Context, re
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
 			}
 		} else if path == "resource_relative_path" {
-			if _, err := s.Store.UpsertWorkspaceSettingV1(ctx, &storepb.WorkspaceSetting{
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH,
 				Value: &storepb.WorkspaceSetting_ResourceRelativePath{
 					ResourceRelativePath: request.Setting.ResourceRelativePath,

@@ -8,6 +8,7 @@ import (
 
 	apiv1 "github.com/boojack/slash/api/v1"
 	apiv2 "github.com/boojack/slash/api/v2"
+	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
 	"github.com/google/uuid"
@@ -120,21 +121,23 @@ func (s *Server) GetEcho() *echo.Echo {
 }
 
 func (s *Server) getSystemSecretSessionName(ctx context.Context) (string, error) {
-	secretSessionNameValue, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-		Key: store.WorkspaceDisallowSignUp,
+	secretSessionSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
 	})
 	if err != nil {
 		return "", err
 	}
-	if secretSessionNameValue == nil || secretSessionNameValue.Value == "" {
+	if secretSessionSetting == nil {
 		tempSecret := uuid.New().String()
-		secretSessionNameValue, err = s.Store.UpsertWorkspaceSetting(ctx, &store.WorkspaceSetting{
-			Key:   store.WorkspaceSecretSessionName,
-			Value: string(tempSecret),
+		secretSessionSetting, err = s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+			Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
+			Value: &storepb.WorkspaceSetting_SecretSession{
+				SecretSession: tempSecret,
+			},
 		})
 		if err != nil {
 			return "", err
 		}
 	}
-	return secretSessionNameValue.Value, nil
+	return secretSessionSetting.GetSecretSession(), nil
 }
