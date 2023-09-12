@@ -52,7 +52,7 @@ const Dropdown: React.FC<Props> = (props: Props) => {
         </button>
       )}
       <div
-        className={`w-auto mt-1 absolute top-full right-0 flex flex-col justify-start items-start bg-white z-1 border p-1 rounded-md shadow ${
+        className={`w-auto mt-1 absolute top-full right-0 flex flex-col justify-start items-start bg-white dark:bg-zinc-900 z-1 border dark:border-zinc-800 p-1 rounded-md shadow ${
           actionsClassName ?? ""
         } ${dropdownStatus ? "" : "!hidden"}`}
       >

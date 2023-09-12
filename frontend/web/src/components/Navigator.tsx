@@ -14,8 +14,10 @@ const Navigator = () => {
     <div className="w-full flex flex-row justify-start items-center mb-4 gap-1 sm:flex-wrap overflow-x-auto no-scrollbar">
       <button
         className={classNames(
-          "flex flex-row justify-center items-center px-2 leading-7 text-sm rounded-md hover:bg-gray-200",
-          currentTab === "tab:all" ? "!bg-gray-600 text-white shadow" : ""
+          "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md",
+          currentTab === "tab:all"
+            ? "bg-gray-600 dark:bg-zinc-700 text-white dark:text-gray-400 shadow"
+            : "hover:bg-gray-200 dark:hover:bg-zinc-700"
         )}
         onClick={() => viewStore.setFilter({ tab: "tab:all" })}
       >
@@ -24,8 +26,10 @@ const Navigator = () => {
       </button>
       <button
         className={classNames(
-          "flex flex-row justify-center items-center px-2 leading-7 text-sm rounded-md hover:bg-gray-200",
-          currentTab === "tab:mine" ? "!bg-gray-600 text-white shadow" : ""
+          "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md hover:bg-gray-200",
+          currentTab === "tab:mine"
+            ? "bg-gray-600 dark:bg-zinc-700 text-white dark:text-gray-400 shadow"
+            : "hover:bg-gray-200 dark:hover:bg-zinc-700"
         )}
         onClick={() => viewStore.setFilter({ tab: "tab:mine" })}
       >
@@ -36,8 +40,10 @@ const Navigator = () => {
         <button
           key={tag}
           className={classNames(
-            "flex flex-row justify-center items-center px-2 leading-7 text-sm rounded-md hover:bg-gray-200",
-            currentTab === `tag:${tag}` ? "!bg-gray-600 text-white shadow" : ""
+            "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md hover:bg-gray-200",
+            currentTab === `tag:${tag}`
+              ? "bg-gray-600 dark:bg-zinc-700 text-white dark:text-gray-400 shadow"
+              : "hover:bg-gray-200 dark:hover:bg-zinc-700"
           )}
           onClick={() => viewStore.setFilter({ tab: `tag:${tag}`, tag: undefined })}
         >
