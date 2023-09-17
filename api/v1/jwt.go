@@ -17,7 +17,7 @@ import (
 const (
 	// The key name used to store user id in the context
 	// user id is extracted from the jwt token subject field.
-	UserIDContextKey = "user-id"
+	userIDContextKey = "user-id"
 )
 
 func extractTokenFromHeader(c echo.Context) (string, error) {
@@ -122,7 +122,7 @@ func JWTMiddleware(s *APIV1Service, next echo.HandlerFunc, secret string) echo.H
 		}
 
 		// Stores userID into context.
-		c.Set(UserIDContextKey, userID)
+		c.Set(userIDContextKey, userID)
 		return next(c)
 	}
 }

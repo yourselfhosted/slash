@@ -39,7 +39,7 @@ func (s *UserSettingService) UpdateUserSetting(ctx context.Context, request *api
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}
 
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	for _, path := range request.UpdateMask {
 		if path == "locale" {
 			if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{

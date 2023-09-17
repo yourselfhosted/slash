@@ -87,7 +87,7 @@ func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUse
 }
 
 func (s *UserService) UpdateUser(ctx context.Context, request *apiv2pb.UpdateUserRequest) (*apiv2pb.UpdateUserResponse, error) {
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	if userID != request.User.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
@@ -115,7 +115,7 @@ func (s *UserService) UpdateUser(ctx context.Context, request *apiv2pb.UpdateUse
 }
 
 func (s *UserService) DeleteUser(ctx context.Context, request *apiv2pb.DeleteUserRequest) (*apiv2pb.DeleteUserResponse, error) {
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	if userID == request.Id {
 		return nil, status.Errorf(codes.InvalidArgument, "cannot delete yourself")
 	}
@@ -131,7 +131,7 @@ func (s *UserService) DeleteUser(ctx context.Context, request *apiv2pb.DeleteUse
 }
 
 func (s *UserService) ListUserAccessTokens(ctx context.Context, request *apiv2pb.ListUserAccessTokensRequest) (*apiv2pb.ListUserAccessTokensResponse, error) {
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	if userID != request.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
@@ -182,7 +182,7 @@ func (s *UserService) ListUserAccessTokens(ctx context.Context, request *apiv2pb
 }
 
 func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2pb.CreateUserAccessTokenRequest) (*apiv2pb.CreateUserAccessTokenResponse, error) {
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	if userID != request.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
@@ -238,7 +238,7 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2p
 }
 
 func (s *UserService) DeleteUserAccessToken(ctx context.Context, request *apiv2pb.DeleteUserAccessTokenRequest) (*apiv2pb.DeleteUserAccessTokenResponse, error) {
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	if userID != request.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}

@@ -81,7 +81,7 @@ type PatchShortcutRequest struct {
 func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 	g.POST("/shortcut", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int32)
+		userID, ok := c.Get(userIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -129,7 +129,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("shortcut ID is not a number: %s", c.Param("shortcutId"))).SetInternal(err)
 		}
-		userID, ok := c.Get(UserIDContextKey).(int32)
+		userID, ok := c.Get(userIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -196,7 +196,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 
 	g.GET("/shortcut", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int32)
+		userID, ok := c.Get(userIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -263,7 +263,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("shortcut id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
-		userID, ok := c.Get(UserIDContextKey).(int32)
+		userID, ok := c.Get(userIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}

@@ -83,7 +83,7 @@ type PatchUserRequest struct {
 func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	g.POST("/user", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int32)
+		userID, ok := c.Get(userIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Missing auth session")
 		}
@@ -144,7 +144,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 	// GET /api/user/me is used to check if the user is logged in.
 	g.GET("/user/me", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		userID, ok := c.Get(UserIDContextKey).(int32)
+		userID, ok := c.Get(userIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing auth session")
 		}
@@ -182,7 +182,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("user id is not a number: %s", c.Param("id"))).SetInternal(err)
 		}
-		currentUserID, ok := c.Get(UserIDContextKey).(int32)
+		currentUserID, ok := c.Get(userIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}
@@ -254,7 +254,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 
 	g.DELETE("/user/:id", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		currentUserID, ok := c.Get(UserIDContextKey).(int32)
+		currentUserID, ok := c.Get(userIDContextKey).(int32)
 		if !ok {
 			return echo.NewHTTPError(http.StatusUnauthorized, "missing user in session")
 		}

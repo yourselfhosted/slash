@@ -28,7 +28,7 @@ func NewShortcutService(secret string, store *store.Store) *ShortcutService {
 }
 
 func (s *ShortcutService) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShortcutsRequest) (*apiv2pb.ListShortcutsResponse, error) {
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	find := &store.FindShortcut{}
 	find.VisibilityList = []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic}
 	visibleShortcutList, err := s.Store.ListShortcuts(ctx, find)
@@ -66,7 +66,7 @@ func (s *ShortcutService) GetShortcut(ctx context.Context, request *apiv2pb.GetS
 		return nil, status.Errorf(codes.NotFound, "shortcut not found")
 	}
 
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	if shortcut.Visibility == storepb.Visibility_PRIVATE && shortcut.CreatorId != userID {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
@@ -78,7 +78,7 @@ func (s *ShortcutService) GetShortcut(ctx context.Context, request *apiv2pb.GetS
 }
 
 func (s *ShortcutService) CreateShortcut(ctx context.Context, request *apiv2pb.CreateShortcutRequest) (*apiv2pb.CreateShortcutResponse, error) {
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	shortcut := &storepb.Shortcut{
 		CreatorId:   userID,
 		Name:        request.Shortcut.Name,
@@ -111,7 +111,7 @@ func (s *ShortcutService) CreateShortcut(ctx context.Context, request *apiv2pb.C
 }
 
 func (s *ShortcutService) DeleteShortcut(ctx context.Context, request *apiv2pb.DeleteShortcutRequest) (*apiv2pb.DeleteShortcutResponse, error) {
-	userID := ctx.Value(UserIDContextKey).(int32)
+	userID := ctx.Value(userIDContextKey).(int32)
 	currentUser, err := s.Store.GetUser(ctx, &store.FindUser{
 		ID: &userID,
 	})
