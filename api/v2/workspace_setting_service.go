@@ -24,6 +24,17 @@ func NewWorkspaceSettingService(store *store.Store) *WorkspaceSettingService {
 }
 
 func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.GetWorkspaceSettingRequest) (*apiv2pb.GetWorkspaceSettingResponse, error) {
+	isAdmin := false
+	userID, ok := ctx.Value(userIDContextKey).(int32)
+	if ok {
+		user, err := s.Store.GetUser(ctx, &store.FindUser{ID: &userID})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
+		}
+		if user.Role == store.RoleAdmin {
+			isAdmin = true
+		}
+	}
 	workspaceSettings, err := s.Store.ListWorkspaceSettings(ctx, &store.FindWorkspaceSetting{})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list workspace settings: %v", err)
@@ -32,14 +43,15 @@ func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, _ *ap
 	for _, v := range workspaceSettings {
 		if v.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
 			workspaceSetting.EnableSignup = v.GetEnableSignup()
-		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
-			workspaceSetting.ResourceRelativePath = v.GetResourceRelativePath()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE {
 			workspaceSetting.CustomStyle = v.GetCustomStyle()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT {
 			workspaceSetting.CustomScript = v.GetCustomScript()
-		} else {
-			return nil, status.Errorf(codes.Internal, "invalid workspace setting key: %s", v.Key.String())
+		} else if isAdmin {
+			// For some settings, only admin can get the value.
+			if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
+				workspaceSetting.ResourceRelativePath = v.GetResourceRelativePath()
+			}
 		}
 	}
 	return &apiv2pb.GetWorkspaceSettingResponse{

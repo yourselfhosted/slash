@@ -2,7 +2,9 @@ package v2
 
 import "strings"
 
-var allowedMethodsWhenUnauthorized = map[string]bool{}
+var allowedMethodsWhenUnauthorized = map[string]bool{
+	"/slash.api.v2.WorkspaceSettingService/GetWorkspaceSetting": true,
+}
 
 // isUnauthorizeAllowedMethod returns true if the method is allowed to be called when the user is not authorized.
 func isUnauthorizeAllowedMethod(methodName string) bool {
