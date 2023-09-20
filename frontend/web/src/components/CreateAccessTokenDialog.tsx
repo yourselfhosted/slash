@@ -1,8 +1,8 @@
 import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
-import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { userServiceClient } from "@/grpcweb";
 import useLoading from "../hooks/useLoading";
 import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
@@ -68,9 +68,12 @@ const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
     }
 
     try {
-      await axios.post(`/api/v2/users/${currentUser.id}/access_tokens`, {
-        description: state.description,
-        expiresAt: new Date(Date.now() + state.expiration * 1000),
+      await userServiceClient.createUserAccessToken({
+        id: currentUser.id,
+        userAccessToken: {
+          description: state.description,
+          expiresAt: new Date(Date.now() + state.expiration * 1000),
+        },
       });
 
       if (onConfirm) {

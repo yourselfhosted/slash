@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"net/http"
+	"strings"
 	"time"
 
 	apiv1 "github.com/boojack/slash/api/v1"
@@ -46,12 +48,32 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 
 	e.Use(middleware.Gzip())
 
-	e.Use(middleware.CORS())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		Skipper:      grpcRequestSkipper,
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	}))
 
 	e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
-		Skipper:      middleware.DefaultSkipper,
-		ErrorMessage: "Request timeout",
-		Timeout:      30 * time.Second,
+		Skipper: grpcRequestSkipper,
+		Timeout: 30 * time.Second,
+	}))
+
+	e.Use(middleware.RateLimiterWithConfig(middleware.RateLimiterConfig{
+		Skipper: grpcRequestSkipper,
+		Store: middleware.NewRateLimiterMemoryStoreWithConfig(
+			middleware.RateLimiterMemoryStoreConfig{Rate: 30, Burst: 60, ExpiresIn: 3 * time.Minute},
+		),
+		IdentifierExtractor: func(ctx echo.Context) (string, error) {
+			id := ctx.RealIP()
+			return id, nil
+		},
+		ErrorHandler: func(context echo.Context, err error) error {
+			return context.JSON(http.StatusForbidden, nil)
+		},
+		DenyHandler: func(context echo.Context, identifier string, err error) error {
+			return context.JSON(http.StatusTooManyRequests, nil)
+		},
 	}))
 
 	embedFrontend(e)
@@ -118,6 +140,10 @@ func (s *Server) Shutdown(ctx context.Context) {
 
 func (s *Server) GetEcho() *echo.Echo {
 	return s.e
+}
+
+func grpcRequestSkipper(c echo.Context) bool {
+	return strings.HasPrefix(c.Request().URL.Path, "/slash.api.v2.")
 }
 
 func (s *Server) getSystemSecretSessionName(ctx context.Context) (string, error) {

@@ -7,20 +7,20 @@ const WorkspaceSection: React.FC = () => {
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>();
 
   useEffect(() => {
-    getWorkspaceSetting().then(({ data }) => {
-      setWorkspaceSetting(data.setting);
+    getWorkspaceSetting().then(({ setting }) => {
+      setWorkspaceSetting(setting);
     });
   }, []);
 
   const handleDisallowSignUpChange = async (value: boolean) => {
-    const { data } = await updateWorkspaceSetting(
+    const { setting } = await updateWorkspaceSetting(
       {
         ...workspaceSetting,
         enableSignup: value,
       } as WorkspaceSetting,
       ["enable_signup"]
     );
-    setWorkspaceSetting(data.setting);
+    setWorkspaceSetting(setting);
   };
 
   if (!workspaceSetting) return <></>;

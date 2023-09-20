@@ -19,6 +19,7 @@
     "i18next": "^23.5.1",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.263.1",
+    "nice-grpc-web": "^3.3.1",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

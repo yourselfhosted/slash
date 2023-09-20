@@ -1,9 +1,6 @@
 import axios from "axios";
-import {
-  GetWorkspaceSettingResponse,
-  UpdateWorkspaceSettingResponse,
-  WorkspaceSetting,
-} from "@/types/proto/api/v2/workspace_setting_service";
+import { userServiceClient, workspaceSettingServiceClient } from "@/grpcweb";
+import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_setting_service";
 
 export function getWorkspaceProfile() {
   return axios.get<WorkspaceProfile>("/api/v1/workspace/profile");
@@ -49,7 +46,7 @@ export function patchUser(userPatch: UserPatch) {
 }
 
 export function deleteUser(userId: UserId) {
-  return axios.delete(`/api/v2/users/${userId}`);
+  return userServiceClient.deleteUser({ id: userId });
 }
 
 export function getShortcutList(shortcutFind?: ShortcutFind) {
@@ -81,11 +78,11 @@ export function deleteShortcutById(shortcutId: ShortcutId) {
 }
 
 export function getWorkspaceSetting() {
-  return axios.get<GetWorkspaceSettingResponse>(`/api/v2/workspace/settings`);
+  return workspaceSettingServiceClient.getWorkspaceSetting({});
 }
 
 export function updateWorkspaceSetting(setting: WorkspaceSetting, updateMask: string[]) {
-  return axios.post<UpdateWorkspaceSettingResponse>(`/api/v2/workspace/settings`, {
+  return workspaceSettingServiceClient.updateWorkspaceSetting({
     setting,
     updateMask,
   });

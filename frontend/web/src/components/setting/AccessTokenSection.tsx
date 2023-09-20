@@ -1,18 +1,20 @@
 import { Button, IconButton } from "@mui/joy";
-import axios from "axios";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { ListUserAccessTokensResponse, UserAccessToken } from "@/types/proto/api/v2/user_service";
+import { userServiceClient } from "@/grpcweb";
+import { UserAccessToken } from "@/types/proto/api/v2/user_service";
 import useUserStore from "../../stores/v1/user";
 import { showCommonDialog } from "../Alert";
 import CreateAccessTokenDialog from "../CreateAccessTokenDialog";
 import Icon from "../Icon";
 
 const listAccessTokens = async (userId: number) => {
-  const { data } = await axios.get<ListUserAccessTokensResponse>(`/api/v2/users/${userId}/access_tokens`);
-  return data.accessTokens;
+  const { accessTokens } = await userServiceClient.listUserAccessTokens({
+    id: userId,
+  });
+  return accessTokens;
 };
 
 const AccessTokenSection = () => {
@@ -43,7 +45,10 @@ const AccessTokenSection = () => {
       content: `Are you sure to delete access token \`${getFormatedAccessToken(accessToken)}\`? You cannot undo this action.`,
       style: "danger",
       onConfirm: async () => {
-        await axios.delete(`/api/v2/users/${currentUser.id}/access_tokens/${accessToken}`);
+        await userServiceClient.deleteUserAccessToken({
+          id: currentUser.id,
+          accessToken: accessToken,
+        });
         setUserAccessTokens(userAccessTokens.filter((token) => token.accessToken !== accessToken));
       },
     });
