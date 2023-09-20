@@ -112,9 +112,9 @@ const AccessTokenSection = () => {
                           </Button>
                         </td>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">{userAccessToken.description}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{String(userAccessToken.issuedAt)}</td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{userAccessToken.issuedAt?.toLocaleString()}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {String(userAccessToken.expiresAt ?? "Never")}
+                          {userAccessToken.expiresAt?.toLocaleString() ?? "Never"}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
                           <IconButton

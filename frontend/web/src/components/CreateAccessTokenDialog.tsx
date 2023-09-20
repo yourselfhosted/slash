@@ -70,10 +70,8 @@ const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
     try {
       await userServiceClient.createUserAccessToken({
         id: currentUser.id,
-        userAccessToken: {
-          description: state.description,
-          expiresAt: new Date(Date.now() + state.expiration * 1000),
-        },
+        description: state.description,
+        expiresAt: state.expiration ? new Date(Date.now() + state.expiration * 1000) : undefined,
       });
 
       if (onConfirm) {
@@ -117,7 +115,7 @@ const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
             <div className="w-full flex flex-row justify-start items-center text-base">
               <RadioGroup orientation="horizontal" value={state.expiration} onChange={handleRoleInputChange}>
                 {expirationOptions.map((option) => (
-                  <Radio key={option.value} value={option.value} label={option.label} />
+                  <Radio key={option.value} value={option.value} checked={state.expiration === option.value} label={option.label} />
                 ))}
               </RadioGroup>
             </div>

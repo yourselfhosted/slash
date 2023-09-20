@@ -313,7 +313,8 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
-| user_access_token | [UserAccessToken](#slash-api-v2-UserAccessToken) |  |  |
+| description | [string](#string) |  | description is the description of the access token. |
+| expires_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) | optional | expires_at is the expiration time of the access token. If expires_at is not set, the access token will never expire. |
 
 
 

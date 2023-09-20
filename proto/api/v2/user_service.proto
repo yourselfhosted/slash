@@ -47,7 +47,7 @@ service UserService {
   rpc CreateUserAccessToken(CreateUserAccessTokenRequest) returns (CreateUserAccessTokenResponse) {
     option (google.api.http) = {
       post: "/api/v2/users/{id}/access_tokens"
-      body: "user_access_token"
+      body: "*"
     };
     option (google.api.method_signature) = "id";
   }
@@ -136,8 +136,11 @@ message ListUserAccessTokensResponse {
 message CreateUserAccessTokenRequest {
   // id is the user id.
   int32 id = 1;
-
-  UserAccessToken user_access_token = 2;
+  // description is the description of the access token.
+  string description = 2;
+  // expires_at is the expiration time of the access token.
+  // If expires_at is not set, the access token will never expire.
+  optional google.protobuf.Timestamp expires_at = 3;
 }
 
 message CreateUserAccessTokenResponse {
