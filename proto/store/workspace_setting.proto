@@ -11,7 +11,9 @@ message WorkspaceSetting {
     string secret_session = 2;
     bool enable_signup = 3;
     string resource_relative_path = 4;
-    AutoBackupWorkspaceSetting auto_backup = 5;
+    string custom_style = 5;
+    string custom_script = 6;
+    AutoBackupWorkspaceSetting auto_backup = 7;
   }
 }
 
@@ -23,8 +25,12 @@ enum WorkspaceSettingKey {
   WORKSAPCE_SETTING_ENABLE_SIGNUP = 2;
   // The relative path of the resource directory.
   WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH = 3;
+  // The custom style.
+  WORKSPACE_SETTING_CUSTOM_STYLE = 4;
+  // The custom script.
+  WORKSPACE_SETTING_CUSTOM_SCRIPT = 5;
   // The auto backup setting.
-  WORKSPACE_SETTING_AUTO_BACKUP = 4;
+  WORKSPACE_SETTING_AUTO_BACKUP = 6;
 }
 
 message AutoBackupWorkspaceSetting {

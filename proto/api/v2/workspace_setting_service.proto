@@ -23,8 +23,12 @@ message WorkspaceSetting {
   bool enable_signup = 1;
   // The relative path of the resource directory.
   string resource_relative_path = 2;
+  // The custom style.
+  string custom_style = 3;
+  // The custom script.
+  string custom_script = 4;
   // The auto backup setting.
-  AutoBackupWorkspaceSetting auto_backup = 3;
+  AutoBackupWorkspaceSetting auto_backup = 5;
 }
 
 message AutoBackupWorkspaceSetting {

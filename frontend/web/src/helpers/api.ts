@@ -1,6 +1,5 @@
 import axios from "axios";
-import { userServiceClient, workspaceSettingServiceClient } from "@/grpcweb";
-import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_setting_service";
+import { userServiceClient } from "@/grpcweb";
 
 export function getWorkspaceProfile() {
   return axios.get<WorkspaceProfile>("/api/v1/workspace/profile");
@@ -75,17 +74,6 @@ export function patchShortcut(shortcutPatch: ShortcutPatch) {
 
 export function deleteShortcutById(shortcutId: ShortcutId) {
   return axios.delete(`/api/v1/shortcut/${shortcutId}`);
-}
-
-export function getWorkspaceSetting() {
-  return workspaceSettingServiceClient.getWorkspaceSetting({});
-}
-
-export function updateWorkspaceSetting(setting: WorkspaceSetting, updateMask: string[]) {
-  return workspaceSettingServiceClient.updateWorkspaceSetting({
-    setting,
-    updateMask,
-  });
 }
 
 export function getUrlFavicon(url: string) {

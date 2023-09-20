@@ -1,40 +1,86 @@
-import { Checkbox } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { Button, Checkbox, Textarea } from "@mui/joy";
+import { isEqual } from "lodash-es";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { workspaceSettingServiceClient } from "@/grpcweb";
 import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_setting_service";
-import { getWorkspaceSetting, updateWorkspaceSetting } from "../../helpers/api";
 
 const WorkspaceSection: React.FC = () => {
-  const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>();
+  const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(WorkspaceSetting.fromPartial({}));
+  const originalWorkspaceSetting = useRef<WorkspaceSetting>(WorkspaceSetting.fromPartial({}));
 
   useEffect(() => {
-    getWorkspaceSetting().then(({ setting }) => {
-      setWorkspaceSetting(setting);
+    workspaceSettingServiceClient.getWorkspaceSetting({}).then(({ setting }) => {
+      if (setting) {
+        setWorkspaceSetting(setting);
+        originalWorkspaceSetting.current = setting;
+      }
     });
   }, []);
 
-  const handleDisallowSignUpChange = async (value: boolean) => {
-    const { setting } = await updateWorkspaceSetting(
-      {
-        ...workspaceSetting,
-        enableSignup: value,
-      } as WorkspaceSetting,
-      ["enable_signup"]
-    );
-    setWorkspaceSetting(setting);
+  const handleEnableSignUpChange = async (value: boolean) => {
+    setWorkspaceSetting({
+      ...workspaceSetting,
+      enableSignup: value,
+    });
   };
 
-  if (!workspaceSetting) return <></>;
+  const handleCustomStyleChange = async (value: string) => {
+    setWorkspaceSetting({
+      ...workspaceSetting,
+      customStyle: value,
+    });
+  };
+
+  const handleSaveWorkspaceSetting = async () => {
+    const updateMask: string[] = [];
+    if (!isEqual(originalWorkspaceSetting.current.enableSignup, workspaceSetting.enableSignup)) {
+      updateMask.push("enable_signup");
+    }
+    if (!isEqual(originalWorkspaceSetting.current.customStyle, workspaceSetting.customStyle)) {
+      updateMask.push("custom_style");
+    }
+    if (updateMask.length === 0) {
+      toast.error("No changes made");
+      return;
+    }
+
+    const { setting } = await workspaceSettingServiceClient.updateWorkspaceSetting({
+      setting: workspaceSetting,
+      updateMask: updateMask,
+    });
+    toast.success("Workspace setting saved successfully");
+    if (setting) {
+      setWorkspaceSetting(setting);
+      originalWorkspaceSetting.current = setting;
+    }
+  };
 
   return (
     <div className="w-full flex flex-col justify-start items-start space-y-4">
       <p className="text-base font-semibold leading-6 text-gray-900">Workspace settings</p>
       <div className="w-full flex flex-col justify-start items-start">
+        <p className="mt-2">Custom style</p>
+        <Textarea
+          className="w-full mt-2"
+          minRows={2}
+          maxRows={5}
+          value={workspaceSetting.customStyle}
+          onChange={(event) => handleCustomStyleChange(event.target.value)}
+        />
+      </div>
+      <div className="w-full flex flex-col justify-start items-start">
         <Checkbox
           label="Enable user signup"
           checked={workspaceSetting.enableSignup}
-          onChange={(event) => handleDisallowSignUpChange(event.target.checked)}
+          onChange={(event) => handleEnableSignUpChange(event.target.checked)}
         />
         <p className="mt-2 text-gray-500">Once enabled, other users can signup.</p>
+      </div>
+      <div>
+        <Button variant="outlined" color="neutral" onClick={handleSaveWorkspaceSetting}>
+          Save
+        </Button>
       </div>
     </div>
   );

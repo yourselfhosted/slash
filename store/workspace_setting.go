@@ -31,6 +31,10 @@ func (s *Store) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.Work
 		valueString = strconv.FormatBool(upsert.GetEnableSignup())
 	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
 		valueString = upsert.GetResourceRelativePath()
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE {
+		valueString = upsert.GetCustomStyle()
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT {
+		valueString = upsert.GetCustomScript()
 	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_AUTO_BACKUP {
 		valueBytes, err := protojson.Marshal(upsert.GetAutoBackup())
 		if err != nil {
@@ -91,6 +95,10 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 			workspaceSetting.Value = &storepb.WorkspaceSetting_EnableSignup{EnableSignup: enableSignup}
 		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
 			workspaceSetting.Value = &storepb.WorkspaceSetting_ResourceRelativePath{ResourceRelativePath: valueString}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE {
+			workspaceSetting.Value = &storepb.WorkspaceSetting_CustomStyle{CustomStyle: valueString}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT {
+			workspaceSetting.Value = &storepb.WorkspaceSetting_CustomScript{CustomScript: valueString}
 		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_AUTO_BACKUP {
 			autoBackupSetting := &storepb.AutoBackupWorkspaceSetting{}
 			if err := protojson.Unmarshal([]byte(valueString), autoBackupSetting); err != nil {
@@ -100,7 +108,6 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 		} else {
 			return nil, errors.New("invalid workspace setting key")
 		}
-
 		list = append(list, workspaceSetting)
 	}
 
@@ -116,7 +123,7 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 }
 
 func (s *Store) GetWorkspaceSetting(ctx context.Context, find *FindWorkspaceSetting) (*storepb.WorkspaceSetting, error) {
-	if find.Key != storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
+	if find.Key != storepb.WorkspaceSettingKey_WORKSPACE_SETTING_KEY_UNSPECIFIED {
 		if cache, ok := s.workspaceSettingCache.Load(find.Key); ok {
 			return cache.(*storepb.WorkspaceSetting), nil
 		}

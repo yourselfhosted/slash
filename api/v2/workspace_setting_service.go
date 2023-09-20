@@ -34,6 +34,10 @@ func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, _ *ap
 			workspaceSetting.EnableSignup = v.GetEnableSignup()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
 			workspaceSetting.ResourceRelativePath = v.GetResourceRelativePath()
+		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE {
+			workspaceSetting.CustomStyle = v.GetCustomStyle()
+		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT {
+			workspaceSetting.CustomScript = v.GetCustomScript()
 		} else {
 			return nil, status.Errorf(codes.Internal, "invalid workspace setting key: %s", v.Key.String())
 		}
@@ -63,6 +67,24 @@ func (s *WorkspaceSettingService) UpdateWorkspaceSetting(ctx context.Context, re
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH,
 				Value: &storepb.WorkspaceSetting_ResourceRelativePath{
 					ResourceRelativePath: request.Setting.ResourceRelativePath,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "custom_style" {
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE,
+				Value: &storepb.WorkspaceSetting_CustomStyle{
+					CustomStyle: request.Setting.CustomStyle,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "custom_script" {
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT,
+				Value: &storepb.WorkspaceSetting_CustomScript{
+					CustomScript: request.Setting.CustomScript,
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
