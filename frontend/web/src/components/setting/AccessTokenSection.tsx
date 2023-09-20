@@ -4,7 +4,7 @@ import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { ListUserAccessTokensResponse, UserAccessToken } from "@/types/proto/api/v2/user_service_pb";
+import { ListUserAccessTokensResponse, UserAccessToken } from "@/types/proto/api/v2/user_service";
 import useUserStore from "../../stores/v1/user";
 import { showCommonDialog } from "../Alert";
 import CreateAccessTokenDialog from "../CreateAccessTokenDialog";

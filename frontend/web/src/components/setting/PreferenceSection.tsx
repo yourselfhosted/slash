@@ -1,6 +1,6 @@
 import { Option, Select } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { UserSetting, UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service_pb";
+import { UserSetting, UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service";
 import useUserStore from "../../stores/v1/user";
 import BetaBadge from "../BetaBadge";
 

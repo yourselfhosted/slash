@@ -1,4 +1,4 @@
-import type { Shortcut } from "@/types/proto/api/v2/shortcut_service_pb";
+import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { Storage } from "@plasmohq/storage";
 
 const storage = new Storage();

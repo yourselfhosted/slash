@@ -3,7 +3,7 @@ import {
   GetWorkspaceSettingResponse,
   UpdateWorkspaceSettingResponse,
   WorkspaceSetting,
-} from "@/types/proto/api/v2/workspace_setting_service_pb";
+} from "@/types/proto/api/v2/workspace_setting_service";
 
 export function getWorkspaceProfile() {
   return axios.get<WorkspaceProfile>("/api/v1/workspace/profile");

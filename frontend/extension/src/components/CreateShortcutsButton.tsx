@@ -3,7 +3,7 @@ import { useStorage } from "@plasmohq/storage/hook";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { CreateShortcutResponse, OpenGraphMetadata, Visibility } from "@/types/proto/api/v2/shortcut_service_pb";
+import { CreateShortcutResponse, OpenGraphMetadata, Visibility } from "@/types/proto/api/v2/shortcut_service";
 import Icon from "./Icon";
 
 const generateTempName = (length = 6) => {
@@ -102,7 +102,7 @@ const CreateShortcutsButton = () => {
           title: state.title,
           link: state.link,
           visibility: Visibility.PRIVATE,
-          ogMetadata: OpenGraphMetadata.fromJsonString("{}"),
+          ogMetadata: OpenGraphMetadata.fromPartial({}),
         },
         {
           headers: {

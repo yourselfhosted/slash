@@ -1,6 +1,6 @@
 import { Checkbox } from "@mui/joy";
 import { useEffect, useState } from "react";
-import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_setting_service_pb";
+import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_setting_service";
 import { getWorkspaceSetting, updateWorkspaceSetting } from "../../helpers/api";
 
 const WorkspaceSection: React.FC = () => {

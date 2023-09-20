@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import { GetUserSettingResponse, UpdateUserSettingResponse, UserSetting } from "@/types/proto/api/v2/user_setting_service_pb";
+import { GetUserSettingResponse, UpdateUserSettingResponse, UserSetting } from "@/types/proto/api/v2/user_setting_service";
 import * as api from "../../helpers/api";
 
 const convertResponseModelUser = (user: User): User => {

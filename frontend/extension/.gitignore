@@ -36,3 +36,5 @@ keys.json
 
 # typescript
 .tsbuildinfo
+
+src/types/proto
