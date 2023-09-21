@@ -22,6 +22,7 @@ const (
 	subscriptionProProductID = 98995
 )
 
+//revive:disable-next-line
 type LicenseKey struct {
 	ID        int32   `json:"id"`
 	Status    string  `json:"status"`
@@ -30,6 +31,7 @@ type LicenseKey struct {
 	ExpiresAt *string `json:"updated_at"`
 }
 
+//revive:disable-next-line
 type LicenseKeyMeta struct {
 	StoreID       int32  `json:"store_id"`
 	OrderID       int32  `json:"order_id"`
