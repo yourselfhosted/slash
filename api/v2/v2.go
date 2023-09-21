@@ -31,7 +31,7 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 			authProvider.AuthenticationInterceptor,
 		),
 	)
-	apiv2pb.RegisterWorkspaceSettingServiceServer(grpcServer, NewWorkspaceSettingService(store))
+	apiv2pb.RegisterWorkspaceServiceServer(grpcServer, NewWorkspaceService(store))
 	apiv2pb.RegisterUserServiceServer(grpcServer, NewUserService(secret, store))
 	apiv2pb.RegisterUserSettingServiceServer(grpcServer, NewUserSettingService(store))
 	apiv2pb.RegisterShortcutServiceServer(grpcServer, NewShortcutService(secret, store))
@@ -64,7 +64,7 @@ func (s *APIV2Service) RegisterGateway(ctx context.Context, e *echo.Echo) error 
 	}
 
 	gwMux := grpcRuntime.NewServeMux()
-	if err := apiv2pb.RegisterWorkspaceSettingServiceHandler(context.Background(), gwMux, conn); err != nil {
+	if err := apiv2pb.RegisterWorkspaceServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
 	if err := apiv2pb.RegisterUserServiceHandler(context.Background(), gwMux, conn); err != nil {

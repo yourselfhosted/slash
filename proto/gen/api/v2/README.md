@@ -58,7 +58,7 @@
   
     - [UserSettingService](#slash-api-v2-UserSettingService)
   
-- [api/v2/workspace_setting_service.proto](#api_v2_workspace_setting_service-proto)
+- [api/v2/workspace_service.proto](#api_v2_workspace_service-proto)
     - [AutoBackupWorkspaceSetting](#slash-api-v2-AutoBackupWorkspaceSetting)
     - [GetWorkspaceSettingRequest](#slash-api-v2-GetWorkspaceSettingRequest)
     - [GetWorkspaceSettingResponse](#slash-api-v2-GetWorkspaceSettingResponse)
@@ -66,7 +66,7 @@
     - [UpdateWorkspaceSettingResponse](#slash-api-v2-UpdateWorkspaceSettingResponse)
     - [WorkspaceSetting](#slash-api-v2-WorkspaceSetting)
   
-    - [WorkspaceSettingService](#slash-api-v2-WorkspaceSettingService)
+    - [WorkspaceService](#slash-api-v2-WorkspaceService)
   
 - [Scalar Value Types](#scalar-value-types)
 
@@ -745,10 +745,10 @@
 
 
 
-<a name="api_v2_workspace_setting_service-proto"></a>
+<a name="api_v2_workspace_service-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## api/v2/workspace_setting_service.proto
+## api/v2/workspace_service.proto
 
 
 
@@ -851,9 +851,9 @@
  
 
 
-<a name="slash-api-v2-WorkspaceSettingService"></a>
+<a name="slash-api-v2-WorkspaceService"></a>
 
-### WorkspaceSettingService
+### WorkspaceService
 
 
 | Method Name | Request Type | Response Type | Description |

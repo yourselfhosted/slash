@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import DemoBanner from "./components/DemoBanner";
-import { workspaceSettingServiceClient } from "./grpcweb";
+import { workspaceServiceClient } from "./grpcweb";
 import { globalService } from "./services";
 import useUserStore from "./stores/v1/user";
-import { WorkspaceSetting } from "./types/proto/api/v2/workspace_setting_service";
+import { WorkspaceSetting } from "./types/proto/api/v2/workspace_service";
 
 function App() {
   const userStore = useUserStore();
@@ -20,7 +20,7 @@ function App() {
       }
 
       try {
-        const { setting } = await workspaceSettingServiceClient.getWorkspaceSetting({});
+        const { setting } = await workspaceServiceClient.getWorkspaceSetting({});
         if (setting) {
           setWorkspaceSetting(setting);
         }

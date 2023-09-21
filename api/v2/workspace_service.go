@@ -10,20 +10,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type WorkspaceSettingService struct {
-	apiv2pb.UnimplementedWorkspaceSettingServiceServer
+type WorkspaceService struct {
+	apiv2pb.UnimplementedWorkspaceServiceServer
 
 	Store *store.Store
 }
 
-// NewWorkspaceSettingService creates a new WorkspaceSettingService.
-func NewWorkspaceSettingService(store *store.Store) *WorkspaceSettingService {
-	return &WorkspaceSettingService{
+// NewWorkspaceService creates a new WorkspaceService.
+func NewWorkspaceService(store *store.Store) *WorkspaceService {
+	return &WorkspaceService{
 		Store: store,
 	}
 }
 
-func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.GetWorkspaceSettingRequest) (*apiv2pb.GetWorkspaceSettingResponse, error) {
+func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.GetWorkspaceSettingRequest) (*apiv2pb.GetWorkspaceSettingResponse, error) {
 	isAdmin := false
 	userID, ok := ctx.Value(userIDContextKey).(int32)
 	if ok {
@@ -61,7 +61,7 @@ func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, _ *ap
 	}, nil
 }
 
-func (s *WorkspaceSettingService) UpdateWorkspaceSetting(ctx context.Context, request *apiv2pb.UpdateWorkspaceSettingRequest) (*apiv2pb.UpdateWorkspaceSettingResponse, error) {
+func (s *WorkspaceService) UpdateWorkspaceSetting(ctx context.Context, request *apiv2pb.UpdateWorkspaceSettingRequest) (*apiv2pb.UpdateWorkspaceSettingResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}

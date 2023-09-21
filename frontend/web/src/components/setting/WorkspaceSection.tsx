@@ -2,15 +2,15 @@ import { Button, Checkbox, Textarea } from "@mui/joy";
 import { isEqual } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { workspaceSettingServiceClient } from "@/grpcweb";
-import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_setting_service";
+import { workspaceServiceClient } from "@/grpcweb";
+import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_service";
 
 const WorkspaceSection: React.FC = () => {
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(WorkspaceSetting.fromPartial({}));
   const originalWorkspaceSetting = useRef<WorkspaceSetting>(WorkspaceSetting.fromPartial({}));
 
   useEffect(() => {
-    workspaceSettingServiceClient.getWorkspaceSetting({}).then(({ setting }) => {
+    workspaceServiceClient.getWorkspaceSetting({}).then(({ setting }) => {
       if (setting) {
         setWorkspaceSetting(setting);
         originalWorkspaceSetting.current = setting;
@@ -45,7 +45,7 @@ const WorkspaceSection: React.FC = () => {
       return;
     }
 
-    const { setting } = await workspaceSettingServiceClient.updateWorkspaceSetting({
+    const { setting } = await workspaceServiceClient.updateWorkspaceSetting({
       setting: workspaceSetting,
       updateMask: updateMask,
     });
