@@ -1,12 +1,10 @@
-import { globalService } from "../services";
+import { workspaceService } from "../services";
 import Icon from "./Icon";
 
 const DemoBanner: React.FC = () => {
   const {
-    workspaceProfile: {
-      profile: { mode },
-    },
-  } = globalService.getState();
+    workspaceProfile: { mode },
+  } = workspaceService.getState();
   const shouldShow = mode === "demo";
 
   if (!shouldShow) return null;

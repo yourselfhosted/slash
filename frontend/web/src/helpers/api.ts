@@ -1,10 +1,6 @@
 import axios from "axios";
 import { userServiceClient } from "@/grpcweb";
 
-export function getWorkspaceProfile() {
-  return axios.get<WorkspaceProfile>("/api/v1/workspace/profile");
-}
-
 export function signin(email: string, password: string) {
   return axios.post<User>("/api/v1/auth/signin", {
     email,

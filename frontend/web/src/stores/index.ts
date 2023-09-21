@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
-import globalReducer from "./modules/global";
 import shortcutReducer from "./modules/shortcut";
+import globalReducer from "./modules/workspace";
 
 const store = configureStore({
   reducer: {

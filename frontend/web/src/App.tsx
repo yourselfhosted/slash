@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import DemoBanner from "./components/DemoBanner";
 import { workspaceServiceClient } from "./grpcweb";
-import { globalService } from "./services";
+import { workspaceService } from "./services";
 import useUserStore from "./stores/v1/user";
 import { WorkspaceSetting } from "./types/proto/api/v2/workspace_service";
 
@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const initialState = async () => {
       try {
-        await globalService.initialState();
+        await workspaceService.initialState();
       } catch (error) {
         // do nothing
       }

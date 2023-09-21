@@ -3,7 +3,7 @@ package v2
 import "strings"
 
 var allowedMethodsWhenUnauthorized = map[string]bool{
-	"/slash.api.v2.WorkspaceSettingService/GetWorkspaceSetting": true,
+	"/slash.api.v2.WorkspaceService/GetWorkspaceProfile": true,
 }
 
 // isUnauthorizeAllowedMethod returns true if the method is allowed to be called when the user is not authorized.
@@ -15,9 +15,9 @@ func isUnauthorizeAllowedMethod(methodName string) bool {
 }
 
 var allowedMethodsOnlyForAdmin = map[string]bool{
-	"/slash.api.v2.UserService/CreateUser":                         true,
-	"/slash.api.v2.UserService/DeleteUser":                         true,
-	"/slash.api.v2.WorkspaceSettingService/UpdateWorkspaceSetting": true,
+	"/slash.api.v2.UserService/CreateUser":                  true,
+	"/slash.api.v2.UserService/DeleteUser":                  true,
+	"/slash.api.v2.WorkspaceService/UpdateWorkspaceSetting": true,
 }
 
 // isOnlyForAdminAllowedMethod returns true if the method is allowed to be called only by admin.

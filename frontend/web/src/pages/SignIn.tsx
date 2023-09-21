@@ -13,10 +13,7 @@ const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const userStore = useUserStore();
   const {
-    workspaceProfile: {
-      disallowSignUp,
-      profile: { mode },
-    },
+    workspaceProfile: { enableSignup, mode },
   } = useAppSelector((state) => state.global);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -108,7 +105,7 @@ const SignIn: React.FC = () => {
               </Button>
             </div>
           </form>
-          {!disallowSignUp && (
+          {enableSignup && (
             <p className="w-full mt-4 text-sm">
               <span>{"Don't have an account yet?"}</span>
               <Link to="/auth/signup" className="cursor-pointer ml-2 text-blue-600 hover:underline">

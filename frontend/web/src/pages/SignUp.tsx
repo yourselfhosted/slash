@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
-import { globalService } from "../services";
+import { workspaceService } from "../services";
 import useUserStore from "../stores/v1/user";
 
 const SignUp: React.FC = () => {
@@ -13,8 +13,8 @@ const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const userStore = useUserStore();
   const {
-    workspaceProfile: { disallowSignUp },
-  } = globalService.getState();
+    workspaceProfile: { enableSignup },
+  } = workspaceService.getState();
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +28,7 @@ const SignUp: React.FC = () => {
       });
     }
 
-    if (disallowSignUp) {
+    if (!enableSignup) {
       return navigate("/auth", {
         replace: true,
       });

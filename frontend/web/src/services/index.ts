@@ -1,4 +1,4 @@
-import globalService from "./globalService";
 import shortcutService from "./shortcutService";
+import workspaceService from "./workspaceService";
 
-export { globalService, shortcutService };
+export { workspaceService, shortcutService };
