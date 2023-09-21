@@ -25,7 +25,9 @@ func (s *Store) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.Work
 		SET value = EXCLUDED.value
 	`
 	var valueString string
-	if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION {
+	if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_LICENSE_KEY {
+		valueString = upsert.GetLicenseKey()
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION {
 		valueString = upsert.GetSecretSession()
 	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
 		valueString = strconv.FormatBool(upsert.GetEnableSignup())
@@ -85,7 +87,9 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 			return nil, err
 		}
 		workspaceSetting.Key = storepb.WorkspaceSettingKey(storepb.WorkspaceSettingKey_value[keyString])
-		if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION {
+		if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_LICENSE_KEY {
+			workspaceSetting.Value = &storepb.WorkspaceSetting_LicenseKey{LicenseKey: valueString}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION {
 			workspaceSetting.Value = &storepb.WorkspaceSetting_SecretSession{SecretSession: valueString}
 		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
 			enableSignup, err := strconv.ParseBool(valueString)

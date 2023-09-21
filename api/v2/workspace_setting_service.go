@@ -49,7 +49,9 @@ func (s *WorkspaceSettingService) GetWorkspaceSetting(ctx context.Context, _ *ap
 			workspaceSetting.CustomScript = v.GetCustomScript()
 		} else if isAdmin {
 			// For some settings, only admin can get the value.
-			if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
+			if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_LICENSE_KEY {
+				workspaceSetting.LicenseKey = v.GetLicenseKey()
+			} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
 				workspaceSetting.ResourceRelativePath = v.GetResourceRelativePath()
 			}
 		}
@@ -65,7 +67,16 @@ func (s *WorkspaceSettingService) UpdateWorkspaceSetting(ctx context.Context, re
 	}
 
 	for _, path := range request.UpdateMask {
-		if path == "enable_signup" {
+		if path == "license_key" {
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_LICENSE_KEY,
+				Value: &storepb.WorkspaceSetting_LicenseKey{
+					LicenseKey: request.Setting.LicenseKey,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "enable_signup" {
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP,
 				Value: &storepb.WorkspaceSetting_EnableSignup{

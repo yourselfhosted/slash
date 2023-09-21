@@ -10,11 +10,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type WorkspaceSetting struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-}
-
 type WorkspaceProfile struct {
 	Profile        *profile.Profile `json:"profile"`
 	DisallowSignUp bool             `json:"disallowSignUp"`
