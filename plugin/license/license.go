@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -21,7 +22,7 @@ const (
 	subscriptionProProductID = 98995
 )
 
-type licenseKey struct {
+type LicenseKey struct {
 	ID        int32   `json:"id"`
 	Status    string  `json:"status"`
 	Key       string  `json:"key"`
@@ -29,7 +30,7 @@ type licenseKey struct {
 	ExpiresAt *string `json:"updated_at"`
 }
 
-type licenseKeyMeta struct {
+type LicenseKeyMeta struct {
 	StoreID       int32  `json:"store_id"`
 	OrderID       int32  `json:"order_id"`
 	OrderItemID   int32  `json:"order_item_id"`
@@ -45,15 +46,15 @@ type licenseKeyMeta struct {
 type ValidateLicenseKeyResponse struct {
 	Valid      bool            `json:"valid"`
 	Error      *string         `json:"error"`
-	LicenseKey *licenseKey     `json:"license_key"`
-	Meta       *licenseKeyMeta `json:"meta"`
+	LicenseKey *LicenseKey     `json:"license_key"`
+	Meta       *LicenseKeyMeta `json:"meta"`
 }
 
 type ActiveLicenseKeyResponse struct {
 	Activated  bool            `json:"activated"`
 	Error      *string         `json:"error"`
-	LicenseKey *licenseKey     `json:"license_key"`
-	Meta       *licenseKeyMeta `json:"meta"`
+	LicenseKey *LicenseKey     `json:"license_key"`
+	Meta       *LicenseKeyMeta `json:"meta"`
 }
 
 func ValidateLicenseKey(licenseKey string, instanceName string) (*ValidateLicenseKeyResponse, error) {
@@ -97,6 +98,7 @@ func ValidateLicenseKey(licenseKey string, instanceName string) (*ValidateLicens
 			return nil, errors.New("invalid store or product id")
 		}
 	}
+	licenseCache.Set("key", "value", 24*time.Hour)
 	return &response, nil
 }
 

@@ -51,6 +51,8 @@ linters-settings:
         disabled: true
       - name: early-return
         disabled: true
+      - name: disable-stuttering-check
+        disabled: true
   gocritic:
     disabled-checks:
       - ifElseChain
