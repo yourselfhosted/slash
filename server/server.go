@@ -12,6 +12,7 @@ import (
 	apiv2 "github.com/boojack/slash/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
@@ -24,6 +25,8 @@ type Server struct {
 	Profile *profile.Profile
 	Store   *store.Store
 
+	licenseService *license.LicenseService
+
 	// API services.
 	apiV2Service *apiv2.APIV2Service
 }
@@ -34,10 +37,13 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	e.HideBanner = true
 	e.HidePort = true
 
+	licenseService := license.NewLicenseService(profile, store)
+
 	s := &Server{
-		e:       e,
-		Profile: profile,
-		Store:   store,
+		e:              e,
+		Profile:        profile,
+		Store:          store,
+		licenseService: licenseService,
 	}
 
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -90,10 +96,10 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 
 	rootGroup := e.Group("")
 	// Register API v1 routes.
-	apiV1Service := apiv1.NewAPIV1Service(profile, store)
+	apiV1Service := apiv1.NewAPIV1Service(profile, store, licenseService)
 	apiV1Service.Start(rootGroup, secret)
 
-	s.apiV2Service = apiv2.NewAPIV2Service(secret, profile, store, s.Profile.Port+1)
+	s.apiV2Service = apiv2.NewAPIV2Service(secret, profile, store, licenseService, s.Profile.Port+1)
 	// Register gRPC gateway as api v2.
 	if err := s.apiV2Service.RegisterGateway(ctx, e); err != nil {
 		return nil, fmt.Errorf("failed to register gRPC gateway: %w", err)

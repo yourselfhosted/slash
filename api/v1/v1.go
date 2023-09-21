@@ -2,19 +2,22 @@ package v1
 
 import (
 	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 )
 
 type APIV1Service struct {
-	Profile *profile.Profile
-	Store   *store.Store
+	Profile        *profile.Profile
+	Store          *store.Store
+	LicenseService *license.LicenseService
 }
 
-func NewAPIV1Service(profile *profile.Profile, store *store.Store) *APIV1Service {
+func NewAPIV1Service(profile *profile.Profile, store *store.Store, licenseService *license.LicenseService) *APIV1Service {
 	return &APIV1Service{
-		Profile: profile,
-		Store:   store,
+		Profile:        profile,
+		Store:          store,
+		LicenseService: licenseService,
 	}
 }
 

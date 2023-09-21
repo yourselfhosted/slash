@@ -29,7 +29,7 @@ func TestValidateLicenseKey(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			response, err := ValidateLicenseKey(tt.key, "test-instance")
+			response, err := validateLicenseKey(tt.key, "test-instance")
 			if tt.err != nil {
 				require.EqualError(t, err, tt.err.Error())
 				return
@@ -60,7 +60,7 @@ func TestActiveLicenseKey(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			response, err := ActiveLicenseKey(tt.key, "test-instance")
+			response, err := activeLicenseKey(tt.key, "test-instance")
 			require.NoError(t, err)
 			require.Equal(t, tt.expected, response.Activated)
 		})

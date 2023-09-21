@@ -6,6 +6,7 @@ import (
 
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 	grpcRuntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
@@ -16,22 +17,23 @@ import (
 )
 
 type APIV2Service struct {
-	Secret  string
-	Profile *profile.Profile
-	Store   *store.Store
+	Secret         string
+	Profile        *profile.Profile
+	Store          *store.Store
+	LicenseService *license.LicenseService
 
 	grpcServer     *grpc.Server
 	grpcServerPort int
 }
 
-func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store, grpcServerPort int) *APIV2Service {
+func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store, licenseService *license.LicenseService, grpcServerPort int) *APIV2Service {
 	authProvider := NewGRPCAuthInterceptor(store, secret)
 	grpcServer := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
 			authProvider.AuthenticationInterceptor,
 		),
 	)
-	apiv2pb.RegisterSubscriptionServiceServer(grpcServer, NewSubscriptionService(profile, store))
+	apiv2pb.RegisterSubscriptionServiceServer(grpcServer, NewSubscriptionService(profile, store, licenseService))
 	apiv2pb.RegisterWorkspaceServiceServer(grpcServer, NewWorkspaceService(profile, store))
 	apiv2pb.RegisterUserServiceServer(grpcServer, NewUserService(secret, store))
 	apiv2pb.RegisterUserSettingServiceServer(grpcServer, NewUserSettingService(store))
@@ -42,6 +44,7 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 		Secret:         secret,
 		Profile:        profile,
 		Store:          store,
+		LicenseService: licenseService,
 		grpcServer:     grpcServer,
 		grpcServerPort: grpcServerPort,
 	}

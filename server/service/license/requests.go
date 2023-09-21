@@ -22,7 +22,6 @@ const (
 	subscriptionProProductID = 98995
 )
 
-//revive:disable-next-line
 type LicenseKey struct {
 	ID        int32   `json:"id"`
 	Status    string  `json:"status"`
@@ -31,7 +30,6 @@ type LicenseKey struct {
 	ExpiresAt *string `json:"updated_at"`
 }
 
-//revive:disable-next-line
 type LicenseKeyMeta struct {
 	StoreID       int32  `json:"store_id"`
 	OrderID       int32  `json:"order_id"`
@@ -59,7 +57,7 @@ type ActiveLicenseKeyResponse struct {
 	Meta       *LicenseKeyMeta `json:"meta"`
 }
 
-func ValidateLicenseKey(licenseKey string, instanceName string) (*ValidateLicenseKeyResponse, error) {
+func validateLicenseKey(licenseKey string, instanceName string) (*ValidateLicenseKeyResponse, error) {
 	data := map[string]string{"license_key": licenseKey}
 	if instanceName != "" {
 		data["instance_name"] = instanceName
@@ -104,7 +102,7 @@ func ValidateLicenseKey(licenseKey string, instanceName string) (*ValidateLicens
 	return &response, nil
 }
 
-func ActiveLicenseKey(licenseKey string, instanceName string) (*ActiveLicenseKeyResponse, error) {
+func activeLicenseKey(licenseKey string, instanceName string) (*ActiveLicenseKeyResponse, error) {
 	data := map[string]string{"license_key": licenseKey, "instance_name": instanceName}
 	payload, err := json.Marshal(data)
 	if err != nil {

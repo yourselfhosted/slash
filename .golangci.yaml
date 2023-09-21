@@ -51,6 +51,9 @@ linters-settings:
         disabled: true
       - name: early-return
         disabled: true
+      - name: exported
+        arguments:
+          - "disableStutteringCheck"
   gocritic:
     disabled-checks:
       - ifElseChain
