@@ -21,7 +21,7 @@ message WorkspaceSetting {
 enum WorkspaceSettingKey {
   WORKSPACE_SETTING_KEY_UNSPECIFIED = 0;
   // The license key.
-  WORKSPACE_LICENSE_KEY = 1;
+  WORKSPACE_SETTING_LICENSE_KEY = 1;
   // The secret session key used to encrypt session data.
   WORKSPACE_SETTING_SECRET_SESSION = 2;
   // Whether to enable other users to sign up.

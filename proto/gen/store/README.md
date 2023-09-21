@@ -329,7 +329,7 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | WORKSPACE_SETTING_KEY_UNSPECIFIED | 0 |  |
-| WORKSPACE_LICENSE_KEY | 1 | The license key. |
+| WORKSPACE_SETTING_LICENSE_KEY | 1 | The license key. |
 | WORKSPACE_SETTING_SECRET_SESSION | 2 | The secret session key used to encrypt session data. |
 | WORKSAPCE_SETTING_ENABLE_SIGNUP | 3 | Whether to enable other users to sign up. |
 | WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH | 4 | The relative path of the resource directory. |

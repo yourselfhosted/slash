@@ -71,7 +71,7 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.G
 			workspaceSetting.CustomScript = v.GetCustomScript()
 		} else if isAdmin {
 			// For some settings, only admin can get the value.
-			if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_LICENSE_KEY {
+			if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY {
 				workspaceSetting.LicenseKey = v.GetLicenseKey()
 			} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
 				workspaceSetting.ResourceRelativePath = v.GetResourceRelativePath()
@@ -91,7 +91,7 @@ func (s *WorkspaceService) UpdateWorkspaceSetting(ctx context.Context, request *
 	for _, path := range request.UpdateMask {
 		if path == "license_key" {
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
-				Key: storepb.WorkspaceSettingKey_WORKSPACE_LICENSE_KEY,
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,
 				Value: &storepb.WorkspaceSetting_LicenseKey{
 					LicenseKey: request.Setting.LicenseKey,
 				},

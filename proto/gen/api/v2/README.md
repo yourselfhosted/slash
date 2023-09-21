@@ -22,6 +22,17 @@
   
     - [ShortcutService](#slash-api-v2-ShortcutService)
   
+- [api/v2/subscription_service.proto](#api_v2_subscription_service-proto)
+    - [GetSubscriptionRequest](#slash-api-v2-GetSubscriptionRequest)
+    - [GetSubscriptionResponse](#slash-api-v2-GetSubscriptionResponse)
+    - [Subscription](#slash-api-v2-Subscription)
+    - [UpdateSubscriptionRequest](#slash-api-v2-UpdateSubscriptionRequest)
+    - [UpdateSubscriptionResponse](#slash-api-v2-UpdateSubscriptionResponse)
+  
+    - [PlanType](#slash-api-v2-PlanType)
+  
+    - [SubscriptionService](#slash-api-v2-SubscriptionService)
+  
 - [api/v2/user_service.proto](#api_v2_user_service-proto)
     - [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest)
     - [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse)
@@ -295,6 +306,118 @@
 | GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by name. |
 | CreateShortcut | [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest) | [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse) | CreateShortcut creates a shortcut. |
 | DeleteShortcut | [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest) | [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse) | DeleteShortcut deletes a shortcut by name. |
+
+ 
+
+
+
+<a name="api_v2_subscription_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v2/subscription_service.proto
+
+
+
+<a name="slash-api-v2-GetSubscriptionRequest"></a>
+
+### GetSubscriptionRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-GetSubscriptionResponse"></a>
+
+### GetSubscriptionResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| subscription | [Subscription](#slash-api-v2-Subscription) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-Subscription"></a>
+
+### Subscription
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| plan | [PlanType](#slash-api-v2-PlanType) |  |  |
+| started_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| expires_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateSubscriptionRequest"></a>
+
+### UpdateSubscriptionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| license_key | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateSubscriptionResponse"></a>
+
+### UpdateSubscriptionResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| subscription | [Subscription](#slash-api-v2-Subscription) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="slash-api-v2-PlanType"></a>
+
+### PlanType
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| PLAN_TYPE_UNSPECIFIED | 0 |  |
+| FREE | 1 |  |
+| PRO | 2 |  |
+
+
+ 
+
+ 
+
+
+<a name="slash-api-v2-SubscriptionService"></a>
+
+### SubscriptionService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| GetSubscription | [GetSubscriptionRequest](#slash-api-v2-GetSubscriptionRequest) | [GetSubscriptionResponse](#slash-api-v2-GetSubscriptionResponse) |  |
+| UpdateSubscription | [UpdateSubscriptionRequest](#slash-api-v2-UpdateSubscriptionRequest) | [UpdateSubscriptionResponse](#slash-api-v2-UpdateSubscriptionResponse) |  |
 
  
 

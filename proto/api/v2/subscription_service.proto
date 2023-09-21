@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package slash.api.v2;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gen/api/v2";
+
+service SubscriptionService {
+  rpc GetSubscription(GetSubscriptionRequest) returns (GetSubscriptionResponse) {
+    option (google.api.http) = {get: "/v1/subscription"};
+  }
+  rpc UpdateSubscription(UpdateSubscriptionRequest) returns (UpdateSubscriptionResponse) {
+    option (google.api.http) = {
+      patch: "/v1/subscription"
+      body: "*"
+    };
+  }
+}
+
+message Subscription {
+  PlanType plan = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  google.protobuf.Timestamp started_time = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  google.protobuf.Timestamp expires_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+enum PlanType {
+  PLAN_TYPE_UNSPECIFIED = 0;
+
+  FREE = 1;
+
+  PRO = 2;
+}
+
+message GetSubscriptionRequest {}
+
+message GetSubscriptionResponse {
+  Subscription subscription = 1;
+}
+
+message UpdateSubscriptionRequest {
+  string license_key = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message UpdateSubscriptionResponse {
+  Subscription subscription = 1;
+}
