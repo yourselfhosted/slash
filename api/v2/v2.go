@@ -31,7 +31,7 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 			authProvider.AuthenticationInterceptor,
 		),
 	)
-	apiv2pb.RegisterWorkspaceServiceServer(grpcServer, NewWorkspaceService(store))
+	apiv2pb.RegisterWorkspaceServiceServer(grpcServer, NewWorkspaceService(profile, store))
 	apiv2pb.RegisterUserServiceServer(grpcServer, NewUserService(secret, store))
 	apiv2pb.RegisterUserSettingServiceServer(grpcServer, NewUserSettingService(store))
 	apiv2pb.RegisterShortcutServiceServer(grpcServer, NewShortcutService(secret, store))

@@ -60,10 +60,13 @@
   
 - [api/v2/workspace_service.proto](#api_v2_workspace_service-proto)
     - [AutoBackupWorkspaceSetting](#slash-api-v2-AutoBackupWorkspaceSetting)
+    - [GetWorkspaceProfileRequest](#slash-api-v2-GetWorkspaceProfileRequest)
+    - [GetWorkspaceProfileResponse](#slash-api-v2-GetWorkspaceProfileResponse)
     - [GetWorkspaceSettingRequest](#slash-api-v2-GetWorkspaceSettingRequest)
     - [GetWorkspaceSettingResponse](#slash-api-v2-GetWorkspaceSettingResponse)
     - [UpdateWorkspaceSettingRequest](#slash-api-v2-UpdateWorkspaceSettingRequest)
     - [UpdateWorkspaceSettingResponse](#slash-api-v2-UpdateWorkspaceSettingResponse)
+    - [WorkspaceProfile](#slash-api-v2-WorkspaceProfile)
     - [WorkspaceSetting](#slash-api-v2-WorkspaceSetting)
   
     - [WorkspaceService](#slash-api-v2-WorkspaceService)
@@ -769,6 +772,31 @@
 
 
 
+<a name="slash-api-v2-GetWorkspaceProfileRequest"></a>
+
+### GetWorkspaceProfileRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-GetWorkspaceProfileResponse"></a>
+
+### GetWorkspaceProfileResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| profile | [WorkspaceProfile](#slash-api-v2-WorkspaceProfile) |  | The workspace profile. |
+
+
+
+
+
+
 <a name="slash-api-v2-GetWorkspaceSettingRequest"></a>
 
 ### GetWorkspaceSettingRequest
@@ -825,6 +853,24 @@
 
 
 
+<a name="slash-api-v2-WorkspaceProfile"></a>
+
+### WorkspaceProfile
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| mode | [string](#string) |  |  |
+| enable_signup | [bool](#bool) |  |  |
+| custom_style | [string](#string) |  | The custom style. |
+| custom_script | [string](#string) |  | The custom script. |
+
+
+
+
+
+
 <a name="slash-api-v2-WorkspaceSetting"></a>
 
 ### WorkspaceSetting
@@ -858,6 +904,7 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
+| GetWorkspaceProfile | [GetWorkspaceProfileRequest](#slash-api-v2-GetWorkspaceProfileRequest) | [GetWorkspaceProfileResponse](#slash-api-v2-GetWorkspaceProfileResponse) |  |
 | GetWorkspaceSetting | [GetWorkspaceSettingRequest](#slash-api-v2-GetWorkspaceSettingRequest) | [GetWorkspaceSettingResponse](#slash-api-v2-GetWorkspaceSettingResponse) |  |
 | UpdateWorkspaceSetting | [UpdateWorkspaceSettingRequest](#slash-api-v2-UpdateWorkspaceSettingRequest) | [UpdateWorkspaceSettingResponse](#slash-api-v2-UpdateWorkspaceSettingResponse) |  |
 

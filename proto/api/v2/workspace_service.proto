@@ -7,15 +7,27 @@ import "google/api/annotations.proto";
 option go_package = "gen/api/v2";
 
 service WorkspaceService {
+  rpc GetWorkspaceProfile(GetWorkspaceProfileRequest) returns (GetWorkspaceProfileResponse) {
+    option (google.api.http) = {get: "/api/v2/workspace/profile"};
+  }
   rpc GetWorkspaceSetting(GetWorkspaceSettingRequest) returns (GetWorkspaceSettingResponse) {
-    option (google.api.http) = {get: "/api/v2/workspace/settings"};
+    option (google.api.http) = {get: "/api/v2/workspace/setting"};
   }
   rpc UpdateWorkspaceSetting(UpdateWorkspaceSettingRequest) returns (UpdateWorkspaceSettingResponse) {
     option (google.api.http) = {
-      post: "/api/v2/workspace/settings"
+      post: "/api/v2/workspace/setting"
       body: "*"
     };
   }
+}
+
+message WorkspaceProfile {
+  string mode = 1;
+  bool enable_signup = 2;
+  // The custom style.
+  string custom_style = 3;
+  // The custom script.
+  string custom_script = 4;
 }
 
 message WorkspaceSetting {
@@ -41,6 +53,13 @@ message AutoBackupWorkspaceSetting {
   string cron_expression = 2;
   // The maximum number of backups to keep.
   int32 max_keep = 3;
+}
+
+message GetWorkspaceProfileRequest {}
+
+message GetWorkspaceProfileResponse {
+  // The workspace profile.
+  WorkspaceProfile profile = 1;
 }
 
 message GetWorkspaceSettingRequest {}

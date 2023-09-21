@@ -31,6 +31,24 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
+func request_WorkspaceService_GetWorkspaceProfile_0(ctx context.Context, marshaler runtime.Marshaler, client WorkspaceServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetWorkspaceProfileRequest
+	var metadata runtime.ServerMetadata
+
+	msg, err := client.GetWorkspaceProfile(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_WorkspaceService_GetWorkspaceProfile_0(ctx context.Context, marshaler runtime.Marshaler, server WorkspaceServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetWorkspaceProfileRequest
+	var metadata runtime.ServerMetadata
+
+	msg, err := server.GetWorkspaceProfile(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_WorkspaceService_GetWorkspaceSetting_0(ctx context.Context, marshaler runtime.Marshaler, client WorkspaceServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetWorkspaceSettingRequest
 	var metadata runtime.ServerMetadata
@@ -89,6 +107,31 @@ func local_request_WorkspaceService_UpdateWorkspaceSetting_0(ctx context.Context
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterWorkspaceServiceHandlerFromEndpoint instead.
 func RegisterWorkspaceServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server WorkspaceServiceServer) error {
 
+	mux.Handle("GET", pattern_WorkspaceService_GetWorkspaceProfile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/GetWorkspaceProfile", runtime.WithHTTPPathPattern("/api/v2/workspace/profile"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_WorkspaceService_GetWorkspaceProfile_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_WorkspaceService_GetWorkspaceProfile_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_WorkspaceService_GetWorkspaceSetting_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -97,7 +140,7 @@ func RegisterWorkspaceServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/GetWorkspaceSetting", runtime.WithHTTPPathPattern("/api/v2/workspace/settings"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/GetWorkspaceSetting", runtime.WithHTTPPathPattern("/api/v2/workspace/setting"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -122,7 +165,7 @@ func RegisterWorkspaceServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/UpdateWorkspaceSetting", runtime.WithHTTPPathPattern("/api/v2/workspace/settings"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/UpdateWorkspaceSetting", runtime.WithHTTPPathPattern("/api/v2/workspace/setting"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -180,13 +223,35 @@ func RegisterWorkspaceServiceHandler(ctx context.Context, mux *runtime.ServeMux,
 // "WorkspaceServiceClient" to call the correct interceptors.
 func RegisterWorkspaceServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client WorkspaceServiceClient) error {
 
+	mux.Handle("GET", pattern_WorkspaceService_GetWorkspaceProfile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/GetWorkspaceProfile", runtime.WithHTTPPathPattern("/api/v2/workspace/profile"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_WorkspaceService_GetWorkspaceProfile_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_WorkspaceService_GetWorkspaceProfile_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_WorkspaceService_GetWorkspaceSetting_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/GetWorkspaceSetting", runtime.WithHTTPPathPattern("/api/v2/workspace/settings"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/GetWorkspaceSetting", runtime.WithHTTPPathPattern("/api/v2/workspace/setting"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -208,7 +273,7 @@ func RegisterWorkspaceServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/UpdateWorkspaceSetting", runtime.WithHTTPPathPattern("/api/v2/workspace/settings"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.WorkspaceService/UpdateWorkspaceSetting", runtime.WithHTTPPathPattern("/api/v2/workspace/setting"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -228,12 +293,16 @@ func RegisterWorkspaceServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 }
 
 var (
-	pattern_WorkspaceService_GetWorkspaceSetting_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v2", "workspace", "settings"}, ""))
+	pattern_WorkspaceService_GetWorkspaceProfile_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v2", "workspace", "profile"}, ""))
 
-	pattern_WorkspaceService_UpdateWorkspaceSetting_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v2", "workspace", "settings"}, ""))
+	pattern_WorkspaceService_GetWorkspaceSetting_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v2", "workspace", "setting"}, ""))
+
+	pattern_WorkspaceService_UpdateWorkspaceSetting_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v2", "workspace", "setting"}, ""))
 )
 
 var (
+	forward_WorkspaceService_GetWorkspaceProfile_0 = runtime.ForwardResponseMessage
+
 	forward_WorkspaceService_GetWorkspaceSetting_0 = runtime.ForwardResponseMessage
 
 	forward_WorkspaceService_UpdateWorkspaceSetting_0 = runtime.ForwardResponseMessage

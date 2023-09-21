@@ -5,6 +5,7 @@ import (
 
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -13,14 +14,35 @@ import (
 type WorkspaceService struct {
 	apiv2pb.UnimplementedWorkspaceServiceServer
 
-	Store *store.Store
+	Profile *profile.Profile
+	Store   *store.Store
 }
 
 // NewWorkspaceService creates a new WorkspaceService.
-func NewWorkspaceService(store *store.Store) *WorkspaceService {
+func NewWorkspaceService(profile *profile.Profile, store *store.Store) *WorkspaceService {
 	return &WorkspaceService{
-		Store: store,
+		Profile: profile,
+		Store:   store,
 	}
+}
+
+func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *apiv2pb.GetWorkspaceProfileRequest) (*apiv2pb.GetWorkspaceProfileResponse, error) {
+	profile := &apiv2pb.WorkspaceProfile{
+		Mode: s.Profile.Mode,
+	}
+	workspaceSetting, err := s.GetWorkspaceSetting(ctx, &apiv2pb.GetWorkspaceSettingRequest{})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
+	}
+	if workspaceSetting != nil {
+		setting := workspaceSetting.GetSetting()
+		profile.EnableSignup = setting.GetEnableSignup()
+		profile.CustomStyle = setting.GetCustomStyle()
+		profile.CustomScript = setting.GetCustomScript()
+	}
+	return &apiv2pb.GetWorkspaceProfileResponse{
+		Profile: profile,
+	}, nil
 }
 
 func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.GetWorkspaceSettingRequest) (*apiv2pb.GetWorkspaceSettingResponse, error) {

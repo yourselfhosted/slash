@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	WorkspaceService_GetWorkspaceProfile_FullMethodName    = "/slash.api.v2.WorkspaceService/GetWorkspaceProfile"
 	WorkspaceService_GetWorkspaceSetting_FullMethodName    = "/slash.api.v2.WorkspaceService/GetWorkspaceSetting"
 	WorkspaceService_UpdateWorkspaceSetting_FullMethodName = "/slash.api.v2.WorkspaceService/UpdateWorkspaceSetting"
 )
@@ -27,6 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WorkspaceServiceClient interface {
+	GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*GetWorkspaceProfileResponse, error)
 	GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*GetWorkspaceSettingResponse, error)
 	UpdateWorkspaceSetting(ctx context.Context, in *UpdateWorkspaceSettingRequest, opts ...grpc.CallOption) (*UpdateWorkspaceSettingResponse, error)
 }
@@ -37,6 +39,15 @@ type workspaceServiceClient struct {
 
 func NewWorkspaceServiceClient(cc grpc.ClientConnInterface) WorkspaceServiceClient {
 	return &workspaceServiceClient{cc}
+}
+
+func (c *workspaceServiceClient) GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*GetWorkspaceProfileResponse, error) {
+	out := new(GetWorkspaceProfileResponse)
+	err := c.cc.Invoke(ctx, WorkspaceService_GetWorkspaceProfile_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *workspaceServiceClient) GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*GetWorkspaceSettingResponse, error) {
@@ -61,6 +72,7 @@ func (c *workspaceServiceClient) UpdateWorkspaceSetting(ctx context.Context, in 
 // All implementations must embed UnimplementedWorkspaceServiceServer
 // for forward compatibility
 type WorkspaceServiceServer interface {
+	GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*GetWorkspaceProfileResponse, error)
 	GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*GetWorkspaceSettingResponse, error)
 	UpdateWorkspaceSetting(context.Context, *UpdateWorkspaceSettingRequest) (*UpdateWorkspaceSettingResponse, error)
 	mustEmbedUnimplementedWorkspaceServiceServer()
@@ -70,6 +82,9 @@ type WorkspaceServiceServer interface {
 type UnimplementedWorkspaceServiceServer struct {
 }
 
+func (UnimplementedWorkspaceServiceServer) GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*GetWorkspaceProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkspaceProfile not implemented")
+}
 func (UnimplementedWorkspaceServiceServer) GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*GetWorkspaceSettingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorkspaceSetting not implemented")
 }
@@ -87,6 +102,24 @@ type UnsafeWorkspaceServiceServer interface {
 
 func RegisterWorkspaceServiceServer(s grpc.ServiceRegistrar, srv WorkspaceServiceServer) {
 	s.RegisterService(&WorkspaceService_ServiceDesc, srv)
+}
+
+func _WorkspaceService_GetWorkspaceProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWorkspaceProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkspaceServiceServer).GetWorkspaceProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkspaceService_GetWorkspaceProfile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkspaceServiceServer).GetWorkspaceProfile(ctx, req.(*GetWorkspaceProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _WorkspaceService_GetWorkspaceSetting_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -132,6 +165,10 @@ var WorkspaceService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "slash.api.v2.WorkspaceService",
 	HandlerType: (*WorkspaceServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetWorkspaceProfile",
+			Handler:    _WorkspaceService_GetWorkspaceProfile_Handler,
+		},
 		{
 			MethodName: "GetWorkspaceSetting",
 			Handler:    _WorkspaceService_GetWorkspaceSetting_Handler,
