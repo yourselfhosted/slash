@@ -45,14 +45,18 @@ const WorkspaceSection: React.FC = () => {
       return;
     }
 
-    const { setting } = await workspaceServiceClient.updateWorkspaceSetting({
-      setting: workspaceSetting,
-      updateMask: updateMask,
-    });
-    toast.success("Workspace setting saved successfully");
-    if (setting) {
+    try {
+      const setting = (
+        await workspaceServiceClient.updateWorkspaceSetting({
+          setting: workspaceSetting,
+          updateMask: updateMask,
+        })
+      ).setting as WorkspaceSetting;
       setWorkspaceSetting(setting);
       originalWorkspaceSetting.current = setting;
+      toast.success("Workspace setting saved successfully");
+    } catch (error: any) {
+      toast.error(error.details);
     }
   };
 
