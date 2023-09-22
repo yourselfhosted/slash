@@ -13,9 +13,10 @@ import (
 )
 
 type LicenseService struct {
-	Profile            *profile.Profile
-	Store              *store.Store
-	CachedSubscription *apiv2pb.Subscription
+	Profile *profile.Profile
+	Store   *store.Store
+
+	cachedSubscription *apiv2pb.Subscription
 }
 
 // NewLicenseService creates a new LicenseService.
@@ -23,7 +24,7 @@ func NewLicenseService(profile *profile.Profile, store *store.Store) *LicenseSer
 	return &LicenseService{
 		Profile: profile,
 		Store:   store,
-		CachedSubscription: &apiv2pb.Subscription{
+		cachedSubscription: &apiv2pb.Subscription{
 			Plan: apiv2pb.PlanType_FREE,
 		},
 	}
@@ -66,7 +67,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv2pb.Subscri
 		}
 		subscription.StartedTime = timestamppb.New(startedTime)
 	}
-	s.CachedSubscription = subscription
+	s.cachedSubscription = subscription
 	return subscription, nil
 }
 
@@ -91,4 +92,12 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 		return nil, errors.Wrap(err, "failed to upsert workspace setting")
 	}
 	return s.LoadSubscription(ctx)
+}
+
+func (s *LicenseService) IsFeatureEnabled(feature FeatureType) bool {
+	matrix, ok := FeatureMatrix[feature]
+	if !ok {
+		return false
+	}
+	return matrix[s.cachedSubscription.Plan-1]
 }

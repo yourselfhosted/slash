@@ -112,7 +112,11 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	return s, nil
 }
 
-func (s *Server) Start(_ context.Context) error {
+func (s *Server) Start(ctx context.Context) error {
+	// Load subscription.
+	if _, err := s.licenseService.LoadSubscription(ctx); err != nil {
+		println("failed to load subscription", err)
+	}
 	// Start gRPC server.
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%d", s.Profile.Port+1))
 	if err != nil {

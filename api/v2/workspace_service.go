@@ -6,6 +6,7 @@ import (
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -14,15 +15,17 @@ import (
 type WorkspaceService struct {
 	apiv2pb.UnimplementedWorkspaceServiceServer
 
-	Profile *profile.Profile
-	Store   *store.Store
+	Profile        *profile.Profile
+	Store          *store.Store
+	LicenseService *license.LicenseService
 }
 
 // NewWorkspaceService creates a new WorkspaceService.
-func NewWorkspaceService(profile *profile.Profile, store *store.Store) *WorkspaceService {
+func NewWorkspaceService(profile *profile.Profile, store *store.Store, licenseService *license.LicenseService) *WorkspaceService {
 	return &WorkspaceService{
-		Profile: profile,
-		Store:   store,
+		Profile:        profile,
+		Store:          store,
+		LicenseService: licenseService,
 	}
 }
 
@@ -117,6 +120,10 @@ func (s *WorkspaceService) UpdateWorkspaceSetting(ctx context.Context, request *
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
 			}
 		} else if path == "custom_style" {
+			if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeCustomeStyle) {
+				return nil, status.Errorf(codes.PermissionDenied, "feature custom style is not available")
+			}
+
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE,
 				Value: &storepb.WorkspaceSetting_CustomStyle{
