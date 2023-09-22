@@ -1,4 +1,4 @@
-import { Divider } from "@mui/joy";
+import { Alert, Divider } from "@mui/joy";
 import PreferenceSection from "@/components/setting/PreferenceSection";
 import AccessTokenSection from "../components/setting/AccessTokenSection";
 import AccountSection from "../components/setting/AccountSection";
@@ -18,6 +18,9 @@ const Setting: React.FC = () => {
       {isAdmin && (
         <>
           <Divider />
+          <Alert variant="soft" color="warning">
+            You can see the settings items below because you are an Admin.
+          </Alert>
           <MemberSection />
           <WorkspaceSection />
         </>

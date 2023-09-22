@@ -26,7 +26,7 @@ const Navigator = () => {
       </button>
       <button
         className={classNames(
-          "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md hover:bg-gray-200",
+          "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md",
           currentTab === "tab:mine"
             ? "bg-gray-600 dark:bg-zinc-700 text-white dark:text-gray-400 shadow"
             : "hover:bg-gray-200 dark:hover:bg-zinc-700"
@@ -40,7 +40,7 @@ const Navigator = () => {
         <button
           key={tag}
           className={classNames(
-            "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md hover:bg-gray-200",
+            "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md",
             currentTab === `tag:${tag}`
               ? "bg-gray-600 dark:bg-zinc-700 text-white dark:text-gray-400 shadow"
               : "hover:bg-gray-200 dark:hover:bg-zinc-700"
