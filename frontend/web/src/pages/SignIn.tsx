@@ -68,12 +68,12 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center items-center w-full h-auto mt-12 sm:mt-24 bg-white">
+    <div className="flex flex-row justify-center items-center w-full h-auto mt-12 sm:mt-24 bg-white dark:bg-zinc-900">
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
             <img src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
-            <span className="text-3xl opacity-80">Slash</span>
+            <span className="text-3xl opacity-80 dark:text-gray-500">Slash</span>
           </div>
           <form className="w-full mt-6" onSubmit={handleSigninBtnClick}>
             <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
@@ -107,7 +107,7 @@ const SignIn: React.FC = () => {
           </form>
           {enableSignup && (
             <p className="w-full mt-4 text-sm">
-              <span>{"Don't have an account yet?"}</span>
+              <span className="dark:text-gray-500">{"Don't have an account yet?"}</span>
               <Link to="/auth/signup" className="cursor-pointer ml-2 text-blue-600 hover:underline">
                 Sign up
               </Link>

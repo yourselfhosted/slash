@@ -1,6 +1,6 @@
-import axios from "axios";
 import { create } from "zustand";
-import { GetUserSettingResponse, UpdateUserSettingResponse, UserSetting } from "@/types/proto/api/v2/user_setting_service";
+import { userSettingServiceClient } from "@/grpcweb";
+import { UserSetting } from "@/types/proto/api/v2/user_setting_service";
 import * as api from "../../helpers/api";
 
 const convertResponseModelUser = (user: User): User => {
@@ -95,12 +95,11 @@ const useUserStore = create<UserState>()((set, get) => ({
     return userMap[currentUserId as UserId];
   },
   fetchUserSetting: async (userId: UserId) => {
-    const {
-      data: { userSetting },
-    } = await axios.get<GetUserSettingResponse>(`api/v2/users/${userId}/settings`);
-    if (!userSetting) {
-      throw new Error(`User setting not found for user ${userId}`);
-    }
+    const userSetting = (
+      await userSettingServiceClient.getUserSetting({
+        id: userId,
+      })
+    ).userSetting as UserSetting;
     const userSettingMap = get().userSettingMapById;
     userSettingMap[userId] = userSetting;
     set(userSettingMap);
@@ -108,16 +107,13 @@ const useUserStore = create<UserState>()((set, get) => ({
   },
   updateUserSetting: async (userSetting: UserSetting, updateMask: string[]) => {
     const userId = userSetting.id;
-    const {
-      data: { userSetting: updatedUserSetting },
-    } = await axios.post<UpdateUserSettingResponse>(`api/v2/users/${userId}/settings`, {
-      id: userId,
-      userSetting,
-      updateMask,
-    });
-    if (!updatedUserSetting) {
-      throw new Error(`User setting not found for user ${userId}`);
-    }
+    const updatedUserSetting = (
+      await userSettingServiceClient.updateUserSetting({
+        id: userId,
+        userSetting,
+        updateMask,
+      })
+    ).userSetting as UserSetting;
     const userSettingMap = get().userSettingMapById;
     userSettingMap[userId] = updatedUserSetting;
     set(userSettingMap);

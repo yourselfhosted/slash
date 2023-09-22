@@ -39,7 +39,8 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv2pb.Subscri
 		return nil, errors.Wrap(err, "failed to get workspace setting")
 	}
 	subscription := &apiv2pb.Subscription{
-		Plan: apiv2pb.PlanType_FREE,
+		// NOTE: Default to pro plan for now.
+		Plan: apiv2pb.PlanType_PRO,
 	}
 	licenseKey := ""
 	if workspaceSetting != nil {

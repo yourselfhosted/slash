@@ -230,16 +230,16 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
                 ))}
               </RadioGroup>
             </div>
-            <p className="mt-3 text-sm text-gray-500 w-full bg-gray-100 border border-gray-200 px-2 py-1 rounded-md">
+            <p className="mt-3 text-sm text-gray-500 w-full bg-gray-100 border border-gray-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400 px-2 py-1 rounded-md">
               {t(`shortcut.visibility.${state.shortcutCreate.visibility.toLowerCase()}.description`)}
             </p>
           </div>
           <Divider className="text-gray-500">Optional</Divider>
-          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden my-3">
+          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden my-3 dark:border-zinc-800">
             <div
               className={classnames(
-                "w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100",
-                showAdditionalFields ? "bg-gray-100 border-b" : ""
+                "w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800",
+                showAdditionalFields ? "bg-gray-100 border-b dark:bg-zinc-800 dark:border-b-zinc-700" : ""
               )}
               onClick={() => setShowAdditionalFields(!showAdditionalFields)}
             >
@@ -275,11 +275,12 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               </div>
             )}
           </div>
-          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden">
+          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden dark:border-zinc-800">
             <div
-              className={`w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 ${
-                showOpenGraphMetadata ? "bg-gray-100 border-b" : ""
-              }`}
+              className={classnames(
+                "w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800",
+                showOpenGraphMetadata ? "bg-gray-100 border-b dark:bg-zinc-800 dark:border-b-zinc-700" : ""
+              )}
               onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
             >
               <span className="text-sm flex flex-row justify-start items-center">

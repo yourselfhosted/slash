@@ -87,7 +87,7 @@ func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*apiv2pb
 	userSetting := &apiv2pb.UserSetting{
 		Id:         userID,
 		Locale:     apiv2pb.UserSetting_LOCALE_EN,
-		ColorTheme: apiv2pb.UserSetting_COLOR_THEME_LIGHT,
+		ColorTheme: apiv2pb.UserSetting_COLOR_THEME_SYSTEM,
 	}
 	for _, setting := range userSettings {
 		if setting.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
@@ -123,6 +123,8 @@ func convertUserSettingLocaleFromStore(locale storepb.LocaleUserSetting) apiv2pb
 
 func convertUserSettingColorThemeToStore(colorTheme apiv2pb.UserSetting_ColorTheme) storepb.ColorThemeUserSetting {
 	switch colorTheme {
+	case apiv2pb.UserSetting_COLOR_THEME_SYSTEM:
+		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_SYSTEM
 	case apiv2pb.UserSetting_COLOR_THEME_LIGHT:
 		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT
 	case apiv2pb.UserSetting_COLOR_THEME_DARK:
@@ -134,6 +136,8 @@ func convertUserSettingColorThemeToStore(colorTheme apiv2pb.UserSetting_ColorThe
 
 func convertUserSettingColorThemeFromStore(colorTheme storepb.ColorThemeUserSetting) apiv2pb.UserSetting_ColorTheme {
 	switch colorTheme {
+	case storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_SYSTEM:
+		return apiv2pb.UserSetting_COLOR_THEME_SYSTEM
 	case storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT:
 		return apiv2pb.UserSetting_COLOR_THEME_LIGHT
 	case storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_DARK:

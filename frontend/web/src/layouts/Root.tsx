@@ -3,13 +3,14 @@ import { isEqual } from "lodash-es";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
+import { UserSetting_ColorTheme } from "@/types/proto/api/v2/user_setting_service";
 import Header from "../components/Header";
 import useUserStore from "../stores/v1/user";
 
 const Root: React.FC = () => {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
   const { setMode } = useColorScheme();
+  const { i18n } = useTranslation();
   const userStore = useUserStore();
   const currentUser = userStore.getCurrentUser();
   const currentUserSetting = userStore.getCurrentUserSetting();
@@ -38,19 +39,19 @@ const Root: React.FC = () => {
       i18n.changeLanguage("en");
     }
 
-    if (isEqual(currentUserSetting.colorTheme, "COLOR_THEME_DARK")) {
-      setMode("dark");
-      document.documentElement.classList.add("dark");
-    } else {
+    if (currentUserSetting.colorTheme === UserSetting_ColorTheme.COLOR_THEME_LIGHT) {
       setMode("light");
-      document.documentElement.classList.remove("dark");
+    } else if (currentUserSetting.colorTheme === UserSetting_ColorTheme.COLOR_THEME_DARK) {
+      setMode("dark");
+    } else {
+      setMode("system");
     }
   }, [currentUserSetting]);
 
   return (
     <>
       {isInitialized && (
-        <div className="w-full h-auto flex flex-col justify-start items-start dark:bg-zinc-800">
+        <div className="w-full h-auto flex flex-col justify-start items-start dark:bg-zinc-900">
           <Header />
           <Outlet />
         </div>

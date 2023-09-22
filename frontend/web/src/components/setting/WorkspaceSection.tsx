@@ -62,9 +62,9 @@ const WorkspaceSection: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col justify-start items-start space-y-4">
-      <p className="text-base font-semibold leading-6 text-gray-900">Workspace settings</p>
+      <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Workspace settings</p>
       <div className="w-full flex flex-col justify-start items-start">
-        <p className="mt-2">Custom style</p>
+        <p className="mt-2 dark:text-gray-400">Custom style</p>
         <Textarea
           className="w-full mt-2"
           minRows={2}

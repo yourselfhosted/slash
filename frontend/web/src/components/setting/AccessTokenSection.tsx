@@ -64,8 +64,8 @@ const AccessTokenSection = () => {
         <div className="w-full">
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">
-              <p className="text-base font-semibold leading-6 text-gray-900">Access Tokens</p>
-              <p className="mt-2 text-sm text-gray-700">A list of all access tokens for your account.</p>
+              <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Access Tokens</p>
+              <p className="mt-2 text-sm text-gray-700 dark:text-gray-600">A list of all access tokens for your account.</p>
             </div>
             <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
               <Button
@@ -82,19 +82,19 @@ const AccessTokenSection = () => {
           <div className="mt-2 flow-root">
             <div className="overflow-x-auto">
               <div className="inline-block min-w-full py-2 align-middle">
-                <table className="min-w-full divide-y divide-gray-300">
+                <table className="min-w-full divide-y divide-gray-300 dark:divide-zinc-700">
                   <thead>
                     <tr>
-                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         Token
                       </th>
-                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
+                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         Description
                       </th>
-                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         Created At
                       </th>
-                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         Expires At
                       </th>
                       <th scope="col" className="relative py-3.5 pl-3 pr-4">
@@ -102,16 +102,18 @@ const AccessTokenSection = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {userAccessTokens.map((userAccessToken) => (
                       <tr key={userAccessToken.accessToken}>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 flex flex-row justify-start items-center gap-x-1">
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 flex flex-row justify-start items-center gap-x-1 dark:text-gray-500">
                           <span className="font-mono">{getFormatedAccessToken(userAccessToken.accessToken)}</span>
                           <Button color="neutral" variant="plain" size="sm" onClick={() => copyAccessToken(userAccessToken.accessToken)}>
                             <Icon.Clipboard className="w-4 h-auto text-gray-500" />
                           </Button>
                         </td>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">{userAccessToken.description}</td>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">
+                          {userAccessToken.description}
+                        </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{userAccessToken.issuedAt?.toLocaleString()}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {userAccessToken.expiresAt?.toLocaleString() ?? "Never"}

@@ -186,6 +186,8 @@ func convertUserSettingLocaleFromString(s string) storepb.LocaleUserSetting {
 
 func convertUserSettingColorThemeFromString(s string) storepb.ColorThemeUserSetting {
 	switch s {
+	case "COLOR_THEME_USER_SETTING_SYSTEM":
+		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_SYSTEM
 	case "COLOR_THEME_USER_SETTING_LIGHT":
 		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT
 	case "COLOR_THEME_USER_SETTING_DARK":

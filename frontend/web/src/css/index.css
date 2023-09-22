@@ -5,7 +5,7 @@
 body,
 html,
 #root {
-  @apply text-base w-full h-full dark:bg-zinc-800;
+  @apply text-base w-full h-full dark:bg-zinc-900;
 }
 
 @layer utilities {

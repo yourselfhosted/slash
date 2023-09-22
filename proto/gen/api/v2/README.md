@@ -835,8 +835,9 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | COLOR_THEME_UNSPECIFIED | 0 |  |
-| COLOR_THEME_LIGHT | 1 |  |
-| COLOR_THEME_DARK | 2 |  |
+| COLOR_THEME_SYSTEM | 1 |  |
+| COLOR_THEME_LIGHT | 2 |  |
+| COLOR_THEME_DARK | 3 |  |
 
 
 

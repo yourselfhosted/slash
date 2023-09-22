@@ -43,8 +43,8 @@ const MemberSection = () => {
         <div className="w-full">
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">
-              <p className="text-base font-semibold leading-6 text-gray-900">Users</p>
-              <p className="mt-2 text-sm text-gray-700">
+              <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Users</p>
+              <p className="mt-2 text-sm text-gray-700 dark:text-gray-600">
                 A list of all the users in your workspace including their nickname, email and role.
               </p>
             </div>
@@ -64,16 +64,16 @@ const MemberSection = () => {
           <div className="mt-2 flow-root">
             <div className="overflow-x-auto">
               <div className="inline-block min-w-full py-2 align-middle">
-                <table className="min-w-full divide-y divide-gray-300">
+                <table className="min-w-full divide-y divide-gray-300 dark:divide-zinc-700">
                   <thead>
                     <tr>
-                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">
+                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         Nickname
                       </th>
-                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         Email
                       </th>
-                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         Role
                       </th>
                       <th scope="col" className="relative py-3.5 pl-3 pr-4">
@@ -84,7 +84,7 @@ const MemberSection = () => {
                   <tbody className="divide-y divide-gray-200">
                     {userList.map((user) => (
                       <tr key={user.email}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">{user.nickname}</td>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">{user.nickname}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.email}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.role}</td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">

@@ -75,14 +75,14 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center items-center w-full h-auto mt-12 sm:mt-24 bg-white">
+    <div className="flex flex-row justify-center items-center w-full h-auto mt-12 sm:mt-24 bg-white dark:bg-zinc-900">
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
             <img src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
-            <span className="text-3xl opacity-80">Slash</span>
+            <span className="text-3xl opacity-80 dark:text-gray-500">Slash</span>
           </div>
-          <p className="w-full text-2xl mt-6">Create your account</p>
+          <p className="w-full text-2xl mt-6 dark:text-gray-500">Create your account</p>
           <form className="w-full mt-4" onSubmit={handleSignupBtnClick}>
             <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
               <div className="w-full flex flex-col mb-2">
@@ -118,7 +118,7 @@ const SignUp: React.FC = () => {
             </div>
           </form>
           <p className="w-full mt-4 text-sm">
-            <span>{"Already has an account?"}</span>
+            <span className="dark:text-gray-500">{"Already has an account?"}</span>
             <Link to="/auth" className="cursor-pointer ml-2 text-blue-600 hover:underline">
               Sign in
             </Link>

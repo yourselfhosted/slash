@@ -13,31 +13,31 @@ const PreferenceSection: React.FC = () => {
 
   const languageOptions = [
     {
-      value: "LOCALE_EN",
+      value: UserSetting_Locale.LOCALE_EN,
       label: "English",
     },
     {
-      value: "LOCALE_ZH",
+      value: UserSetting_Locale.LOCALE_ZH,
       label: "中文",
     },
   ];
 
   const colorThemeOptions = [
     {
-      value: "COLOR_THEME_LIGHT",
+      value: UserSetting_ColorTheme.COLOR_THEME_SYSTEM,
+      label: "System",
+    },
+    {
+      value: UserSetting_ColorTheme.COLOR_THEME_LIGHT,
       label: "Light",
     },
     {
-      value: "COLOR_THEME_DARK",
+      value: UserSetting_ColorTheme.COLOR_THEME_DARK,
       label: "Dark",
     },
   ];
 
   const handleSelectLanguage = async (locale: UserSetting_Locale) => {
-    if (!locale) {
-      return;
-    }
-
     await userStore.updateUserSetting(
       {
         ...userSetting,
@@ -48,10 +48,6 @@ const PreferenceSection: React.FC = () => {
   };
 
   const handleSelectColorTheme = async (colorTheme: UserSetting_ColorTheme) => {
-    if (!colorTheme) {
-      return;
-    }
-
     await userStore.updateUserSetting(
       {
         ...userSetting,
@@ -64,10 +60,10 @@ const PreferenceSection: React.FC = () => {
   return (
     <>
       <div className="w-full flex flex-col justify-start items-start gap-y-2">
-        <p className="text-base font-semibold leading-6 text-gray-900">Preference</p>
+        <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Preference</p>
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center gap-x-1">
-            <span>{t("common.language")}</span>
+            <span className="dark:text-gray-400">{t("common.language")}</span>
             <BetaBadge />
           </div>
           <Select defaultValue={language} onChange={(_, value) => handleSelectLanguage(value as UserSetting_Locale)}>
@@ -82,7 +78,7 @@ const PreferenceSection: React.FC = () => {
         </div>
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center gap-x-1">
-            <span>Color Theme</span>
+            <span className="dark:text-gray-400">Color Theme</span>
             <BetaBadge />
           </div>
           <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value as UserSetting_ColorTheme)}>

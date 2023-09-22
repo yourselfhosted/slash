@@ -39,7 +39,11 @@ const ShortcutView = (props: Props) => {
 
   return (
     <>
-      <div className={classNames("group px-4 py-3 w-full flex flex-col justify-start items-start border rounded-lg hover:shadow")}>
+      <div
+        className={classNames(
+          "group px-4 py-3 w-full flex flex-col justify-start items-start border rounded-lg hover:shadow dark:border-zinc-700"
+        )}
+      >
         <div className="w-full flex flex-row justify-between items-center">
           <div className="w-[calc(100%-16px)] flex flex-row justify-start items-center mr-1 shrink-0">
             <Link to={`/shortcut/${shortcut.id}`} className={classNames("w-8 h-8 flex justify-center items-center overflow-clip shrink-0")}>
@@ -53,7 +57,7 @@ const ShortcutView = (props: Props) => {
               <div className="w-full flex flex-row justify-start items-center">
                 <a
                   className={classNames(
-                    "max-w-[calc(100%-36px)] flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow"
+                    "max-w-[calc(100%-36px)] flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow dark:hover:bg-zinc-800"
                   )}
                   target="_blank"
                   href={shortcutLink}
@@ -64,8 +68,8 @@ const ShortcutView = (props: Props) => {
                       <span className="text-gray-400">(s/{shortcut.name})</span>
                     ) : (
                       <>
-                        <span className="text-gray-400">s/</span>
-                        <span className="truncate">{shortcut.name}</span>
+                        <span className="text-gray-400 dark:text-gray-500">s/</span>
+                        <span className="truncate dark:text-gray-400">{shortcut.name}</span>
                       </>
                     )}
                   </div>
@@ -75,14 +79,18 @@ const ShortcutView = (props: Props) => {
                 </a>
                 <Tooltip title="Copy" variant="solid" placement="top" arrow>
                   <button
-                    className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow"
+                    className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow dark:hover:bg-zinc-800"
                     onClick={() => handleCopyButtonClick()}
                   >
                     <Icon.Clipboard className="w-4 h-auto mx-auto" />
                   </button>
                 </Tooltip>
               </div>
-              <a className="pl-1 pr-4 w-full text-sm truncate text-gray-400 hover:underline" href={shortcut.link} target="_blank">
+              <a
+                className="pl-1 pr-4 w-full text-sm truncate text-gray-400 dark:text-gray-500 hover:underline"
+                href={shortcut.link}
+                target="_blank"
+              >
                 {shortcut.link}
               </a>
             </div>
@@ -96,7 +104,7 @@ const ShortcutView = (props: Props) => {
             return (
               <span
                 key={tag}
-                className="max-w-[8rem] truncate text-gray-400 text-sm font-mono leading-4 cursor-pointer hover:text-gray-600"
+                className="max-w-[8rem] truncate text-gray-400 dark:text-gray-500 text-sm font-mono leading-4 cursor-pointer hover:opacity-80"
                 onClick={() => viewStore.setFilter({ tag: tag })}
               >
                 #{tag}
@@ -107,14 +115,14 @@ const ShortcutView = (props: Props) => {
         </div>
         <div className="w-full flex mt-2 gap-2">
           <Tooltip title="Creator" variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
+            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
               <Icon.User className="w-4 h-auto mr-1" />
               <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{shortcut.creator.nickname}</span>
             </div>
           </Tooltip>
           <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
             <div
-              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm"
+              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm dark:border-zinc-800"
               onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
             >
               <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
@@ -124,7 +132,7 @@ const ShortcutView = (props: Props) => {
           <Tooltip title="View count" variant="solid" placement="top" arrow>
             <Link
               to={`/shortcut/${shortcut.id}#analytics`}
-              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm"
+              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm dark:border-zinc-800"
             >
               <Icon.BarChart2 className="w-4 h-auto mr-1" />
               {shortcut.view} visits

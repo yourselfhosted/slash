@@ -86,8 +86,8 @@ const ShortcutDetail = () => {
               <span className="text-gray-400">(s/{shortcut.name})</span>
             ) : (
               <>
-                <span className="text-gray-400">s/</span>
-                <span className="truncate">{shortcut.name}</span>
+                <span className="text-gray-400 dark:text-gray-500">s/</span>
+                <span className="truncate dark:text-gray-400">{shortcut.name}</span>
               </>
             )}
           </div>
@@ -98,7 +98,7 @@ const ShortcutDetail = () => {
         <div className="mt-2 w-full flex flex-row justify-normal items-center space-x-2">
           <Tooltip title="Copy" variant="solid" placement="top" arrow>
             <button
-              className="w-8 h-8 cursor-pointer border rounded-full text-gray-500 hover:bg-gray-100 hover:shadow"
+              className="w-8 h-8 cursor-pointer border rounded-full text-gray-500 hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
               onClick={() => handleCopyButtonClick()}
             >
               <Icon.Clipboard className="w-4 h-auto mx-auto" />
@@ -106,7 +106,7 @@ const ShortcutDetail = () => {
           </Tooltip>
           <Tooltip title="QR Code" variant="solid" placement="top" arrow>
             <button
-              className="w-8 h-8 cursor-pointer border rounded-full text-gray-500 hover:bg-gray-100 hover:shadow"
+              className="w-8 h-8 cursor-pointer border rounded-full text-gray-500 hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
               onClick={() => setShowQRCodeDialog(true)}
             >
               <Icon.QrCode className="w-4 h-auto mx-auto" />
@@ -114,12 +114,12 @@ const ShortcutDetail = () => {
           </Tooltip>
           {havePermission && (
             <Dropdown
-              className="w-8 h-8 flex justify-center items-center border cursor-pointer rounded-full hover:bg-gray-100 hover:shadow"
-              actionsClassName="!w-32 !-right-24"
+              className="w-8 h-8 flex justify-center items-center border cursor-pointer rounded-full hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
+              actionsClassName="!w-32 !-right-24 dark:text-gray-500"
               actions={
                 <>
                   <button
-                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
                     onClick={() => {
                       setState({
                         ...state,
@@ -130,7 +130,7 @@ const ShortcutDetail = () => {
                     <Icon.Edit className="w-4 h-auto mr-2" /> {t("common.edit")}
                   </button>
                   <button
-                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
                     onClick={() => {
                       handleDeleteShortcutButtonClick(shortcut);
                     }}
@@ -142,32 +142,34 @@ const ShortcutDetail = () => {
             ></Dropdown>
           )}
         </div>
-        {shortcut.description && <p className="w-full break-all mt-2 text-gray-400 text-sm">{shortcut.description}</p>}
+        {shortcut.description && <p className="w-full break-all mt-2 text-gray-400 text-sm dark:text-gray-500">{shortcut.description}</p>}
         <div className="mt-4 ml-1 flex flex-row justify-start items-start flex-wrap gap-2">
           {shortcut.tags.map((tag) => {
             return (
-              <span key={tag} className="max-w-[8rem] truncate text-gray-400 text font-mono leading-4">
+              <span key={tag} className="max-w-[8rem] truncate text-gray-400 text font-mono leading-4 dark:text-gray-500">
                 #{tag}
               </span>
             );
           })}
-          {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm font-mono leading-4 italic">No tags</span>}
+          {shortcut.tags.length === 0 && (
+            <span className="text-gray-400 text-sm font-mono leading-4 italic dark:text-gray-500">No tags</span>
+          )}
         </div>
         <div className="w-full flex mt-4 gap-2">
           <Tooltip title="Creator" variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
+            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
               <Icon.User className="w-4 h-auto mr-1" />
               <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{shortcut.creator.nickname}</span>
             </div>
           </Tooltip>
           <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
+            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
               <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
               {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm">
+            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
               <Icon.BarChart2 className="w-4 h-auto mr-1" />
               {shortcut.view} visits
             </div>
@@ -175,7 +177,7 @@ const ShortcutDetail = () => {
         </div>
 
         <div className="w-full flex flex-col mt-8">
-          <h3 id="analytics" className="pl-1 font-medium text-lg flex flex-row justify-start items-center">
+          <h3 id="analytics" className="pl-1 font-medium text-lg flex flex-row justify-start items-center dark:text-gray-400">
             <Icon.BarChart2 className="w-6 h-auto mr-1" />
             {t("analytics.self")}
           </h3>
