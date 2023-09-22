@@ -4,10 +4,11 @@ import (
 	"context"
 	"testing"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/store"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/bcrypt"
+
+	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/store"
 )
 
 func TestUserStore(t *testing.T) {

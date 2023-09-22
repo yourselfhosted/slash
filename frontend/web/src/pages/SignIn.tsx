@@ -28,7 +28,7 @@ const SignIn: React.FC = () => {
     }
 
     if (mode === "demo") {
-      setEmail("steven@usememos.com");
+      setEmail("steven@yourselfhosted.com");
       setPassword("secret");
     }
   }, []);

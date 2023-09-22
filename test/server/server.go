@@ -10,16 +10,16 @@ import (
 	"testing"
 	"time"
 
+	"github.com/pkg/errors"
+	// sqlite driver.
+	_ "modernc.org/sqlite"
+
 	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/server"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
 	"github.com/boojack/slash/store/db"
 	"github.com/boojack/slash/test"
-	"github.com/pkg/errors"
-
-	// sqlite driver.
-	_ "modernc.org/sqlite"
 )
 
 type TestingServer struct {

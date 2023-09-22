@@ -2,7 +2,7 @@ package store
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"strings"
 )
 
@@ -102,7 +102,7 @@ func (s *Store) UpdateUser(ctx context.Context, update *UpdateUser) (*User, erro
 	}
 
 	if len(set) == 0 {
-		return nil, fmt.Errorf("no fields to update")
+		return nil, errors.New("no fields to update")
 	}
 
 	stmt := `

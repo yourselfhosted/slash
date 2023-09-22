@@ -3,13 +3,14 @@ package v2
 import (
 	"context"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type WorkspaceService struct {

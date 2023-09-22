@@ -7,11 +7,12 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
+
 	"github.com/boojack/slash/internal/util"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
-	"github.com/labstack/echo/v4"
-	"github.com/pkg/errors"
 )
 
 // Visibility is the type of a shortcut visibility.

@@ -5,13 +5,14 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
+
 	"github.com/boojack/slash/api/auth"
 	"github.com/boojack/slash/internal/util"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/labstack/echo/v4"
-	"github.com/pkg/errors"
 )
 
 const (

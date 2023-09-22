@@ -7,9 +7,10 @@ import (
 	"fmt"
 	"testing"
 
-	apiv1 "github.com/boojack/slash/api/v1"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
+
+	apiv1 "github.com/boojack/slash/api/v1"
 )
 
 func TestUserServer(t *testing.T) {
@@ -31,7 +32,7 @@ func TestUserServer(t *testing.T) {
 	user, err = s.getUserByID(user.ID)
 	require.NoError(t, err)
 	require.Equal(t, signup.Email, user.Email)
-	newEmail := "test@usermemos.com"
+	newEmail := "test@yourselfhosted.com"
 	userPatch := &apiv1.PatchUserRequest{
 		Email: &newEmail,
 	}

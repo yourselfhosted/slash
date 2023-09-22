@@ -4,13 +4,14 @@ import (
 	"context"
 	"database/sql"
 	"embed"
-	"errors"
 	"fmt"
 	"io/fs"
 	"os"
 	"regexp"
 	"sort"
 	"time"
+
+	"github.com/pkg/errors"
 
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/server/version"
@@ -39,7 +40,7 @@ func NewDB(profile *profile.Profile) *DB {
 func (db *DB) Open(ctx context.Context) (err error) {
 	// Ensure a DSN is set before attempting to open the database.
 	if db.profile.DSN == "" {
-		return fmt.Errorf("dsn required")
+		return errors.New("dsn required")
 	}
 
 	// Connect to the database with some sane settings:
@@ -58,7 +59,7 @@ func (db *DB) Open(ctx context.Context) (err error) {
 	// - https://www.sqlite.org/pragma.html
 	sqliteDB, err := sql.Open("sqlite", db.profile.DSN+"?_pragma=foreign_keys(0)&_pragma=busy_timeout(10000)&_pragma=journal_mode(WAL)")
 	if err != nil {
-		return fmt.Errorf("failed to open db with dsn: %s, err: %w", db.profile.DSN, err)
+		return errors.Wrapf(err, "failed to open db with dsn: %s", db.profile.DSN)
 	}
 	db.DBInstance = sqliteDB
 
@@ -68,24 +69,24 @@ func (db *DB) Open(ctx context.Context) (err error) {
 			// If db file not exists, we should create a new one with latest schema.
 			if errors.Is(err, os.ErrNotExist) {
 				if err := db.applyLatestSchema(ctx); err != nil {
-					return fmt.Errorf("failed to apply latest schema, err: %w", err)
+					return errors.Wrap(err, "failed to apply latest schema")
 				}
 			} else {
-				return fmt.Errorf("failed to get db file stat, err: %w", err)
+				return errors.Wrap(err, "failed to get db file stat")
 			}
 		} else {
 			// If db file exists, we should check if we need to migrate the database.
 			currentVersion := version.GetCurrentVersion(db.profile.Mode)
 			migrationHistoryList, err := db.FindMigrationHistoryList(ctx, &MigrationHistoryFind{})
 			if err != nil {
-				return fmt.Errorf("failed to find migration history, err: %w", err)
+				return errors.Wrap(err, "failed to find migration history")
 			}
 			if len(migrationHistoryList) == 0 {
 				_, err := db.UpsertMigrationHistory(ctx, &MigrationHistoryUpsert{
 					Version: currentVersion,
 				})
 				if err != nil {
-					return fmt.Errorf("failed to upsert migration history, err: %w", err)
+					return errors.Wrap(err, "failed to upsert migration history")
 				}
 				return nil
 			}
@@ -103,11 +104,11 @@ func (db *DB) Open(ctx context.Context) (err error) {
 				// backup the raw database file before migration
 				rawBytes, err := os.ReadFile(db.profile.DSN)
 				if err != nil {
-					return fmt.Errorf("failed to read raw database file, err: %w", err)
+					return errors.Wrap(err, "failed to read raw database file")
 				}
 				backupDBFilePath := fmt.Sprintf("%s/slash_%s_%d_backup.db", db.profile.Data, db.profile.Version, time.Now().Unix())
 				if err := os.WriteFile(backupDBFilePath, rawBytes, 0644); err != nil {
-					return fmt.Errorf("failed to write raw database file, err: %w", err)
+					return errors.Wrap(err, "failed to write raw database file")
 				}
 				println("succeed to copy a backup database file")
 
@@ -117,7 +118,7 @@ func (db *DB) Open(ctx context.Context) (err error) {
 					if version.IsVersionGreaterThan(normalizedVersion, latestMigrationHistoryVersion) && version.IsVersionGreaterOrEqualThan(currentVersion, normalizedVersion) {
 						println("applying migration for", normalizedVersion)
 						if err := db.applyMigrationForMinorVersion(ctx, minorVersion); err != nil {
-							return fmt.Errorf("failed to apply minor version migration: %w", err)
+							return errors.Wrap(err, "failed to apply minor version migration")
 						}
 					}
 				}
@@ -133,12 +134,12 @@ func (db *DB) Open(ctx context.Context) (err error) {
 		// In non-prod mode, we should always migrate the database.
 		if _, err := os.Stat(db.profile.DSN); errors.Is(err, os.ErrNotExist) {
 			if err := db.applyLatestSchema(ctx); err != nil {
-				return fmt.Errorf("failed to apply latest schema: %w", err)
+				return errors.Wrap(err, "failed to apply latest schema")
 			}
 			// In demo mode, we should seed the database.
 			if db.profile.Mode == "demo" {
 				if err := db.seed(ctx); err != nil {
-					return fmt.Errorf("failed to seed: %w", err)
+					return errors.Wrap(err, "failed to seed")
 				}
 			}
 		}
@@ -159,11 +160,11 @@ func (db *DB) applyLatestSchema(ctx context.Context) error {
 	latestSchemaPath := fmt.Sprintf("%s/%s/%s", "migration", schemaMode, latestSchemaFileName)
 	buf, err := migrationFS.ReadFile(latestSchemaPath)
 	if err != nil {
-		return fmt.Errorf("failed to read latest schema %q, error %w", latestSchemaPath, err)
+		return errors.Wrapf(err, "failed to read latest schema %q", latestSchemaPath)
 	}
 	stmt := string(buf)
 	if err := db.execute(ctx, stmt); err != nil {
-		return fmt.Errorf("migrate error: statement:%s err=%w", stmt, err)
+		return errors.Wrapf(err, "migrate error: statement %s", stmt)
 	}
 	return nil
 }
@@ -171,7 +172,7 @@ func (db *DB) applyLatestSchema(ctx context.Context) error {
 func (db *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion string) error {
 	filenames, err := fs.Glob(migrationFS, fmt.Sprintf("%s/%s/*.sql", "migration/prod", minorVersion))
 	if err != nil {
-		return fmt.Errorf("failed to read ddl files, err: %w", err)
+		return errors.Wrap(err, "failed to read ddl files")
 	}
 
 	sort.Strings(filenames)
@@ -181,12 +182,12 @@ func (db *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion st
 	for _, filename := range filenames {
 		buf, err := migrationFS.ReadFile(filename)
 		if err != nil {
-			return fmt.Errorf("failed to read minor version migration file, filename=%s err=%w", filename, err)
+			return errors.Wrapf(err, "failed to read minor version migration file, filename %s", filename)
 		}
 		stmt := string(buf)
 		migrationStmt += stmt
 		if err := db.execute(ctx, stmt); err != nil {
-			return fmt.Errorf("migrate error: statement:%s err=%w", stmt, err)
+			return errors.Wrapf(err, "migrate error: statement %s", stmt)
 		}
 	}
 
@@ -195,7 +196,7 @@ func (db *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion st
 	if _, err = db.UpsertMigrationHistory(ctx, &MigrationHistoryUpsert{
 		Version: version,
 	}); err != nil {
-		return fmt.Errorf("failed to upsert migration history with version: %s, err: %w", version, err)
+		return errors.Wrapf(err, "failed to upsert migration history with version %s", version)
 	}
 
 	return nil
@@ -204,7 +205,7 @@ func (db *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion st
 func (db *DB) seed(ctx context.Context) error {
 	filenames, err := fs.Glob(seedFS, fmt.Sprintf("%s/*.sql", "seed"))
 	if err != nil {
-		return fmt.Errorf("failed to read seed files, err: %w", err)
+		return errors.Wrap(err, "failed to read seed files")
 	}
 
 	sort.Strings(filenames)
@@ -213,11 +214,11 @@ func (db *DB) seed(ctx context.Context) error {
 	for _, filename := range filenames {
 		buf, err := seedFS.ReadFile(filename)
 		if err != nil {
-			return fmt.Errorf("failed to read seed file, filename=%s err=%w", filename, err)
+			return errors.Wrapf(err, "failed to read seed file, filename %s", filename)
 		}
 		stmt := string(buf)
 		if err := db.execute(ctx, stmt); err != nil {
-			return fmt.Errorf("seed error: statement:%s err=%w", stmt, err)
+			return errors.Wrapf(err, "seed error: statement %s", stmt)
 		}
 	}
 	return nil
@@ -226,7 +227,7 @@ func (db *DB) seed(ctx context.Context) error {
 // execute runs a single SQL statement within a transaction.
 func (db *DB) execute(ctx context.Context, stmt string) error {
 	if _, err := db.DBInstance.ExecContext(ctx, stmt); err != nil {
-		return fmt.Errorf("failed to execute statement, err: %w", err)
+		return errors.Wrap(err, "failed to execute statement")
 	}
 
 	return nil

@@ -6,11 +6,12 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/h2non/filetype"
+	"github.com/labstack/echo/v4"
+
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
-	"github.com/h2non/filetype"
-	"github.com/labstack/echo/v4"
 )
 
 type ResourceService struct {

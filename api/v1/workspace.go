@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/labstack/echo/v4"
+
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
-	"github.com/labstack/echo/v4"
 )
 
 type WorkspaceProfile struct {

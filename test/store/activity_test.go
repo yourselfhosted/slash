@@ -4,8 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/boojack/slash/store"
 	"github.com/stretchr/testify/require"
+
+	"github.com/boojack/slash/store"
 )
 
 func TestActivityStore(t *testing.T) {

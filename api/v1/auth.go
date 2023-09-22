@@ -7,12 +7,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/boojack/slash/api/auth"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/boojack/slash/api/auth"
+	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/store"
 )
 
 type SignInRequest struct {

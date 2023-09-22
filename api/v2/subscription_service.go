@@ -3,12 +3,13 @@ package v2
 import (
 	"context"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type SubscriptionService struct {

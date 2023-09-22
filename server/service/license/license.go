@@ -4,12 +4,13 @@ import (
 	"context"
 	"time"
 
+	"github.com/pkg/errors"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
-	"github.com/pkg/errors"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type LicenseService struct {

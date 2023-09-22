@@ -2,7 +2,8 @@ package v1
 
 import (
 	"encoding/json"
-	"fmt"
+
+	"github.com/pkg/errors"
 )
 
 type UserSettingKey string
@@ -39,7 +40,7 @@ func (upsert UserSettingUpsert) Validate() error {
 		localeValue := "en"
 		err := json.Unmarshal([]byte(upsert.Value), &localeValue)
 		if err != nil {
-			return fmt.Errorf("failed to unmarshal user setting locale value")
+			return errors.New("failed to unmarshal user setting locale value")
 		}
 
 		invalid := true
@@ -50,10 +51,10 @@ func (upsert UserSettingUpsert) Validate() error {
 			}
 		}
 		if invalid {
-			return fmt.Errorf("invalid user setting locale value")
+			return errors.New("invalid user setting locale value")
 		}
 	} else {
-		return fmt.Errorf("invalid user setting key")
+		return errors.New("invalid user setting key")
 	}
 
 	return nil

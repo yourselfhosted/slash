@@ -6,8 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
 	"google.golang.org/protobuf/encoding/protojson"
+
+	storepb "github.com/boojack/slash/proto/gen/store"
 )
 
 type FindWorkspaceSetting struct {

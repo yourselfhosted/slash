@@ -4,10 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/boojack/slash/api/auth"
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/store"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
@@ -15,6 +11,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	"github.com/boojack/slash/api/auth"
+	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
+	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/store"
 )
 
 type UserService struct {

@@ -6,10 +6,11 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/mssola/useragent"
 	"golang.org/x/exp/slices"
+
+	"github.com/boojack/slash/store"
 )
 
 type ReferenceInfo struct {

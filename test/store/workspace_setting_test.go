@@ -4,10 +4,11 @@ import (
 	"context"
 	"testing"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/store"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
+
+	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/store"
 )
 
 func TestWorkspaceSettingStore(t *testing.T) {

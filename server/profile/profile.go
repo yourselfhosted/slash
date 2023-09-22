@@ -7,8 +7,10 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/boojack/slash/server/version"
+	"github.com/pkg/errors"
 	"github.com/spf13/viper"
+
+	"github.com/boojack/slash/server/version"
 )
 
 // Profile is the configuration to start main server.
@@ -44,7 +46,7 @@ func checkDSN(dataDir string) (string, error) {
 	dataDir = strings.TrimRight(dataDir, "\\/")
 
 	if _, err := os.Stat(dataDir); err != nil {
-		return "", fmt.Errorf("unable to access data folder %s, err %w", dataDir, err)
+		return "", errors.Wrapf(err, "unable to access data folder %s", dataDir)
 	}
 
 	return dataDir, nil

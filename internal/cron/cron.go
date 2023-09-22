@@ -1,3 +1,5 @@
+package cron
+
 // Package cron implements a crontab-like service to execute and schedule
 // repeative tasks/jobs.
 //
@@ -6,13 +8,12 @@
 //	c := cron.New()
 //	c.MustAdd("dailyReport", "0 0 * * *", func() { ... })
 //	c.Start()
-package cron
 
 import (
-	"errors"
-	"fmt"
 	"sync"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 type job struct {
@@ -90,7 +91,7 @@ func (c *Cron) Add(jobID string, cronExpr string, run func()) error {
 
 	schedule, err := NewSchedule(cronExpr)
 	if err != nil {
-		return fmt.Errorf("failed to add new cron job: %w", err)
+		return errors.Wrap(err, "failed to add new cron job")
 	}
 
 	c.jobs[jobID] = &job{

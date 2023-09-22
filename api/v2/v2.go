@@ -4,16 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/server/service/license"
-	"github.com/boojack/slash/store"
 	grpcRuntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/labstack/echo/v4"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
+
+	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
+	"github.com/boojack/slash/server/profile"
+	"github.com/boojack/slash/server/service/license"
+	"github.com/boojack/slash/store"
 )
 
 type APIV2Service struct {

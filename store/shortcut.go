@@ -4,11 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
 	"google.golang.org/protobuf/encoding/protojson"
+
+	storepb "github.com/boojack/slash/proto/gen/store"
 )
 
 // Visibility is the type of a visibility.
@@ -134,7 +136,7 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*st
 		set, args = append(set, "og_metadata = ?"), append(args, string(openGraphMetadataBytes))
 	}
 	if len(set) == 0 {
-		return nil, fmt.Errorf("no update specified")
+		return nil, errors.New("no update specified")
 	}
 	args = append(args, update.ID)
 

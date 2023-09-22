@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"testing"
 
+	// sqlite driver.
+	_ "modernc.org/sqlite"
+
 	"github.com/boojack/slash/store"
 	"github.com/boojack/slash/store/db"
 	test "github.com/boojack/slash/test"
-
-	// sqlite driver.
-	_ "modernc.org/sqlite"
 )
 
 func NewTestingStore(ctx context.Context, t *testing.T) *store.Store {

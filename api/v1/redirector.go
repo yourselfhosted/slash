@@ -8,10 +8,11 @@ import (
 	"net/url"
 	"strings"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/store"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+
+	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/store"
 )
 
 func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {

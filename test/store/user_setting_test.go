@@ -4,9 +4,10 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/store"
-	"github.com/stretchr/testify/require"
 )
 
 func TestUserSettingStore(t *testing.T) {

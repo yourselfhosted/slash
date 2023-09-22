@@ -1,10 +1,11 @@
 package v1
 
 import (
+	"github.com/labstack/echo/v4"
+
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
-	"github.com/labstack/echo/v4"
 )
 
 type APIV1Service struct {

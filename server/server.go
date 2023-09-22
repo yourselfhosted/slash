@@ -8,15 +8,17 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/pkg/errors"
+
 	apiv1 "github.com/boojack/slash/api/v1"
 	apiv2 "github.com/boojack/slash/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
-	"github.com/google/uuid"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 )
 
 type Server struct {
@@ -102,7 +104,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	s.apiV2Service = apiv2.NewAPIV2Service(secret, profile, store, licenseService, s.Profile.Port+1)
 	// Register gRPC gateway as api v2.
 	if err := s.apiV2Service.RegisterGateway(ctx, e); err != nil {
-		return nil, fmt.Errorf("failed to register gRPC gateway: %w", err)
+		return nil, errors.Wrap(err, "failed to register gRPC gateway")
 	}
 
 	// Register resource service.

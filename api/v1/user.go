@@ -6,10 +6,12 @@ import (
 	"net/http"
 	"net/mail"
 
+	"github.com/labstack/echo/v4"
+	"github.com/pkg/errors"
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/boojack/slash/internal/util"
 	"github.com/boojack/slash/store"
-	"github.com/labstack/echo/v4"
-	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -60,13 +62,13 @@ type CreateUserRequest struct {
 
 func (create CreateUserRequest) Validate() error {
 	if create.Email != "" && !validateEmail(create.Email) {
-		return fmt.Errorf("invalid email format")
+		return errors.New("invalid email format")
 	}
 	if create.Nickname != "" && len(create.Nickname) < 3 {
-		return fmt.Errorf("nickname is too short, minimum length is 3")
+		return errors.New("nickname is too short, minimum length is 3")
 	}
 	if len(create.Password) < 3 {
-		return fmt.Errorf("password is too short, minimum length is 3")
+		return errors.New("password is too short, minimum length is 3")
 	}
 
 	return nil
