@@ -6,6 +6,7 @@ import Setting from "../pages/Setting";
 import ShortcutDetail from "../pages/ShortcutDetail";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
+import UserSetting from "../pages/UserSetting";
 import { shortcutService } from "../services";
 
 const router = createBrowserRouter([
@@ -38,7 +39,11 @@ const router = createBrowserRouter([
             },
           },
           {
-            path: "/setting",
+            path: "/setting/general",
+            element: <UserSetting />,
+          },
+          {
+            path: "/setting/workspace",
             element: <Setting />,
           },
         ],

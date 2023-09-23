@@ -10,6 +10,7 @@ import Dropdown from "./common/Dropdown";
 const Header: React.FC = () => {
   const currentUser = useUserStore().getCurrentUser();
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
+  const isAdmin = currentUser.role === "ADMIN";
 
   const handleSignOutButtonClick = async () => {
     await api.signout();
@@ -39,11 +40,19 @@ const Header: React.FC = () => {
               actions={
                 <>
                   <Link
-                    to="/setting"
+                    to="/setting/general"
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                   >
-                    <Icon.Settings className="w-4 h-auto mr-2" /> Setting
+                    <Icon.User className="w-4 h-auto mr-2" /> Profile
                   </Link>
+                  {isAdmin && (
+                    <Link
+                      to="/setting/workspace"
+                      className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                    >
+                      <Icon.Settings className="w-4 h-auto mr-2" /> Setting
+                    </Link>
+                  )}
                   <button
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     onClick={() => setShowAboutDialog(true)}
