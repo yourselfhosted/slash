@@ -3,9 +3,9 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
+import { workspaceService } from "@/services";
 import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
-import { useAppSelector } from "../stores";
 import useUserStore from "../stores/v1/user";
 
 const SignIn: React.FC = () => {
@@ -14,7 +14,7 @@ const SignIn: React.FC = () => {
   const userStore = useUserStore();
   const {
     workspaceProfile: { enableSignup, mode },
-  } = useAppSelector((state) => state.global);
+  } = workspaceService.getState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const actionBtnLoadingState = useLoading(false);

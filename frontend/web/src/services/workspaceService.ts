@@ -5,7 +5,7 @@ import { setWorkspaceState } from "../stores/modules/workspace";
 
 const workspaceService = {
   getState: () => {
-    return store.getState().global;
+    return store.getState().workspace;
   },
 
   initialState: async () => {

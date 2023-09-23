@@ -8,7 +8,7 @@ import useUserStore from "./stores/v1/user";
 import { WorkspaceSetting } from "./types/proto/api/v2/workspace_service";
 
 function App() {
-  const { mode } = useColorScheme();
+  const { mode: colorScheme } = useColorScheme();
   const userStore = useUserStore();
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(WorkspaceSetting.fromPartial({}));
   const [loading, setLoading] = useState(true);
@@ -51,9 +51,9 @@ function App() {
 
   useEffect(() => {
     const root = document.documentElement;
-    if (mode === "light") {
+    if (colorScheme === "light") {
       root.classList.remove("dark");
-    } else if (mode === "dark") {
+    } else if (colorScheme === "dark") {
       root.classList.add("dark");
     } else {
       const darkMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -80,7 +80,7 @@ function App() {
         darkMediaQuery.removeEventListener("change", handleColorSchemeChange);
       };
     }
-  }, [mode]);
+  }, [colorScheme]);
 
   return !loading ? (
     <>

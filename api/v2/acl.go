@@ -72,25 +72,17 @@ func (in *GRPCAuthInterceptor) AuthenticationInterceptor(ctx context.Context, re
 		return nil, status.Errorf(codes.PermissionDenied, "user ID %q is not admin", userID)
 	}
 
-	userAccessTokens, err := in.Store.GetUserAccessTokens(ctx, userID)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get user access tokens")
-	}
-	if !validateAccessToken(accessToken, userAccessTokens) {
-		return nil, status.Errorf(codes.Unauthenticated, "invalid access token")
-	}
-
 	// Stores userID into context.
 	childCtx := context.WithValue(ctx, userIDContextKey, userID)
 	return handler(childCtx, request)
 }
 
-func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessTokenStr string) (int32, error) {
-	if accessTokenStr == "" {
+func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessToken string) (int32, error) {
+	if accessToken == "" {
 		return 0, status.Errorf(codes.Unauthenticated, "access token not found")
 	}
 	claims := &auth.ClaimsMessage{}
-	_, err := jwt.ParseWithClaims(accessTokenStr, claims, func(t *jwt.Token) (any, error) {
+	_, err := jwt.ParseWithClaims(accessToken, claims, func(t *jwt.Token) (any, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS256.Name {
 			return nil, status.Errorf(codes.Unauthenticated, "unexpected access token signing method=%v, expect %v", t.Header["alg"], jwt.SigningMethodHS256)
 		}
@@ -127,6 +119,14 @@ func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessTokenStr 
 	}
 	if user.RowStatus == store.Archived {
 		return 0, status.Errorf(codes.Unauthenticated, "user ID %q has been deactivated by administrators", userID)
+	}
+
+	accessTokens, err := in.Store.GetUserAccessTokens(ctx, user.ID)
+	if err != nil {
+		return 0, errors.Wrapf(err, "failed to get user access tokens")
+	}
+	if !validateAccessToken(accessToken, accessTokens) {
+		return 0, status.Errorf(codes.Unauthenticated, "invalid access token")
 	}
 
 	return userID, nil

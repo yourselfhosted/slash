@@ -122,7 +122,32 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 	})
 
 	g.POST("/auth/logout", func(c echo.Context) error {
+		ctx := c.Request().Context()
 		RemoveTokensAndCookies(c)
+		accessToken := findAccessToken(c)
+		userID, _ := getUserIDFromAccessToken(accessToken, secret)
+		userAccessTokens, err := s.Store.GetUserAccessTokens(ctx, userID)
+		// Auto remove the current access token from the user access tokens.
+		if err == nil && len(userAccessTokens) != 0 {
+			accessTokens := []*storepb.AccessTokensUserSetting_AccessToken{}
+			for _, userAccessToken := range userAccessTokens {
+				if accessToken != userAccessToken.AccessToken {
+					accessTokens = append(accessTokens, userAccessToken)
+				}
+			}
+
+			if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
+				UserId: userID,
+				Key:    storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS,
+				Value: &storepb.UserSetting_AccessTokens{
+					AccessTokens: &storepb.AccessTokensUserSetting{
+						AccessTokens: accessTokens,
+					},
+				},
+			}); err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to upsert user setting, err: %s", err)).SetInternal(err)
+			}
+		}
 		c.Response().WriteHeader(http.StatusOK)
 		return nil
 	})

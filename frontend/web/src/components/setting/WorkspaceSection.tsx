@@ -9,7 +9,7 @@ import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_service";
 const WorkspaceSection: React.FC = () => {
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(WorkspaceSetting.fromPartial({}));
   const originalWorkspaceSetting = useRef<WorkspaceSetting>(WorkspaceSetting.fromPartial({}));
-  const allowToSave = !isEqual(originalWorkspaceSetting.current, workspaceSetting);
+  const allowSave = !isEqual(originalWorkspaceSetting.current, workspaceSetting);
 
   useEffect(() => {
     workspaceServiceClient.getWorkspaceSetting({}).then(({ setting }) => {
@@ -86,7 +86,7 @@ const WorkspaceSection: React.FC = () => {
         <p className="mt-2 text-gray-500">Once enabled, other users can signup.</p>
       </div>
       <div>
-        <Button variant="outlined" color="neutral" disabled={!allowToSave} onClick={handleSaveWorkspaceSetting}>
+        <Button variant="outlined" color="neutral" disabled={!allowSave} onClick={handleSaveWorkspaceSetting}>
           Save
         </Button>
       </div>
