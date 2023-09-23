@@ -94,11 +94,11 @@ func (s *Store) ListUserSettings(ctx context.Context, find *FindUserSetting) ([]
 			}
 		} else if userSetting.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
 			userSetting.Value = &storepb.UserSetting_Locale{
-				Locale: convertUserSettingLocaleFromString(valueString),
+				Locale: storepb.LocaleUserSetting(storepb.LocaleUserSetting_value[valueString]),
 			}
 		} else if userSetting.Key == storepb.UserSettingKey_USER_SETTING_COLOR_THEME {
 			userSetting.Value = &storepb.UserSetting_ColorTheme{
-				ColorTheme: convertUserSettingColorThemeFromString(valueString),
+				ColorTheme: storepb.ColorThemeUserSetting(storepb.ColorThemeUserSetting_value[valueString]),
 			}
 		} else {
 			return nil, errors.New("invalid user setting key")
@@ -171,28 +171,4 @@ func (s *Store) GetUserAccessTokens(ctx context.Context, userID int32) ([]*store
 
 	accessTokensUserSetting := userSetting.GetAccessTokens()
 	return accessTokensUserSetting.AccessTokens, nil
-}
-
-func convertUserSettingLocaleFromString(s string) storepb.LocaleUserSetting {
-	switch s {
-	case "LOCALE_USER_SETTING_EN":
-		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_EN
-	case "LOCALE_USER_SETTING_ZH":
-		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_ZH
-	default:
-		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_UNSPECIFIED
-	}
-}
-
-func convertUserSettingColorThemeFromString(s string) storepb.ColorThemeUserSetting {
-	switch s {
-	case "COLOR_THEME_USER_SETTING_SYSTEM":
-		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_SYSTEM
-	case "COLOR_THEME_USER_SETTING_LIGHT":
-		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_LIGHT
-	case "COLOR_THEME_USER_SETTING_DARK":
-		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_DARK
-	default:
-		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_UNSPECIFIED
-	}
 }
