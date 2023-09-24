@@ -12,9 +12,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	apiv1 "github.com/boojack/slash/api/v1"
 	apiv2 "github.com/boojack/slash/api/v2"
+	"github.com/boojack/slash/internal/log"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/server/service/license"
@@ -117,7 +119,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 func (s *Server) Start(ctx context.Context) error {
 	// Load subscription.
 	if _, err := s.licenseService.LoadSubscription(ctx); err != nil {
-		println("failed to load subscription", err)
+		log.Error("failed to load subscription", zap.Error(err))
 	}
 	// Start gRPC server.
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%d", s.Profile.Port+1))

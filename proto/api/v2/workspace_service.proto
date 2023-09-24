@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package slash.api.v2;
 
+import "api/v2/subscription_service.proto";
 import "google/api/annotations.proto";
 
 option go_package = "gen/api/v2";
@@ -22,12 +23,16 @@ service WorkspaceService {
 }
 
 message WorkspaceProfile {
+  // Current workspace mode: dev, prod.
   string mode = 1;
-  bool enable_signup = 2;
+  // The workspace plan.
+  PlanType plan = 2;
+  // Whether to enable other users to sign up.
+  bool enable_signup = 3;
   // The custom style.
-  string custom_style = 3;
+  string custom_style = 4;
   // The custom script.
-  string custom_script = 4;
+  string custom_script = 5;
 }
 
 message WorkspaceSetting {
