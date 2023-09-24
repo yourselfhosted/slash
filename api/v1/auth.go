@@ -13,6 +13,7 @@ import (
 
 	"github.com/boojack/slash/api/auth"
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 )
 
@@ -75,6 +76,16 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 		}
 		if enableSignUpSetting != nil && !enableSignUpSetting.GetEnableSignup() {
 			return echo.NewHTTPError(http.StatusForbidden, "sign up has been disabled")
+		}
+
+		if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
+			userList, err := s.Store.ListUsers(ctx, &store.FindUser{})
+			if err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to list users").SetInternal(err)
+			}
+			if len(userList) >= 5 {
+				return echo.NewHTTPError(http.StatusBadRequest, "Maximum number of users reached")
+			}
 		}
 
 		signup := &SignUpRequest{}

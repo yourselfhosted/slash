@@ -81,7 +81,7 @@ func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUse
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
 		}
-		if len(userList) >= 3 {
+		if len(userList) >= 5 {
 			return nil, status.Errorf(codes.ResourceExhausted, "maximum number of users reached")
 		}
 	}

@@ -11,6 +11,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/boojack/slash/internal/util"
+	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 )
 
@@ -100,6 +101,16 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		}
 		if currentUser.Role != store.RoleAdmin {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Unauthorized to create user")
+		}
+
+		if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
+			userList, err := s.Store.ListUsers(ctx, &store.FindUser{})
+			if err != nil {
+				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to list users").SetInternal(err)
+			}
+			if len(userList) >= 5 {
+				return echo.NewHTTPError(http.StatusBadRequest, "Maximum number of users reached")
+			}
 		}
 
 		userCreate := &CreateUserRequest{}
