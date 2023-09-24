@@ -15,21 +15,24 @@ import (
 	"github.com/boojack/slash/api/auth"
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 )
 
 type UserService struct {
 	apiv2pb.UnimplementedUserServiceServer
 
-	Secret string
-	Store  *store.Store
+	Secret         string
+	Store          *store.Store
+	LicenseService *license.LicenseService
 }
 
 // NewUserService creates a new UserService.
-func NewUserService(secret string, store *store.Store) *UserService {
+func NewUserService(secret string, store *store.Store, licenseService *license.LicenseService) *UserService {
 	return &UserService{
-		Secret: secret,
-		Store:  store,
+		Secret:         secret,
+		Store:          store,
+		LicenseService: licenseService,
 	}
 }
 
@@ -71,6 +74,16 @@ func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUse
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
+	}
+
+	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
+		userList, err := s.Store.ListUsers(ctx, &store.FindUser{})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
+		}
+		if len(userList) >= 3 {
+			return nil, status.Errorf(codes.ResourceExhausted, "maximum number of users reached")
+		}
 	}
 
 	user, err := s.Store.CreateUser(ctx, &store.User{

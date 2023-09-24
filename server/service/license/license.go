@@ -96,6 +96,10 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 	return s.LoadSubscription(ctx)
 }
 
+func (s *LicenseService) GetSubscription(ctx context.Context) (*apiv2pb.Subscription, error) {
+	return s.LoadSubscription(ctx)
+}
+
 func (s *LicenseService) IsFeatureEnabled(feature FeatureType) bool {
 	matrix, ok := FeatureMatrix[feature]
 	if !ok {
