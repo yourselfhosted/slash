@@ -33,7 +33,7 @@ func NewWorkspaceService(profile *profile.Profile, store *store.Store, licenseSe
 func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *apiv2pb.GetWorkspaceProfileRequest) (*apiv2pb.GetWorkspaceProfileResponse, error) {
 	profile := &apiv2pb.WorkspaceProfile{
 		Mode: s.Profile.Mode,
-		Plan: apiv2pb.PlanType_PRO,
+		Plan: apiv2pb.PlanType_FREE,
 	}
 
 	// Load subscription plan from license service.

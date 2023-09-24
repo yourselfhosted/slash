@@ -111,7 +111,7 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 			}
 			workspaceSetting.Value = &storepb.WorkspaceSetting_AutoBackup{AutoBackup: autoBackupSetting}
 		} else {
-			return nil, errors.New("invalid workspace setting key")
+			continue
 		}
 		list = append(list, workspaceSetting)
 	}
