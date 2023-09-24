@@ -74,7 +74,9 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.G
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list workspace settings: %v", err)
 	}
-	workspaceSetting := &apiv2pb.WorkspaceSetting{}
+	workspaceSetting := &apiv2pb.WorkspaceSetting{
+		EnableSignup: true,
+	}
 	for _, v := range workspaceSettings {
 		if v.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
 			workspaceSetting.EnableSignup = v.GetEnableSignup()
