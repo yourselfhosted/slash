@@ -104,7 +104,7 @@ const SignIn: React.FC = () => {
               </Button>
             </div>
           </form>
-          {workspaceStore.setting.enableSignup && (
+          {workspaceStore.profile.enableSignup && (
             <p className="w-full mt-4 text-sm">
               <span className="dark:text-gray-500">{"Don't have an account yet?"}</span>
               <Link to="/auth/signup" className="cursor-pointer ml-2 text-blue-600 hover:underline">

@@ -4,6 +4,7 @@ import "strings"
 
 var allowedMethodsWhenUnauthorized = map[string]bool{
 	"/slash.api.v2.WorkspaceService/GetWorkspaceProfile": true,
+	"/slash.api.v2.WorkspaceService/GetWorkspaceSetting": true,
 }
 
 // isUnauthorizeAllowedMethod returns true if the method is allowed to be called when the user is not authorized.

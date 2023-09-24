@@ -27,7 +27,7 @@ const SignUp: React.FC = () => {
       });
     }
 
-    if (!workspaceStore.setting.enableSignup) {
+    if (!workspaceStore.profile.enableSignup) {
       return navigateTo("/auth", {
         replace: true,
       });
