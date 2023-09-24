@@ -20,6 +20,7 @@ import (
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/server/service/license"
+	"github.com/boojack/slash/server/service/resource"
 	"github.com/boojack/slash/store"
 )
 
@@ -110,7 +111,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	}
 
 	// Register resource service.
-	resourceService := NewResourceService(profile, store)
+	resourceService := resource.NewResourceService(profile, store)
 	resourceService.Register(rootGroup)
 
 	return s, nil
