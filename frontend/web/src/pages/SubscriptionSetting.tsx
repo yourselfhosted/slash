@@ -1,5 +1,5 @@
 import { Alert, Button, Divider, Link, Textarea } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import Icon from "@/components/Icon";
 import SubscriptionFAQ from "@/components/SubscriptionFAQ";
@@ -16,17 +16,12 @@ const SubscriptionSetting: React.FC = () => {
   const isAdmin = currentUser.role === "ADMIN";
   const profile = workspaceStore.profile;
 
-  useEffect(() => {
-    if (!isAdmin) {
-      window.location.href = "/";
-    }
-  }, []);
-
-  if (!isAdmin) {
-    return null;
-  }
-
   const handleUpdateLicenseKey = async () => {
+    if (!isAdmin) {
+      toast.error("Only admin can upload license key");
+      return;
+    }
+
     try {
       const { subscription } = await subscriptionServiceClient.updateSubscription({
         licenseKey,
