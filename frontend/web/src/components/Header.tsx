@@ -1,6 +1,8 @@
 import { Avatar } from "@mui/joy";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useWorkspaceStore from "@/stores/v1/workspace";
+import { PlanType } from "@/types/proto/api/v2/subscription_service";
 import * as api from "../helpers/api";
 import useUserStore from "../stores/v1/user";
 import AboutDialog from "./AboutDialog";
@@ -8,8 +10,10 @@ import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
 
 const Header: React.FC = () => {
+  const workspaceStore = useWorkspaceStore();
   const currentUser = useUserStore().getCurrentUser();
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
+  const profile = workspaceStore.profile;
   const isAdmin = currentUser.role === "ADMIN";
 
   const handleSignOutButtonClick = async () => {
@@ -23,9 +27,14 @@ const Header: React.FC = () => {
         <div className="w-full max-w-6xl mx-auto px-3 md:px-12 py-5 flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center shrink mr-2">
             <Link to="/" className="text-lg cursor-pointer flex flex-row justify-start items-center dark:text-gray-400">
-              <img src="/logo.png" className="w-8 h-auto mr-2 -mt-0.5 dark:opacity-80" alt="" />
+              <img id="logo-img" src="/logo.png" className="w-8 h-auto mr-2 -mt-0.5 dark:opacity-80" alt="" />
               Slash
             </Link>
+            {profile.plan === PlanType.PRO && (
+              <span className="ml-1 text-xs px-1.5 leading-5 border rounded-full bg-blue-600 border-blue-700 text-white shadow dark:opacity-70">
+                PRO
+              </span>
+            )}
           </div>
           <div className="relative flex-shrink-0">
             <Dropdown

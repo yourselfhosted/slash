@@ -1,11 +1,9 @@
-import { workspaceService } from "../services";
+import useWorkspaceStore from "@/stores/v1/workspace";
 import Icon from "./Icon";
 
 const DemoBanner: React.FC = () => {
-  const {
-    workspaceProfile: { mode },
-  } = workspaceService.getState();
-  const shouldShow = mode === "demo";
+  const workspaceStore = useWorkspaceStore();
+  const shouldShow = workspaceStore.profile.mode === "demo";
 
   if (!shouldShow) return null;
 

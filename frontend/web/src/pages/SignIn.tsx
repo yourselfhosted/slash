@@ -3,7 +3,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { workspaceService } from "@/services";
+import useWorkspaceStore from "@/stores/v1/workspace";
 import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
 import useUserStore from "../stores/v1/user";
@@ -12,9 +12,7 @@ const SignIn: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const userStore = useUserStore();
-  const {
-    workspaceProfile: { enableSignup, mode },
-  } = workspaceService.getState();
+  const workspaceStore = useWorkspaceStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const actionBtnLoadingState = useLoading(false);
@@ -27,7 +25,7 @@ const SignIn: React.FC = () => {
       });
     }
 
-    if (mode === "demo") {
+    if (workspaceStore.profile.mode === "demo") {
       setEmail("steven@yourselfhosted.com");
       setPassword("secret");
     }
@@ -72,7 +70,7 @@ const SignIn: React.FC = () => {
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
-            <img src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
+            <img id="logo-img" src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
             <span className="text-3xl opacity-80 dark:text-gray-500">Slash</span>
           </div>
           <form className="w-full mt-6" onSubmit={handleSigninBtnClick}>
@@ -105,7 +103,7 @@ const SignIn: React.FC = () => {
               </Button>
             </div>
           </form>
-          {enableSignup && (
+          {workspaceStore.setting.enableSignup && (
             <p className="w-full mt-4 text-sm">
               <span className="dark:text-gray-500">{"Don't have an account yet?"}</span>
               <Link to="/auth/signup" className="cursor-pointer ml-2 text-blue-600 hover:underline">

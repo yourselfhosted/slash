@@ -3,18 +3,16 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
+import useWorkspaceStore from "@/stores/v1/workspace";
 import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
-import { workspaceService } from "../services";
 import useUserStore from "../stores/v1/user";
 
 const SignUp: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const userStore = useUserStore();
-  const {
-    workspaceProfile: { enableSignup },
-  } = workspaceService.getState();
+  const workspaceStore = useWorkspaceStore();
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +26,7 @@ const SignUp: React.FC = () => {
       });
     }
 
-    if (!enableSignup) {
+    if (!workspaceStore.setting.enableSignup) {
       return navigate("/auth", {
         replace: true,
       });
@@ -79,7 +77,7 @@ const SignUp: React.FC = () => {
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
-            <img src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
+            <img id="logo-img" src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
             <span className="text-3xl opacity-80 dark:text-gray-500">Slash</span>
           </div>
           <p className="w-full text-2xl mt-6 dark:text-gray-500">Create your account</p>

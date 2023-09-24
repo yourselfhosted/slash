@@ -1,12 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
+import SignIn from "@/pages/SignIn";
+import SignUp from "@/pages/SignUp";
+import SubscriptionSetting from "@/pages/SubscriptionSetting";
+import UserSetting from "@/pages/UserSetting";
+import WorkspaceSetting from "@/pages/WorkspaceSetting";
 import App from "../App";
 import Root from "../layouts/Root";
 import Home from "../pages/Home";
-import Setting from "../pages/Setting";
 import ShortcutDetail from "../pages/ShortcutDetail";
-import SignIn from "../pages/SignIn";
-import SignUp from "../pages/SignUp";
-import UserSetting from "../pages/UserSetting";
 import { shortcutService } from "../services";
 
 const router = createBrowserRouter([
@@ -44,7 +45,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/setting/workspace",
-            element: <Setting />,
+            element: <WorkspaceSetting />,
+          },
+          {
+            path: "/setting/subscription",
+            element: <SubscriptionSetting />,
           },
         ],
       },

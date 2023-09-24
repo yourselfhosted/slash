@@ -62,6 +62,20 @@ const PreferenceSection: React.FC = () => {
     <>
       <div className="w-full flex flex-col justify-start items-start gap-y-2">
         <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Preference</p>
+        <div className="w-full flex flex-row justify-between items-center">
+          <div className="flex flex-row justify-start items-center gap-x-1">
+            <span className="dark:text-gray-400">Color Theme</span>
+          </div>
+          <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value as UserSetting_ColorTheme)}>
+            {colorThemeOptions.map((option) => {
+              return (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              );
+            })}
+          </Select>
+        </div>
         {releaseGuard() && (
           <div className="w-full flex flex-row justify-between items-center">
             <div className="flex flex-row justify-start items-center gap-x-1">
@@ -79,21 +93,6 @@ const PreferenceSection: React.FC = () => {
             </Select>
           </div>
         )}
-        <div className="w-full flex flex-row justify-between items-center">
-          <div className="flex flex-row justify-start items-center gap-x-1">
-            <span className="dark:text-gray-400">Color Theme</span>
-            <BetaBadge />
-          </div>
-          <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value as UserSetting_ColorTheme)}>
-            {colorThemeOptions.map((option) => {
-              return (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              );
-            })}
-          </Select>
-        </div>
       </div>
     </>
   );
