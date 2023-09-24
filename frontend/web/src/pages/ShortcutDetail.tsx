@@ -4,7 +4,8 @@ import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
+import useNavigateTo from "@/hooks/useNavigateTo";
 import { showCommonDialog } from "../components/Alert";
 import AnalyticsView from "../components/AnalyticsView";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
@@ -23,7 +24,7 @@ interface State {
 
 const ShortcutDetail = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
   const shortcutId = (useLoaderData() as Shortcut).id;
   const shortcut = shortcutService.getShortcutById(shortcutId) as Shortcut;
   const currentUser = useUserStore().getCurrentUser();
@@ -56,7 +57,7 @@ const ShortcutDetail = () => {
       style: "danger",
       onConfirm: async () => {
         await shortcutService.deleteShortcutById(shortcut.id);
-        navigate("/", {
+        navigateTo("/", {
           replace: true,
         });
       },

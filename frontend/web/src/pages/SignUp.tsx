@@ -2,7 +2,8 @@ import { Button, Input } from "@mui/joy";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import useNavigateTo from "@/hooks/useNavigateTo";
 import useWorkspaceStore from "@/stores/v1/workspace";
 import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
@@ -10,7 +11,7 @@ import useUserStore from "../stores/v1/user";
 
 const SignUp: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
   const userStore = useUserStore();
   const workspaceStore = useWorkspaceStore();
   const [email, setEmail] = useState("");
@@ -21,13 +22,13 @@ const SignUp: React.FC = () => {
 
   useEffect(() => {
     if (userStore.getCurrentUser()) {
-      return navigate("/", {
+      return navigateTo("/", {
         replace: true,
       });
     }
 
     if (!workspaceStore.setting.enableSignup) {
-      return navigate("/auth", {
+      return navigateTo("/auth", {
         replace: true,
       });
     }
@@ -59,7 +60,7 @@ const SignUp: React.FC = () => {
       await api.signup(email, nickname, password);
       const user = await userStore.fetchCurrentUser();
       if (user) {
-        navigate("/", {
+        navigateTo("/", {
           replace: true,
         });
       } else {

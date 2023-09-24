@@ -69,7 +69,7 @@ const Home: React.FC = () => {
         </div>
         <FilterView />
         {loadingState.isLoading ? (
-          <div className="py-12 w-full flex flex-row justify-center items-center opacity-80">
+          <div className="py-12 w-full flex flex-row justify-center items-center opacity-80 dark:text-gray-500">
             <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
             loading
           </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import useNavigateTo from "@/hooks/useNavigateTo";
 import { shortcutService } from "../services";
 import useUserStore from "../stores/v1/user";
 import { showCommonDialog } from "./Alert";
@@ -16,7 +16,7 @@ interface Props {
 const ShortcutActionsDropdown = (props: Props) => {
   const { shortcut } = props;
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
   const currentUser = useUserStore().getCurrentUser();
   const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
@@ -34,7 +34,7 @@ const ShortcutActionsDropdown = (props: Props) => {
   };
 
   const gotoAnalytics = () => {
-    navigate(`/shortcut/${shortcut.id}#analytics`);
+    navigateTo(`/shortcut/${shortcut.id}#analytics`);
   };
 
   return (

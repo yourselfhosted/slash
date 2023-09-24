@@ -2,13 +2,14 @@ import { useColorScheme } from "@mui/joy";
 import { isEqual } from "lodash-es";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import useNavigateTo from "@/hooks/useNavigateTo";
 import { UserSetting_ColorTheme } from "@/types/proto/api/v2/user_setting_service";
 import Header from "../components/Header";
 import useUserStore from "../stores/v1/user";
 
 const Root: React.FC = () => {
-  const navigate = useNavigate();
+  const navigateTo = useNavigateTo();
   const { setMode } = useColorScheme();
   const { i18n } = useTranslation();
   const userStore = useUserStore();
@@ -18,7 +19,7 @@ const Root: React.FC = () => {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/auth", {
+      navigateTo("/auth", {
         replace: true,
       });
       return;

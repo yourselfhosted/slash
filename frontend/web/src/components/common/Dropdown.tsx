@@ -1,5 +1,4 @@
-import { ReactNode, useEffect, useRef } from "react";
-import useToggle from "../../hooks/useToggle";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import Icon from "../Icon";
 
 interface Props {
@@ -11,14 +10,14 @@ interface Props {
 
 const Dropdown: React.FC<Props> = (props: Props) => {
   const { trigger, actions, className, actionsClassName } = props;
-  const [dropdownStatus, toggleDropdownStatus] = useToggle(false);
+  const [dropdownStatus, setDropdownStatus] = useState(false);
   const dropdownWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (dropdownStatus) {
       const handleClickOutside = (event: MouseEvent) => {
         if (!dropdownWrapperRef.current?.contains(event.target as Node)) {
-          toggleDropdownStatus(false);
+          setDropdownStatus(false);
         }
       };
 
@@ -35,7 +34,7 @@ const Dropdown: React.FC<Props> = (props: Props) => {
 
   const handleToggleDropdownStatus = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
-    toggleDropdownStatus();
+    setDropdownStatus(!dropdownStatus);
   };
 
   return (
