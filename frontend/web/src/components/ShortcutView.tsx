@@ -50,9 +50,9 @@ const ShortcutView = (props: Props) => {
                   target="_blank"
                 >
                   <div className="truncate">
-                    <span>{shortcut.title}</span>
+                    <span className="dark:text-gray-400">{shortcut.title}</span>
                     {shortcut.title ? (
-                      <span className="text-gray-400">(s/{shortcut.name})</span>
+                      <span className="text-gray-500">(s/{shortcut.name})</span>
                     ) : (
                       <>
                         <span className="text-gray-400 dark:text-gray-500">s/</span>
