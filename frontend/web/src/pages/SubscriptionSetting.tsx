@@ -55,7 +55,7 @@ const SubscriptionSetting: React.FC = () => {
         <div className="w-full flex justify-between items-center mt-4">
           <div>
             {profile.plan === PlanType.FREE && (
-              <Link href="https://yourselfhosted.lemonsqueezy.com/checkout?cart=df958121-81ad-4815-8b28-3f2d8e9c8e51" target="_blank">
+              <Link href="https://yourselfhosted.lemonsqueezy.com/checkout/buy/d03a2696-8a8b-49c9-9e19-d425e3884fd7" target="_blank">
                 Buy a license key
                 <Icon.ExternalLink className="w-4 h-auto ml-1" />
               </Link>
@@ -137,7 +137,7 @@ const SubscriptionSetting: React.FC = () => {
                 <Link
                   className="w-full"
                   underline="none"
-                  href="https://yourselfhosted.lemonsqueezy.com/checkout?cart=df958121-81ad-4815-8b28-3f2d8e9c8e51"
+                  href="https://yourselfhosted.lemonsqueezy.com/checkout/buy/d03a2696-8a8b-49c9-9e19-d425e3884fd7"
                   target="_blank"
                 >
                   <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500 shadow hover:opacity-80">Get Started</Button>
