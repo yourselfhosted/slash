@@ -1,8 +1,7 @@
 import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { useStorage } from "@plasmohq/storage/hook";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
-import useFaviconStore from "../stores/favicon";
+import { getFaviconWithGoogleS2 } from "@/helpers/utils";
 import Icon from "./Icon";
 
 interface Props {
@@ -11,17 +10,8 @@ interface Props {
 
 const ShortcutView = (props: Props) => {
   const { shortcut } = props;
-  const faviconStore = useFaviconStore();
   const [domain] = useStorage<string>("domain", "");
-  const [favicon, setFavicon] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
-      if (url) {
-        setFavicon(url);
-      }
-    });
-  }, [shortcut.link]);
+  const favicon = getFaviconWithGoogleS2(shortcut.link);
 
   const handleShortcutLinkClick = () => {
     const shortcutLink = `${domain}/s/${shortcut.name}`;

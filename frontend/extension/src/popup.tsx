@@ -86,7 +86,8 @@ const IndexPopup = () => {
             </>
           ) : (
             <div className="w-full flex flex-col justify-start items-center">
-              <p>No domain and access token found.</p>
+              <Icon.Cookie strokeWidth={1} className="w-20 h-auto mb-4 text-gray-400" />
+              <p>Please set your domain and access token first.</p>
               <div className="w-full flex flex-row justify-center items-center py-4">
                 <Button size="sm" color="primary" onClick={handleSettingButtonClick}>
                   <Icon.Settings className="w-5 h-auto mr-1" /> Setting
