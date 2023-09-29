@@ -22,7 +22,7 @@ const ShortcutView = (props: Props) => {
     <>
       <div
         className={classNames(
-          "group w-full px-3 py-2 flex flex-col justify-start items-start border rounded-lg hover:bg-gray-100 hover:shadow"
+          "group w-full px-3 py-2 flex flex-col justify-start items-start border rounded-lg hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
         )}
       >
         <div className="w-full flex flex-row justify-start items-center">
@@ -42,13 +42,13 @@ const ShortcutView = (props: Props) => {
                 onClick={handleShortcutLinkClick}
               >
                 <div className="truncate">
-                  <span>{shortcut.title}</span>
+                  <span className="dark:text-gray-400">{shortcut.title}</span>
                   {shortcut.title ? (
-                    <span className="text-gray-400">(s/{shortcut.name})</span>
+                    <span className="text-gray-500">(s/{shortcut.name})</span>
                   ) : (
                     <>
-                      <span className="text-gray-400">s/</span>
-                      <span className="truncate">{shortcut.name}</span>
+                      <span className="text-gray-400 dark:text-gray-500">s/</span>
+                      <span className="truncate dark:text-gray-400">{shortcut.name}</span>
                     </>
                   )}
                 </div>
