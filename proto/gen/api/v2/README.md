@@ -1006,7 +1006,6 @@
 | ----- | ---- | ----- | ----------- |
 | license_key | [string](#string) |  |  |
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
-| resource_relative_path | [string](#string) |  | The relative path of the resource directory. |
 | custom_style | [string](#string) |  | The custom style. |
 | custom_script | [string](#string) |  | The custom script. |
 | auto_backup | [AutoBackupWorkspaceSetting](#slash-api-v2-AutoBackupWorkspaceSetting) |  | The auto backup setting. |

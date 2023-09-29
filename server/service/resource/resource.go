@@ -9,9 +9,12 @@ import (
 	"github.com/h2non/filetype"
 	"github.com/labstack/echo/v4"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
+)
+
+const (
+	resourceRelativePath = "resources"
 )
 
 type ResourceService struct {
@@ -27,21 +30,9 @@ func NewResourceService(profile *profile.Profile, store *store.Store) *ResourceS
 }
 
 // Register registers the resource service to the echo server.
-func (s *ResourceService) Register(g *echo.Group) {
+func (*ResourceService) Register(g *echo.Group) {
 	g.GET("/resources/:id", func(c echo.Context) error {
-		ctx := c.Request().Context()
 		resourceID := c.Param("resourceId")
-		resourceRelativePathSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-			Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH,
-		})
-		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "failed to workspace resource relative path setting").SetInternal(err)
-		}
-		if resourceRelativePathSetting == nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "found no workspace resource relative path setting")
-		}
-
-		resourceRelativePath := resourceRelativePathSetting.GetResourceRelativePath()
 		resourcePath := fmt.Sprintf("%s/%s", resourceRelativePath, resourceID)
 		buf, err := os.ReadFile(resourcePath)
 		if err != nil {

@@ -310,7 +310,6 @@
 | license_key | [string](#string) |  |  |
 | secret_session | [string](#string) |  |  |
 | enable_signup | [bool](#bool) |  |  |
-| resource_relative_path | [string](#string) |  |  |
 | custom_style | [string](#string) |  |  |
 | custom_script | [string](#string) |  |  |
 | auto_backup | [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting) |  |  |
@@ -333,10 +332,9 @@
 | WORKSPACE_SETTING_LICENSE_KEY | 1 | The license key. |
 | WORKSPACE_SETTING_SECRET_SESSION | 2 | The secret session key used to encrypt session data. |
 | WORKSAPCE_SETTING_ENABLE_SIGNUP | 3 | Whether to enable other users to sign up. |
-| WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH | 4 | The relative path of the resource directory. |
-| WORKSPACE_SETTING_CUSTOM_STYLE | 5 | The custom style. |
-| WORKSPACE_SETTING_CUSTOM_SCRIPT | 6 | The custom script. |
-| WORKSPACE_SETTING_AUTO_BACKUP | 7 | The auto backup setting. |
+| WORKSPACE_SETTING_CUSTOM_STYLE | 4 | The custom style. |
+| WORKSPACE_SETTING_CUSTOM_SCRIPT | 5 | The custom script. |
+| WORKSPACE_SETTING_AUTO_BACKUP | 6 | The auto backup setting. |
 
 
  

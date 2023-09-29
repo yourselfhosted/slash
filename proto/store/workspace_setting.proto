@@ -11,10 +11,9 @@ message WorkspaceSetting {
     string license_key = 2;
     string secret_session = 3;
     bool enable_signup = 4;
-    string resource_relative_path = 5;
-    string custom_style = 6;
-    string custom_script = 7;
-    AutoBackupWorkspaceSetting auto_backup = 8;
+    string custom_style = 5;
+    string custom_script = 6;
+    AutoBackupWorkspaceSetting auto_backup = 7;
   }
 }
 
@@ -26,14 +25,12 @@ enum WorkspaceSettingKey {
   WORKSPACE_SETTING_SECRET_SESSION = 2;
   // Whether to enable other users to sign up.
   WORKSAPCE_SETTING_ENABLE_SIGNUP = 3;
-  // The relative path of the resource directory.
-  WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH = 4;
   // The custom style.
-  WORKSPACE_SETTING_CUSTOM_STYLE = 5;
+  WORKSPACE_SETTING_CUSTOM_STYLE = 4;
   // The custom script.
-  WORKSPACE_SETTING_CUSTOM_SCRIPT = 6;
+  WORKSPACE_SETTING_CUSTOM_SCRIPT = 5;
   // The auto backup setting.
-  WORKSPACE_SETTING_AUTO_BACKUP = 7;
+  WORKSPACE_SETTING_AUTO_BACKUP = 6;
 }
 
 message AutoBackupWorkspaceSetting {

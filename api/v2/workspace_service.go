@@ -88,8 +88,6 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.G
 			// For some settings, only admin can get the value.
 			if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY {
 				workspaceSetting.LicenseKey = v.GetLicenseKey()
-			} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH {
-				workspaceSetting.ResourceRelativePath = v.GetResourceRelativePath()
 			}
 		}
 	}
@@ -118,15 +116,6 @@ func (s *WorkspaceService) UpdateWorkspaceSetting(ctx context.Context, request *
 				Key: storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP,
 				Value: &storepb.WorkspaceSetting_EnableSignup{
 					EnableSignup: request.Setting.EnableSignup,
-				},
-			}); err != nil {
-				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
-			}
-		} else if path == "resource_relative_path" {
-			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
-				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_RESOURCE_RELATIVE_PATH,
-				Value: &storepb.WorkspaceSetting_ResourceRelativePath{
-					ResourceRelativePath: request.Setting.ResourceRelativePath,
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)

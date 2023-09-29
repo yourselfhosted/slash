@@ -39,14 +39,12 @@ message WorkspaceSetting {
   string license_key = 1;
   // Whether to enable other users to sign up.
   bool enable_signup = 2;
-  // The relative path of the resource directory.
-  string resource_relative_path = 3;
   // The custom style.
-  string custom_style = 4;
+  string custom_style = 3;
   // The custom script.
-  string custom_script = 5;
+  string custom_script = 4;
   // The auto backup setting.
-  AutoBackupWorkspaceSetting auto_backup = 6;
+  AutoBackupWorkspaceSetting auto_backup = 5;
 }
 
 message AutoBackupWorkspaceSetting {
