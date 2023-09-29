@@ -16,8 +16,8 @@ const ShortcutsContainer: React.FC<Props> = (props: Props) => {
   return (
     <div
       className={classNames(
-        "w-full grid grid-cols-1 gap-y-2 sm:gap-2",
-        displayStyle === "full" ? "sm:grid-cols-2" : "grid-cols-2 sm:grid-cols-4 gap-2"
+        "w-full grid grid-cols-1 gap-3 sm:gap-4",
+        displayStyle === "full" ? "sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-2 sm:grid-cols-4"
       )}
     >
       {shortcutList.map((shortcut) => {

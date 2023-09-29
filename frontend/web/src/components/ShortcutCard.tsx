@@ -102,16 +102,16 @@ const ShortcutView = (props: Props) => {
           })}
           {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm font-mono leading-4 italic">No tags</span>}
         </div>
-        <div className="w-full flex mt-2 gap-2">
+        <div className="w-full flex mt-2 gap-2 overflow-x-auto">
           <Tooltip title="Creator" variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
+            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center flex-nowra whitespace-nowrap border rounded-full text-gray-500 text-sm dark:border-zinc-800">
               <Icon.User className="w-4 h-auto mr-1" />
               <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{shortcut.creator.nickname}</span>
             </div>
           </Tooltip>
           <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
             <div
-              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm dark:border-zinc-800"
+              className="w-auto px-2 leading-6 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap border rounded-full cursor-pointer text-gray-500 text-sm dark:border-zinc-800"
               onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
             >
               <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
@@ -121,7 +121,7 @@ const ShortcutView = (props: Props) => {
           <Tooltip title="View count" variant="solid" placement="top" arrow>
             <Link
               to={`/shortcut/${shortcut.id}#analytics`}
-              className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full cursor-pointer text-gray-500 text-sm dark:border-zinc-800"
+              className="w-auto px-2 leading-6 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap border rounded-full cursor-pointer text-gray-500 text-sm dark:border-zinc-800"
             >
               <Icon.BarChart2 className="w-4 h-auto mr-1" />
               {shortcut.view} visits
