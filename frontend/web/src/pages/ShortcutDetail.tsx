@@ -1,7 +1,7 @@
 import { Tooltip } from "@mui/joy";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useLoaderData } from "react-router-dom";
@@ -13,9 +13,8 @@ import GenerateQRCodeDialog from "../components/GenerateQRCodeDialog";
 import Icon from "../components/Icon";
 import VisibilityIcon from "../components/VisibilityIcon";
 import Dropdown from "../components/common/Dropdown";
-import { absolutifyLink } from "../helpers/utils";
+import { absolutifyLink, getFaviconWithGoogleS2 } from "../helpers/utils";
 import { shortcutService } from "../services";
-import useFaviconStore from "../stores/v1/favicon";
 import useUserStore from "../stores/v1/user";
 
 interface State {
@@ -28,22 +27,13 @@ const ShortcutDetail = () => {
   const shortcutId = (useLoaderData() as Shortcut).id;
   const shortcut = shortcutService.getShortcutById(shortcutId) as Shortcut;
   const currentUser = useUserStore().getCurrentUser();
-  const faviconStore = useFaviconStore();
   const [state, setState] = useState<State>({
     showEditModal: false,
   });
-  const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
   const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
-
-  useEffect(() => {
-    faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
-      if (url) {
-        setFavicon(url);
-      }
-    });
-  }, [shortcut.link]);
+  const favicon = getFaviconWithGoogleS2(shortcut.link);
 
   const handleCopyButtonClick = () => {
     copy(shortcutLink);

@@ -1,8 +1,6 @@
 import classNames from "classnames";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { absolutifyLink } from "../helpers/utils";
-import useFaviconStore from "../stores/v1/favicon";
+import { absolutifyLink, getFaviconWithGoogleS2 } from "../helpers/utils";
 import Icon from "./Icon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";
 
@@ -12,17 +10,8 @@ interface Props {
 
 const ShortcutView = (props: Props) => {
   const { shortcut } = props;
-  const faviconStore = useFaviconStore();
-  const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
-
-  useEffect(() => {
-    faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
-      if (url) {
-        setFavicon(url);
-      }
-    });
-  }, [shortcut.link]);
+  const favicon = getFaviconWithGoogleS2(shortcut.link);
 
   return (
     <>

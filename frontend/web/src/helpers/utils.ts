@@ -13,3 +13,12 @@ export const absolutifyLink = (rel: string): string => {
 export const releaseGuard = () => {
   return import.meta.env.MODE === "development";
 };
+
+export const getFaviconWithGoogleS2 = (url: string) => {
+  try {
+    const urlObject = new URL(url);
+    return `https://www.google.com/s2/favicons?sz=128&domain=${urlObject.hostname}`;
+  } catch (error) {
+    return undefined;
+  }
+};

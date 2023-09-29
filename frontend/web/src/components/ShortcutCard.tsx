@@ -1,12 +1,10 @@
 import { Tooltip } from "@mui/joy";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
-import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { absolutifyLink } from "../helpers/utils";
-import useFaviconStore from "../stores/v1/favicon";
+import { absolutifyLink, getFaviconWithGoogleS2 } from "../helpers/utils";
 import useViewStore from "../stores/v1/view";
 import Icon from "./Icon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";
@@ -20,17 +18,8 @@ const ShortcutView = (props: Props) => {
   const { shortcut } = props;
   const { t } = useTranslation();
   const viewStore = useViewStore();
-  const faviconStore = useFaviconStore();
-  const [favicon, setFavicon] = useState<string | undefined>(undefined);
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
-
-  useEffect(() => {
-    faviconStore.getOrFetchUrlFavicon(shortcut.link).then((url) => {
-      if (url) {
-        setFavicon(url);
-      }
-    });
-  }, [shortcut.link]);
+  const favicon = getFaviconWithGoogleS2(shortcut.link);
 
   const handleCopyButtonClick = () => {
     copy(shortcutLink);

@@ -71,7 +71,3 @@ export function patchShortcut(shortcutPatch: ShortcutPatch) {
 export function deleteShortcutById(shortcutId: ShortcutId) {
   return axios.delete(`/api/v1/shortcut/${shortcutId}`);
 }
-
-export function getUrlFavicon(url: string) {
-  return axios.get<string>(`/api/v1/url/favicon?url=${url}`);
-}
