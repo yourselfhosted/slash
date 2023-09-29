@@ -1,7 +1,7 @@
 {
   "name": "slash-extension",
   "displayName": "Slash",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "An open source, self-hosted bookmarks and link sharing platform. Save and share your links very easily.",
   "scripts": {
     "dev": "plasmo dev",
