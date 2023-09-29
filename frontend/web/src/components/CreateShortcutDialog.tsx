@@ -4,6 +4,7 @@ import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { useAppSelector } from "@/stores";
 import useLoading from "../hooks/useLoading";
 import { shortcutService } from "../services";
 import Icon from "./Icon";
@@ -23,6 +24,7 @@ const visibilities: Visibility[] = ["PRIVATE", "WORKSPACE", "PUBLIC"];
 const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, shortcutId } = props;
   const { t } = useTranslation();
+  const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
     shortcutCreate: {
       name: "",
@@ -41,6 +43,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   const [showAdditionalFields, setShowAdditionalFields] = useState<boolean>(false);
   const [showOpenGraphMetadata, setShowOpenGraphMetadata] = useState<boolean>(false);
   const [tag, setTag] = useState<string>("");
+  const tagSuggestions = shortcutList.map((shortcut) => shortcut.tags).flat();
   const requestState = useLoading(false);
   const isCreating = isUndefined(shortcutId);
 
@@ -149,6 +152,14 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
     });
   };
 
+  const handleTagSuggestionsClick = (suggestion: string) => {
+    if (tag === "") {
+      setTag(suggestion);
+    } else {
+      setTag(`${tag} ${suggestion}`);
+    }
+  };
+
   const handleSaveBtnClick = async () => {
     if (!state.shortcutCreate.name) {
       toast.error("Name is required");
@@ -220,6 +231,22 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Tags</span>
             <Input className="w-full" type="text" placeholder="github slash" value={tag} onChange={handleTagsInputChange} />
+            {tagSuggestions.length > 0 && (
+              <div className="w-full flex flex-row justify-start items-start mt-2">
+                <Icon.Asterisk className="w-4 h-auto shrink-0 mx-1 text-gray-400 dark:text-gray-600" />
+                <div className="w-auto flex flex-row justify-start items-start flex-wrap gap-x-2 gap-y-1">
+                  {tagSuggestions.map((tag) => (
+                    <span
+                      className="text-gray-600 dark:text-gray-500 cursor-pointer max-w-[6rem] truncate block text-sm flex-nowrap leading-4 hover:text-black dark:hover:text-gray-400"
+                      key={tag}
+                      onClick={() => handleTagSuggestionsClick(tag)}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Visibility</span>
