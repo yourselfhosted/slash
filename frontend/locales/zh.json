@@ -31,6 +31,7 @@
     "operating-system": "操作系统"
   },
   "shortcut": {
+    "visits": "{{count}} 次访问",
     "visibility": {
       "private": {
         "self": "私有的",
@@ -45,6 +46,13 @@
         "description": "对任何人可见"
       }
     }
+  },
+  "filter": {
+    "all": "所有",
+    "mine": "我的",
+    "compact-mode": "紧凑模式",
+    "order-by": "排序方式",
+    "direction": "方向"
   },
   "user": {
     "self": "用户",

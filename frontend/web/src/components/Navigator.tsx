@@ -1,9 +1,11 @@
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../stores";
 import useViewStore from "../stores/v1/view";
 import Icon from "./Icon";
 
 const Navigator = () => {
+  const { t } = useTranslation();
   const viewStore = useViewStore();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const tags = shortcutList.map((shortcut) => shortcut.tags).flat();
@@ -22,7 +24,7 @@ const Navigator = () => {
         onClick={() => viewStore.setFilter({ tab: "tab:all" })}
       >
         <Icon.CircleSlash className="w-4 h-auto mr-1" />
-        <span className="font-normal">All</span>
+        <span className="font-normal">{t("filter.all")}</span>
       </button>
       <button
         className={classNames(
@@ -34,7 +36,7 @@ const Navigator = () => {
         onClick={() => viewStore.setFilter({ tab: "tab:mine" })}
       >
         <Icon.User className="w-4 h-auto mr-1" />
-        <span className="font-normal">Mine</span>
+        <span className="font-normal">{t("filter.mine")}</span>
       </button>
       {Array.from(sortedTagMap.keys()).map((tag) => (
         <button

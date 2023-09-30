@@ -66,11 +66,11 @@ const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Email</span>
+            <span className="mb-2">{t("common.email")}</span>
             <Input className="w-full" type="text" value={email} onChange={handleEmailChanged} />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Nickname</span>
+            <span className="mb-2">{t("user.nickname")}</span>
             <Input className="w-full" type="text" value={nickname} onChange={handleNicknameChanged} />
           </div>
           <div className="w-full flex flex-row justify-end items-center space-x-2">

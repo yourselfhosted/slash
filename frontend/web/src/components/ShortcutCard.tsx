@@ -124,7 +124,7 @@ const ShortcutView = (props: Props) => {
               className="w-auto px-2 leading-6 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap border rounded-full cursor-pointer text-gray-500 text-sm dark:border-zinc-800"
             >
               <Icon.BarChart2 className="w-4 h-auto mr-1" />
-              {shortcut.view} visits
+              {t("shortcut.visits", { count: shortcut.view })}
             </Link>
           </Tooltip>
         </div>

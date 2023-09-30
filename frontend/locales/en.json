@@ -31,6 +31,7 @@
     "operating-system": "Operating System"
   },
   "shortcut": {
+    "visits": "{{count}} visits",
     "visibility": {
       "private": {
         "self": "Private",
@@ -45,6 +46,13 @@
         "description": "Visible to everyone on the internet"
       }
     }
+  },
+  "filter": {
+    "all": "All",
+    "mine": "Mine",
+    "compact-mode": "Compact mode",
+    "order-by": "Order by",
+    "direction": "Direction"
   },
   "user": {
     "self": "User",
