@@ -1,6 +1,6 @@
 import { Button, Divider, Input, Modal, ModalDialog, Radio, RadioGroup, Textarea } from "@mui/joy";
 import classnames from "classnames";
-import { isUndefined } from "lodash-es";
+import { isUndefined, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,7 @@ import Icon from "./Icon";
 
 interface Props {
   shortcutId?: ShortcutId;
+  initialShortcut?: Partial<Shortcut>;
   onClose: () => void;
   onConfirm?: () => void;
 }
@@ -22,7 +23,7 @@ interface State {
 const visibilities: Visibility[] = ["PRIVATE", "WORKSPACE", "PUBLIC"];
 
 const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
-  const { onClose, onConfirm, shortcutId } = props;
+  const { onClose, onConfirm, shortcutId, initialShortcut } = props;
   const { t } = useTranslation();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
@@ -38,12 +39,13 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
         description: "",
         image: "",
       },
+      ...initialShortcut,
     },
   });
   const [showAdditionalFields, setShowAdditionalFields] = useState<boolean>(false);
   const [showOpenGraphMetadata, setShowOpenGraphMetadata] = useState<boolean>(false);
   const [tag, setTag] = useState<string>("");
-  const tagSuggestions = shortcutList.map((shortcut) => shortcut.tags).flat();
+  const tagSuggestions = uniq(shortcutList.map((shortcut) => shortcut.tags).flat());
   const requestState = useLoading(false);
   const isCreating = isUndefined(shortcutId);
 

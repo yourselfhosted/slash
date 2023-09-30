@@ -30,7 +30,7 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to get shortcut, err: %s", err)).SetInternal(err)
 		}
 		if shortcut == nil {
-			return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("not found shortcut with name: %s", shortcutName))
+			return c.Redirect(http.StatusSeeOther, fmt.Sprintf("/404?shortcut=%s", shortcutName))
 		}
 		if shortcut.Visibility != storepb.Visibility_PUBLIC {
 			userID, ok := c.Get(userIDContextKey).(int32)
