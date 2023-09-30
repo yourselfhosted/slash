@@ -81,7 +81,7 @@ const SignUp: React.FC = () => {
             <img id="logo-img" src="/logo.png" className="w-12 h-auto mr-2 -mt-1" alt="logo" />
             <span className="text-3xl opacity-80 dark:text-gray-500">Slash</span>
           </div>
-          <p className="w-full text-2xl mt-6 dark:text-gray-500">Create your account</p>
+          <p className="w-full text-2xl mt-6 dark:text-gray-500">{t("auth.create-your-account")}</p>
           <form className="w-full mt-4" onSubmit={handleSignupBtnClick}>
             <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
               <div className="w-full flex flex-col mb-2">
@@ -112,14 +112,14 @@ const SignUp: React.FC = () => {
                 disabled={actionBtnLoadingState.isLoading || !allowConfirm}
                 onClick={handleSignupBtnClick}
               >
-                Sign up
+                {t("auth.sign-up")}
               </Button>
             </div>
           </form>
           <p className="w-full mt-4 text-sm">
             <span className="dark:text-gray-500">{"Already has an account?"}</span>
             <Link to="/auth" className="cursor-pointer ml-2 text-blue-600 hover:underline">
-              Sign in
+              {t("auth.sign-in")}
             </Link>
           </p>
         </div>

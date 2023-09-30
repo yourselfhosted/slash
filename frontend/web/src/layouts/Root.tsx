@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
 import useNavigateTo from "@/hooks/useNavigateTo";
-import { UserSetting_ColorTheme } from "@/types/proto/api/v2/user_setting_service";
+import { UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service";
 import Header from "../components/Header";
 import useUserStore from "../stores/v1/user";
 
@@ -34,7 +34,7 @@ const Root: React.FC = () => {
       return;
     }
 
-    if (isEqual(currentUserSetting.locale, "LOCALE_ZH")) {
+    if (isEqual(currentUserSetting.locale, UserSetting_Locale.LOCALE_ZH)) {
       i18n.changeLanguage("zh");
     } else {
       i18n.changeLanguage("en");

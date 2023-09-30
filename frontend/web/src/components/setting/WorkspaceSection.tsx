@@ -2,11 +2,13 @@ import { Button, Checkbox, Textarea } from "@mui/joy";
 import { isEqual } from "lodash-es";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
 import useWorkspaceStore from "@/stores/v1/workspace";
 import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_service";
 
 const WorkspaceSection: React.FC = () => {
+  const { t } = useTranslation();
   const workspaceStore = useWorkspaceStore();
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(workspaceStore.setting);
   const originalWorkspaceSetting = useRef<WorkspaceSetting>(workspaceStore.setting);
@@ -56,9 +58,9 @@ const WorkspaceSection: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col justify-start items-start space-y-4">
-      <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Workspace settings</p>
+      <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">{t("settings.workspace.self")}</p>
       <div className="w-full flex flex-col justify-start items-start">
-        <p className="mt-2 dark:text-gray-400">Custom style</p>
+        <p className="mt-2 dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
         <Textarea
           className="w-full mt-2"
           minRows={2}
@@ -69,15 +71,15 @@ const WorkspaceSection: React.FC = () => {
       </div>
       <div className="w-full flex flex-col justify-start items-start">
         <Checkbox
-          label="Enable user signup"
+          label={t("settings.workspace.enable-user-signup.self")}
           checked={workspaceSetting.enableSignup}
           onChange={(event) => handleEnableSignUpChange(event.target.checked)}
         />
-        <p className="mt-2 text-gray-500">Once enabled, other users can signup.</p>
+        <p className="mt-2 text-gray-500">{t("settings.workspace.enable-user-signup.description")}</p>
       </div>
       <div>
         <Button variant="outlined" color="neutral" disabled={!allowSave} onClick={handleSaveWorkspaceSetting}>
-          Save
+          {t("common.save")}
         </Button>
       </div>
     </div>

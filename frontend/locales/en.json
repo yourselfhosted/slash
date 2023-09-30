@@ -11,7 +11,14 @@
     "language": "Language",
     "search": "Search",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "account": "Account"
+  },
+  "auth": {
+    "sign-in": "Sign in",
+    "sign-up": "Sign up",
+    "sign-out": "Sign out",
+    "create-your-account": "Create your account"
   },
   "analytics": {
     "self": "Analytics",
@@ -36,6 +43,31 @@
       "public": {
         "self": "Public",
         "description": "Visible to everyone on the internet"
+      }
+    }
+  },
+  "user": {
+    "self": "User",
+    "nickname": "Nickname",
+    "email": "Email",
+    "role": "Role",
+    "profile": "Profile",
+    "action": {
+      "add-user": "Add user"
+    }
+  },
+  "settings": {
+    "self": "Setting",
+    "preference": {
+      "self": "Preference",
+      "color-theme": "Color theme"
+    },
+    "workspace": {
+      "self": "Workspace settings",
+      "custom-style": "Custom style",
+      "enable-user-signup": {
+        "self": "Enable user signup",
+        "description": "Once enabled, other users can signup."
       }
     }
   }

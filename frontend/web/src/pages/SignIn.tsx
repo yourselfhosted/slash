@@ -100,7 +100,7 @@ const SignIn: React.FC = () => {
                 disabled={actionBtnLoadingState.isLoading || !allowConfirm}
                 onClick={handleSigninBtnClick}
               >
-                Sign in
+                {t("auth.sign-in")}
               </Button>
             </div>
           </form>
@@ -108,7 +108,7 @@ const SignIn: React.FC = () => {
             <p className="w-full mt-4 text-sm">
               <span className="dark:text-gray-500">{"Don't have an account yet?"}</span>
               <Link to="/auth/signup" className="cursor-pointer ml-2 text-blue-600 hover:underline">
-                Sign up
+                {t("auth.sign-up")}
               </Link>
             </p>
           )}

@@ -1,5 +1,6 @@
 import { Avatar } from "@mui/joy";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import useWorkspaceStore from "@/stores/v1/workspace";
 import { PlanType } from "@/types/proto/api/v2/subscription_service";
@@ -10,6 +11,7 @@ import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
 
 const Header: React.FC = () => {
+  const { t } = useTranslation();
   const workspaceStore = useWorkspaceStore();
   const currentUser = useUserStore().getCurrentUser();
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
@@ -52,27 +54,27 @@ const Header: React.FC = () => {
                     to="/setting/general"
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                   >
-                    <Icon.User className="w-4 h-auto mr-2" /> Profile
+                    <Icon.User className="w-4 h-auto mr-2" /> {t("user.profile")}
                   </Link>
                   {isAdmin && (
                     <Link
                       to="/setting/workspace"
                       className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     >
-                      <Icon.Settings className="w-4 h-auto mr-2" /> Setting
+                      <Icon.Settings className="w-4 h-auto mr-2" /> {t("settings.self")}
                     </Link>
                   )}
                   <button
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     onClick={() => setShowAboutDialog(true)}
                   >
-                    <Icon.Info className="w-4 h-auto mr-2" /> About
+                    <Icon.Info className="w-4 h-auto mr-2" /> {t("common.about")}
                   </button>
                   <button
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     onClick={() => handleSignOutButtonClick()}
                   >
-                    <Icon.LogOut className="w-4 h-auto mr-2" /> Sign out
+                    <Icon.LogOut className="w-4 h-auto mr-2" /> {t("auth.sign-out")}
                   </button>
                 </>
               }

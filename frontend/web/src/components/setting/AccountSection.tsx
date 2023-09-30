@@ -15,7 +15,7 @@ const AccountSection: React.FC = () => {
   return (
     <>
       <div className="w-full flex flex-col justify-start items-start gap-y-2">
-        <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Account</p>
+        <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">{t("common.account")}</p>
         <p className="flex flex-row justify-start items-center mt-2 dark:text-gray-400">
           <span className="text-xl">{currentUser.nickname}</span>
           {isAdmin && <span className="ml-2 bg-blue-600 text-white px-2 leading-6 text-sm rounded-full">Admin</span>}

@@ -1,12 +1,14 @@
 import { Button, IconButton } from "@mui/joy";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import useUserStore from "../../stores/v1/user";
 import { showCommonDialog } from "../Alert";
 import CreateUserDialog from "../CreateUserDialog";
 import Icon from "../Icon";
 
 const MemberSection = () => {
+  const { t } = useTranslation();
   const userStore = useUserStore();
   const [showCreateUserDialog, setShowCreateUserDialog] = useState<boolean>(false);
   const [currentEditingUser, setCurrentEditingUser] = useState<User | undefined>(undefined);
@@ -43,7 +45,7 @@ const MemberSection = () => {
         <div className="w-full">
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">
-              <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Users</p>
+              <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">{t("user.self")}</p>
               <p className="mt-2 text-sm text-gray-700 dark:text-gray-600">
                 A list of all the users in your workspace including their nickname, email and role.
               </p>
@@ -57,7 +59,7 @@ const MemberSection = () => {
                   setCurrentEditingUser(undefined);
                 }}
               >
-                Add user
+                {t("user.action.add-user")}
               </Button>
             </div>
           </div>
@@ -68,20 +70,20 @@ const MemberSection = () => {
                   <thead>
                     <tr>
                       <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
-                        Nickname
+                        {t("user.nickname")}
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
-                        Email
+                        {t("user.email")}
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
-                        Role
+                        {t("user.role")}
                       </th>
                       <th scope="col" className="relative py-3.5 pl-3 pr-4">
-                        <span className="sr-only">Edit</span>
+                        <span className="sr-only">{t("common.edit")}</span>
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {userList.map((user) => (
                       <tr key={user.email}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">{user.nickname}</td>

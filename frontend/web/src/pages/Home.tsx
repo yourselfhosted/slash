@@ -71,7 +71,7 @@ const Home: React.FC = () => {
         {loadingState.isLoading ? (
           <div className="py-12 w-full flex flex-row justify-center items-center opacity-80 dark:text-gray-500">
             <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
-            loading
+            {t("common.loading")}
           </div>
         ) : orderedShortcutList.length === 0 ? (
           <div className="py-16 w-full flex flex-col justify-center items-center text-gray-400">

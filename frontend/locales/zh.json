@@ -11,7 +11,14 @@
     "language": "语言",
     "search": "搜索",
     "email": "邮箱",
-    "password": "密码"
+    "password": "密码",
+    "account": "账号"
+  },
+  "auth": {
+    "sign-in": "登录",
+    "sign-up": "注册",
+    "sign-out": "退出登录",
+    "create-your-account": "创建账号"
   },
   "analytics": {
     "self": "分析",
@@ -36,6 +43,31 @@
       "public": {
         "self": "公开的",
         "description": "对任何人可见"
+      }
+    }
+  },
+  "user": {
+    "self": "用户",
+    "nickname": "昵称",
+    "email": "邮箱",
+    "role": "角色",
+    "profile": "账号",
+    "action": {
+      "add-user": "添加用户"
+    }
+  },
+  "settings": {
+    "self": "设置",
+    "preference": {
+      "self": "偏好设置",
+      "color-theme": "主题"
+    },
+    "workspace": {
+      "self": "系统设置",
+      "custom-style": "自定义样式",
+      "enable-user-signup": {
+        "self": "启用用户注册",
+        "description": "允许其他用户注册新账号"
       }
     }
   }

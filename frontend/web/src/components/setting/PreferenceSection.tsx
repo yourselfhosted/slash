@@ -1,6 +1,5 @@
 import { Option, Select } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { releaseGuard } from "@/helpers/utils";
 import { UserSetting, UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service";
 import useUserStore from "../../stores/v1/user";
 import BetaBadge from "../BetaBadge";
@@ -61,10 +60,10 @@ const PreferenceSection: React.FC = () => {
   return (
     <>
       <div className="w-full flex flex-col justify-start items-start gap-y-2">
-        <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Preference</p>
+        <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">{t("settings.preference.self")}</p>
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center gap-x-1">
-            <span className="dark:text-gray-400">Color Theme</span>
+            <span className="dark:text-gray-400">{t("settings.preference.color-theme")}</span>
           </div>
           <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value as UserSetting_ColorTheme)}>
             {colorThemeOptions.map((option) => {
@@ -76,23 +75,21 @@ const PreferenceSection: React.FC = () => {
             })}
           </Select>
         </div>
-        {releaseGuard() && (
-          <div className="w-full flex flex-row justify-between items-center">
-            <div className="flex flex-row justify-start items-center gap-x-1">
-              <span className="dark:text-gray-400">{t("common.language")}</span>
-              <BetaBadge />
-            </div>
-            <Select defaultValue={language} onChange={(_, value) => handleSelectLanguage(value as UserSetting_Locale)}>
-              {languageOptions.map((option) => {
-                return (
-                  <Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Option>
-                );
-              })}
-            </Select>
+        <div className="w-full flex flex-row justify-between items-center">
+          <div className="flex flex-row justify-start items-center gap-x-1">
+            <span className="dark:text-gray-400">{t("common.language")}</span>
+            <BetaBadge />
           </div>
-        )}
+          <Select defaultValue={language} onChange={(_, value) => handleSelectLanguage(value as UserSetting_Locale)}>
+            {languageOptions.map((option) => {
+              return (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              );
+            })}
+          </Select>
+        </div>
       </div>
     </>
   );
