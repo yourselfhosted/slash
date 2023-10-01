@@ -8,7 +8,7 @@ Slash provides a browser extension to help you use your shortcuts in the search 
 
 For Chromuim based browsers, you can install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg).
 
-For Firefox, we don't support the Firefox Add-ons platform yet. And we are working on it.
+For Firefox, you can install the extension from the [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/your-slash/).
 
 ### Generate an access token
 

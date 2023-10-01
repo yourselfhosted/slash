@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-<a href="https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg"><b>🧩 Browser extension now available!</b></a></p>
+<a href="https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg"><b>🧩 Browser extension(v1.0.0)  now available!</b></a></p>
 
 ![demo](./resources/demo.png)
 
@@ -38,8 +38,12 @@ Slash provides a browser extension to help you use your shortcuts in the search 
 
 ![browser-extension-example](./resources/browser-extension-example.png)
 
+Learn more in [The Browser Extension of Slash](https://github.com/boojack/slash/blob/main/docs/install-browser-extension.md).
+
 ### Chromium based browsers
 
 For Chromium based browsers(Chrome, Edge, Arc, ...), you can install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg).
 
-Learn more in [The Browser Extension of Slash](https://github.com/boojack/slash/blob/main/docs/install-browser-extension.md).
+### Firefox
+
+For Firefox, you can install the extension from the [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/your-slash/).
