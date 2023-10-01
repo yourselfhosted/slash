@@ -4,7 +4,7 @@
 
 **Slash** is an open source, self-hosted bookmarks and link sharing platform. It allows you to organize your links with tags, and share them using custom shortened URLs. Slash also supports team sharing of link libraries for easy collaboration.
 
-🧩 Browser extension(v1.0.0) now available! - [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg), [Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/your-slash/)
+🧩 Browser extension(v1.0.0) now available! - [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg), [Firefox Add-on](https://addons.mozilla.org/firefox/addon/your-slash/)
 
 <a href="https://demo.slash.yourselfhosted.com">Live Demo</a> • <a href="https://discord.gg/QZqUuUAhDV">Discord</a>
 
@@ -45,4 +45,4 @@ For Chromium based browsers(Chrome, Edge, Arc, ...), you can install the extensi
 
 ### Firefox
 
-For Firefox, you can install the extension from the [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/your-slash/).
+For Firefox, you can install the extension from the [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/your-slash/).
