@@ -4,15 +4,14 @@
 
 **Slash** is an open source, self-hosted bookmarks and link sharing platform. It allows you to organize your links with tags, and share them using custom shortened URLs. Slash also supports team sharing of link libraries for easy collaboration.
 
+🧩 Browser extension(v1.0.0) now available! - [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg), [Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/your-slash/)
+
 <a href="https://demo.slash.yourselfhosted.com">Live Demo</a> • <a href="https://discord.gg/QZqUuUAhDV">Discord</a>
 
 <p>
   <a href="https://hub.docker.com/r/yourselfhosted/slash"><img alt="Docker pull" src="https://img.shields.io/docker/pulls/yourselfhosted/slash.svg"/></a>
   <a href="https://github.com/boojack/slash/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/boojack/slash?logo=github"/></a>
 </p>
-
-<p align="center">
-<a href="https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg"><b>🧩 Browser extension(v1.0.0)  now available!</b></a></p>
 
 ![demo](./resources/demo.png)
 
