@@ -29,7 +29,7 @@ const Header: React.FC = () => {
         <div className="w-full max-w-6xl mx-auto px-3 md:px-12 py-5 flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center shrink mr-2">
             <Link to="/" className="text-lg cursor-pointer flex flex-row justify-start items-center dark:text-gray-400">
-              <img id="logo-img" src="/logo.png" className="w-8 h-auto mr-2 -mt-0.5 dark:opacity-80" alt="" />
+              <img id="logo-img" src="/logo.png" className="w-8 h-auto mr-2 -mt-0.5 dark:opacity-80 rounded-full shadow" alt="" />
               Slash
             </Link>
             {profile.plan === PlanType.PRO && (
