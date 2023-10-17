@@ -5,7 +5,8 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "lint": "eslint --ext .js,.ts,.tsx, src",
-    "lint-fix": "eslint --ext .js,.ts,.tsx, src --fix"
+    "lint-fix": "eslint --ext .js,.ts,.tsx, src --fix",
+    "type-gen": "cd ../../proto && buf generate"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -32,6 +33,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@bufbuild/buf": "^1.27.0",
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "@types/lodash-es": "^4.17.9",
     "@types/react": "^18.2.23",

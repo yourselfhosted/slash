@@ -1,26 +1,12 @@
-# Build protobuf.
-FROM golang:1.21-alpine AS protobuf
-WORKDIR /protobuf-generate
-
-COPY . .
-
-RUN GO111MODULE=on GOBIN=/usr/local/bin go install github.com/bufbuild/buf/cmd/buf@v1.26.1
-
-WORKDIR /protobuf-generate/proto
-
-RUN buf generate
-
 # Build frontend dist.
 FROM node:18-alpine AS frontend
 WORKDIR /frontend-build
 
-COPY ./frontend .
+COPY . .
 
-COPY --from=protobuf /protobuf-generate/frontend/web/src/types/proto ./web/src/types/proto
+WORKDIR /frontend-build/frontend/web
 
-WORKDIR /frontend-build/web
-
-RUN corepack enable && pnpm i --frozen-lockfile
+RUN corepack enable && pnpm i --frozen-lockfile && pnpm type-gen
 
 RUN pnpm build
 
@@ -29,7 +15,7 @@ FROM golang:1.21-alpine AS backend
 WORKDIR /backend-build
 
 COPY . .
-COPY --from=frontend /frontend-build/web/dist ./server/dist
+COPY --from=frontend /frontend-build/frontend/web/dist ./server/dist
 
 RUN CGO_ENABLED=0 go build -o slash ./bin/slash/main.go
 
