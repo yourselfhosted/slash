@@ -11,6 +11,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/boojack/slash/internal/util"
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 )
@@ -137,6 +138,7 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 		}
 
 		userMessage := convertUserFromStore(user)
+		metric.Enqueue("user create")
 		return c.JSON(http.StatusOK, userMessage)
 	})
 

@@ -15,6 +15,7 @@ import (
 
 	"github.com/boojack/slash/internal/log"
 	"github.com/boojack/slash/server"
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/store"
 	"github.com/boojack/slash/store/db"
@@ -49,6 +50,9 @@ var (
 				log.Error("failed to create server", zap.Error(err))
 				return
 			}
+
+			// nolint
+			metric.NewMetricClient(s.Secret, *serverProfile)
 
 			c := make(chan os.Signal, 1)
 			// Trigger graceful shutdown on SIGINT or SIGTERM.

@@ -10,6 +10,7 @@ import (
 	"github.com/mssola/useragent"
 	"golang.org/x/exp/slices"
 
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/store"
 )
 
@@ -78,6 +79,7 @@ func (s *APIV1Service) registerAnalyticsRoutes(g *echo.Group) {
 			browserMap[browserName]++
 		}
 
+		metric.Enqueue("shortcut analytics")
 		return c.JSON(http.StatusOK, &AnalysisData{
 			ReferenceData: mapToReferenceInfoSlice(referenceMap),
 			DeviceData:    mapToDeviceInfoSlice(deviceMap),

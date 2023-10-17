@@ -12,6 +12,7 @@ import (
 
 	"github.com/boojack/slash/internal/util"
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/store"
 )
 
@@ -121,6 +122,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to compose shortcut, err: %s", err)).SetInternal(err)
 		}
+		metric.Enqueue("shortcut create")
 		return c.JSON(http.StatusOK, shortcutMessage)
 	})
 

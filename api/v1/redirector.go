@@ -12,6 +12,7 @@ import (
 	"github.com/pkg/errors"
 
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/store"
 )
 
@@ -46,6 +47,7 @@ func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to create activity, err: %s", err)).SetInternal(err)
 		}
 
+		metric.Enqueue("shortcut redirect")
 		return redirectToShortcut(c, shortcut)
 	})
 }

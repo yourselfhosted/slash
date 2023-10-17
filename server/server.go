@@ -18,6 +18,7 @@ import (
 	apiv2 "github.com/boojack/slash/api/v2"
 	"github.com/boojack/slash/internal/log"
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/server/profile"
 	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/server/service/resource"
@@ -29,6 +30,7 @@ type Server struct {
 
 	Profile *profile.Profile
 	Store   *store.Store
+	Secret  string
 
 	licenseService *license.LicenseService
 
@@ -93,11 +95,12 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	secret := "slash"
 	if profile.Mode == "prod" {
 		var err error
-		secret, err = s.getSystemSecretSessionName(ctx)
+		secret, err = s.getSecretSessionName(ctx)
 		if err != nil {
 			return nil, err
 		}
 	}
+	s.Secret = secret
 
 	rootGroup := e.Group("")
 	// Register API v1 routes.
@@ -133,6 +136,7 @@ func (s *Server) Start(ctx context.Context) error {
 		}
 	}()
 
+	metric.Enqueue("server start")
 	return s.e.Start(fmt.Sprintf(":%d", s.Profile.Port))
 }
 
@@ -161,7 +165,7 @@ func grpcRequestSkipper(c echo.Context) bool {
 	return strings.HasPrefix(c.Request().URL.Path, "/slash.api.v2.")
 }
 
-func (s *Server) getSystemSecretSessionName(ctx context.Context) (string, error) {
+func (s *Server) getSecretSessionName(ctx context.Context) (string, error) {
 	secretSessionSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
 	})

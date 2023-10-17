@@ -78,6 +78,7 @@ require (
 	github.com/mssola/useragent v1.0.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1
+	github.com/posthog/posthog-go v0.0.0-20230801140217-d607812dee69
 	go.uber.org/zap v1.21.0
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
 	golang.org/x/mod v0.11.0

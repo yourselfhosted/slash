@@ -13,6 +13,7 @@ import (
 
 	"github.com/boojack/slash/api/auth"
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 )
@@ -63,6 +64,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 
 		cookieExp := time.Now().Add(auth.CookieExpDuration)
 		setTokenCookie(c, auth.AccessTokenCookieName, accessToken, cookieExp)
+		metric.Enqueue("user sign in")
 		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
@@ -129,6 +131,7 @@ func (s *APIV1Service) registerAuthRoutes(g *echo.Group, secret string) {
 
 		cookieExp := time.Now().Add(auth.CookieExpDuration)
 		setTokenCookie(c, auth.AccessTokenCookieName, accessToken, cookieExp)
+		metric.Enqueue("user sign up")
 		return c.JSON(http.StatusOK, convertUserFromStore(user))
 	})
 
