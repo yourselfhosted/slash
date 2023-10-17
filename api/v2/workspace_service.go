@@ -121,10 +121,6 @@ func (s *WorkspaceService) UpdateWorkspaceSetting(ctx context.Context, request *
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
 			}
 		} else if path == "custom_style" {
-			if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeCustomeStyle) {
-				return nil, status.Errorf(codes.PermissionDenied, "feature custom style is not available")
-			}
-
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE,
 				Value: &storepb.WorkspaceSetting_CustomStyle{

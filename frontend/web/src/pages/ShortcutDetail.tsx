@@ -137,14 +137,12 @@ const ShortcutDetail = () => {
         <div className="mt-4 ml-1 flex flex-row justify-start items-start flex-wrap gap-2">
           {shortcut.tags.map((tag) => {
             return (
-              <span key={tag} className="max-w-[8rem] truncate text-gray-400 text font-mono leading-4 dark:text-gray-500">
+              <span key={tag} className="max-w-[8rem] truncate text-gray-400 text leading-4 dark:text-gray-500">
                 #{tag}
               </span>
             );
           })}
-          {shortcut.tags.length === 0 && (
-            <span className="text-gray-400 text-sm font-mono leading-4 italic dark:text-gray-500">No tags</span>
-          )}
+          {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm leading-4 italic dark:text-gray-500">No tags</span>}
         </div>
         <div className="w-full flex mt-4 gap-2">
           <Tooltip title="Creator" variant="solid" placement="top" arrow>

@@ -93,14 +93,14 @@ const ShortcutView = (props: Props) => {
             return (
               <span
                 key={tag}
-                className="max-w-[8rem] truncate text-gray-400 dark:text-gray-500 text-sm font-mono leading-4 cursor-pointer hover:opacity-80"
+                className="max-w-[8rem] truncate text-gray-400 dark:text-gray-500 text-sm leading-4 cursor-pointer hover:opacity-80"
                 onClick={() => viewStore.setFilter({ tag: tag })}
               >
                 #{tag}
               </span>
             );
           })}
-          {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm font-mono leading-4 italic">No tags</span>}
+          {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm leading-4 italic">No tags</span>}
         </div>
         <div className="w-full flex mt-2 gap-2 overflow-x-auto">
           <Tooltip title="Creator" variant="solid" placement="top" arrow>

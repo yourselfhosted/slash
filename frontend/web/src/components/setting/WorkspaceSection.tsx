@@ -63,6 +63,7 @@ const WorkspaceSection: React.FC = () => {
         <p className="mt-2 dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
         <Textarea
           className="w-full mt-2"
+          placeholder="* {font-family: ui-monospace Monaco Consolas;}"
           minRows={2}
           maxRows={5}
           value={workspaceSetting.customStyle}
