@@ -15,7 +15,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/joy": "5.0.0-beta.0",
-    "@plasmohq/storage": "^1.8.0",
+    "@plasmohq/storage": "^1.8.1",
     "axios": "^1.5.1",
     "classnames": "^2.3.2",
     "lodash-es": "^4.17.21",
@@ -24,7 +24,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
-    "zustand": "^4.4.1"
+    "zustand": "^4.4.3"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.27.0",
@@ -34,10 +34,10 @@
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.7.3",
-    "@typescript-eslint/parser": "^6.7.3",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
     "autoprefixer": "^10.4.16",
-    "eslint": "^8.50.0",
+    "eslint": "^8.51.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.33.2",
