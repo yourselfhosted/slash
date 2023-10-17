@@ -31,7 +31,7 @@ WORKDIR /backend-build
 COPY . .
 COPY --from=frontend /frontend-build/web/dist ./server/dist
 
-RUN CGO_ENABLED=0 go build -o slash ./cmd/slash/main.go
+RUN CGO_ENABLED=0 go build -o slash ./bin/slash/main.go
 
 # Make workspace with above generated files.
 FROM alpine:latest AS monolithic
