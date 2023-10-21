@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	grpcRuntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/labstack/echo/v4"
 	"google.golang.org/grpc"
@@ -68,7 +68,7 @@ func (s *APIV2Service) RegisterGateway(ctx context.Context, e *echo.Echo) error 
 		return err
 	}
 
-	gwMux := grpcRuntime.NewServeMux()
+	gwMux := runtime.NewServeMux()
 	if err := apiv2pb.RegisterSubscriptionServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
