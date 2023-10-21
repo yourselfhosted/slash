@@ -36,12 +36,12 @@ func (s *UserSettingService) GetUserSetting(ctx context.Context, request *apiv2p
 }
 
 func (s *UserSettingService) UpdateUserSetting(ctx context.Context, request *apiv2pb.UpdateUserSettingRequest) (*apiv2pb.UpdateUserSettingResponse, error) {
-	if request.UpdateMask == nil || len(request.UpdateMask) == 0 {
+	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}
 
 	userID := ctx.Value(userIDContextKey).(int32)
-	for _, path := range request.UpdateMask {
+	for _, path := range request.UpdateMask.Paths {
 		if path == "locale" {
 			if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
 				UserId: userID,

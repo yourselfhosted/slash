@@ -5,6 +5,7 @@ package slash.api.v2;
 import "api/v2/common.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "gen/api/v2";
@@ -28,10 +29,10 @@ service UserService {
   }
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
     option (google.api.http) = {
-      put: "/api/v2/users/{id}"
+      patch: "/api/v2/users/{user.id}"
       body: "user"
     };
-    option (google.api.method_signature) = "id";
+    option (google.api.method_signature) = "user,update_mask";
   }
   // DeleteUser deletes a user by id.
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
@@ -107,11 +108,9 @@ message CreateUserResponse {
 }
 
 message UpdateUserRequest {
-  int32 id = 1;
+  User user = 1;
 
-  User user = 2;
-
-  repeated string update_mask = 3;
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 message UpdateUserResponse {

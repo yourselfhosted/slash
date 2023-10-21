@@ -636,9 +636,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  |  |
 | user | [User](#slash-api-v2-User) |  |  |
-| update_mask | [string](#string) | repeated |  |
+| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  |  |
 
 
 
@@ -786,7 +785,7 @@
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
 | user_setting | [UserSetting](#slash-api-v2-UserSetting) |  | user_setting is the user setting to update. |
-| update_mask | [string](#string) | repeated | update_mask is the field mask to update. |
+| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  | update_mask is the field mask to update. |
 
 
 
@@ -955,7 +954,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | setting | [WorkspaceSetting](#slash-api-v2-WorkspaceSetting) |  | The user setting. |
-| update_mask | [string](#string) | repeated | The update mask. |
+| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  | The update mask. |
 
 
 

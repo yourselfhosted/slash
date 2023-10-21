@@ -97,11 +97,11 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.G
 }
 
 func (s *WorkspaceService) UpdateWorkspaceSetting(ctx context.Context, request *apiv2pb.UpdateWorkspaceSettingRequest) (*apiv2pb.UpdateWorkspaceSettingResponse, error) {
-	if request.UpdateMask == nil || len(request.UpdateMask) == 0 {
+	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}
 
-	for _, path := range request.UpdateMask {
+	for _, path := range request.UpdateMask.Paths {
 		if path == "license_key" {
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,

@@ -4,6 +4,8 @@ package slash.api.v2;
 
 import "api/v2/subscription_service.proto";
 import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/field_mask.proto";
 
 option go_package = "gen/api/v2";
 
@@ -16,9 +18,10 @@ service WorkspaceService {
   }
   rpc UpdateWorkspaceSetting(UpdateWorkspaceSettingRequest) returns (UpdateWorkspaceSettingResponse) {
     option (google.api.http) = {
-      post: "/api/v2/workspace/setting"
-      body: "*"
+      patch: "/api/v2/workspace/setting"
+      body: "setting"
     };
+    option (google.api.method_signature) = "setting,update_mask";
   }
 }
 
@@ -76,7 +79,7 @@ message UpdateWorkspaceSettingRequest {
   // The user setting.
   WorkspaceSetting setting = 1;
   // The update mask.
-  repeated string update_mask = 2;
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 message UpdateWorkspaceSettingResponse {

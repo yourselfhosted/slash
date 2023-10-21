@@ -106,14 +106,14 @@ func (s *UserService) UpdateUser(ctx context.Context, request *apiv2pb.UpdateUse
 	if userID != request.User.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
-	if request.UpdateMask == nil || len(request.UpdateMask) == 0 {
+	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "UpdateMask is empty")
 	}
 
 	userUpdate := &store.UpdateUser{
 		ID: request.User.Id,
 	}
-	for _, path := range request.UpdateMask {
+	for _, path := range request.UpdateMask.Paths {
 		if path == "email" {
 			userUpdate.Email = &request.User.Email
 		} else if path == "nickname" {
