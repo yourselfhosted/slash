@@ -13,22 +13,7 @@ import (
 	"github.com/boojack/slash/store"
 )
 
-type ShortcutService struct {
-	apiv2pb.UnimplementedShortcutServiceServer
-
-	Secret string
-	Store  *store.Store
-}
-
-// NewShortcutService creates a new Shortcut service.
-func NewShortcutService(secret string, store *store.Store) *ShortcutService {
-	return &ShortcutService{
-		Secret: secret,
-		Store:  store,
-	}
-}
-
-func (s *ShortcutService) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShortcutsRequest) (*apiv2pb.ListShortcutsResponse, error) {
+func (s *APIV2Service) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShortcutsRequest) (*apiv2pb.ListShortcutsResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	find := &store.FindShortcut{}
 	find.VisibilityList = []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic}
@@ -56,7 +41,7 @@ func (s *ShortcutService) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShor
 	return response, nil
 }
 
-func (s *ShortcutService) GetShortcut(ctx context.Context, request *apiv2pb.GetShortcutRequest) (*apiv2pb.GetShortcutResponse, error) {
+func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv2pb.GetShortcutRequest) (*apiv2pb.GetShortcutResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		Name: &request.Name,
 	})
@@ -78,7 +63,7 @@ func (s *ShortcutService) GetShortcut(ctx context.Context, request *apiv2pb.GetS
 	return response, nil
 }
 
-func (s *ShortcutService) CreateShortcut(ctx context.Context, request *apiv2pb.CreateShortcutRequest) (*apiv2pb.CreateShortcutResponse, error) {
+func (s *APIV2Service) CreateShortcut(ctx context.Context, request *apiv2pb.CreateShortcutRequest) (*apiv2pb.CreateShortcutResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	shortcut := &storepb.Shortcut{
 		CreatorId:   userID,
@@ -111,7 +96,7 @@ func (s *ShortcutService) CreateShortcut(ctx context.Context, request *apiv2pb.C
 	return response, nil
 }
 
-func (s *ShortcutService) DeleteShortcut(ctx context.Context, request *apiv2pb.DeleteShortcutRequest) (*apiv2pb.DeleteShortcutResponse, error) {
+func (s *APIV2Service) DeleteShortcut(ctx context.Context, request *apiv2pb.DeleteShortcutRequest) (*apiv2pb.DeleteShortcutResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	currentUser, err := s.Store.GetUser(ctx, &store.FindUser{
 		ID: &userID,
@@ -142,7 +127,7 @@ func (s *ShortcutService) DeleteShortcut(ctx context.Context, request *apiv2pb.D
 	return response, nil
 }
 
-func (s *ShortcutService) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
+func (s *APIV2Service) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
 	payload := &storepb.ActivityShorcutCreatePayload{
 		ShortcutId: shortcut.Id,
 	}

@@ -19,24 +19,7 @@ import (
 	"github.com/boojack/slash/store"
 )
 
-type UserService struct {
-	apiv2pb.UnimplementedUserServiceServer
-
-	Secret         string
-	Store          *store.Store
-	LicenseService *license.LicenseService
-}
-
-// NewUserService creates a new UserService.
-func NewUserService(secret string, store *store.Store, licenseService *license.LicenseService) *UserService {
-	return &UserService{
-		Secret:         secret,
-		Store:          store,
-		LicenseService: licenseService,
-	}
-}
-
-func (s *UserService) ListUsers(ctx context.Context, _ *apiv2pb.ListUsersRequest) (*apiv2pb.ListUsersResponse, error) {
+func (s *APIV2Service) ListUsers(ctx context.Context, _ *apiv2pb.ListUsersRequest) (*apiv2pb.ListUsersResponse, error) {
 	users, err := s.Store.ListUsers(ctx, &store.FindUser{})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
@@ -52,7 +35,7 @@ func (s *UserService) ListUsers(ctx context.Context, _ *apiv2pb.ListUsersRequest
 	return response, nil
 }
 
-func (s *UserService) GetUser(ctx context.Context, request *apiv2pb.GetUserRequest) (*apiv2pb.GetUserResponse, error) {
+func (s *APIV2Service) GetUser(ctx context.Context, request *apiv2pb.GetUserRequest) (*apiv2pb.GetUserResponse, error) {
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
 		ID: &request.Id,
 	})
@@ -70,7 +53,7 @@ func (s *UserService) GetUser(ctx context.Context, request *apiv2pb.GetUserReque
 	return response, nil
 }
 
-func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUserRequest) (*apiv2pb.CreateUserResponse, error) {
+func (s *APIV2Service) CreateUser(ctx context.Context, request *apiv2pb.CreateUserRequest) (*apiv2pb.CreateUserResponse, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
@@ -101,7 +84,7 @@ func (s *UserService) CreateUser(ctx context.Context, request *apiv2pb.CreateUse
 	return response, nil
 }
 
-func (s *UserService) UpdateUser(ctx context.Context, request *apiv2pb.UpdateUserRequest) (*apiv2pb.UpdateUserResponse, error) {
+func (s *APIV2Service) UpdateUser(ctx context.Context, request *apiv2pb.UpdateUserRequest) (*apiv2pb.UpdateUserResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	if userID != request.User.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
@@ -129,7 +112,7 @@ func (s *UserService) UpdateUser(ctx context.Context, request *apiv2pb.UpdateUse
 	}, nil
 }
 
-func (s *UserService) DeleteUser(ctx context.Context, request *apiv2pb.DeleteUserRequest) (*apiv2pb.DeleteUserResponse, error) {
+func (s *APIV2Service) DeleteUser(ctx context.Context, request *apiv2pb.DeleteUserRequest) (*apiv2pb.DeleteUserResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	if userID == request.Id {
 		return nil, status.Errorf(codes.InvalidArgument, "cannot delete yourself")
@@ -145,7 +128,7 @@ func (s *UserService) DeleteUser(ctx context.Context, request *apiv2pb.DeleteUse
 	return response, nil
 }
 
-func (s *UserService) ListUserAccessTokens(ctx context.Context, request *apiv2pb.ListUserAccessTokensRequest) (*apiv2pb.ListUserAccessTokensResponse, error) {
+func (s *APIV2Service) ListUserAccessTokens(ctx context.Context, request *apiv2pb.ListUserAccessTokensRequest) (*apiv2pb.ListUserAccessTokensResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	if userID != request.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
@@ -196,7 +179,7 @@ func (s *UserService) ListUserAccessTokens(ctx context.Context, request *apiv2pb
 	return response, nil
 }
 
-func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2pb.CreateUserAccessTokenRequest) (*apiv2pb.CreateUserAccessTokenResponse, error) {
+func (s *APIV2Service) CreateUserAccessToken(ctx context.Context, request *apiv2pb.CreateUserAccessTokenRequest) (*apiv2pb.CreateUserAccessTokenResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	if userID != request.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
@@ -256,7 +239,7 @@ func (s *UserService) CreateUserAccessToken(ctx context.Context, request *apiv2p
 	return response, nil
 }
 
-func (s *UserService) DeleteUserAccessToken(ctx context.Context, request *apiv2pb.DeleteUserAccessTokenRequest) (*apiv2pb.DeleteUserAccessTokenResponse, error) {
+func (s *APIV2Service) DeleteUserAccessToken(ctx context.Context, request *apiv2pb.DeleteUserAccessTokenRequest) (*apiv2pb.DeleteUserAccessTokenResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	if userID != request.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
@@ -288,7 +271,7 @@ func (s *UserService) DeleteUserAccessToken(ctx context.Context, request *apiv2p
 	return &apiv2pb.DeleteUserAccessTokenResponse{}, nil
 }
 
-func (s *UserService) UpsertAccessTokenToStore(ctx context.Context, user *store.User, accessToken, description string) error {
+func (s *APIV2Service) UpsertAccessTokenToStore(ctx context.Context, user *store.User, accessToken, description string) error {
 	userAccessTokens, err := s.Store.GetUserAccessTokens(ctx, user.ID)
 	if err != nil {
 		return errors.Wrap(err, "failed to get user access tokens")

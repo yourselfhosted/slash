@@ -12,20 +12,7 @@ import (
 	"github.com/boojack/slash/store"
 )
 
-type UserSettingService struct {
-	apiv2pb.UnimplementedUserSettingServiceServer
-
-	Store *store.Store
-}
-
-// NewUserSettingService creates a new UserSettingService.
-func NewUserSettingService(store *store.Store) *UserSettingService {
-	return &UserSettingService{
-		Store: store,
-	}
-}
-
-func (s *UserSettingService) GetUserSetting(ctx context.Context, request *apiv2pb.GetUserSettingRequest) (*apiv2pb.GetUserSettingResponse, error) {
+func (s *APIV2Service) GetUserSetting(ctx context.Context, request *apiv2pb.GetUserSettingRequest) (*apiv2pb.GetUserSettingResponse, error) {
 	userSetting, err := getUserSetting(ctx, s.Store, request.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user setting: %v", err)
@@ -35,7 +22,7 @@ func (s *UserSettingService) GetUserSetting(ctx context.Context, request *apiv2p
 	}, nil
 }
 
-func (s *UserSettingService) UpdateUserSetting(ctx context.Context, request *apiv2pb.UpdateUserSettingRequest) (*apiv2pb.UpdateUserSettingResponse, error) {
+func (s *APIV2Service) UpdateUserSetting(ctx context.Context, request *apiv2pb.UpdateUserSettingRequest) (*apiv2pb.UpdateUserSettingResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}

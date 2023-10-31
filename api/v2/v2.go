@@ -18,6 +18,12 @@ import (
 )
 
 type APIV2Service struct {
+	apiv2pb.UnimplementedWorkspaceServiceServer
+	apiv2pb.UnimplementedSubscriptionServiceServer
+	apiv2pb.UnimplementedUserServiceServer
+	apiv2pb.UnimplementedUserSettingServiceServer
+	apiv2pb.UnimplementedShortcutServiceServer
+
 	Secret         string
 	Profile        *profile.Profile
 	Store          *store.Store
@@ -34,14 +40,7 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 			authProvider.AuthenticationInterceptor,
 		),
 	)
-	apiv2pb.RegisterSubscriptionServiceServer(grpcServer, NewSubscriptionService(profile, store, licenseService))
-	apiv2pb.RegisterWorkspaceServiceServer(grpcServer, NewWorkspaceService(profile, store, licenseService))
-	apiv2pb.RegisterUserServiceServer(grpcServer, NewUserService(secret, store, licenseService))
-	apiv2pb.RegisterUserSettingServiceServer(grpcServer, NewUserSettingService(store))
-	apiv2pb.RegisterShortcutServiceServer(grpcServer, NewShortcutService(secret, store))
-	reflection.Register(grpcServer)
-
-	return &APIV2Service{
+	apiV2Service := &APIV2Service{
 		Secret:         secret,
 		Profile:        profile,
 		Store:          store,
@@ -49,6 +48,15 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 		grpcServer:     grpcServer,
 		grpcServerPort: grpcServerPort,
 	}
+
+	apiv2pb.RegisterSubscriptionServiceServer(grpcServer, apiV2Service)
+	apiv2pb.RegisterWorkspaceServiceServer(grpcServer, apiV2Service)
+	apiv2pb.RegisterUserServiceServer(grpcServer, apiV2Service)
+	apiv2pb.RegisterUserSettingServiceServer(grpcServer, apiV2Service)
+	apiv2pb.RegisterShortcutServiceServer(grpcServer, apiV2Service)
+	reflection.Register(grpcServer)
+
+	return apiV2Service
 }
 
 func (s *APIV2Service) GetGRPCServer() *grpc.Server {

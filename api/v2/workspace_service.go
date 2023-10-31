@@ -8,29 +8,10 @@ import (
 
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 )
 
-type WorkspaceService struct {
-	apiv2pb.UnimplementedWorkspaceServiceServer
-
-	Profile        *profile.Profile
-	Store          *store.Store
-	LicenseService *license.LicenseService
-}
-
-// NewWorkspaceService creates a new WorkspaceService.
-func NewWorkspaceService(profile *profile.Profile, store *store.Store, licenseService *license.LicenseService) *WorkspaceService {
-	return &WorkspaceService{
-		Profile:        profile,
-		Store:          store,
-		LicenseService: licenseService,
-	}
-}
-
-func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *apiv2pb.GetWorkspaceProfileRequest) (*apiv2pb.GetWorkspaceProfileResponse, error) {
+func (s *APIV2Service) GetWorkspaceProfile(ctx context.Context, _ *apiv2pb.GetWorkspaceProfileRequest) (*apiv2pb.GetWorkspaceProfileResponse, error) {
 	profile := &apiv2pb.WorkspaceProfile{
 		Mode: s.Profile.Mode,
 		Plan: apiv2pb.PlanType_FREE,
@@ -58,7 +39,7 @@ func (s *WorkspaceService) GetWorkspaceProfile(ctx context.Context, _ *apiv2pb.G
 	}, nil
 }
 
-func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.GetWorkspaceSettingRequest) (*apiv2pb.GetWorkspaceSettingResponse, error) {
+func (s *APIV2Service) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.GetWorkspaceSettingRequest) (*apiv2pb.GetWorkspaceSettingResponse, error) {
 	isAdmin := false
 	userID, ok := ctx.Value(userIDContextKey).(int32)
 	if ok {
@@ -96,7 +77,7 @@ func (s *WorkspaceService) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.G
 	}, nil
 }
 
-func (s *WorkspaceService) UpdateWorkspaceSetting(ctx context.Context, request *apiv2pb.UpdateWorkspaceSettingRequest) (*apiv2pb.UpdateWorkspaceSettingResponse, error) {
+func (s *APIV2Service) UpdateWorkspaceSetting(ctx context.Context, request *apiv2pb.UpdateWorkspaceSettingRequest) (*apiv2pb.UpdateWorkspaceSettingResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}
