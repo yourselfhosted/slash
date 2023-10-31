@@ -1,7 +1,6 @@
 package license
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -18,7 +17,6 @@ func TestValidateLicenseKey(t *testing.T) {
 			name:     "Testing license key",
 			key:      "26B383EE-95B2-4458-9C58-B376BD6183B1",
 			expected: false,
-			err:      errors.New("invalid store or product id"),
 		},
 		{
 			name:     "invalid key",
