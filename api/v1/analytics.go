@@ -96,8 +96,8 @@ func mapToReferenceInfoSlice(m map[string]int) []ReferenceInfo {
 			Count: value,
 		})
 	}
-	slices.SortFunc(referenceInfoSlice, func(i, j ReferenceInfo) bool {
-		return i.Count > j.Count
+	slices.SortFunc(referenceInfoSlice, func(i, j ReferenceInfo) int {
+		return i.Count - j.Count
 	})
 	return referenceInfoSlice
 }
@@ -110,8 +110,8 @@ func mapToDeviceInfoSlice(m map[string]int) []DeviceInfo {
 			Count: value,
 		})
 	}
-	slices.SortFunc(deviceInfoSlice, func(i, j DeviceInfo) bool {
-		return i.Count > j.Count
+	slices.SortFunc(deviceInfoSlice, func(i, j DeviceInfo) int {
+		return i.Count - j.Count
 	})
 	return deviceInfoSlice
 }
@@ -124,8 +124,8 @@ func mapToBrowserInfoSlice(m map[string]int) []BrowserInfo {
 			Count: value,
 		})
 	}
-	slices.SortFunc(browserInfoSlice, func(i, j BrowserInfo) bool {
-		return i.Count > j.Count
+	slices.SortFunc(browserInfoSlice, func(i, j BrowserInfo) int {
+		return i.Count - j.Count
 	})
 	return browserInfoSlice
 }
