@@ -1,5 +1,5 @@
-import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { Storage } from "@plasmohq/storage";
+import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 
 const storage = new Storage();
 const urlRegex = /https?:\/\/s\/(.+)/;

@@ -1,8 +1,8 @@
-import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { Button, CssVarsProvider, Divider, Input, Select, Option } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import Icon from "./components/Icon";
 import Logo from "./components/Logo";
 import PullShortcutsButton from "./components/PullShortcutsButton";

@@ -1,6 +1,6 @@
-import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { useStorage } from "@plasmohq/storage/hook";
 import classNames from "classnames";
+import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import ShortcutView from "./ShortcutView";
 
 const ShortcutsContainer = () => {
