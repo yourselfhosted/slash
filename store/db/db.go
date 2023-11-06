@@ -6,6 +6,7 @@ import (
 	"embed"
 	"fmt"
 	"io/fs"
+	"log/slog"
 	"os"
 	"regexp"
 	"sort"
@@ -119,23 +120,23 @@ func (db *DB) Open(ctx context.Context) (err error) {
 			if err := os.WriteFile(backupDBFilePath, rawBytes, 0644); err != nil {
 				return errors.Wrap(err, "failed to write raw database file")
 			}
-			println("succeed to copy a backup database file")
+			slog.Log(ctx, slog.LevelInfo, "succeed to copy a backup database file")
 
-			println("start migrate")
+			slog.Log(ctx, slog.LevelInfo, "start migrate")
 			for _, minorVersion := range minorVersionList {
 				normalizedVersion := minorVersion + ".0"
 				if version.IsVersionGreaterThan(normalizedVersion, latestMigrationHistoryVersion) && version.IsVersionGreaterOrEqualThan(currentVersion, normalizedVersion) {
-					println("applying migration for", normalizedVersion)
+					slog.Log(ctx, slog.LevelInfo, fmt.Sprintf("applying migration for %s", normalizedVersion))
 					if err := db.applyMigrationForMinorVersion(ctx, minorVersion); err != nil {
 						return errors.Wrap(err, "failed to apply minor version migration")
 					}
 				}
 			}
-			println("end migrate")
+			slog.Log(ctx, slog.LevelInfo, "end migrate")
 
 			// remove the created backup db file after migrate succeed
 			if err := os.Remove(backupDBFilePath); err != nil {
-				println(fmt.Sprintf("Failed to remove temp database file, err %v", err))
+				slog.Log(ctx, slog.LevelError, fmt.Sprintf("Failed to remove temp database file, err %v", err))
 			}
 		}
 	} else {

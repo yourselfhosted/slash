@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"strings"
@@ -132,7 +133,7 @@ func (s *Server) Start(ctx context.Context) error {
 	}
 	go func() {
 		if err := s.apiV2Service.GetGRPCServer().Serve(listen); err != nil {
-			println("grpc server listen error")
+			slog.Log(ctx, slog.LevelError, "failed to start grpc server")
 		}
 	}()
 
