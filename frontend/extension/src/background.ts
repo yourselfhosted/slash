@@ -4,29 +4,40 @@ import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 const storage = new Storage();
 const urlRegex = /https?:\/\/s\/(.+)/;
 
-chrome.tabs.onUpdated.addListener(async (tabId, _, tab) => {
-  if (!tab.url) {
-    return;
-  }
+chrome.webRequest.onBeforeRequest.addListener(
+  (param) => {
+    (async () => {
+      if (!param.url) {
+        return;
+      }
 
-  const shortcutName = getShortcutNameFromUrl(tab.url);
-  if (shortcutName) {
-    const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
-    const shortcut = shortcuts.find((shortcut) => shortcut.name === shortcutName);
-    if (!shortcut) {
-      return;
-    }
-    return chrome.tabs.update(tabId, { url: shortcut.link });
-  }
-});
+      const shortcutName = getShortcutNameFromUrl(param.url);
+      if (shortcutName) {
+        const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
+        const shortcut = shortcuts.find((shortcut) => shortcut.name === shortcutName);
+        if (!shortcut) {
+          return;
+        }
+        return chrome.tabs.update({ url: shortcut.link });
+      }
+    })();
+  },
+  { urls: ["*://s/*", "*://*/search*"] }
+);
 
-chrome.omnibox.onInputEntered.addListener(async (text) => {
+chrome.omnibox.onInputEntered.addListener(async (text, disposition) => {
   const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
   const shortcut = shortcuts.find((shortcut) => shortcut.name === text);
   if (!shortcut) {
     return;
   }
-  return chrome.tabs.update({ url: shortcut.link });
+  if (disposition === "currentTab") {
+    chrome.tabs.update({ url: shortcut.link });
+  } else if (disposition === "newForegroundTab") {
+    chrome.tabs.create({ url: shortcut.link });
+  } else if (disposition === "newBackgroundTab") {
+    chrome.tabs.create({ url: shortcut.link, active: false });
+  }
 });
 
 const getShortcutNameFromUrl = (urlString: string) => {

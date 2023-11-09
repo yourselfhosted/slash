@@ -1,7 +1,7 @@
 {
   "name": "slash-extension",
   "displayName": "Slash",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An open source, self-hosted bookmarks and link sharing platform. Save and share your links very easily.",
   "scripts": {
     "dev": "plasmo dev",
@@ -50,11 +50,15 @@
   },
   "manifest": {
     "omnibox": {
-      "keyword": "s"
+      "keyword": "s/"
     },
     "permissions": [
-      "tabs",
-      "storage"
+      "activeTab",
+      "storage",
+      "webRequest"
+    ],
+    "host_permissions": [
+      "*://*/*"
     ]
   }
 }
