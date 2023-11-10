@@ -25,7 +25,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <div className="w-full bg-gray-50 dark:bg-zinc-900 border-b border-b-gray-200 dark:border-b-zinc-800">
+      <div className="w-full bg-gray-50 dark:bg-zinc-800 border-b border-b-gray-200 dark:border-b-zinc-800">
         <div className="w-full max-w-8xl mx-auto px-3 md:px-12 py-5 flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center shrink mr-2">
             <Link to="/" className="text-lg cursor-pointer flex flex-row justify-start items-center dark:text-gray-400">

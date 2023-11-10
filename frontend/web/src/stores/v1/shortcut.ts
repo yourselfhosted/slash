@@ -1,30 +1,39 @@
 import { create } from "zustand";
-import * as api from "../../helpers/api";
-
-const convertResponseModelShortcut = (shortcut: Shortcut): Shortcut => {
-  return {
-    ...shortcut,
-    createdTs: shortcut.createdTs * 1000,
-    updatedTs: shortcut.updatedTs * 1000,
-  };
-};
+import { shortcutServiceClient } from "@/grpcweb";
+import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 
 interface ShortcutState {
   shortcutMapById: Record<ShortcutId, Shortcut>;
+  fetchShortcutList: () => Promise<Shortcut[]>;
   getOrFetchShortcutById: (id: ShortcutId) => Promise<Shortcut>;
   getShortcutById: (id: ShortcutId) => Shortcut;
+  getShortcutList: () => Shortcut[];
 }
 
 const useShortcutStore = create<ShortcutState>()((set, get) => ({
   shortcutMapById: {},
+  fetchShortcutList: async () => {
+    const { shortcuts } = await shortcutServiceClient.listShortcuts({});
+    const shortcutMap = get().shortcutMapById;
+    shortcuts.forEach((shortcut) => {
+      shortcutMap[shortcut.id] = shortcut;
+    });
+    set(shortcutMap);
+    return shortcuts;
+  },
   getOrFetchShortcutById: async (id: ShortcutId) => {
     const shortcutMap = get().shortcutMapById;
     if (shortcutMap[id]) {
       return shortcutMap[id] as Shortcut;
     }
 
-    const { data } = await api.getShortcutById(id);
-    const shortcut = convertResponseModelShortcut(data);
+    const { shortcut } = await shortcutServiceClient.getShortcut({
+      id: id,
+    });
+    if (!shortcut) {
+      throw new Error(`Shortcut with id ${id} not found`);
+    }
+
     shortcutMap[id] = shortcut;
     set(shortcutMap);
     return shortcut;
@@ -32,6 +41,9 @@ const useShortcutStore = create<ShortcutState>()((set, get) => ({
   getShortcutById: (id: ShortcutId) => {
     const shortcutMap = get().shortcutMapById;
     return shortcutMap[id] as Shortcut;
+  },
+  getShortcutList: () => {
+    return Object.values(get().shortcutMapById);
   },
 }));
 

@@ -235,7 +235,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
             <Input className="w-full" type="text" placeholder="github slash" value={tag} onChange={handleTagsInputChange} />
             {tagSuggestions.length > 0 && (
               <div className="w-full flex flex-row justify-start items-start mt-2">
-                <Icon.Asterisk className="w-4 h-auto shrink-0 mx-1 text-gray-400 dark:text-gray-600" />
+                <Icon.Asterisk className="w-4 h-auto shrink-0 mx-1 text-gray-400 dark:text-gray-500" />
                 <div className="w-auto flex flex-row justify-start items-start flex-wrap gap-x-2 gap-y-1">
                   {tagSuggestions.map((tag) => (
                     <span
@@ -312,7 +312,10 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               )}
               onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
             >
-              <span className="text-sm flex flex-row justify-start items-center">Social media metadata</span>
+              <span className="text-sm flex flex-row justify-start items-center">
+                Social media metadata
+                <Icon.Sparkles className="w-4 h-auto shrink-0 ml-1 text-blue-600 dark:text-blue-500" />
+              </span>
               <button className="w-7 h-7 p-1 rounded-md">
                 <Icon.ChevronDown className={classnames("w-4 h-auto text-gray-500", showOpenGraphMetadata ? "transform rotate-180" : "")} />
               </button>
