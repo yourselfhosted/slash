@@ -2,6 +2,7 @@ package v2
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -35,7 +36,11 @@ func (s *APIV2Service) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShortcu
 	shortcutList = append(shortcutList, visibleShortcutList...)
 	shortcuts := []*apiv2pb.Shortcut{}
 	for _, shortcut := range shortcutList {
-		shortcuts = append(shortcuts, convertShortcutFromStorepb(shortcut))
+		composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
+		}
+		shortcuts = append(shortcuts, composedShortcut)
 	}
 
 	response := &apiv2pb.ListShortcutsResponse{
@@ -46,7 +51,7 @@ func (s *APIV2Service) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShortcu
 
 func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv2pb.GetShortcutRequest) (*apiv2pb.GetShortcutResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
-		Name: &request.Name,
+		ID: &request.Id,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get shortcut by name: %v", err)
@@ -59,9 +64,12 @@ func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv2pb.GetShor
 	if shortcut.Visibility == storepb.Visibility_PRIVATE && shortcut.CreatorId != userID {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
-	shortcutMessage := convertShortcutFromStorepb(shortcut)
+	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
+	}
 	response := &apiv2pb.GetShortcutResponse{
-		Shortcut: shortcutMessage,
+		Shortcut: composedShortcut,
 	}
 	return response, nil
 }
@@ -93,8 +101,12 @@ func (s *APIV2Service) CreateShortcut(ctx context.Context, request *apiv2pb.Crea
 		return nil, status.Errorf(codes.Internal, "failed to create activity, err: %v", err)
 	}
 
+	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
+	}
 	response := &apiv2pb.CreateShortcutResponse{
-		Shortcut: convertShortcutFromStorepb(shortcut),
+		Shortcut: composedShortcut,
 	}
 	return response, nil
 }
@@ -112,7 +124,7 @@ func (s *APIV2Service) UpdateShortcut(ctx context.Context, request *apiv2pb.Upda
 		return nil, status.Errorf(codes.Internal, "failed to get current user, err: %v", err)
 	}
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
-		Name: &request.Shortcut.Name,
+		ID: &request.Shortcut.Id,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get shortcut by name: %v", err)
@@ -154,8 +166,12 @@ func (s *APIV2Service) UpdateShortcut(ctx context.Context, request *apiv2pb.Upda
 		return nil, status.Errorf(codes.Internal, "failed to update shortcut, err: %v", err)
 	}
 
+	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
+	}
 	response := &apiv2pb.UpdateShortcutResponse{
-		Shortcut: convertShortcutFromStorepb(shortcut),
+		Shortcut: composedShortcut,
 	}
 	return response, nil
 }
@@ -169,7 +185,7 @@ func (s *APIV2Service) DeleteShortcut(ctx context.Context, request *apiv2pb.Dele
 		return nil, status.Errorf(codes.Internal, "failed to get current user, err: %v", err)
 	}
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
-		Name: &request.Name,
+		ID: &request.Id,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get shortcut by name: %v", err)
@@ -212,8 +228,8 @@ func (s *APIV2Service) createShortcutCreateActivity(ctx context.Context, shortcu
 	return nil
 }
 
-func convertShortcutFromStorepb(shortcut *storepb.Shortcut) *apiv2pb.Shortcut {
-	return &apiv2pb.Shortcut{
+func (s *APIV2Service) convertShortcutFromStorepb(ctx context.Context, shortcut *storepb.Shortcut) (*apiv2pb.Shortcut, error) {
+	composedShortcut := &apiv2pb.Shortcut{
 		Id:          shortcut.Id,
 		CreatorId:   shortcut.CreatorId,
 		CreatedTime: timestamppb.New(time.Unix(shortcut.CreatedTs, 0)),
@@ -231,4 +247,16 @@ func convertShortcutFromStorepb(shortcut *storepb.Shortcut) *apiv2pb.Shortcut {
 			Image:       shortcut.OgMetadata.Image,
 		},
 	}
+
+	activityList, err := s.Store.ListActivities(ctx, &store.FindActivity{
+		Type:  store.ActivityShortcutView,
+		Level: store.ActivityInfo,
+		Where: []string{fmt.Sprintf("json_extract(payload, '$.shortcutId') = %d", composedShortcut.Id)},
+	})
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to list activities")
+	}
+	composedShortcut.ViewCount = int32(len(activityList))
+
+	return composedShortcut, nil
 }

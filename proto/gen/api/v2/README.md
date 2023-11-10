@@ -162,7 +162,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  |  |
+| id | [int32](#int32) |  |  |
 
 
 
@@ -187,7 +187,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  |  |
+| id | [int32](#int32) |  |  |
 
 
 
@@ -270,6 +270,7 @@
 | tags | [string](#string) | repeated |  |
 | description | [string](#string) |  |  |
 | visibility | [Visibility](#slash-api-v2-Visibility) |  |  |
+| view_count | [int32](#int32) |  |  |
 | og_metadata | [OpenGraphMetadata](#slash-api-v2-OpenGraphMetadata) |  |  |
 
 
