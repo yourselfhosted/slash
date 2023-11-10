@@ -22,7 +22,7 @@ const SubscriptionFAQ = () => {
         <Accordion>
           <AccordionSummary>{`Can I get a refund if Slash doesn't meet my needs?`}</AccordionSummary>
           <AccordionDetails>
-            Yes, absolutely! You can send a email to me at `stevenlgtm@gmail.com`. I will refund you as soon as possible.
+            Yes, absolutely! You can send a email to me at `yourselfhosted@gmail.com`. I will refund you as soon as possible.
           </AccordionDetails>
         </Accordion>
       </AccordionGroup>

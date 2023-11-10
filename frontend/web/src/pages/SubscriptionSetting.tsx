@@ -171,7 +171,7 @@ const SubscriptionSetting: React.FC = () => {
                 </ul>
               </div>
               <div className="mt-6">
-                <Link className="w-full" underline="none" href="mailto:stevenlgtm@gmail.com" target="_blank">
+                <Link className="w-full" underline="none" href="mailto:yourselfhosted@gmail.com" target="_blank">
                   <Button className="w-full">Contact us</Button>
                 </Link>
               </div>
