@@ -13,30 +13,6 @@ import (
 	storepb "github.com/boojack/slash/proto/gen/store"
 )
 
-// Visibility is the type of a visibility.
-type Visibility string
-
-const (
-	// VisibilityPublic is the PUBLIC visibility.
-	VisibilityPublic Visibility = "PUBLIC"
-	// VisibilityWorkspace is the WORKSPACE visibility.
-	VisibilityWorkspace Visibility = "WORKSPACE"
-	// VisibilityPrivate is the PRIVATE visibility.
-	VisibilityPrivate Visibility = "PRIVATE"
-)
-
-func (e Visibility) String() string {
-	switch e {
-	case VisibilityPublic:
-		return "PUBLIC"
-	case VisibilityWorkspace:
-		return "WORKSPACE"
-	case VisibilityPrivate:
-		return "PRIVATE"
-	}
-	return "PRIVATE"
-}
-
 type OpenGraphMetadata struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`

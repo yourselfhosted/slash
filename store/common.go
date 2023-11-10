@@ -33,3 +33,27 @@ func convertRowStatusStringToStorepb(status string) storepb.RowStatus {
 	}
 	return storepb.RowStatus_ROW_STATUS_UNSPECIFIED
 }
+
+// Visibility is the type of a visibility.
+type Visibility string
+
+const (
+	// VisibilityPublic is the PUBLIC visibility.
+	VisibilityPublic Visibility = "PUBLIC"
+	// VisibilityWorkspace is the WORKSPACE visibility.
+	VisibilityWorkspace Visibility = "WORKSPACE"
+	// VisibilityPrivate is the PRIVATE visibility.
+	VisibilityPrivate Visibility = "PRIVATE"
+)
+
+func (e Visibility) String() string {
+	switch e {
+	case VisibilityPublic:
+		return "PUBLIC"
+	case VisibilityWorkspace:
+		return "WORKSPACE"
+	case VisibilityPrivate:
+		return "PRIVATE"
+	}
+	return "PRIVATE"
+}
