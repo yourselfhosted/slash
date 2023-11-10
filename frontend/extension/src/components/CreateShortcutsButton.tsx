@@ -3,7 +3,8 @@ import { useStorage } from "@plasmohq/storage/hook";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { CreateShortcutResponse, OpenGraphMetadata, Visibility } from "@/types/proto/api/v2/shortcut_service";
+import { Visibility } from "@/types/proto/api/v2/common";
+import { CreateShortcutResponse, OpenGraphMetadata } from "@/types/proto/api/v2/shortcut_service";
 import Icon from "./Icon";
 
 const generateTempName = (length = 6) => {
