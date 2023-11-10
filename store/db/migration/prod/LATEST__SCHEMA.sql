@@ -60,11 +60,16 @@ CREATE TABLE activity (
   payload TEXT NOT NULL DEFAULT '{}'
 );
 
--- idp
-CREATE TABLE idp (
+-- collection
+CREATE TABLE collection (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  type TEXT NOT NULL,
-  identifier_filter TEXT NOT NULL DEFAULT '',
-  config TEXT NOT NULL DEFAULT '{}'
+  creator_id INTEGER NOT NULL,
+  created_ts BIGINT NOT NULL DEFAULT (strftime('%s', 'now')),
+  name TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL DEFAULT '',
+  description TEXT NOT NULL DEFAULT '',
+  shortcut_ids INTEGER[] NOT NULL,
+  visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE'
 );
+
+CREATE INDEX idx_collection_name ON collection(name);
