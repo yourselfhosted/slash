@@ -261,8 +261,8 @@
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
 | creator_id | [int32](#int32) |  |  |
-| created_ts | [int64](#int64) |  |  |
-| updated_ts | [int64](#int64) |  |  |
+| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | row_status | [RowStatus](#slash-api-v2-RowStatus) |  |  |
 | name | [string](#string) |  |  |
 | link | [string](#string) |  |  |
@@ -703,8 +703,8 @@
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
 | row_status | [RowStatus](#slash-api-v2-RowStatus) |  |  |
-| created_ts | [int64](#int64) |  |  |
-| updated_ts | [int64](#int64) |  |  |
+| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | role | [Role](#slash-api-v2-Role) |  |  |
 | email | [string](#string) |  |  |
 | nickname | [string](#string) |  |  |

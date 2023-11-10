@@ -297,13 +297,13 @@ func (s *APIV2Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 
 func convertUserFromStore(user *store.User) *apiv2pb.User {
 	return &apiv2pb.User{
-		Id:        int32(user.ID),
-		RowStatus: convertRowStatusFromStore(user.RowStatus),
-		CreatedTs: user.CreatedTs,
-		UpdatedTs: user.UpdatedTs,
-		Role:      convertUserRoleFromStore(user.Role),
-		Email:     user.Email,
-		Nickname:  user.Nickname,
+		Id:          int32(user.ID),
+		RowStatus:   convertRowStatusFromStore(user.RowStatus),
+		CreatedTime: timestamppb.New(time.Unix(user.CreatedTs, 0)),
+		UpdatedTime: timestamppb.New(time.Unix(user.UpdatedTs, 0)),
+		Role:        convertUserRoleFromStore(user.Role),
+		Email:       user.Email,
+		Nickname:    user.Nickname,
 	}
 }
 

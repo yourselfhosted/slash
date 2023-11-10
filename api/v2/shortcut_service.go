@@ -3,11 +3,13 @@ package v2
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
@@ -214,8 +216,8 @@ func convertShortcutFromStorepb(shortcut *storepb.Shortcut) *apiv2pb.Shortcut {
 	return &apiv2pb.Shortcut{
 		Id:          shortcut.Id,
 		CreatorId:   shortcut.CreatorId,
-		CreatedTs:   shortcut.CreatedTs,
-		UpdatedTs:   shortcut.UpdatedTs,
+		CreatedTime: timestamppb.New(time.Unix(shortcut.CreatedTs, 0)),
+		UpdatedTime: timestamppb.New(time.Unix(shortcut.UpdatedTs, 0)),
 		RowStatus:   apiv2pb.RowStatus(shortcut.RowStatus),
 		Name:        shortcut.Name,
 		Link:        shortcut.Link,

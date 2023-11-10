@@ -77,14 +77,14 @@ type User struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id        int32     `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	RowStatus RowStatus `protobuf:"varint,2,opt,name=row_status,json=rowStatus,proto3,enum=slash.api.v2.RowStatus" json:"row_status,omitempty"`
-	CreatedTs int64     `protobuf:"varint,3,opt,name=created_ts,json=createdTs,proto3" json:"created_ts,omitempty"`
-	UpdatedTs int64     `protobuf:"varint,4,opt,name=updated_ts,json=updatedTs,proto3" json:"updated_ts,omitempty"`
-	Role      Role      `protobuf:"varint,6,opt,name=role,proto3,enum=slash.api.v2.Role" json:"role,omitempty"`
-	Email     string    `protobuf:"bytes,7,opt,name=email,proto3" json:"email,omitempty"`
-	Nickname  string    `protobuf:"bytes,8,opt,name=nickname,proto3" json:"nickname,omitempty"`
-	Password  string    `protobuf:"bytes,9,opt,name=password,proto3" json:"password,omitempty"`
+	Id          int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	RowStatus   RowStatus              `protobuf:"varint,2,opt,name=row_status,json=rowStatus,proto3,enum=slash.api.v2.RowStatus" json:"row_status,omitempty"`
+	CreatedTime *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_time,json=createdTime,proto3" json:"created_time,omitempty"`
+	UpdatedTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_time,json=updatedTime,proto3" json:"updated_time,omitempty"`
+	Role        Role                   `protobuf:"varint,6,opt,name=role,proto3,enum=slash.api.v2.Role" json:"role,omitempty"`
+	Email       string                 `protobuf:"bytes,7,opt,name=email,proto3" json:"email,omitempty"`
+	Nickname    string                 `protobuf:"bytes,8,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Password    string                 `protobuf:"bytes,9,opt,name=password,proto3" json:"password,omitempty"`
 }
 
 func (x *User) Reset() {
@@ -133,18 +133,18 @@ func (x *User) GetRowStatus() RowStatus {
 	return RowStatus_ROW_STATUS_UNSPECIFIED
 }
 
-func (x *User) GetCreatedTs() int64 {
+func (x *User) GetCreatedTime() *timestamppb.Timestamp {
 	if x != nil {
-		return x.CreatedTs
+		return x.CreatedTime
 	}
-	return 0
+	return nil
 }
 
-func (x *User) GetUpdatedTs() int64 {
+func (x *User) GetUpdatedTime() *timestamppb.Timestamp {
 	if x != nil {
-		return x.UpdatedTs
+		return x.UpdatedTime
 	}
-	return 0
+	return nil
 }
 
 func (x *User) GetRole() Role {
@@ -1024,16 +1024,20 @@ var file_api_v2_user_service_proto_rawDesc = []byte{
 	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x5f, 0x6d, 0x61, 0x73,
 	0x6b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
-	0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x82, 0x02, 0x0a, 0x04, 0x55, 0x73, 0x65,
+	0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xc2, 0x02, 0x0a, 0x04, 0x55, 0x73, 0x65,
 	0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x02, 0x69,
 	0x64, 0x12, 0x36, 0x0a, 0x0a, 0x72, 0x6f, 0x77, 0x5f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18,
 	0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x17, 0x2e, 0x73, 0x6c, 0x61, 0x73, 0x68, 0x2e, 0x61, 0x70,
 	0x69, 0x2e, 0x76, 0x32, 0x2e, 0x52, 0x6f, 0x77, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x09,
-	0x72, 0x6f, 0x77, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x72, 0x65,
-	0x61, 0x74, 0x65, 0x64, 0x5f, 0x74, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x54, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x75, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x64, 0x5f, 0x74, 0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x75, 0x70,
-	0x64, 0x61, 0x74, 0x65, 0x64, 0x54, 0x73, 0x12, 0x26, 0x0a, 0x04, 0x72, 0x6f, 0x6c, 0x65, 0x18,
+	0x72, 0x6f, 0x77, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x3d, 0x0a, 0x0c, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x64, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
+	0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0b, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x64, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x3d, 0x0a, 0x0c, 0x75, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x64, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x0b, 0x75, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x64, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x26, 0x0a, 0x04, 0x72, 0x6f, 0x6c, 0x65, 0x18,
 	0x06, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x12, 0x2e, 0x73, 0x6c, 0x61, 0x73, 0x68, 0x2e, 0x61, 0x70,
 	0x69, 0x2e, 0x76, 0x32, 0x2e, 0x52, 0x6f, 0x6c, 0x65, 0x52, 0x04, 0x72, 0x6f, 0x6c, 0x65, 0x12,
 	0x14, 0x0a, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
@@ -1241,45 +1245,47 @@ var file_api_v2_user_service_proto_goTypes = []interface{}{
 	(*DeleteUserAccessTokenResponse)(nil), // 17: slash.api.v2.DeleteUserAccessTokenResponse
 	(*UserAccessToken)(nil),               // 18: slash.api.v2.UserAccessToken
 	(RowStatus)(0),                        // 19: slash.api.v2.RowStatus
-	(*fieldmaskpb.FieldMask)(nil),         // 20: google.protobuf.FieldMask
-	(*timestamppb.Timestamp)(nil),         // 21: google.protobuf.Timestamp
+	(*timestamppb.Timestamp)(nil),         // 20: google.protobuf.Timestamp
+	(*fieldmaskpb.FieldMask)(nil),         // 21: google.protobuf.FieldMask
 }
 var file_api_v2_user_service_proto_depIdxs = []int32{
 	19, // 0: slash.api.v2.User.row_status:type_name -> slash.api.v2.RowStatus
-	0,  // 1: slash.api.v2.User.role:type_name -> slash.api.v2.Role
-	1,  // 2: slash.api.v2.ListUsersResponse.users:type_name -> slash.api.v2.User
-	1,  // 3: slash.api.v2.GetUserResponse.user:type_name -> slash.api.v2.User
-	1,  // 4: slash.api.v2.CreateUserRequest.user:type_name -> slash.api.v2.User
-	1,  // 5: slash.api.v2.CreateUserResponse.user:type_name -> slash.api.v2.User
-	1,  // 6: slash.api.v2.UpdateUserRequest.user:type_name -> slash.api.v2.User
-	20, // 7: slash.api.v2.UpdateUserRequest.update_mask:type_name -> google.protobuf.FieldMask
-	1,  // 8: slash.api.v2.UpdateUserResponse.user:type_name -> slash.api.v2.User
-	18, // 9: slash.api.v2.ListUserAccessTokensResponse.access_tokens:type_name -> slash.api.v2.UserAccessToken
-	21, // 10: slash.api.v2.CreateUserAccessTokenRequest.expires_at:type_name -> google.protobuf.Timestamp
-	18, // 11: slash.api.v2.CreateUserAccessTokenResponse.access_token:type_name -> slash.api.v2.UserAccessToken
-	21, // 12: slash.api.v2.UserAccessToken.issued_at:type_name -> google.protobuf.Timestamp
-	21, // 13: slash.api.v2.UserAccessToken.expires_at:type_name -> google.protobuf.Timestamp
-	2,  // 14: slash.api.v2.UserService.ListUsers:input_type -> slash.api.v2.ListUsersRequest
-	4,  // 15: slash.api.v2.UserService.GetUser:input_type -> slash.api.v2.GetUserRequest
-	6,  // 16: slash.api.v2.UserService.CreateUser:input_type -> slash.api.v2.CreateUserRequest
-	8,  // 17: slash.api.v2.UserService.UpdateUser:input_type -> slash.api.v2.UpdateUserRequest
-	10, // 18: slash.api.v2.UserService.DeleteUser:input_type -> slash.api.v2.DeleteUserRequest
-	12, // 19: slash.api.v2.UserService.ListUserAccessTokens:input_type -> slash.api.v2.ListUserAccessTokensRequest
-	14, // 20: slash.api.v2.UserService.CreateUserAccessToken:input_type -> slash.api.v2.CreateUserAccessTokenRequest
-	16, // 21: slash.api.v2.UserService.DeleteUserAccessToken:input_type -> slash.api.v2.DeleteUserAccessTokenRequest
-	3,  // 22: slash.api.v2.UserService.ListUsers:output_type -> slash.api.v2.ListUsersResponse
-	5,  // 23: slash.api.v2.UserService.GetUser:output_type -> slash.api.v2.GetUserResponse
-	7,  // 24: slash.api.v2.UserService.CreateUser:output_type -> slash.api.v2.CreateUserResponse
-	9,  // 25: slash.api.v2.UserService.UpdateUser:output_type -> slash.api.v2.UpdateUserResponse
-	11, // 26: slash.api.v2.UserService.DeleteUser:output_type -> slash.api.v2.DeleteUserResponse
-	13, // 27: slash.api.v2.UserService.ListUserAccessTokens:output_type -> slash.api.v2.ListUserAccessTokensResponse
-	15, // 28: slash.api.v2.UserService.CreateUserAccessToken:output_type -> slash.api.v2.CreateUserAccessTokenResponse
-	17, // 29: slash.api.v2.UserService.DeleteUserAccessToken:output_type -> slash.api.v2.DeleteUserAccessTokenResponse
-	22, // [22:30] is the sub-list for method output_type
-	14, // [14:22] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	20, // 1: slash.api.v2.User.created_time:type_name -> google.protobuf.Timestamp
+	20, // 2: slash.api.v2.User.updated_time:type_name -> google.protobuf.Timestamp
+	0,  // 3: slash.api.v2.User.role:type_name -> slash.api.v2.Role
+	1,  // 4: slash.api.v2.ListUsersResponse.users:type_name -> slash.api.v2.User
+	1,  // 5: slash.api.v2.GetUserResponse.user:type_name -> slash.api.v2.User
+	1,  // 6: slash.api.v2.CreateUserRequest.user:type_name -> slash.api.v2.User
+	1,  // 7: slash.api.v2.CreateUserResponse.user:type_name -> slash.api.v2.User
+	1,  // 8: slash.api.v2.UpdateUserRequest.user:type_name -> slash.api.v2.User
+	21, // 9: slash.api.v2.UpdateUserRequest.update_mask:type_name -> google.protobuf.FieldMask
+	1,  // 10: slash.api.v2.UpdateUserResponse.user:type_name -> slash.api.v2.User
+	18, // 11: slash.api.v2.ListUserAccessTokensResponse.access_tokens:type_name -> slash.api.v2.UserAccessToken
+	20, // 12: slash.api.v2.CreateUserAccessTokenRequest.expires_at:type_name -> google.protobuf.Timestamp
+	18, // 13: slash.api.v2.CreateUserAccessTokenResponse.access_token:type_name -> slash.api.v2.UserAccessToken
+	20, // 14: slash.api.v2.UserAccessToken.issued_at:type_name -> google.protobuf.Timestamp
+	20, // 15: slash.api.v2.UserAccessToken.expires_at:type_name -> google.protobuf.Timestamp
+	2,  // 16: slash.api.v2.UserService.ListUsers:input_type -> slash.api.v2.ListUsersRequest
+	4,  // 17: slash.api.v2.UserService.GetUser:input_type -> slash.api.v2.GetUserRequest
+	6,  // 18: slash.api.v2.UserService.CreateUser:input_type -> slash.api.v2.CreateUserRequest
+	8,  // 19: slash.api.v2.UserService.UpdateUser:input_type -> slash.api.v2.UpdateUserRequest
+	10, // 20: slash.api.v2.UserService.DeleteUser:input_type -> slash.api.v2.DeleteUserRequest
+	12, // 21: slash.api.v2.UserService.ListUserAccessTokens:input_type -> slash.api.v2.ListUserAccessTokensRequest
+	14, // 22: slash.api.v2.UserService.CreateUserAccessToken:input_type -> slash.api.v2.CreateUserAccessTokenRequest
+	16, // 23: slash.api.v2.UserService.DeleteUserAccessToken:input_type -> slash.api.v2.DeleteUserAccessTokenRequest
+	3,  // 24: slash.api.v2.UserService.ListUsers:output_type -> slash.api.v2.ListUsersResponse
+	5,  // 25: slash.api.v2.UserService.GetUser:output_type -> slash.api.v2.GetUserResponse
+	7,  // 26: slash.api.v2.UserService.CreateUser:output_type -> slash.api.v2.CreateUserResponse
+	9,  // 27: slash.api.v2.UserService.UpdateUser:output_type -> slash.api.v2.UpdateUserResponse
+	11, // 28: slash.api.v2.UserService.DeleteUser:output_type -> slash.api.v2.DeleteUserResponse
+	13, // 29: slash.api.v2.UserService.ListUserAccessTokens:output_type -> slash.api.v2.ListUserAccessTokensResponse
+	15, // 30: slash.api.v2.UserService.CreateUserAccessToken:output_type -> slash.api.v2.CreateUserAccessTokenResponse
+	17, // 31: slash.api.v2.UserService.DeleteUserAccessToken:output_type -> slash.api.v2.DeleteUserAccessTokenResponse
+	24, // [24:32] is the sub-list for method output_type
+	16, // [16:24] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_api_v2_user_service_proto_init() }
