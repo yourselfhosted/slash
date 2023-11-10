@@ -39,13 +39,3 @@ message OpenGraphMetadata {
 
   string image = 3;
 }
-
-enum Visibility {
-  VISIBILITY_UNSPECIFIED = 0;
-
-  PRIVATE = 1;
-
-  WORKSPACE = 2;
-
-  PUBLIC = 3;
-}

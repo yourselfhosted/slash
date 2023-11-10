@@ -8,12 +8,14 @@
   
 - [store/common.proto](#store_common-proto)
     - [RowStatus](#slash-store-RowStatus)
+    - [Visibility](#slash-store-Visibility)
+  
+- [store/collection.proto](#store_collection-proto)
+    - [Collection](#slash-store-Collection)
   
 - [store/shortcut.proto](#store_shortcut-proto)
     - [OpenGraphMetadata](#slash-store-OpenGraphMetadata)
     - [Shortcut](#slash-store-Shortcut)
-  
-    - [Visibility](#slash-store-Visibility)
   
 - [store/user_setting.proto](#store_user_setting-proto)
     - [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting)
@@ -86,6 +88,59 @@
 | ARCHIVED | 2 |  |
 
 
+
+<a name="slash-store-Visibility"></a>
+
+### Visibility
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| VISIBILITY_UNSPECIFIED | 0 |  |
+| PRIVATE | 1 |  |
+| WORKSPACE | 2 |  |
+| PUBLIC | 3 |  |
+
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="store_collection-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## store/collection.proto
+
+
+
+<a name="slash-store-Collection"></a>
+
+### Collection
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+| creator_id | [int32](#int32) |  |  |
+| created_ts | [int64](#int64) |  |  |
+| updated_ts | [int64](#int64) |  |  |
+| name | [string](#string) |  |  |
+| title | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| shortcut_ids | [int32](#int32) | repeated |  |
+| visibility | [Visibility](#slash-store-Visibility) |  |  |
+
+
+
+
+
+ 
+
  
 
  
@@ -144,20 +199,6 @@
 
 
  
-
-
-<a name="slash-store-Visibility"></a>
-
-### Visibility
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| VISIBILITY_UNSPECIFIED | 0 |  |
-| PRIVATE | 1 |  |
-| WORKSPACE | 2 |  |
-| PUBLIC | 3 |  |
-
 
  
 
