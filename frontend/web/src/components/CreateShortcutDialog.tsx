@@ -263,7 +263,7 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               {t(`shortcut.visibility.${state.shortcutCreate.visibility.toLowerCase()}.description`)}
             </p>
           </div>
-          <Divider className="text-gray-500">Optional</Divider>
+          <Divider className="text-gray-500">More</Divider>
           <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden my-3 dark:border-zinc-800">
             <div
               className={classnames(

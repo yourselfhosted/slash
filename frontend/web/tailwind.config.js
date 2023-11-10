@@ -3,6 +3,9 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,tsx}"],
   darkMode: "class",
   theme: {
+    maxWidth: {
+      "8xl": "88rem",
+    },
     fontSize: {
       xs: ".75rem",
       sm: ".875rem",

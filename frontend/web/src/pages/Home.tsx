@@ -45,7 +45,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <div className="mx-auto max-w-6xl w-full px-3 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
+      <div className="mx-auto max-w-8xl w-full px-3 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
         <Navigator />
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">

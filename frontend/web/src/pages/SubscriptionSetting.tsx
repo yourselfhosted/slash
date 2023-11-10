@@ -37,7 +37,7 @@ const SubscriptionSetting: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-6xl w-full px-3 md:px-12 pt-8 pb-24 flex flex-col justify-start items-start gap-y-12">
+    <div className="mx-auto max-w-8xl w-full px-3 md:px-12 pt-8 pb-24 flex flex-col justify-start items-start gap-y-12">
       <div className="w-full">
         <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Subscription</p>
         <div className="mt-2">
