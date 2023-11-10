@@ -5,6 +5,7 @@ package slash.api.v2;
 import "api/v2/common.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/protobuf/field_mask.proto";
 
 option go_package = "gen/api/v2";
 
@@ -24,6 +25,14 @@ service ShortcutService {
       post: "/api/v2/shortcuts"
       body: "shortcut"
     };
+  }
+  // UpdateShortcut updates a shortcut.
+  rpc UpdateShortcut(UpdateShortcutRequest) returns (UpdateShortcutResponse) {
+    option (google.api.http) = {
+      put: "/api/v2/shortcuts/{shortcut.name}"
+      body: "shortcut"
+    };
+    option (google.api.method_signature) = "shortcut,update_mask";
   }
   // DeleteShortcut deletes a shortcut by name.
   rpc DeleteShortcut(DeleteShortcutRequest) returns (DeleteShortcutResponse) {
@@ -95,6 +104,16 @@ message CreateShortcutRequest {
 }
 
 message CreateShortcutResponse {
+  Shortcut shortcut = 1;
+}
+
+message UpdateShortcutRequest {
+  Shortcut shortcut = 1;
+
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateShortcutResponse {
   Shortcut shortcut = 1;
 }
 

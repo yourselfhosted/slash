@@ -22,6 +22,7 @@ const (
 	ShortcutService_ListShortcuts_FullMethodName  = "/slash.api.v2.ShortcutService/ListShortcuts"
 	ShortcutService_GetShortcut_FullMethodName    = "/slash.api.v2.ShortcutService/GetShortcut"
 	ShortcutService_CreateShortcut_FullMethodName = "/slash.api.v2.ShortcutService/CreateShortcut"
+	ShortcutService_UpdateShortcut_FullMethodName = "/slash.api.v2.ShortcutService/UpdateShortcut"
 	ShortcutService_DeleteShortcut_FullMethodName = "/slash.api.v2.ShortcutService/DeleteShortcut"
 )
 
@@ -35,6 +36,8 @@ type ShortcutServiceClient interface {
 	GetShortcut(ctx context.Context, in *GetShortcutRequest, opts ...grpc.CallOption) (*GetShortcutResponse, error)
 	// CreateShortcut creates a shortcut.
 	CreateShortcut(ctx context.Context, in *CreateShortcutRequest, opts ...grpc.CallOption) (*CreateShortcutResponse, error)
+	// UpdateShortcut updates a shortcut.
+	UpdateShortcut(ctx context.Context, in *UpdateShortcutRequest, opts ...grpc.CallOption) (*UpdateShortcutResponse, error)
 	// DeleteShortcut deletes a shortcut by name.
 	DeleteShortcut(ctx context.Context, in *DeleteShortcutRequest, opts ...grpc.CallOption) (*DeleteShortcutResponse, error)
 }
@@ -74,6 +77,15 @@ func (c *shortcutServiceClient) CreateShortcut(ctx context.Context, in *CreateSh
 	return out, nil
 }
 
+func (c *shortcutServiceClient) UpdateShortcut(ctx context.Context, in *UpdateShortcutRequest, opts ...grpc.CallOption) (*UpdateShortcutResponse, error) {
+	out := new(UpdateShortcutResponse)
+	err := c.cc.Invoke(ctx, ShortcutService_UpdateShortcut_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *shortcutServiceClient) DeleteShortcut(ctx context.Context, in *DeleteShortcutRequest, opts ...grpc.CallOption) (*DeleteShortcutResponse, error) {
 	out := new(DeleteShortcutResponse)
 	err := c.cc.Invoke(ctx, ShortcutService_DeleteShortcut_FullMethodName, in, out, opts...)
@@ -93,6 +105,8 @@ type ShortcutServiceServer interface {
 	GetShortcut(context.Context, *GetShortcutRequest) (*GetShortcutResponse, error)
 	// CreateShortcut creates a shortcut.
 	CreateShortcut(context.Context, *CreateShortcutRequest) (*CreateShortcutResponse, error)
+	// UpdateShortcut updates a shortcut.
+	UpdateShortcut(context.Context, *UpdateShortcutRequest) (*UpdateShortcutResponse, error)
 	// DeleteShortcut deletes a shortcut by name.
 	DeleteShortcut(context.Context, *DeleteShortcutRequest) (*DeleteShortcutResponse, error)
 	mustEmbedUnimplementedShortcutServiceServer()
@@ -110,6 +124,9 @@ func (UnimplementedShortcutServiceServer) GetShortcut(context.Context, *GetShort
 }
 func (UnimplementedShortcutServiceServer) CreateShortcut(context.Context, *CreateShortcutRequest) (*CreateShortcutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateShortcut not implemented")
+}
+func (UnimplementedShortcutServiceServer) UpdateShortcut(context.Context, *UpdateShortcutRequest) (*UpdateShortcutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateShortcut not implemented")
 }
 func (UnimplementedShortcutServiceServer) DeleteShortcut(context.Context, *DeleteShortcutRequest) (*DeleteShortcutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteShortcut not implemented")
@@ -181,6 +198,24 @@ func _ShortcutService_CreateShortcut_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShortcutService_UpdateShortcut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateShortcutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShortcutServiceServer).UpdateShortcut(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShortcutService_UpdateShortcut_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShortcutServiceServer).UpdateShortcut(ctx, req.(*UpdateShortcutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ShortcutService_DeleteShortcut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteShortcutRequest)
 	if err := dec(in); err != nil {
@@ -217,6 +252,10 @@ var ShortcutService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateShortcut",
 			Handler:    _ShortcutService_CreateShortcut_Handler,
+		},
+		{
+			MethodName: "UpdateShortcut",
+			Handler:    _ShortcutService_UpdateShortcut_Handler,
 		},
 		{
 			MethodName: "DeleteShortcut",

@@ -17,6 +17,8 @@
     - [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse)
     - [OpenGraphMetadata](#slash-api-v2-OpenGraphMetadata)
     - [Shortcut](#slash-api-v2-Shortcut)
+    - [UpdateShortcutRequest](#slash-api-v2-UpdateShortcutRequest)
+    - [UpdateShortcutResponse](#slash-api-v2-UpdateShortcutResponse)
   
     - [Visibility](#slash-api-v2-Visibility)
   
@@ -274,6 +276,37 @@
 
 
 
+
+<a name="slash-api-v2-UpdateShortcutRequest"></a>
+
+### UpdateShortcutRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| shortcut | [Shortcut](#slash-api-v2-Shortcut) |  |  |
+| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateShortcutResponse"></a>
+
+### UpdateShortcutResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| shortcut | [Shortcut](#slash-api-v2-Shortcut) |  |  |
+
+
+
+
+
  
 
 
@@ -305,6 +338,7 @@
 | ListShortcuts | [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest) | [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse) | ListShortcuts returns a list of shortcuts. |
 | GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by name. |
 | CreateShortcut | [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest) | [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse) | CreateShortcut creates a shortcut. |
+| UpdateShortcut | [UpdateShortcutRequest](#slash-api-v2-UpdateShortcutRequest) | [UpdateShortcutResponse](#slash-api-v2-UpdateShortcutResponse) | UpdateShortcut updates a shortcut. |
 | DeleteShortcut | [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest) | [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse) | DeleteShortcut deletes a shortcut by name. |
 
  
