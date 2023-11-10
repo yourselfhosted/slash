@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package slash.api.v2;
+
+import "api/v2/common.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gen/api/v2";
+
+service CollectionService {
+  // ListCollections returns a list of collections.
+  rpc ListCollections(ListCollectionsRequest) returns (ListCollectionsResponse) {
+    option (google.api.http) = {get: "/api/v2/collections"};
+  }
+  // GetCollection returns a collection by id.
+  rpc GetCollection(GetCollectionRequest) returns (GetCollectionResponse) {
+    option (google.api.http) = {get: "/api/v2/collections/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+  // CreateCollection creates a collection.
+  rpc CreateCollection(CreateCollectionRequest) returns (CreateCollectionResponse) {
+    option (google.api.http) = {
+      post: "/api/v2/collections"
+      body: "collection"
+    };
+  }
+  // UpdateCollection updates a collection.
+  rpc UpdateCollection(UpdateCollectionRequest) returns (UpdateCollectionResponse) {
+    option (google.api.http) = {
+      put: "/api/v2/collections/{collection.id}"
+      body: "collection"
+    };
+    option (google.api.method_signature) = "collection,update_mask";
+  }
+  // DeleteCollection deletes a collection by id.
+  rpc DeleteCollection(DeleteCollectionRequest) returns (DeleteCollectionResponse) {
+    option (google.api.http) = {delete: "/api/v2/collections/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+}
+
+message Collection {
+  int32 id = 1;
+
+  int32 creator_id = 2;
+
+  google.protobuf.Timestamp created_time = 3;
+
+  google.protobuf.Timestamp updated_time = 4;
+
+  string name = 6;
+
+  string title = 7;
+
+  string description = 8;
+
+  repeated int32 shortcut_ids = 9;
+
+  Visibility visibility = 10;
+}
+
+message ListCollectionsRequest {}
+
+message ListCollectionsResponse {
+  repeated Collection collections = 1;
+}
+
+message GetCollectionRequest {
+  int32 id = 1;
+}
+
+message GetCollectionResponse {
+  Collection collection = 1;
+}
+
+message CreateCollectionRequest {
+  Collection collection = 1;
+}
+
+message CreateCollectionResponse {
+  Collection collection = 1;
+}
+
+message UpdateCollectionRequest {
+  Collection collection = 1;
+
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateCollectionResponse {
+  Collection collection = 1;
+}
+
+message DeleteCollectionRequest {
+  int32 id = 1;
+}
+
+message DeleteCollectionResponse {}

@@ -15,7 +15,7 @@ service ShortcutService {
   rpc ListShortcuts(ListShortcutsRequest) returns (ListShortcutsResponse) {
     option (google.api.http) = {get: "/api/v2/shortcuts"};
   }
-  // GetShortcut returns a shortcut by name.
+  // GetShortcut returns a shortcut by id.
   rpc GetShortcut(GetShortcutRequest) returns (GetShortcutResponse) {
     option (google.api.http) = {get: "/api/v2/shortcuts/{id}"};
     option (google.api.method_signature) = "id";
@@ -35,7 +35,7 @@ service ShortcutService {
     };
     option (google.api.method_signature) = "shortcut,update_mask";
   }
-  // DeleteShortcut deletes a shortcut by name.
+  // DeleteShortcut deletes a shortcut by id.
   rpc DeleteShortcut(DeleteShortcutRequest) returns (DeleteShortcutResponse) {
     option (google.api.http) = {delete: "/api/v2/shortcuts/{id}"};
     option (google.api.method_signature) = "id";
@@ -76,16 +76,6 @@ message OpenGraphMetadata {
   string description = 2;
 
   string image = 3;
-}
-
-enum Visibility {
-  VISIBILITY_UNSPECIFIED = 0;
-
-  PRIVATE = 1;
-
-  WORKSPACE = 2;
-
-  PUBLIC = 3;
 }
 
 message ListShortcutsRequest {}

@@ -32,13 +32,13 @@ const (
 type ShortcutServiceClient interface {
 	// ListShortcuts returns a list of shortcuts.
 	ListShortcuts(ctx context.Context, in *ListShortcutsRequest, opts ...grpc.CallOption) (*ListShortcutsResponse, error)
-	// GetShortcut returns a shortcut by name.
+	// GetShortcut returns a shortcut by id.
 	GetShortcut(ctx context.Context, in *GetShortcutRequest, opts ...grpc.CallOption) (*GetShortcutResponse, error)
 	// CreateShortcut creates a shortcut.
 	CreateShortcut(ctx context.Context, in *CreateShortcutRequest, opts ...grpc.CallOption) (*CreateShortcutResponse, error)
 	// UpdateShortcut updates a shortcut.
 	UpdateShortcut(ctx context.Context, in *UpdateShortcutRequest, opts ...grpc.CallOption) (*UpdateShortcutResponse, error)
-	// DeleteShortcut deletes a shortcut by name.
+	// DeleteShortcut deletes a shortcut by id.
 	DeleteShortcut(ctx context.Context, in *DeleteShortcutRequest, opts ...grpc.CallOption) (*DeleteShortcutResponse, error)
 }
 
@@ -101,13 +101,13 @@ func (c *shortcutServiceClient) DeleteShortcut(ctx context.Context, in *DeleteSh
 type ShortcutServiceServer interface {
 	// ListShortcuts returns a list of shortcuts.
 	ListShortcuts(context.Context, *ListShortcutsRequest) (*ListShortcutsResponse, error)
-	// GetShortcut returns a shortcut by name.
+	// GetShortcut returns a shortcut by id.
 	GetShortcut(context.Context, *GetShortcutRequest) (*GetShortcutResponse, error)
 	// CreateShortcut creates a shortcut.
 	CreateShortcut(context.Context, *CreateShortcutRequest) (*CreateShortcutResponse, error)
 	// UpdateShortcut updates a shortcut.
 	UpdateShortcut(context.Context, *UpdateShortcutRequest) (*UpdateShortcutResponse, error)
-	// DeleteShortcut deletes a shortcut by name.
+	// DeleteShortcut deletes a shortcut by id.
 	DeleteShortcut(context.Context, *DeleteShortcutRequest) (*DeleteShortcutResponse, error)
 	mustEmbedUnimplementedShortcutServiceServer()
 }

@@ -11,3 +11,13 @@ enum RowStatus {
 
   ARCHIVED = 2;
 }
+
+enum Visibility {
+  VISIBILITY_UNSPECIFIED = 0;
+
+  PRIVATE = 1;
+
+  WORKSPACE = 2;
+
+  PUBLIC = 3;
+}

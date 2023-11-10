@@ -5,6 +5,22 @@
 
 - [api/v2/common.proto](#api_v2_common-proto)
     - [RowStatus](#slash-api-v2-RowStatus)
+    - [Visibility](#slash-api-v2-Visibility)
+  
+- [api/v2/collection_service.proto](#api_v2_collection_service-proto)
+    - [Collection](#slash-api-v2-Collection)
+    - [CreateCollectionRequest](#slash-api-v2-CreateCollectionRequest)
+    - [CreateCollectionResponse](#slash-api-v2-CreateCollectionResponse)
+    - [DeleteCollectionRequest](#slash-api-v2-DeleteCollectionRequest)
+    - [DeleteCollectionResponse](#slash-api-v2-DeleteCollectionResponse)
+    - [GetCollectionRequest](#slash-api-v2-GetCollectionRequest)
+    - [GetCollectionResponse](#slash-api-v2-GetCollectionResponse)
+    - [ListCollectionsRequest](#slash-api-v2-ListCollectionsRequest)
+    - [ListCollectionsResponse](#slash-api-v2-ListCollectionsResponse)
+    - [UpdateCollectionRequest](#slash-api-v2-UpdateCollectionRequest)
+    - [UpdateCollectionResponse](#slash-api-v2-UpdateCollectionResponse)
+  
+    - [CollectionService](#slash-api-v2-CollectionService)
   
 - [api/v2/shortcut_service.proto](#api_v2_shortcut_service-proto)
     - [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest)
@@ -19,8 +35,6 @@
     - [Shortcut](#slash-api-v2-Shortcut)
     - [UpdateShortcutRequest](#slash-api-v2-UpdateShortcutRequest)
     - [UpdateShortcutResponse](#slash-api-v2-UpdateShortcutResponse)
-  
-    - [Visibility](#slash-api-v2-Visibility)
   
     - [ShortcutService](#slash-api-v2-ShortcutService)
   
@@ -109,9 +123,217 @@
 | ARCHIVED | 2 |  |
 
 
+
+<a name="slash-api-v2-Visibility"></a>
+
+### Visibility
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| VISIBILITY_UNSPECIFIED | 0 |  |
+| PRIVATE | 1 |  |
+| WORKSPACE | 2 |  |
+| PUBLIC | 3 |  |
+
+
  
 
  
+
+ 
+
+
+
+<a name="api_v2_collection_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v2/collection_service.proto
+
+
+
+<a name="slash-api-v2-Collection"></a>
+
+### Collection
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+| creator_id | [int32](#int32) |  |  |
+| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| name | [string](#string) |  |  |
+| title | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| shortcut_ids | [int32](#int32) | repeated |  |
+| visibility | [Visibility](#slash-api-v2-Visibility) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateCollectionRequest"></a>
+
+### CreateCollectionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| collection | [Collection](#slash-api-v2-Collection) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateCollectionResponse"></a>
+
+### CreateCollectionResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| collection | [Collection](#slash-api-v2-Collection) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteCollectionRequest"></a>
+
+### DeleteCollectionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteCollectionResponse"></a>
+
+### DeleteCollectionResponse
+
+
+
+
+
+
+
+<a name="slash-api-v2-GetCollectionRequest"></a>
+
+### GetCollectionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetCollectionResponse"></a>
+
+### GetCollectionResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| collection | [Collection](#slash-api-v2-Collection) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-ListCollectionsRequest"></a>
+
+### ListCollectionsRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-ListCollectionsResponse"></a>
+
+### ListCollectionsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| collections | [Collection](#slash-api-v2-Collection) | repeated |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateCollectionRequest"></a>
+
+### UpdateCollectionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| collection | [Collection](#slash-api-v2-Collection) |  |  |
+| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateCollectionResponse"></a>
+
+### UpdateCollectionResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| collection | [Collection](#slash-api-v2-Collection) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="slash-api-v2-CollectionService"></a>
+
+### CollectionService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| ListCollections | [ListCollectionsRequest](#slash-api-v2-ListCollectionsRequest) | [ListCollectionsResponse](#slash-api-v2-ListCollectionsResponse) | ListCollections returns a list of collections. |
+| GetCollection | [GetCollectionRequest](#slash-api-v2-GetCollectionRequest) | [GetCollectionResponse](#slash-api-v2-GetCollectionResponse) | GetCollection returns a collection by id. |
+| CreateCollection | [CreateCollectionRequest](#slash-api-v2-CreateCollectionRequest) | [CreateCollectionResponse](#slash-api-v2-CreateCollectionResponse) | CreateCollection creates a collection. |
+| UpdateCollection | [UpdateCollectionRequest](#slash-api-v2-UpdateCollectionRequest) | [UpdateCollectionResponse](#slash-api-v2-UpdateCollectionResponse) | UpdateCollection updates a collection. |
+| DeleteCollection | [DeleteCollectionRequest](#slash-api-v2-DeleteCollectionRequest) | [DeleteCollectionResponse](#slash-api-v2-DeleteCollectionResponse) | DeleteCollection deletes a collection by id. |
 
  
 
@@ -310,20 +532,6 @@
 
  
 
-
-<a name="slash-api-v2-Visibility"></a>
-
-### Visibility
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| VISIBILITY_UNSPECIFIED | 0 |  |
-| PRIVATE | 1 |  |
-| WORKSPACE | 2 |  |
-| PUBLIC | 3 |  |
-
-
  
 
  
@@ -337,10 +545,10 @@
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | ListShortcuts | [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest) | [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse) | ListShortcuts returns a list of shortcuts. |
-| GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by name. |
+| GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by id. |
 | CreateShortcut | [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest) | [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse) | CreateShortcut creates a shortcut. |
 | UpdateShortcut | [UpdateShortcutRequest](#slash-api-v2-UpdateShortcutRequest) | [UpdateShortcutResponse](#slash-api-v2-UpdateShortcutResponse) | UpdateShortcut updates a shortcut. |
-| DeleteShortcut | [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest) | [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse) | DeleteShortcut deletes a shortcut by name. |
+| DeleteShortcut | [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest) | [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse) | DeleteShortcut deletes a shortcut by id. |
 
  
 
