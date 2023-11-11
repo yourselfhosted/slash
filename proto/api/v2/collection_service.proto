@@ -20,6 +20,8 @@ service CollectionService {
     option (google.api.http) = {get: "/api/v2/collections/{id}"};
     option (google.api.method_signature) = "id";
   }
+  // GetCollectionByName returns a collection by name.
+  rpc GetCollectionByName(GetCollectionByNameRequest) returns (GetCollectionByNameResponse) {}
   // CreateCollection creates a collection.
   rpc CreateCollection(CreateCollectionRequest) returns (CreateCollectionResponse) {
     option (google.api.http) = {
@@ -73,6 +75,14 @@ message GetCollectionRequest {
 }
 
 message GetCollectionResponse {
+  Collection collection = 1;
+}
+
+message GetCollectionByNameRequest {
+  string name = 1;
+}
+
+message GetCollectionByNameResponse {
   Collection collection = 1;
 }
 

@@ -3,8 +3,10 @@ package v2
 import "strings"
 
 var allowedMethodsWhenUnauthorized = map[string]bool{
-	"/slash.api.v2.WorkspaceService/GetWorkspaceProfile": true,
-	"/slash.api.v2.WorkspaceService/GetWorkspaceSetting": true,
+	"/slash.api.v2.WorkspaceService/GetWorkspaceProfile":  true,
+	"/slash.api.v2.WorkspaceService/GetWorkspaceSetting":  true,
+	"/slash.api.v2.ShortcutService/GetShortcut":           true,
+	"/slash.api.v2.CollectionService/GetCollectionByName": true,
 }
 
 // isUnauthorizeAllowedMethod returns true if the method is allowed to be called when the user is not authorized.

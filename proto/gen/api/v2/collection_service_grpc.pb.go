@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	CollectionService_ListCollections_FullMethodName  = "/slash.api.v2.CollectionService/ListCollections"
-	CollectionService_GetCollection_FullMethodName    = "/slash.api.v2.CollectionService/GetCollection"
-	CollectionService_CreateCollection_FullMethodName = "/slash.api.v2.CollectionService/CreateCollection"
-	CollectionService_UpdateCollection_FullMethodName = "/slash.api.v2.CollectionService/UpdateCollection"
-	CollectionService_DeleteCollection_FullMethodName = "/slash.api.v2.CollectionService/DeleteCollection"
+	CollectionService_ListCollections_FullMethodName     = "/slash.api.v2.CollectionService/ListCollections"
+	CollectionService_GetCollection_FullMethodName       = "/slash.api.v2.CollectionService/GetCollection"
+	CollectionService_GetCollectionByName_FullMethodName = "/slash.api.v2.CollectionService/GetCollectionByName"
+	CollectionService_CreateCollection_FullMethodName    = "/slash.api.v2.CollectionService/CreateCollection"
+	CollectionService_UpdateCollection_FullMethodName    = "/slash.api.v2.CollectionService/UpdateCollection"
+	CollectionService_DeleteCollection_FullMethodName    = "/slash.api.v2.CollectionService/DeleteCollection"
 )
 
 // CollectionServiceClient is the client API for CollectionService service.
@@ -34,6 +35,8 @@ type CollectionServiceClient interface {
 	ListCollections(ctx context.Context, in *ListCollectionsRequest, opts ...grpc.CallOption) (*ListCollectionsResponse, error)
 	// GetCollection returns a collection by id.
 	GetCollection(ctx context.Context, in *GetCollectionRequest, opts ...grpc.CallOption) (*GetCollectionResponse, error)
+	// GetCollectionByName returns a collection by name.
+	GetCollectionByName(ctx context.Context, in *GetCollectionByNameRequest, opts ...grpc.CallOption) (*GetCollectionByNameResponse, error)
 	// CreateCollection creates a collection.
 	CreateCollection(ctx context.Context, in *CreateCollectionRequest, opts ...grpc.CallOption) (*CreateCollectionResponse, error)
 	// UpdateCollection updates a collection.
@@ -62,6 +65,15 @@ func (c *collectionServiceClient) ListCollections(ctx context.Context, in *ListC
 func (c *collectionServiceClient) GetCollection(ctx context.Context, in *GetCollectionRequest, opts ...grpc.CallOption) (*GetCollectionResponse, error) {
 	out := new(GetCollectionResponse)
 	err := c.cc.Invoke(ctx, CollectionService_GetCollection_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *collectionServiceClient) GetCollectionByName(ctx context.Context, in *GetCollectionByNameRequest, opts ...grpc.CallOption) (*GetCollectionByNameResponse, error) {
+	out := new(GetCollectionByNameResponse)
+	err := c.cc.Invoke(ctx, CollectionService_GetCollectionByName_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -103,6 +115,8 @@ type CollectionServiceServer interface {
 	ListCollections(context.Context, *ListCollectionsRequest) (*ListCollectionsResponse, error)
 	// GetCollection returns a collection by id.
 	GetCollection(context.Context, *GetCollectionRequest) (*GetCollectionResponse, error)
+	// GetCollectionByName returns a collection by name.
+	GetCollectionByName(context.Context, *GetCollectionByNameRequest) (*GetCollectionByNameResponse, error)
 	// CreateCollection creates a collection.
 	CreateCollection(context.Context, *CreateCollectionRequest) (*CreateCollectionResponse, error)
 	// UpdateCollection updates a collection.
@@ -121,6 +135,9 @@ func (UnimplementedCollectionServiceServer) ListCollections(context.Context, *Li
 }
 func (UnimplementedCollectionServiceServer) GetCollection(context.Context, *GetCollectionRequest) (*GetCollectionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCollection not implemented")
+}
+func (UnimplementedCollectionServiceServer) GetCollectionByName(context.Context, *GetCollectionByNameRequest) (*GetCollectionByNameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCollectionByName not implemented")
 }
 func (UnimplementedCollectionServiceServer) CreateCollection(context.Context, *CreateCollectionRequest) (*CreateCollectionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCollection not implemented")
@@ -176,6 +193,24 @@ func _CollectionService_GetCollection_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CollectionServiceServer).GetCollection(ctx, req.(*GetCollectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CollectionService_GetCollectionByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCollectionByNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CollectionServiceServer).GetCollectionByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CollectionService_GetCollectionByName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CollectionServiceServer).GetCollectionByName(ctx, req.(*GetCollectionByNameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -248,6 +283,10 @@ var CollectionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCollection",
 			Handler:    _CollectionService_GetCollection_Handler,
+		},
+		{
+			MethodName: "GetCollectionByName",
+			Handler:    _CollectionService_GetCollectionByName_Handler,
 		},
 		{
 			MethodName: "CreateCollection",

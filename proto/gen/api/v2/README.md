@@ -13,6 +13,8 @@
     - [CreateCollectionResponse](#slash-api-v2-CreateCollectionResponse)
     - [DeleteCollectionRequest](#slash-api-v2-DeleteCollectionRequest)
     - [DeleteCollectionResponse](#slash-api-v2-DeleteCollectionResponse)
+    - [GetCollectionByNameRequest](#slash-api-v2-GetCollectionByNameRequest)
+    - [GetCollectionByNameResponse](#slash-api-v2-GetCollectionByNameResponse)
     - [GetCollectionRequest](#slash-api-v2-GetCollectionRequest)
     - [GetCollectionResponse](#slash-api-v2-GetCollectionResponse)
     - [ListCollectionsRequest](#slash-api-v2-ListCollectionsRequest)
@@ -230,6 +232,36 @@
 
 
 
+<a name="slash-api-v2-GetCollectionByNameRequest"></a>
+
+### GetCollectionByNameRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetCollectionByNameResponse"></a>
+
+### GetCollectionByNameResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| collection | [Collection](#slash-api-v2-Collection) |  |  |
+
+
+
+
+
+
 <a name="slash-api-v2-GetCollectionRequest"></a>
 
 ### GetCollectionRequest
@@ -331,6 +363,7 @@
 | ----------- | ------------ | ------------- | ------------|
 | ListCollections | [ListCollectionsRequest](#slash-api-v2-ListCollectionsRequest) | [ListCollectionsResponse](#slash-api-v2-ListCollectionsResponse) | ListCollections returns a list of collections. |
 | GetCollection | [GetCollectionRequest](#slash-api-v2-GetCollectionRequest) | [GetCollectionResponse](#slash-api-v2-GetCollectionResponse) | GetCollection returns a collection by id. |
+| GetCollectionByName | [GetCollectionByNameRequest](#slash-api-v2-GetCollectionByNameRequest) | [GetCollectionByNameResponse](#slash-api-v2-GetCollectionByNameResponse) | GetCollectionByName returns a collection by name. |
 | CreateCollection | [CreateCollectionRequest](#slash-api-v2-CreateCollectionRequest) | [CreateCollectionResponse](#slash-api-v2-CreateCollectionResponse) | CreateCollection creates a collection. |
 | UpdateCollection | [UpdateCollectionRequest](#slash-api-v2-UpdateCollectionRequest) | [UpdateCollectionResponse](#slash-api-v2-UpdateCollectionResponse) | UpdateCollection updates a collection. |
 | DeleteCollection | [DeleteCollectionRequest](#slash-api-v2-DeleteCollectionRequest) | [DeleteCollectionResponse](#slash-api-v2-DeleteCollectionResponse) | DeleteCollection deletes a collection by id. |

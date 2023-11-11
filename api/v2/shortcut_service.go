@@ -60,10 +60,17 @@ func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv2pb.GetShor
 		return nil, status.Errorf(codes.NotFound, "shortcut not found")
 	}
 
-	userID := ctx.Value(userIDContextKey).(int32)
-	if shortcut.Visibility == storepb.Visibility_PRIVATE && shortcut.CreatorId != userID {
-		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+	userID, ok := ctx.Value(userIDContextKey).(int32)
+	if ok {
+		if shortcut.Visibility == storepb.Visibility_PRIVATE && shortcut.CreatorId != userID {
+			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+		}
+	} else {
+		if shortcut.Visibility != storepb.Visibility_PUBLIC {
+			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+		}
 	}
+
 	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)

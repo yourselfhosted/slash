@@ -54,6 +54,33 @@ func (s *APIV2Service) GetCollection(ctx context.Context, request *apiv2pb.GetCo
 	return response, nil
 }
 
+func (s *APIV2Service) GetCollectionByName(ctx context.Context, request *apiv2pb.GetCollectionByNameRequest) (*apiv2pb.GetCollectionByNameResponse, error) {
+	collection, err := s.Store.GetCollection(ctx, &store.FindCollection{
+		Name: &request.Name,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get collection by name: %v", err)
+	}
+	if collection == nil {
+		return nil, status.Errorf(codes.NotFound, "collection not found")
+	}
+
+	userID, ok := ctx.Value(userIDContextKey).(int32)
+	if ok {
+		if collection.Visibility == storepb.Visibility_PRIVATE && collection.CreatorId != userID {
+			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+		}
+	} else {
+		if collection.Visibility != storepb.Visibility_PUBLIC {
+			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+		}
+	}
+	response := &apiv2pb.GetCollectionByNameResponse{
+		Collection: convertCollectionFromStore(collection),
+	}
+	return response, nil
+}
+
 func (s *APIV2Service) CreateCollection(ctx context.Context, request *apiv2pb.CreateCollectionRequest) (*apiv2pb.CreateCollectionResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
 	collection := &storepb.Collection{
