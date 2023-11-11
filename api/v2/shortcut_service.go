@@ -149,7 +149,7 @@ func (s *APIV2Service) UpdateShortcut(ctx context.Context, request *apiv2pb.Upda
 		case "description":
 			update.Description = &request.Shortcut.Description
 		case "visibility":
-			visibility := store.Visibility(request.Shortcut.Visibility)
+			visibility := store.Visibility(request.Shortcut.Visibility.String())
 			update.Visibility = &visibility
 		case "og_metadata":
 			if request.Shortcut.OgMetadata != nil {

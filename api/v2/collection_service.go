@@ -100,7 +100,9 @@ func (s *APIV2Service) UpdateCollection(ctx context.Context, request *apiv2pb.Up
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
 
-	update := &store.UpdateCollection{}
+	update := &store.UpdateCollection{
+		ID: collection.Id,
+	}
 	for _, path := range request.UpdateMask.Paths {
 		switch path {
 		case "name":
@@ -112,7 +114,7 @@ func (s *APIV2Service) UpdateCollection(ctx context.Context, request *apiv2pb.Up
 		case "shortcut_ids":
 			update.ShortcutIDs = request.Collection.ShortcutIds
 		case "visibility":
-			visibility := store.Visibility(request.Collection.Visibility)
+			visibility := store.Visibility(request.Collection.Visibility.String())
 			update.Visibility = &visibility
 		}
 	}
