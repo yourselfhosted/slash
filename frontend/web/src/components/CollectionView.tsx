@@ -10,7 +10,6 @@ import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { useAppSelector } from "@/stores";
 import useCollectionStore from "@/stores/v1/collection";
 import { Collection } from "@/types/proto/api/v2/collection_service";
-import { Visibility } from "@/types/proto/api/v2/common";
 import { showCommonDialog } from "./Alert";
 import CreateCollectionDialog from "./CreateCollectionDialog";
 import Icon from "./Icon";
@@ -65,11 +64,9 @@ const CollectionView = (props: Props) => {
             <p className="text-sm text-gray-500">{collection.description}</p>
           </div>
           <div className="flex flex-row justify-end items-center shrink-0">
-            {collection.visibility !== Visibility.PRIVATE && (
-              <Link className="w-full text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`}>
-                <Icon.Share className="w-4 h-auto mr-2" />
-              </Link>
-            )}
+            <Link className="w-full text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`}>
+              <Icon.Share className="w-4 h-auto mr-2" />
+            </Link>
             <Dropdown
               actionsClassName="!w-28 dark:text-gray-500"
               actions={

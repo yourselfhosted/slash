@@ -61,7 +61,7 @@ const ShortcutDetail = () => {
           {favicon ? (
             <img className="w-full h-auto rounded-lg" src={favicon} decoding="async" loading="lazy" />
           ) : (
-            <Icon.CircleSlash className="w-full h-auto text-gray-400" />
+            <Icon.CircleSlash className="w-full h-auto text-gray-400" strokeWidth={1} />
           )}
         </div>
         <a
@@ -72,9 +72,11 @@ const ShortcutDetail = () => {
           target="_blank"
         >
           <div className="truncate text-3xl">
-            <span>{shortcut.title}</span>
             {shortcut.title ? (
-              <span className="text-gray-400">(s/{shortcut.name})</span>
+              <>
+                <span>{shortcut.title}</span>
+                <span className="text-gray-400">(s/{shortcut.name})</span>
+              </>
             ) : (
               <>
                 <span className="text-gray-400 dark:text-gray-500">s/</span>

@@ -15,7 +15,7 @@ const ShortcutsContainer: React.FC<Props> = (props: Props) => {
   const ShortcutItemView = viewStore.displayStyle === "compact" ? ShortcutView : ShortcutCard;
 
   const handleShortcutClick = (shortcut: Shortcut) => {
-    window.open(absolutifyLink(`/s/${shortcut.id}`));
+    window.open(absolutifyLink(`/s/${shortcut.name}`));
   };
 
   return (

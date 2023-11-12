@@ -31,7 +31,7 @@ const ShortcutView = (props: Props) => {
           <Icon.CircleSlash className="w-full h-auto text-gray-400" />
         )}
       </div>
-      <div className="ml-1 w-full truncate">
+      <div className="ml-2 w-full truncate">
         {shortcut.title ? (
           <>
             <span className="dark:text-gray-400">{shortcut.title}</span>
@@ -51,11 +51,12 @@ const ShortcutView = (props: Props) => {
         )}
         to={`/s/${shortcut.name}`}
         target="_blank"
+        onClick={(e) => e.stopPropagation()}
       >
         <Icon.ArrowUpRight className="w-4 h-auto text-gray-400 shrink-0" />
       </Link>
       {showActions && (
-        <div className="ml-1 flex flex-row justify-end items-center shrink-0">
+        <div className="ml-1 flex flex-row justify-end items-center shrink-0" onClick={(e) => e.stopPropagation()}>
           <ShortcutActionsDropdown shortcut={shortcut} />
         </div>
       )}

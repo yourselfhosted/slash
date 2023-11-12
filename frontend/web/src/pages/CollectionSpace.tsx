@@ -8,6 +8,7 @@ import ShortcutView from "@/components/ShortcutView";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import useCollectionStore from "@/stores/v1/collection";
 import useShortcutStore from "@/stores/v1/shortcut";
+import useUserStore from "@/stores/v1/user";
 import { Collection } from "@/types/proto/api/v2/collection_service";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { convertShortcutFromPb } from "@/utils/shortcut";
@@ -15,6 +16,7 @@ import { convertShortcutFromPb } from "@/utils/shortcut";
 const CollectionSpace = () => {
   const { collectionName } = useParams();
   const { sm } = useResponsiveWidth();
+  const userStore = useUserStore();
   const collectionStore = useCollectionStore();
   const shortcutStore = useShortcutStore();
   const [collection, setCollection] = useState<Collection>();
@@ -30,6 +32,7 @@ const CollectionSpace = () => {
       try {
         const collection = await collectionStore.fetchCollectionByName(collectionName);
         setCollection(collection);
+        document.title = `${collection.title} - Slash`;
         setShortcuts([]);
         for (const shortcutId of collection.shortcutIds) {
           try {
@@ -51,6 +54,8 @@ const CollectionSpace = () => {
   if (!collection) {
     return null;
   }
+
+  const creator = userStore.getUserById(collection.creatorId);
 
   const handleShortcutClick = (shortcut: Shortcut) => {
     if (sm) {
@@ -115,6 +120,10 @@ const CollectionSpace = () => {
                 <div className="w-72 max-w-full border dark:border-zinc-900 dark:bg-zinc-900 dark:text-gray-400 p-6 rounded-2xl shadow-xl">
                   <Icon.AppWindow className="w-12 h-auto mb-2" strokeWidth={1} />
                   <p className="text-lg font-medium">Click on a tab in the Sidebar to get started.</p>
+                  <Divider className="!my-2" />
+                  <p className="text-gray-400 dark:text-gray-600 text-sm mt-2">
+                    Shared by <span className="italic font-medium">{creator.nickname}</span>
+                  </p>
                 </div>
               </div>
             )}

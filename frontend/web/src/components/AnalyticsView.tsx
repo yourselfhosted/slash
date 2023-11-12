@@ -34,6 +34,12 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
                   <span className="py-2 pr-2 text-right font-semibold text-sm text-gray-500">{t("analytics.visitors")}</span>
                 </div>
                 <div className="w-full divide-y divide-gray-200 dark:divide-zinc-800">
+                  {analytics.referenceData.length === 0 && (
+                    <div className="w-full flex flex-row justify-center items-center py-6 text-gray-400">
+                      <Icon.PackageOpen className="w-6 h-auto" />
+                      <p className="ml-2">No data found.</p>
+                    </div>
+                  )}
                   {analytics.referenceData.map((reference) => (
                     <div key={reference.name} className="w-full flex flex-row justify-between items-center">
                       <span className="whitespace-nowrap py-2 px-2 text-sm truncate text-gray-900 dark:text-gray-500">
@@ -89,6 +95,12 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
                     <span className="py-2 pr-2 text-right text-sm font-semibold text-gray-500">{t("analytics.visitors")}</span>
                   </div>
                   <div className="w-full divide-y divide-gray-200 dark:divide-zinc-800">
+                    {analytics.browserData.length === 0 && (
+                      <div className="w-full flex flex-row justify-center items-center py-6 text-gray-400">
+                        <Icon.PackageOpen className="w-6 h-auto" />
+                        <p className="ml-2">No data found.</p>
+                      </div>
+                    )}
                     {analytics.browserData.map((reference) => (
                       <div key={reference.name} className="w-full flex flex-row justify-between items-center">
                         <span className="whitespace-nowrap py-2 px-2 text-sm text-gray-900 truncate dark:text-gray-500">
@@ -106,6 +118,12 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
                     <span className="py-2 pr-2 text-right text-sm font-semibold text-gray-500">{t("analytics.visitors")}</span>
                   </div>
                   <div className="w-full divide-y divide-gray-200">
+                    {analytics.deviceData.length === 0 && (
+                      <div className="w-full flex flex-row justify-center items-center py-6 text-gray-400">
+                        <Icon.PackageOpen className="w-6 h-auto" />
+                        <p className="ml-2">No data found.</p>
+                      </div>
+                    )}
                     {analytics.deviceData.map((device) => (
                       <div key={device.name} className="w-full flex flex-row justify-between items-center">
                         <span className="whitespace-nowrap py-2 px-2 text-sm text-gray-900 truncate">{device.name || "Unknown"}</span>
