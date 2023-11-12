@@ -1,6 +1,6 @@
 # Slash Collections
 
-**Slash Collections** introduces a feature to help you better organize and manage related Shortcuts within the Slash Shortcuts platform.
+**Slash Collections** introduces a feature to help you better organize and manage related Shortcuts.
 
 ## What is a Collection?
 
