@@ -1,12 +1,8 @@
 import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
-import classNames from "classnames";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { getFaviconWithGoogleS2 } from "@/helpers/utils";
-import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { useAppSelector } from "@/stores";
 import useCollectionStore from "@/stores/v1/collection";
 import { Collection } from "@/types/proto/api/v2/collection_service";
@@ -14,6 +10,7 @@ import { Visibility } from "@/types/proto/api/v2/common";
 import { convertVisibilityFromPb } from "@/utils/visibility";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
+import ShortcutView from "./ShortcutView";
 
 interface Props {
   collectionId?: number;
@@ -206,7 +203,7 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
             <div className="w-full py-1 flex flex-row justify-start items-start flex-wrap overflow-hidden gap-2">
               {selectedShortcuts.map((shortcut) => {
                 return (
-                  <ShortcutItem
+                  <ShortcutView
                     key={shortcut.id}
                     className="bg-gray-100 shadow dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400"
                     shortcut={shortcut}
@@ -218,7 +215,7 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
               })}
               {unselectedShortcuts.map((shortcut) => {
                 return (
-                  <ShortcutItem
+                  <ShortcutView
                     key={shortcut.id}
                     className="border-dashed"
                     shortcut={shortcut}
@@ -242,60 +239,6 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
         </div>
       </ModalDialog>
     </Modal>
-  );
-};
-
-interface ShortcutItemProps {
-  shortcut: Shortcut;
-  className?: string;
-  onClick?: () => void;
-}
-
-export const ShortcutItem = (props: ShortcutItemProps) => {
-  const { shortcut, className, onClick } = props;
-  const { sm } = useResponsiveWidth();
-  const favicon = getFaviconWithGoogleS2(shortcut.link);
-
-  return (
-    <div
-      className={classNames(
-        "group w-auto select-none px-2 py-1 flex flex-row justify-start items-center border rounded-lg hover:bg-gray-100 dark:border-zinc-800 dark:hover:bg-zinc-800 cursor-pointer",
-        className
-      )}
-      onClick={onClick}
-    >
-      <span className={classNames("w-5 h-5 flex justify-center items-center overflow-clip shrink-0")}>
-        {favicon ? (
-          <img className="w-full h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
-        ) : (
-          <Icon.CircleSlash className="w-full h-auto text-gray-400" />
-        )}
-      </span>
-      <div className="ml-1 w-full flex flex-col justify-start items-start truncate">
-        <div className="w-full flex flex-row justify-start items-center">
-          <span className={classNames("max-w-full flex flex-row px-1 justify-start items-center rounded-md")}>
-            <div className="truncate">
-              <span className="dark:text-gray-400">{shortcut.title}</span>
-              {shortcut.title ? (
-                <span className="text-gray-500">(s/{shortcut.name})</span>
-              ) : (
-                <>
-                  <span className="text-gray-400 dark:text-gray-500">s/</span>
-                  <span className="truncate dark:text-gray-400">{shortcut.name}</span>
-                </>
-              )}
-            </div>
-          </span>
-        </div>
-      </div>
-      <Link
-        className={classNames("w-6 h-6 p-1 rounded-lg bg-gray-200 dark:bg-zinc-900 hover:opacity-80", sm && "hidden group-hover:block")}
-        to={`/s/${shortcut.name}`}
-        target="_blank"
-      >
-        <Icon.ArrowUpRight className="w-4 h-auto text-gray-400 shrink-0" />
-      </Link>
-    </div>
   );
 };
 

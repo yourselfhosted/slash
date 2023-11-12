@@ -2,8 +2,8 @@ import { Divider } from "@mui/joy";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ShortcutItem } from "@/components/CreateCollectionDialog";
 import Icon from "@/components/Icon";
+import ShortcutView from "@/components/ShortcutView";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import useCollectionStore from "@/stores/v1/collection";
 import useShortcutStore from "@/stores/v1/shortcut";
@@ -66,16 +66,19 @@ const CollectionSpace = () => {
             <p className="text-gray-500 text-sm">{collection.description}</p>
             <Divider className="!my-2" />
           </div>
-          <div className="w-full flex flex-col justify-start items-start gap-1">
+          <div className="w-full flex flex-col justify-start items-start gap-2 sm:gap-1 px-px">
             {shortcuts.map((shortcut) => {
               return (
-                <ShortcutItem
+                <ShortcutView
                   className={classNames(
-                    "w-full py-2",
-                    selectedShortcut?.id === shortcut.id ? "bg-gray-100 dark:bg-zinc-800" : "border-transparent dark:border-transparent"
+                    "w-full py-2 cursor-pointer",
+                    selectedShortcut?.id === shortcut.id
+                      ? "bg-gray-100 dark:bg-zinc-800"
+                      : "sm:border-transparent dark:sm:border-transparent"
                   )}
                   key={shortcut.name}
                   shortcut={convertShortcutFromPb(shortcut)}
+                  alwaysShowLink={!sm}
                   onClick={() => handleShortcutClick(shortcut)}
                 />
               );

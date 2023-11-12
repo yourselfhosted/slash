@@ -3,13 +3,15 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import useNavigateTo from "@/hooks/useNavigateTo";
+import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { useAppSelector } from "@/stores";
 import useCollectionStore from "@/stores/v1/collection";
 import { Collection } from "@/types/proto/api/v2/collection_service";
 import { Visibility } from "@/types/proto/api/v2/common";
 import { showCommonDialog } from "./Alert";
-import CreateCollectionDialog, { ShortcutItem } from "./CreateCollectionDialog";
+import CreateCollectionDialog from "./CreateCollectionDialog";
 import Icon from "./Icon";
+import ShortcutView from "./ShortcutView";
 import Dropdown from "./common/Dropdown";
 
 interface Props {
@@ -19,6 +21,7 @@ interface Props {
 const CollectionView = (props: Props) => {
   const { collection } = props;
   const { t } = useTranslation();
+  const { sm } = useResponsiveWidth();
   const navigateTo = useNavigateTo();
   const collectionStore = useCollectionStore();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
@@ -82,7 +85,9 @@ const CollectionView = (props: Props) => {
         </div>
         <div className="w-full p-3 flex flex-row justify-start items-start flex-wrap gap-3">
           {shortcuts.map((shortcut) => {
-            return <ShortcutItem key={shortcut.id} shortcut={shortcut} onClick={() => handleShortcutClick(shortcut)} />;
+            return (
+              <ShortcutView key={shortcut.id} shortcut={shortcut} alwaysShowLink={!sm} onClick={() => handleShortcutClick(shortcut)} />
+            );
           })}
         </div>
       </div>

@@ -59,7 +59,7 @@ const ShortcutDetail = () => {
       <div className="mx-auto max-w-8xl w-full px-3 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
         <div className="mt-8 w-12 h-12 flex justify-center items-center overflow-clip">
           {favicon ? (
-            <img className="w-full h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
+            <img className="w-full h-auto rounded-lg" src={favicon} decoding="async" loading="lazy" />
           ) : (
             <Icon.CircleSlash className="w-full h-auto text-gray-400" />
           )}

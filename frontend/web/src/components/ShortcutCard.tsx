@@ -37,7 +37,7 @@ const ShortcutCard = (props: Props) => {
           <div className="w-[calc(100%-16px)] flex flex-row justify-start items-center mr-1 shrink-0">
             <Link to={`/shortcut/${shortcut.id}`} className={classNames("w-8 h-8 flex justify-center items-center overflow-clip shrink-0")}>
               {favicon ? (
-                <img className="w-full h-auto rounded-full" src={favicon} decoding="async" loading="lazy" />
+                <img className="w-full h-auto rounded-lg" src={favicon} decoding="async" loading="lazy" />
               ) : (
                 <Icon.CircleSlash className="w-full h-auto text-gray-400" />
               )}

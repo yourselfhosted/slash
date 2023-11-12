@@ -21,7 +21,7 @@ const ShortcutsContainer: React.FC<Props> = (props: Props) => {
       )}
     >
       {shortcutList.map((shortcut) => {
-        return <ShortcutItemView key={shortcut.id} shortcut={shortcut} />;
+        return <ShortcutItemView key={shortcut.id} shortcut={shortcut} showActions={true} />;
       })}
     </div>
   );
