@@ -31,8 +31,8 @@ const CollectionSpace = () => {
     (async () => {
       try {
         const collection = await collectionStore.fetchCollectionByName(collectionName);
+        await userStore.getOrFetchUserById(collection.creatorId);
         setCollection(collection);
-        document.title = `${collection.title} - Slash`;
         setShortcuts([]);
         for (const shortcutId of collection.shortcutIds) {
           try {
@@ -44,6 +44,7 @@ const CollectionSpace = () => {
             // do nth
           }
         }
+        document.title = `${collection.title} - Slash`;
       } catch (error: any) {
         console.error(error);
         toast.error(error.details);
