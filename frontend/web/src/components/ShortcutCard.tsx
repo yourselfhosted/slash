@@ -14,7 +14,7 @@ interface Props {
   shortcut: Shortcut;
 }
 
-const ShortcutView = (props: Props) => {
+const ShortcutCard = (props: Props) => {
   const { shortcut } = props;
   const { t } = useTranslation();
   const viewStore = useViewStore();
@@ -127,4 +127,4 @@ const ShortcutView = (props: Props) => {
   );
 };
 
-export default ShortcutView;
+export default ShortcutCard;

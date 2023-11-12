@@ -3,6 +3,7 @@ import { isEqual } from "lodash-es";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
+import Navigator from "@/components/Navigator";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service";
 import Header from "../components/Header";
@@ -54,6 +55,7 @@ const Root: React.FC = () => {
       {isInitialized && (
         <div className="w-full h-auto flex flex-col justify-start items-start dark:bg-zinc-900">
           <Header />
+          <Navigator />
           <Outlet />
         </div>
       )}

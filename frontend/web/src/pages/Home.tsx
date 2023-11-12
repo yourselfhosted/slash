@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import CreateShortcutDialog from "../components/CreateShortcutDialog";
 import FilterView from "../components/FilterView";
 import Icon from "../components/Icon";
-import Navigator from "../components/Navigator";
 import ShortcutsContainer from "../components/ShortcutsContainer";
+import ShortcutsNavigator from "../components/ShortcutsNavigator";
 import ViewSetting from "../components/ViewSetting";
 import useLoading from "../hooks/useLoading";
 import { shortcutService } from "../services";
@@ -46,7 +46,7 @@ const Home: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-8xl w-full px-3 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
-        <Navigator />
+        <ShortcutsNavigator />
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
             <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
