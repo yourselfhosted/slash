@@ -104,6 +104,10 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
       toast.error("Please fill in required fields.");
       return;
     }
+    if (selectedShortcuts.length === 0) {
+      toast.error("Please select at least one shortcut.");
+      return;
+    }
 
     try {
       if (!isCreating) {
