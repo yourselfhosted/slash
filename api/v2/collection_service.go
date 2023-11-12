@@ -10,6 +10,7 @@ import (
 
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/store"
 )
 
@@ -78,6 +79,7 @@ func (s *APIV2Service) GetCollectionByName(ctx context.Context, request *apiv2pb
 	response := &apiv2pb.GetCollectionByNameResponse{
 		Collection: convertCollectionFromStore(collection),
 	}
+	metric.Enqueue("collection view")
 	return response, nil
 }
 
@@ -99,6 +101,7 @@ func (s *APIV2Service) CreateCollection(ctx context.Context, request *apiv2pb.Cr
 	response := &apiv2pb.CreateCollectionResponse{
 		Collection: convertCollectionFromStore(collection),
 	}
+	metric.Enqueue("collection create")
 	return response, nil
 }
 
