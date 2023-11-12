@@ -188,7 +188,12 @@ func (s *APIV1Service) registerUserRoutes(g *echo.Group) {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("Failed to find user, err: %s", err)).SetInternal(err)
 		}
 
-		return c.JSON(http.StatusOK, convertUserFromStore(user))
+		userMessage := convertUserFromStore(user)
+		userID, ok := c.Get(userIDContextKey).(int32)
+		if !ok {
+			userMessage.Email = ""
+		}
+		return c.JSON(http.StatusOK, userMessage)
 	})
 
 	g.PATCH("/user/:id", func(c echo.Context) error {
