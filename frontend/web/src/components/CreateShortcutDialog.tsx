@@ -163,8 +163,8 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveBtnClick = async () => {
-    if (!state.shortcutCreate.name) {
-      toast.error("Name is required");
+    if (!state.shortcutCreate.name || !state.shortcutCreate.link) {
+      toast.error("Please fill in required fields.");
       return;
     }
 
@@ -209,19 +209,23 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="overflow-y-auto overflow-x-hidden">
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Name</span>
+            <span className="mb-2">
+              Name <span className="text-red-600">*</span>
+            </span>
             <div className="relative w-full">
               <Input
                 className="w-full"
                 type="text"
-                placeholder="Unique shortcut name"
+                placeholder="Should be an unique name and will be put in url"
                 value={state.shortcutCreate.name}
                 onChange={handleNameInputChange}
               />
             </div>
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Destination URL</span>
+            <span className="mb-2">
+              Destination URL <span className="text-red-600">*</span>
+            </span>
             <Input
               className="w-full"
               type="text"

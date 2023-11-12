@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { absolutifyLink } from "@/helpers/utils";
 import useViewStore from "../stores/v1/view";
 import ShortcutCard from "./ShortcutCard";
 import ShortcutView from "./ShortcutView";
@@ -13,6 +14,10 @@ const ShortcutsContainer: React.FC<Props> = (props: Props) => {
   const displayStyle = viewStore.displayStyle || "full";
   const ShortcutItemView = viewStore.displayStyle === "compact" ? ShortcutView : ShortcutCard;
 
+  const handleShortcutClick = (shortcut: Shortcut) => {
+    window.open(absolutifyLink(`/s/${shortcut.id}`));
+  };
+
   return (
     <div
       className={classNames(
@@ -21,7 +26,7 @@ const ShortcutsContainer: React.FC<Props> = (props: Props) => {
       )}
     >
       {shortcutList.map((shortcut) => {
-        return <ShortcutItemView key={shortcut.id} shortcut={shortcut} showActions={true} />;
+        return <ShortcutItemView key={shortcut.id} shortcut={shortcut} showActions={true} onClick={() => handleShortcutClick(shortcut)} />;
       })}
     </div>
   );

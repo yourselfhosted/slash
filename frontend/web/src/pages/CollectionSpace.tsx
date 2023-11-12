@@ -1,6 +1,7 @@
 import { Divider } from "@mui/joy";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 import Icon from "@/components/Icon";
 import ShortcutView from "@/components/ShortcutView";
@@ -26,18 +27,23 @@ const CollectionSpace = () => {
 
   useEffect(() => {
     (async () => {
-      const collection = await collectionStore.fetchCollectionByName(collectionName);
-      setCollection(collection);
-      setShortcuts([]);
-      for (const shortcutId of collection.shortcutIds) {
-        try {
-          const shortcut = await shortcutStore.getOrFetchShortcutById(shortcutId);
-          setShortcuts((shortcuts) => {
-            return [...shortcuts, shortcut];
-          });
-        } catch (error) {
-          // do nth
+      try {
+        const collection = await collectionStore.fetchCollectionByName(collectionName);
+        setCollection(collection);
+        setShortcuts([]);
+        for (const shortcutId of collection.shortcutIds) {
+          try {
+            const shortcut = await shortcutStore.getOrFetchShortcutById(shortcutId);
+            setShortcuts((shortcuts) => {
+              return [...shortcuts, shortcut];
+            });
+          } catch (error) {
+            // do nth
+          }
         }
+      } catch (error: any) {
+        console.error(error);
+        toast.error(error.details);
       }
     })();
   }, [collectionName]);

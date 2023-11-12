@@ -38,6 +38,19 @@ const CollectionDashboard: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-8xl w-full px-3 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
+        <div className="w-full flex flex-row justify-start items-start mb-4">
+          <div className="bg-yellow-100 dark:bg-yellow-500 dark:opacity-70 py-2 px-3 rounded-full border dark:border-yellow-600 flex flex-row justify-start items-center cursor-pointer shadow">
+            <Icon.LibrarySquare className="w-5 h-auto opacity-60" />
+            <a
+              className="hover:underline hover:text-blue-600"
+              href="https://github.com/boojack/slash/blob/main/docs/getting-started/collections.md"
+              target="_blank"
+            >
+              <span className="mx-1 text-sm">Collection is in Beta. Learn more in docs</span>
+              <Icon.ExternalLink className="w-4 h-auto inline-block" />
+            </a>
+          </div>
+        </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
             <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateCollectionDialog(true)}>

@@ -35,9 +35,9 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
   const [selectedShortcuts, setSelectedShortcuts] = useState<Shortcut[]>([]);
   const requestState = useLoading(false);
   const isCreating = isUndefined(collectionId);
-  const unselectedShortcuts = shortcutList.filter(
-    (shortcut) => !selectedShortcuts.find((selectedShortcut) => selectedShortcut.id === shortcut.id)
-  );
+  const unselectedShortcuts = shortcutList
+    .filter((shortcut) => (state.collectionCreate.visibility === Visibility.PUBLIC ? shortcut.visibility === "PUBLIC" : true))
+    .filter((shortcut) => !selectedShortcuts.find((selectedShortcut) => selectedShortcut.id === shortcut.id));
 
   useEffect(() => {
     (async () => {
@@ -100,8 +100,8 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveBtnClick = async () => {
-    if (!state.collectionCreate.name) {
-      toast.error("Name is required");
+    if (!state.collectionCreate.name || !state.collectionCreate.title) {
+      toast.error("Please fill in required fields.");
       return;
     }
 
@@ -147,24 +147,28 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div className="overflow-y-auto overflow-x-hidden w-80 sm:w-96 max-w-full">
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Name</span>
+            <span className="mb-2">
+              Name <span className="text-red-600">*</span>
+            </span>
             <div className="relative w-full">
               <Input
                 className="w-full"
                 type="text"
-                placeholder="Unique collection name"
+                placeholder="Should be an unique name and will be put in url"
                 value={state.collectionCreate.name}
                 onChange={handleNameInputChange}
               />
             </div>
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Title</span>
+            <span className="mb-2">
+              Title <span className="text-red-600">*</span>
+            </span>
             <div className="relative w-full">
               <Input
                 className="w-full"
                 type="text"
-                placeholder="Title"
+                placeholder="A short title to describe your collection"
                 value={state.collectionCreate.title}
                 onChange={handleTitleInputChange}
               />
@@ -176,7 +180,7 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
               <Input
                 className="w-full"
                 type="text"
-                placeholder="Description"
+                placeholder="A slightly longer description"
                 value={state.collectionCreate.description}
                 onChange={handleDescriptionInputChange}
               />
@@ -200,12 +204,12 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
               <span className="opacity-60">({selectedShortcuts.length})</span>
               {selectedShortcuts.length === 0 && <span className="ml-2 italic opacity-80 text-sm">Select a shortcut first</span>}
             </p>
-            <div className="w-full py-1 flex flex-row justify-start items-start flex-wrap overflow-hidden gap-2">
+            <div className="w-full py-1 px-px flex flex-row justify-start items-start flex-wrap overflow-hidden gap-2">
               {selectedShortcuts.map((shortcut) => {
                 return (
                   <ShortcutView
                     key={shortcut.id}
-                    className="bg-gray-100 shadow dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400"
+                    className="!w-auto select-none max-w-[40%] cursor-pointer bg-gray-100 shadow dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400"
                     shortcut={shortcut}
                     onClick={() => {
                       setSelectedShortcuts([...selectedShortcuts.filter((selectedShortcut) => selectedShortcut.id !== shortcut.id)]);
@@ -217,7 +221,7 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
                 return (
                   <ShortcutView
                     key={shortcut.id}
-                    className="border-dashed"
+                    className="!w-auto select-none max-w-[40%] border-dashed cursor-pointer"
                     shortcut={shortcut}
                     onClick={() => {
                       setSelectedShortcuts([...selectedShortcuts, shortcut]);
@@ -225,6 +229,12 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
                   />
                 );
               })}
+              {selectedShortcuts.length + unselectedShortcuts.length === 0 && (
+                <div className="w-full flex flex-row justify-center items-center text-gray-400">
+                  <Icon.PackageOpen className="w-6 h-auto" />
+                  <p className="ml-2">No shortcuts found.</p>
+                </div>
+              )}
             </div>
           </div>
 

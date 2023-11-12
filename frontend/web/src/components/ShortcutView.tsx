@@ -24,13 +24,13 @@ const ShortcutView = (props: Props) => {
       )}
       onClick={onClick}
     >
-      <Link to={`/shortcut/${shortcut.id}`} className={classNames("w-5 h-5 flex justify-center items-center overflow-clip shrink-0")}>
+      <div className={classNames("w-5 h-5 flex justify-center items-center overflow-clip shrink-0")}>
         {favicon ? (
           <img className="w-full h-auto rounded-lg" src={favicon} decoding="async" loading="lazy" />
         ) : (
           <Icon.CircleSlash className="w-full h-auto text-gray-400" />
         )}
-      </Link>
+      </div>
       <div className="ml-1 w-full truncate">
         {shortcut.title ? (
           <>

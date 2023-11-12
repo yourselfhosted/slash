@@ -1,7 +1,10 @@
 import classNames from "classnames";
+import copy from "copy-to-clipboard";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { absolutifyLink } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { useAppSelector } from "@/stores";
@@ -30,6 +33,11 @@ const CollectionView = (props: Props) => {
     .map((shortcutId) => shortcutList.find((shortcut) => shortcut?.id === shortcutId))
     .filter(Boolean) as any as Shortcut[];
 
+  const handleCopyCollectionLink = () => {
+    copy(absolutifyLink(`/c/${collection.name}`));
+    toast.success("Collection link copied to clipboard.");
+  };
+
   const handleDeleteCollectionButtonClick = () => {
     showCommonDialog({
       title: "Delete Collection",
@@ -49,10 +57,12 @@ const CollectionView = (props: Props) => {
     <>
       <div className={classNames("w-full flex flex-col justify-start items-start border rounded-lg hover:shadow dark:border-zinc-800")}>
         <div className="bg-gray-100 dark:bg-zinc-800 px-3 py-2 w-full flex flex-row justify-between items-center rounded-t-lg">
-          <div className="w-auto flex flex-row justify-start items-center mr-1">
-            <div className="truncate">
-              <span className="dark:text-gray-400">{collection.title}</span>
+          <div className="w-auto flex flex-col justify-start items-start mr-2">
+            <div className="w-full truncate" onClick={handleCopyCollectionLink}>
+              <span className="leading-6 font-medium dark:text-gray-400">{collection.title}</span>
+              <span className="ml-1 leading-6 text-gray-500 dark:text-gray-400">(c/{collection.name})</span>
             </div>
+            <p className="text-sm text-gray-500">{collection.description}</p>
           </div>
           <div className="flex flex-row justify-end items-center shrink-0">
             {collection.visibility !== Visibility.PRIVATE && (
@@ -86,7 +96,13 @@ const CollectionView = (props: Props) => {
         <div className="w-full p-3 flex flex-row justify-start items-start flex-wrap gap-3">
           {shortcuts.map((shortcut) => {
             return (
-              <ShortcutView key={shortcut.id} shortcut={shortcut} alwaysShowLink={!sm} onClick={() => handleShortcutClick(shortcut)} />
+              <ShortcutView
+                key={shortcut.id}
+                className="!w-auto"
+                shortcut={shortcut}
+                alwaysShowLink={!sm}
+                onClick={() => handleShortcutClick(shortcut)}
+              />
             );
           })}
         </div>
