@@ -1,7 +1,7 @@
 import { Button, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import CreateShortcutDialog from "../components/CreateShortcutDialog";
+import CreateShortcutDrawer from "../components/CreateShortcutDrawer";
 import FilterView from "../components/FilterView";
 import Icon from "../components/Icon";
 import ShortcutsContainer from "../components/ShortcutsContainer";
@@ -14,7 +14,7 @@ import useUserStore from "../stores/v1/user";
 import useViewStore, { getFilteredShortcutList, getOrderedShortcutList } from "../stores/v1/view";
 
 interface State {
-  showCreateShortcutDialog: boolean;
+  showCreateShortcutDrawer: boolean;
 }
 
 const Home: React.FC = () => {
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
   const viewStore = useViewStore();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
-    showCreateShortcutDialog: false,
+    showCreateShortcutDrawer: false,
   });
   const filter = viewStore.filter;
   const filteredShortcutList = getFilteredShortcutList(shortcutList, filter, currentUser);
@@ -36,10 +36,10 @@ const Home: React.FC = () => {
     });
   }, []);
 
-  const setShowCreateShortcutDialog = (show: boolean) => {
+  const setShowCreateShortcutDrawer = (show: boolean) => {
     setState({
       ...state,
-      showCreateShortcutDialog: show,
+      showCreateShortcutDrawer: show,
     });
   };
 
@@ -49,14 +49,8 @@ const Home: React.FC = () => {
         <ShortcutsNavigator />
         <div className="w-full flex flex-row justify-between items-center mb-4">
           <div className="flex flex-row justify-start items-center">
-            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDialog(true)}>
-              <Icon.Plus className="w-5 h-auto" />
-              <span className="hidden sm:block ml-0.5">{t("common.create")}</span>
-            </Button>
-          </div>
-          <div className="flex flex-row justify-end items-center">
             <Input
-              className="w-32 ml-2"
+              className="w-32 mr-2"
               type="text"
               size="sm"
               placeholder={t("common.search")}
@@ -65,6 +59,12 @@ const Home: React.FC = () => {
               value={filter.search}
               onChange={(e) => viewStore.setFilter({ search: e.target.value })}
             />
+          </div>
+          <div className="flex flex-row justify-end items-center">
+            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDrawer(true)}>
+              <Icon.Plus className="w-5 h-auto" />
+              <span className="hidden sm:block ml-0.5">{t("common.create")}</span>
+            </Button>
           </div>
         </div>
         <FilterView />
@@ -83,8 +83,8 @@ const Home: React.FC = () => {
         )}
       </div>
 
-      {state.showCreateShortcutDialog && (
-        <CreateShortcutDialog onClose={() => setShowCreateShortcutDialog(false)} onConfirm={() => setShowCreateShortcutDialog(false)} />
+      {state.showCreateShortcutDrawer && (
+        <CreateShortcutDrawer onClose={() => setShowCreateShortcutDrawer(false)} onConfirm={() => setShowCreateShortcutDrawer(false)} />
       )}
     </>
   );

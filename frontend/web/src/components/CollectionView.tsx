@@ -11,7 +11,7 @@ import { useAppSelector } from "@/stores";
 import useCollectionStore from "@/stores/v1/collection";
 import { Collection } from "@/types/proto/api/v2/collection_service";
 import { showCommonDialog } from "./Alert";
-import CreateCollectionDialog from "./CreateCollectionDialog";
+import CreateCollectionDialog from "./CreateCollectionDrawer";
 import Icon from "./Icon";
 import ShortcutView from "./ShortcutView";
 import Dropdown from "./common/Dropdown";

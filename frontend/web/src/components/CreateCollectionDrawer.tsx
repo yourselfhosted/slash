@@ -1,4 +1,4 @@
-import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
+import { Button, DialogActions, DialogContent, DialogTitle, Drawer, Input, ModalClose, Radio, RadioGroup } from "@mui/joy";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -22,7 +22,7 @@ interface State {
   collectionCreate: Collection;
 }
 
-const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
+const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, collectionId } = props;
   const { t } = useTranslation();
   const collectionStore = useCollectionStore();
@@ -141,15 +141,11 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Modal open={true}>
-      <ModalDialog>
-        <div className="w-full flex flex-row justify-between items-center">
-          <span className="text-lg font-medium">{isCreating ? "Create Collection" : "Edit Collection"}</span>
-          <Button variant="plain" onClick={onClose}>
-            <Icon.X className="w-5 h-auto text-gray-600" />
-          </Button>
-        </div>
-        <div className="overflow-y-auto overflow-x-hidden w-80 sm:w-96 max-w-full">
+    <Drawer anchor="right" open={true} onClose={onClose}>
+      <DialogTitle>{isCreating ? "Create Collection" : "Edit Collection"}</DialogTitle>
+      <ModalClose />
+      <DialogContent className="max-w-full sm:max-w-sm">
+        <div className="overflow-y-auto w-full mt-2 px-3">
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Name <span className="text-red-600">*</span>
@@ -241,19 +237,20 @@ const CreateCollectionDialog: React.FC<Props> = (props: Props) => {
               )}
             </div>
           </div>
-
-          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-              {t("common.cancel")}
-            </Button>
-            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              {t("common.save")}
-            </Button>
-          </div>
         </div>
-      </ModalDialog>
-    </Modal>
+      </DialogContent>
+      <DialogActions>
+        <div className="w-full flex flex-row justify-end items-center px-3 pb-4 space-x-2">
+          <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+            {t("common.cancel")}
+          </Button>
+          <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
+            {t("common.save")}
+          </Button>
+        </div>
+      </DialogActions>
+    </Drawer>
   );
 };
 
-export default CreateCollectionDialog;
+export default CreateCollectionDrawer;

@@ -1,4 +1,16 @@
-import { Button, Divider, Input, Modal, ModalDialog, Radio, RadioGroup, Textarea } from "@mui/joy";
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Drawer,
+  Input,
+  ModalClose,
+  Radio,
+  RadioGroup,
+  Textarea,
+} from "@mui/joy";
 import classnames from "classnames";
 import { isUndefined, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
@@ -22,7 +34,7 @@ interface State {
 
 const visibilities: Visibility[] = ["PRIVATE", "WORKSPACE", "PUBLIC"];
 
-const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
+const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, shortcutId, initialShortcut } = props;
   const { t } = useTranslation();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
@@ -199,15 +211,11 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Modal open={true}>
-      <ModalDialog>
-        <div className="flex flex-row justify-between items-center w-80 sm:w-96">
-          <span className="text-lg font-medium">{isCreating ? "Create Shortcut" : "Edit Shortcut"}</span>
-          <Button variant="plain" onClick={onClose}>
-            <Icon.X className="w-5 h-auto text-gray-600" />
-          </Button>
-        </div>
-        <div className="overflow-y-auto overflow-x-hidden">
+    <Drawer anchor="right" open={true} onClose={onClose}>
+      <DialogTitle>{isCreating ? "Create Shortcut" : "Edit Shortcut"}</DialogTitle>
+      <ModalClose />
+      <DialogContent className="max-w-full sm:max-w-sm">
+        <div className="overflow-y-auto w-full mt-2 px-3">
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Name <span className="text-red-600">*</span>
@@ -362,19 +370,20 @@ const CreateShortcutDialog: React.FC<Props> = (props: Props) => {
               </div>
             )}
           </div>
-
-          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-              {t("common.cancel")}
-            </Button>
-            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              {t("common.save")}
-            </Button>
-          </div>
         </div>
-      </ModalDialog>
-    </Modal>
+      </DialogContent>
+      <DialogActions>
+        <div className="w-full flex flex-row justify-end items-center px-3 pb-4 space-x-2">
+          <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+            {t("common.cancel")}
+          </Button>
+          <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
+            {t("common.save")}
+          </Button>
+        </div>
+      </DialogActions>
+    </Drawer>
   );
 };
 
-export default CreateShortcutDialog;
+export default CreateShortcutDrawer;

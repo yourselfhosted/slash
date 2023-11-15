@@ -1,0 +1,3 @@
+.MuiDrawer-content {
+  @apply !w-auto;
+}

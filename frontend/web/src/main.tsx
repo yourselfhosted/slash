@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import "./css/index.css";
+import "./css/joy-ui.css";
 import "./i18n";
 import router from "./routers";
 import store from "./stores";

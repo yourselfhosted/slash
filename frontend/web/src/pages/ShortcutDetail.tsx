@@ -8,7 +8,7 @@ import { useLoaderData } from "react-router-dom";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { showCommonDialog } from "../components/Alert";
 import AnalyticsView from "../components/AnalyticsView";
-import CreateShortcutDialog from "../components/CreateShortcutDialog";
+import CreateShortcutDrawer from "../components/CreateShortcutDrawer";
 import GenerateQRCodeDialog from "../components/GenerateQRCodeDialog";
 import Icon from "../components/Icon";
 import VisibilityIcon from "../components/VisibilityIcon";
@@ -18,7 +18,7 @@ import { shortcutService } from "../services";
 import useUserStore from "../stores/v1/user";
 
 interface State {
-  showEditModal: boolean;
+  showEditDrawer: boolean;
 }
 
 const ShortcutDetail = () => {
@@ -28,7 +28,7 @@ const ShortcutDetail = () => {
   const shortcut = shortcutService.getShortcutById(shortcutId) as Shortcut;
   const currentUser = useUserStore().getCurrentUser();
   const [state, setState] = useState<State>({
-    showEditModal: false,
+    showEditDrawer: false,
   });
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
   const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
@@ -116,7 +116,7 @@ const ShortcutDetail = () => {
                     onClick={() => {
                       setState({
                         ...state,
-                        showEditModal: true,
+                        showEditDrawer: true,
                       });
                     }}
                   >
@@ -178,13 +178,13 @@ const ShortcutDetail = () => {
 
       {showQRCodeDialog && <GenerateQRCodeDialog shortcut={shortcut} onClose={() => setShowQRCodeDialog(false)} />}
 
-      {state.showEditModal && (
-        <CreateShortcutDialog
+      {state.showEditDrawer && (
+        <CreateShortcutDrawer
           shortcutId={shortcut.id}
           onClose={() =>
             setState({
               ...state,
-              showEditModal: false,
+              showEditDrawer: false,
             })
           }
         />

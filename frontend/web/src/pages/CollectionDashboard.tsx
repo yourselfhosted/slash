@@ -2,7 +2,7 @@ import { Button } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CollectionView from "@/components/CollectionView";
-import CreateCollectionDialog from "@/components/CreateCollectionDialog";
+import CreateCollectionDrawer from "@/components/CreateCollectionDrawer";
 import { shortcutService } from "@/services";
 import useCollectionStore from "@/stores/v1/collection";
 import FilterView from "../components/FilterView";
@@ -10,7 +10,7 @@ import Icon from "../components/Icon";
 import useLoading from "../hooks/useLoading";
 
 interface State {
-  showCreateCollectionDialog: boolean;
+  showCreateCollectionDrawer: boolean;
 }
 
 const CollectionDashboard: React.FC = () => {
@@ -19,7 +19,7 @@ const CollectionDashboard: React.FC = () => {
   const collectionStore = useCollectionStore();
   const collections = collectionStore.getCollectionList();
   const [state, setState] = useState<State>({
-    showCreateCollectionDialog: false,
+    showCreateCollectionDrawer: false,
   });
 
   useEffect(() => {
@@ -28,10 +28,10 @@ const CollectionDashboard: React.FC = () => {
     });
   }, []);
 
-  const setShowCreateCollectionDialog = (show: boolean) => {
+  const setShowCreateCollectionDrawer = (show: boolean) => {
     setState({
       ...state,
-      showCreateCollectionDialog: show,
+      showCreateCollectionDrawer: show,
     });
   };
 
@@ -52,8 +52,9 @@ const CollectionDashboard: React.FC = () => {
           </div>
         </div>
         <div className="w-full flex flex-row justify-between items-center mb-4">
+          <div></div>
           <div className="flex flex-row justify-start items-center">
-            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateCollectionDialog(true)}>
+            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateCollectionDrawer(true)}>
               <Icon.Plus className="w-5 h-auto" />
               <span className="ml-0.5">{t("common.create")}</span>
             </Button>
@@ -79,10 +80,10 @@ const CollectionDashboard: React.FC = () => {
         )}
       </div>
 
-      {state.showCreateCollectionDialog && (
-        <CreateCollectionDialog
-          onClose={() => setShowCreateCollectionDialog(false)}
-          onConfirm={() => setShowCreateCollectionDialog(false)}
+      {state.showCreateCollectionDrawer && (
+        <CreateCollectionDrawer
+          onClose={() => setShowCreateCollectionDrawer(false)}
+          onConfirm={() => setShowCreateCollectionDrawer(false)}
         />
       )}
     </>

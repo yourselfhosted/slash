@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { absolutifyLink } from "@/helpers/utils";
+import useNavigateTo from "@/hooks/useNavigateTo";
 import useViewStore from "../stores/v1/view";
 import ShortcutCard from "./ShortcutCard";
 import ShortcutView from "./ShortcutView";
@@ -10,12 +10,13 @@ interface Props {
 
 const ShortcutsContainer: React.FC<Props> = (props: Props) => {
   const { shortcutList } = props;
+  const navigateTo = useNavigateTo();
   const viewStore = useViewStore();
   const displayStyle = viewStore.displayStyle || "full";
   const ShortcutItemView = viewStore.displayStyle === "compact" ? ShortcutView : ShortcutCard;
 
   const handleShortcutClick = (shortcut: Shortcut) => {
-    window.open(absolutifyLink(`/s/${shortcut.name}`));
+    navigateTo(`/shortcut/${shortcut.id}`);
   };
 
   return (

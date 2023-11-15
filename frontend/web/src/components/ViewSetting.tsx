@@ -18,7 +18,7 @@ const ViewSetting = () => {
           <Icon.Settings2 className="w-4 h-auto text-gray-500" />
         </button>
       }
-      actionsClassName="!mt-3 !-right-2"
+      actionsClassName="!mt-3 !right-[unset] -left-24 -ml-2"
       actions={
         <div className="w-52 p-2 gap-2 flex flex-col justify-start items-start" onClick={(e) => e.stopPropagation()}>
           <div className="w-full flex flex-row justify-between items-center">

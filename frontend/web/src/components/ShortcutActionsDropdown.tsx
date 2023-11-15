@@ -4,7 +4,7 @@ import useNavigateTo from "@/hooks/useNavigateTo";
 import { shortcutService } from "../services";
 import useUserStore from "../stores/v1/user";
 import { showCommonDialog } from "./Alert";
-import CreateShortcutDialog from "./CreateShortcutDialog";
+import CreateShortcutDrawer from "./CreateShortcutDrawer";
 import GenerateQRCodeDialog from "./GenerateQRCodeDialog";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
@@ -18,7 +18,7 @@ const ShortcutActionsDropdown = (props: Props) => {
   const { t } = useTranslation();
   const navigateTo = useNavigateTo();
   const currentUser = useUserStore().getCurrentUser();
-  const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
+  const [showEditDrawer, setShowEditDrawer] = useState<boolean>(false);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
   const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
 
@@ -46,7 +46,7 @@ const ShortcutActionsDropdown = (props: Props) => {
             {havePermission && (
               <button
                 className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
-                onClick={() => setShowEditDialog(true)}
+                onClick={() => setShowEditDrawer(true)}
               >
                 <Icon.Edit className="w-4 h-auto mr-2" /> {t("common.edit")}
               </button>
@@ -77,11 +77,11 @@ const ShortcutActionsDropdown = (props: Props) => {
         }
       ></Dropdown>
 
-      {showEditDialog && (
-        <CreateShortcutDialog
+      {showEditDrawer && (
+        <CreateShortcutDrawer
           shortcutId={shortcut.id}
-          onClose={() => setShowEditDialog(false)}
-          onConfirm={() => setShowEditDialog(false)}
+          onClose={() => setShowEditDrawer(false)}
+          onConfirm={() => setShowEditDrawer(false)}
         />
       )}
 
