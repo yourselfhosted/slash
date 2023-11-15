@@ -16,12 +16,26 @@ import (
 
 func (s *APIV2Service) ListCollections(ctx context.Context, _ *apiv2pb.ListCollectionsRequest) (*apiv2pb.ListCollectionsResponse, error) {
 	userID := ctx.Value(userIDContextKey).(int32)
-	find := &store.FindCollection{}
-	find.CreatorID = &userID
-	collections, err := s.Store.ListCollections(ctx, find)
+	collections, err := s.Store.ListCollections(ctx, &store.FindCollection{
+		CreatorID: &userID,
+		VisibilityList: []store.Visibility{
+			store.VisibilityPrivate,
+		},
+	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get collection list, err: %v", err)
 	}
+
+	sharedCollections, err := s.Store.ListCollections(ctx, &store.FindCollection{
+		VisibilityList: []store.Visibility{
+			store.VisibilityWorkspace,
+			store.VisibilityPublic,
+		},
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get collection list, err: %v", err)
+	}
+	collections = append(collections, sharedCollections...)
 
 	convertedCollections := []*apiv2pb.Collection{}
 	for _, collection := range collections {

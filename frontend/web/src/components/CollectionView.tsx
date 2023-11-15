@@ -9,6 +9,7 @@ import useNavigateTo from "@/hooks/useNavigateTo";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { useAppSelector } from "@/stores";
 import useCollectionStore from "@/stores/v1/collection";
+import useUserStore from "@/stores/v1/user";
 import { Collection } from "@/types/proto/api/v2/collection_service";
 import { showCommonDialog } from "./Alert";
 import CreateCollectionDialog from "./CreateCollectionDrawer";
@@ -25,12 +26,14 @@ const CollectionView = (props: Props) => {
   const { t } = useTranslation();
   const { sm } = useResponsiveWidth();
   const navigateTo = useNavigateTo();
+  const currentUser = useUserStore().getCurrentUser();
   const collectionStore = useCollectionStore();
   const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
   const shortcuts = collection.shortcutIds
     .map((shortcutId) => shortcutList.find((shortcut) => shortcut?.id === shortcutId))
     .filter(Boolean) as any as Shortcut[];
+  const showAdminActions = currentUser.id === collection.creatorId;
 
   const handleCopyCollectionLink = () => {
     copy(absolutifyLink(`/c/${collection.name}`));
@@ -65,29 +68,36 @@ const CollectionView = (props: Props) => {
           </div>
           <div className="flex flex-row justify-end items-center shrink-0">
             <Link className="w-full text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`}>
-              <Icon.Share className="w-4 h-auto mr-2" />
+              <Icon.Share className="w-5 h-auto mr-2" />
             </Link>
-            <Dropdown
-              actionsClassName="!w-28 dark:text-gray-500"
-              actions={
-                <>
-                  <button
-                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
-                    onClick={() => setShowEditDialog(true)}
-                  >
-                    <Icon.Edit className="w-4 h-auto mr-2" /> {t("common.edit")}
+            {showAdminActions && (
+              <Dropdown
+                trigger={
+                  <button className="flex flex-row justify-center items-center rounded text-gray-400 cursor-pointer hover:text-gray-500">
+                    <Icon.MoreVertical className="w-5 h-auto" />
                   </button>
-                  <button
-                    className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
-                    onClick={() => {
-                      handleDeleteCollectionButtonClick();
-                    }}
-                  >
-                    <Icon.Trash className="w-4 h-auto mr-2" /> {t("common.delete")}
-                  </button>
-                </>
-              }
-            ></Dropdown>
+                }
+                actionsClassName="!w-28 dark:text-gray-500"
+                actions={
+                  <>
+                    <button
+                      className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
+                      onClick={() => setShowEditDialog(true)}
+                    >
+                      <Icon.Edit className="w-4 h-auto mr-2" /> {t("common.edit")}
+                    </button>
+                    <button
+                      className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
+                      onClick={() => {
+                        handleDeleteCollectionButtonClick();
+                      }}
+                    >
+                      <Icon.Trash className="w-4 h-auto mr-2" /> {t("common.delete")}
+                    </button>
+                  </>
+                }
+              ></Dropdown>
+            )}
           </div>
         </div>
         <div className="w-full p-3 flex flex-row justify-start items-start flex-wrap gap-3">
