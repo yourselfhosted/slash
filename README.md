@@ -23,10 +23,11 @@ That's why we developed Slash, a solution that transforms these links into easil
 
 ## Features
 
-- Create customizable `/s/` short links for any URL.
+- Create customizable `s/` short links for any URL.
 - Share short links public or only with your teammates.
 - View analytics on link traffic and sources.
 - Easy access to your shortcuts with browser extension.
+- Share your shortcuts with Collection to anyone, on any browser.
 - Open source self-hosted solution.
 
 ## Deploy with Docker in seconds
@@ -36,6 +37,8 @@ docker run -d --name slash -p 5231:5231 -v ~/.slash/:/var/opt/slash yourselfhost
 ```
 
 Learn more in [Self-hosting Slash with Docker](https://github.com/boojack/slash/blob/main/docs/install.md).
+
+Getting started with Slash's [Shortcuts](https://github.com/boojack/slash/blob/main/docs/getting-started/shortcuts.md) and [Collections](https://github.com/boojack/slash/blob/main/docs/getting-started/collections.md).
 
 ## Browser Extension
 
