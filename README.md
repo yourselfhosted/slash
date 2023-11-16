@@ -1,6 +1,6 @@
 # Slash
 
-<img align="right" src="./resources/logo.png" height="64px" alt="logo">
+<img align="right" src="./docs/assets/logo.png" height="64px" alt="logo">
 
 **Slash** is an open source, self-hosted bookmarks and link sharing platform. It allows you to organize your links with tags, and share them with custom shortened URLs. Slash also supports team sharing of link libraries for easy collaboration.
 
@@ -15,7 +15,7 @@ Getting started with Slash's [Shortcuts](https://github.com/boojack/slash/blob/m
   <a href="https://github.com/boojack/slash/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/boojack/slash?logo=github"/></a>
 </p>
 
-![demo](./resources/demo.png)
+![demo](./docs/assets/demo.png)
 
 ## Background
 
@@ -44,7 +44,7 @@ Learn more in [Self-hosting Slash with Docker](https://github.com/boojack/slash/
 
 Slash provides a browser extension to help you use your shortcuts in the search bar to go to the corresponding URL.
 
-![browser-extension-example](./resources/browser-extension-example.png)
+![browser-extension-example](./docs/assets/browser-extension-example.png)
 
 Learn more in [The Browser Extension of Slash](https://github.com/boojack/slash/blob/main/docs/install-browser-extension.md).
 
