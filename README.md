@@ -6,6 +6,8 @@
 
 🧩 Browser extension(v1.0.0) now available! - [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg), [Firefox Add-on](https://addons.mozilla.org/firefox/addon/your-slash/)
 
+Getting started with Slash's [Shortcuts](https://github.com/boojack/slash/blob/main/docs/getting-started/shortcuts.md) and [Collections](https://github.com/boojack/slash/blob/main/docs/getting-started/collections.md).
+
 <a href="https://demo.slash.yourselfhosted.com">Live Demo</a> • <a href="https://discord.gg/QZqUuUAhDV">Discord</a>
 
 <p>
@@ -37,8 +39,6 @@ docker run -d --name slash -p 5231:5231 -v ~/.slash/:/var/opt/slash yourselfhost
 ```
 
 Learn more in [Self-hosting Slash with Docker](https://github.com/boojack/slash/blob/main/docs/install.md).
-
-Getting started with Slash's [Shortcuts](https://github.com/boojack/slash/blob/main/docs/getting-started/shortcuts.md) and [Collections](https://github.com/boojack/slash/blob/main/docs/getting-started/collections.md).
 
 ## Browser Extension
 
