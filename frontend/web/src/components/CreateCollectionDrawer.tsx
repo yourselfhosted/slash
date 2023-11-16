@@ -36,7 +36,15 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   const requestState = useLoading(false);
   const isCreating = isUndefined(collectionId);
   const unselectedShortcuts = shortcutList
-    .filter((shortcut) => (state.collectionCreate.visibility === Visibility.PUBLIC ? shortcut.visibility === "PUBLIC" : true))
+    .filter((shortcut) => {
+      if (state.collectionCreate.visibility === Visibility.PUBLIC) {
+        return shortcut.visibility === "PUBLIC";
+      } else if (state.collectionCreate.visibility === Visibility.WORKSPACE) {
+        return shortcut.visibility === "PUBLIC" || shortcut.visibility === "WORKSPACE";
+      } else {
+        return true;
+      }
+    })
     .filter((shortcut) => !selectedShortcuts.find((selectedShortcut) => selectedShortcut.id === shortcut.id));
 
   useEffect(() => {
@@ -191,6 +199,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
             <div className="w-full flex flex-row justify-start items-center text-base">
               <RadioGroup orientation="horizontal" value={state.collectionCreate.visibility} onChange={handleVisibilityInputChange}>
                 <Radio value={Visibility.PRIVATE} label={t(`shortcut.visibility.private.self`)} />
+                <Radio value={Visibility.WORKSPACE} label={t(`shortcut.visibility.workspace.self`)} />
                 <Radio value={Visibility.PUBLIC} label={t(`shortcut.visibility.public.self`)} />
               </RadioGroup>
             </div>
