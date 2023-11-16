@@ -215,7 +215,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
       <DialogTitle>{isCreating ? "Create Shortcut" : "Edit Shortcut"}</DialogTitle>
       <ModalClose />
       <DialogContent className="max-w-full sm:max-w-sm">
-        <div className="overflow-y-auto w-full mt-2 px-3">
+        <div className="overflow-y-auto w-full mt-2 px-3 pb-4">
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Name <span className="text-red-600">*</span>
@@ -373,7 +373,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
         </div>
       </DialogContent>
       <DialogActions>
-        <div className="w-full flex flex-row justify-end items-center px-3 pb-4 space-x-2">
+        <div className="w-full flex flex-row justify-end items-center px-3 py-4 space-x-2">
           <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
             {t("common.cancel")}
           </Button>

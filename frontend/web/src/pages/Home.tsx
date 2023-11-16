@@ -63,7 +63,7 @@ const Home: React.FC = () => {
           <div className="flex flex-row justify-end items-center">
             <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDrawer(true)}>
               <Icon.Plus className="w-5 h-auto" />
-              <span className="hidden sm:block ml-0.5">{t("common.create")}</span>
+              <span className="ml-0.5">{t("common.create")}</span>
             </Button>
           </div>
         </div>

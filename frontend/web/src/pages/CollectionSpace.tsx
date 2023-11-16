@@ -2,8 +2,9 @@ import { Divider } from "@mui/joy";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Icon from "@/components/Icon";
+import ShortcutFrame from "@/components/ShortcutFrame";
 import ShortcutView from "@/components/ShortcutView";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import useCollectionStore from "@/stores/v1/collection";
@@ -83,7 +84,7 @@ const CollectionSpace = () => {
               return (
                 <ShortcutView
                   className={classNames(
-                    "w-full py-2 cursor-pointer !px-2",
+                    "w-full py-2 cursor-pointer sm:!px-2",
                     selectedShortcut?.id === shortcut.id
                       ? "bg-gray-100 dark:bg-zinc-800"
                       : "sm:border-transparent dark:sm:border-transparent"
@@ -100,30 +101,15 @@ const CollectionSpace = () => {
         {sm && (
           <div className="w-full h-full overflow-clip rounded-lg border dark:border-zinc-800 bg-white dark:bg-zinc-800">
             {selectedShortcut ? (
-              <div className="w-full h-full flex flex-col justify-center items-center p-8">
-                <Link
-                  className="w-72 max-w-full border dark:border-zinc-900 dark:bg-zinc-900 p-6 rounded-2xl shadow-xl dark:text-gray-400 hover:opacity-80"
-                  to={`/s/${selectedShortcut.name}`}
-                  target="_blank"
-                >
-                  <Icon.Globe2Icon className="w-12 h-auto mb-1" strokeWidth={1} />
-                  <p className="text-lg font-medium leading-8">{selectedShortcut.title || selectedShortcut.name}</p>
-                  <p className="text-gray-500">{selectedShortcut.description}</p>
-                  <Divider className="!my-2" />
-                  <p className="text-gray-400 dark:text-gray-600 text-sm mt-2">
-                    <span className="leading-4">Open this site in a new tab</span>
-                    <Icon.ArrowUpRight className="inline-block ml-1 -mt-0.5 w-4 h-auto" />
-                  </p>
-                </Link>
-              </div>
+              <ShortcutFrame key={selectedShortcut.id} shortcut={selectedShortcut} />
             ) : (
               <div className="w-full h-full flex flex-col justify-center items-center p-8">
-                <div className="w-72 max-w-full border dark:border-zinc-900 dark:bg-zinc-900 dark:text-gray-400 p-6 rounded-2xl shadow-xl">
-                  <Icon.AppWindow className="w-12 h-auto mb-2" strokeWidth={1} />
+                <div className="w-72 max-w-full border dark:border-zinc-900 dark:bg-zinc-900 dark:text-gray-400 p-6 pb-4 rounded-2xl shadow-xl">
+                  <Icon.AppWindow className="w-12 h-auto mb-2 opacity-60" strokeWidth={1} />
                   <p className="text-lg font-medium">Click on a tab in the Sidebar to get started.</p>
                   <Divider className="!my-2" />
-                  <p className="text-gray-400 dark:text-gray-600 text-sm mt-2">
-                    Shared by <span className="italic font-medium">{creator.nickname}</span>
+                  <p className="text-gray-400 dark:text-gray-600 text-sm mt-2 italic">
+                    Shared by <span className="font-medium not-italic">{creator.nickname}</span>
                   </p>
                 </div>
               </div>
