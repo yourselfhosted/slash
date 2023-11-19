@@ -54,7 +54,6 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
       ...initialShortcut,
     },
   });
-  const [showAdditionalFields, setShowAdditionalFields] = useState<boolean>(false);
   const [showOpenGraphMetadata, setShowOpenGraphMetadata] = useState<boolean>(false);
   const [tag, setTag] = useState<string>("");
   const tagSuggestions = uniq(shortcutList.map((shortcut) => shortcut.tags).flat());
@@ -175,7 +174,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveBtnClick = async () => {
-    if (!state.shortcutCreate.name || !state.shortcutCreate.link) {
+    if (!state.shortcutCreate.name || !state.shortcutCreate.title || !state.shortcutCreate.link) {
       toast.error("Please fill in required fields.");
       return;
     }
@@ -224,7 +223,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
               <Input
                 className="w-full"
                 type="text"
-                placeholder="Should be an unique name and will be put in url"
+                placeholder="An unique name for the shortcut"
                 value={state.shortcutCreate.name}
                 onChange={handleNameInputChange}
               />
@@ -232,19 +231,41 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
-              Destination URL <span className="text-red-600">*</span>
+              Link <span className="text-red-600">*</span>
             </span>
             <Input
               className="w-full"
               type="text"
-              placeholder="https://github.com/boojack/slash"
+              placeholder="The destination link of the shortcut"
               value={state.shortcutCreate.link}
               onChange={handleLinkInputChange}
             />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">
+              Title <span className="text-red-600">*</span>
+            </span>
+            <Input
+              className="w-full"
+              type="text"
+              placeholder="The title of the shortcut"
+              value={state.shortcutCreate.title}
+              onChange={handleTitleInputChange}
+            />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">Description</span>
+            <Input
+              className="w-full"
+              type="text"
+              placeholder="A short description of the shortcut"
+              value={state.shortcutCreate.description}
+              onChange={handleDescriptionInputChange}
+            />
+          </div>
+          <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">Tags</span>
-            <Input className="w-full" type="text" placeholder="github slash" value={tag} onChange={handleTagsInputChange} />
+            <Input className="w-full" type="text" placeholder="The tags of shortcut" value={tag} onChange={handleTagsInputChange} />
             {tagSuggestions.length > 0 && (
               <div className="w-full flex flex-row justify-start items-start mt-2">
                 <Icon.Asterisk className="w-4 h-auto shrink-0 mx-1 text-gray-400 dark:text-gray-500" />
@@ -276,47 +297,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             </p>
           </div>
           <Divider className="text-gray-500">More</Divider>
-          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden my-3 dark:border-zinc-800">
-            <div
-              className={classnames(
-                "w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800",
-                showAdditionalFields ? "bg-gray-100 border-b dark:bg-zinc-800 dark:border-b-zinc-700" : ""
-              )}
-              onClick={() => setShowAdditionalFields(!showAdditionalFields)}
-            >
-              <span className="text-sm">Additional fields</span>
-              <button className="w-7 h-7 p-1 rounded-md">
-                <Icon.ChevronDown className={classnames("w-4 h-auto text-gray-500", showAdditionalFields ? "transform rotate-180" : "")} />
-              </button>
-            </div>
-            {showAdditionalFields && (
-              <div className="w-full px-2 py-1">
-                <div className="w-full flex flex-col justify-start items-start mb-3">
-                  <span className="mb-2 text-sm">Title</span>
-                  <Input
-                    className="w-full"
-                    type="text"
-                    placeholder="Title"
-                    size="sm"
-                    value={state.shortcutCreate.title}
-                    onChange={handleTitleInputChange}
-                  />
-                </div>
-                <div className="w-full flex flex-col justify-start items-start mb-3">
-                  <span className="mb-2 text-sm">Description</span>
-                  <Input
-                    className="w-full"
-                    type="text"
-                    placeholder="Github repo for slash"
-                    size="sm"
-                    value={state.shortcutCreate.description}
-                    onChange={handleDescriptionInputChange}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="w-full flex flex-col justify-start items-start border rounded-md overflow-hidden dark:border-zinc-800">
+          <div className="w-full flex flex-col justify-start items-start border rounded-md mt-3 overflow-hidden dark:border-zinc-800">
             <div
               className={classnames(
                 "w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800",

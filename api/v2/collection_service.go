@@ -11,6 +11,7 @@ import (
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
 	"github.com/boojack/slash/server/metric"
+	"github.com/boojack/slash/server/service/license"
 	"github.com/boojack/slash/store"
 )
 
@@ -98,6 +99,16 @@ func (s *APIV2Service) GetCollectionByName(ctx context.Context, request *apiv2pb
 }
 
 func (s *APIV2Service) CreateCollection(ctx context.Context, request *apiv2pb.CreateCollectionRequest) (*apiv2pb.CreateCollectionResponse, error) {
+	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
+		collections, err := s.Store.ListCollections(ctx, &store.FindCollection{})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get collection list, err: %v", err)
+		}
+		if len(collections) >= 5 {
+			return nil, status.Errorf(codes.PermissionDenied, "Maximum number of collections reached")
+		}
+	}
+
 	userID := ctx.Value(userIDContextKey).(int32)
 	collection := &storepb.Collection{
 		CreatorId:   userID,
