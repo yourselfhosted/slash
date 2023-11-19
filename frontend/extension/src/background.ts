@@ -25,21 +25,6 @@ chrome.webRequest.onBeforeRequest.addListener(
   { urls: ["*://s/*", "*://*/search*"] }
 );
 
-chrome.omnibox.onInputEntered.addListener(async (text, disposition) => {
-  const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
-  const shortcut = shortcuts.find((shortcut) => shortcut.name === text);
-  if (!shortcut) {
-    return;
-  }
-  if (disposition === "currentTab") {
-    chrome.tabs.update({ url: shortcut.link });
-  } else if (disposition === "newForegroundTab") {
-    chrome.tabs.create({ url: shortcut.link });
-  } else if (disposition === "newBackgroundTab") {
-    chrome.tabs.create({ url: shortcut.link, active: false });
-  }
-});
-
 const getShortcutNameFromUrl = (urlString: string) => {
   const matchResult = urlRegex.exec(urlString);
   if (matchResult === null) {
