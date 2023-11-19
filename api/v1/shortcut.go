@@ -102,6 +102,9 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			Tags:        create.Tags,
 			OgMetadata:  &storepb.OpenGraphMetadata{},
 		}
+		if create.Name == "" {
+			return echo.NewHTTPError(http.StatusBadRequest, "name is required")
+		}
 		if create.OpenGraphMetadata != nil {
 			shortcut.OgMetadata = &storepb.OpenGraphMetadata{
 				Title:       create.OpenGraphMetadata.Title,
