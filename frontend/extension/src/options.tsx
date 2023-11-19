@@ -79,7 +79,7 @@ const IndexOptions = () => {
         </a>
       </div>
 
-      <div className="w-full max-w-lg mx-auto flex flex-col justify-start items-start mt-12">
+      <div className="w-full max-w-lg mx-auto flex flex-col justify-start items-start py-12">
         <h2 className="flex flex-row justify-start items-center mb-6 text-2xl dark:text-gray-400">
           <Logo className="w-10 h-auto mr-2" />
           <span>Slash</span>
@@ -90,7 +90,7 @@ const IndexOptions = () => {
         <div className="w-full flex flex-col justify-start items-start">
           <div className="w-full flex flex-col justify-start items-start mb-4">
             <div className="mb-2 text-base w-full flex flex-row justify-between items-center">
-              <span className="dark:text-gray-400">Domain</span>
+              <span className="dark:text-gray-400">Instance URL</span>
               {domain !== "" && (
                 <a
                   className="text-sm flex flex-row justify-start items-center dark:text-gray-400 hover:underline hover:text-blue-600"
@@ -106,7 +106,7 @@ const IndexOptions = () => {
               <Input
                 className="w-full"
                 type="text"
-                placeholder="The domain of your Slash instance"
+                placeholder="The url of your Slash instance. e.g., https://slash.example.com"
                 value={settingState.domain}
                 onChange={(e) => setPartialSettingState({ domain: e.target.value })}
               />
@@ -119,7 +119,7 @@ const IndexOptions = () => {
               <Input
                 className="w-full"
                 type="text"
-                placeholder="The access token of your Slash instance"
+                placeholder="An available access token of your account."
                 value={settingState.accessToken}
                 onChange={(e) => setPartialSettingState({ accessToken: e.target.value })}
               />
@@ -171,7 +171,7 @@ const Options = () => {
   return (
     <CssVarsProvider>
       <IndexOptions />
-      <Toaster position="top-right" />
+      <Toaster position="top-center" />
     </CssVarsProvider>
   );
 };

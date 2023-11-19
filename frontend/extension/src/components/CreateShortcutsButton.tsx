@@ -150,7 +150,7 @@ const CreateShortcutsButton = () => {
               <Input
                 className="grow"
                 type="text"
-                placeholder="https://github.com/boojack/slash"
+                placeholder="e.g., https://github.com/boojack/slash"
                 value={state.link}
                 onChange={handleLinkInputChange}
               />

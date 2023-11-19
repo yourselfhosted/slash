@@ -6,7 +6,7 @@ interface Props {
 }
 
 const Logo = ({ className }: Props) => {
-  return <img className={classNames(className)} src={LogoBase64} alt="" />;
+  return <img className={classNames("rounded-full", className)} src={LogoBase64} alt="" />;
 };
 
 export default Logo;

@@ -30,7 +30,7 @@ const IndexPopup = () => {
     <div className="w-full min-w-[512px] px-4 pt-4">
       <div className="w-full flex flex-row justify-between items-center">
         <div className="flex flex-row justify-start items-center dark:text-gray-400">
-          <Logo className="w-6 h-auto mr-2" />
+          <Logo className="w-6 h-auto mr-1" />
           <span className="">Slash</span>
           {isInitialized && (
             <>
@@ -81,10 +81,10 @@ const IndexPopup = () => {
         ) : (
           <div className="w-full flex flex-col justify-start items-center">
             <Icon.Cookie strokeWidth={1} className="w-20 h-auto mb-4 text-gray-400" />
-            <p className="dark:text-gray-400">Please set your domain and access token first.</p>
+            <p className="dark:text-gray-400">Please set your instance URL and access token first.</p>
             <div className="w-full flex flex-row justify-center items-center py-4">
               <Button size="sm" color="primary" onClick={handleSettingButtonClick}>
-                <Icon.Settings className="w-5 h-auto mr-1" /> Setting
+                <Icon.Settings className="w-5 h-auto mr-1" /> Go to Setting
               </Button>
               <span className="mx-2 dark:text-gray-400">Or</span>
               <Button size="sm" variant="outlined" color="neutral" onClick={handleRefreshButtonClick}>
@@ -102,7 +102,7 @@ const Popup = () => {
   return (
     <CssVarsProvider>
       <IndexPopup />
-      <Toaster position="top-right" />
+      <Toaster position="top-center" />
     </CssVarsProvider>
   );
 };
