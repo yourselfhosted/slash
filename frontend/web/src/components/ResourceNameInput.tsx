@@ -9,7 +9,7 @@ interface Props {
   onChange: (name: string) => void;
 }
 
-const ShortcutNameInput = (props: Props) => {
+const ResourceNameInput = (props: Props) => {
   const { name, onChange } = props;
   const [modified, setModified] = useState(false);
   const [editingName, setEditingName] = useState(name || generateRandomString().toLowerCase());
@@ -49,17 +49,11 @@ const ShortcutNameInput = (props: Props) => {
       </div>
       {modified && (
         <div className="relative w-full">
-          <Input
-            className="w-full"
-            type="text"
-            placeholder="An unique name for the shortcut"
-            value={editingName}
-            onChange={handleNameInputChange}
-          />
+          <Input className="w-full" type="text" placeholder="An unique name" value={editingName} onChange={handleNameInputChange} />
         </div>
       )}
     </div>
   );
 };
 
-export default ShortcutNameInput;
+export default ResourceNameInput;

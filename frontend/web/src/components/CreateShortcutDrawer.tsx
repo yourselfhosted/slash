@@ -20,7 +20,7 @@ import { useAppSelector } from "@/stores";
 import useLoading from "../hooks/useLoading";
 import { shortcutService } from "../services";
 import Icon from "./Icon";
-import ShortcutNameInput from "./ShortcutNameInput";
+import ResourceNameInput from "./ResourceNameInput";
 
 interface Props {
   shortcutId?: ShortcutId;
@@ -84,7 +84,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   }, [shortcutId]);
 
   if (loadingState.isLoading) {
-    return;
+    return null;
   }
 
   const setPartialState = (partialState: Partial<State>) => {
@@ -222,7 +222,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
       <ModalClose />
       <DialogContent className="max-w-full sm:max-w-sm">
         <div className="overflow-y-auto w-full mt-2 px-3 pb-4">
-          <ShortcutNameInput name={state.shortcutCreate.name} onChange={handleNameChange} />
+          <ResourceNameInput name={state.shortcutCreate.name} onChange={handleNameChange} />
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Link <span className="text-red-600">*</span>

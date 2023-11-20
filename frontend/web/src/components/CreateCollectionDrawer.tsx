@@ -10,6 +10,7 @@ import { Visibility } from "@/types/proto/api/v2/common";
 import { convertVisibilityFromPb } from "@/utils/visibility";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
+import ResourceNameInput from "./ResourceNameInput";
 import ShortcutView from "./ShortcutView";
 
 interface Props {
@@ -33,8 +34,9 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
     }),
   });
   const [selectedShortcuts, setSelectedShortcuts] = useState<Shortcut[]>([]);
-  const requestState = useLoading(false);
   const isCreating = isUndefined(collectionId);
+  const loadingState = useLoading(!isCreating);
+  const requestState = useLoading(false);
   const unselectedShortcuts = shortcutList
     .filter((shortcut) => {
       if (state.collectionCreate.visibility === Visibility.PUBLIC) {
@@ -63,10 +65,15 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
               .map((shortcutId) => shortcutList.find((shortcut) => shortcut.id === shortcutId))
               .filter(Boolean) as Shortcut[]
           );
+          loadingState.setFinish();
         }
       }
     })();
   }, [collectionId]);
+
+  if (loadingState.isLoading) {
+    return null;
+  }
 
   const setPartialState = (partialState: Partial<State>) => {
     setState({
@@ -75,10 +82,10 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (name: string) => {
     setPartialState({
       collectionCreate: Object.assign(state.collectionCreate, {
-        name: e.target.value.replace(/\s+/g, "-"),
+        name: name.replace(/\s+/g, "-"),
       }),
     });
   };
@@ -154,20 +161,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
       <ModalClose />
       <DialogContent className="max-w-full sm:max-w-sm">
         <div className="overflow-y-auto w-full mt-2 px-3 pb-4">
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Name <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="Should be an unique name and will be put in url"
-                value={state.collectionCreate.name}
-                onChange={handleNameInputChange}
-              />
-            </div>
-          </div>
+          <ResourceNameInput name={state.collectionCreate.name} onChange={handleNameChange} />
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Title <span className="text-red-600">*</span>
