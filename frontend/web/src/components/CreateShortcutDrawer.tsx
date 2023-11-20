@@ -20,6 +20,7 @@ import { useAppSelector } from "@/stores";
 import useLoading from "../hooks/useLoading";
 import { shortcutService } from "../services";
 import Icon from "./Icon";
+import ShortcutNameInput from "./ShortcutNameInput";
 
 interface Props {
   shortcutId?: ShortcutId;
@@ -57,8 +58,9 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const [showOpenGraphMetadata, setShowOpenGraphMetadata] = useState<boolean>(false);
   const [tag, setTag] = useState<string>("");
   const tagSuggestions = uniq(shortcutList.map((shortcut) => shortcut.tags).flat());
-  const requestState = useLoading(false);
   const isCreating = isUndefined(shortcutId);
+  const loadingState = useLoading(!isCreating);
+  const requestState = useLoading(false);
 
   useEffect(() => {
     if (shortcutId) {
@@ -76,9 +78,14 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
           }),
         });
         setTag(shortcut.tags.join(" "));
+        loadingState.setFinish();
       }
     }
   }, [shortcutId]);
+
+  if (loadingState.isLoading) {
+    return;
+  }
 
   const setPartialState = (partialState: Partial<State>) => {
     setState({
@@ -87,10 +94,10 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (name: string) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        name: e.target.value.replace(/\s+/g, "-"),
+        name: name.replace(/\s+/g, "-"),
       }),
     });
   };
@@ -215,20 +222,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
       <ModalClose />
       <DialogContent className="max-w-full sm:max-w-sm">
         <div className="overflow-y-auto w-full mt-2 px-3 pb-4">
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Name <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="An unique name for the shortcut"
-                value={state.shortcutCreate.name}
-                onChange={handleNameInputChange}
-              />
-            </div>
-          </div>
+          <ShortcutNameInput name={state.shortcutCreate.name} onChange={handleNameChange} />
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Link <span className="text-red-600">*</span>
