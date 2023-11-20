@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useNavigateTo from "@/hooks/useNavigateTo";
+import { Role } from "@/types/proto/api/v2/user_service";
 import { shortcutService } from "../services";
 import useUserStore from "../stores/v1/user";
 import { showCommonDialog } from "./Alert";
@@ -20,7 +21,7 @@ const ShortcutActionsDropdown = (props: Props) => {
   const currentUser = useUserStore().getCurrentUser();
   const [showEditDrawer, setShowEditDrawer] = useState<boolean>(false);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
-  const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
+  const havePermission = currentUser.role === Role.ADMIN || shortcut.creatorId === currentUser.id;
 
   const handleDeleteShortcutButtonClick = (shortcut: Shortcut) => {
     showCommonDialog({

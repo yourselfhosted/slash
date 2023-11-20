@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/Icon";
 import { stringifyPlanType } from "@/stores/v1/subscription";
 import useWorkspaceStore from "@/stores/v1/workspace";
+import { Role } from "@/types/proto/api/v2/user_service";
 import MemberSection from "../components/setting/MemberSection";
 import WorkspaceSection from "../components/setting/WorkspaceSection";
 import useUserStore from "../stores/v1/user";
@@ -11,7 +12,7 @@ import useUserStore from "../stores/v1/user";
 const WorkspaceSetting: React.FC = () => {
   const workspaceStore = useWorkspaceStore();
   const currentUser = useUserStore().getCurrentUser();
-  const isAdmin = currentUser.role === "ADMIN";
+  const isAdmin = currentUser.role === Role.ADMIN;
   const profile = workspaceStore.profile;
 
   useEffect(() => {

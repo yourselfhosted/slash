@@ -7,13 +7,14 @@ import { subscriptionServiceClient } from "@/grpcweb";
 import { stringifyPlanType } from "@/stores/v1/subscription";
 import useWorkspaceStore from "@/stores/v1/workspace";
 import { PlanType } from "@/types/proto/api/v2/subscription_service";
+import { Role } from "@/types/proto/api/v2/user_service";
 import useUserStore from "../stores/v1/user";
 
 const SubscriptionSetting: React.FC = () => {
   const workspaceStore = useWorkspaceStore();
   const currentUser = useUserStore().getCurrentUser();
   const [licenseKey, setLicenseKey] = useState<string>("");
-  const isAdmin = currentUser.role === "ADMIN";
+  const isAdmin = currentUser.role === Role.ADMIN;
   const profile = workspaceStore.profile;
 
   const handleUpdateLicenseKey = async () => {

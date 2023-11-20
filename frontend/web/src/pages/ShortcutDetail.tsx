@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useLoaderData } from "react-router-dom";
 import useNavigateTo from "@/hooks/useNavigateTo";
+import { Role } from "@/types/proto/api/v2/user_service";
 import { showCommonDialog } from "../components/Alert";
 import AnalyticsView from "../components/AnalyticsView";
 import CreateShortcutDrawer from "../components/CreateShortcutDrawer";
@@ -31,7 +32,7 @@ const ShortcutDetail = () => {
     showEditDrawer: false,
   });
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
-  const havePermission = currentUser.role === "ADMIN" || shortcut.creatorId === currentUser.id;
+  const havePermission = currentUser.role === Role.ADMIN || shortcut.creatorId === currentUser.id;
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
   const favicon = getFaviconWithGoogleS2(shortcut.link);
 

@@ -11,7 +11,7 @@ interface OpenGraphMetadata {
 interface Shortcut {
   id: ShortcutId;
 
-  creatorId: UserId;
+  creatorId: number;
   creator: User;
   createdTs: TimeStamp;
   updatedTs: TimeStamp;

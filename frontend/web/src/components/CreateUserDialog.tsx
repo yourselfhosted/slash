@@ -3,6 +3,7 @@ import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { Role, User } from "@/types/proto/api/v2/user_service";
 import useLoading from "../hooks/useLoading";
 import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
@@ -14,10 +15,8 @@ interface Props {
 }
 
 interface State {
-  userCreate: UserCreate;
+  userCreate: Pick<User, "email" | "nickname" | "password" | "role">;
 }
-
-const roles: Role[] = ["USER", "ADMIN"];
 
 const CreateUserDialog: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, user } = props;
@@ -28,7 +27,7 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
       email: "",
       nickname: "",
       password: "",
-      role: "USER",
+      role: Role.USER,
     },
   });
   const requestState = useLoading(false);
@@ -95,7 +94,7 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
 
     try {
       if (user) {
-        const userPatch: UserPatch = {
+        const userPatch: Partial<User> = {
           id: user.id,
         };
         if (user.email !== state.userCreate.email) {
@@ -179,9 +178,8 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
             </span>
             <div className="w-full flex flex-row justify-start items-center text-base">
               <RadioGroup orientation="horizontal" value={state.userCreate.role} onChange={handleRoleInputChange}>
-                {roles.map((role) => (
-                  <Radio key={role} value={role} label={role} />
-                ))}
+                <Radio value={Role.USER} label={"User"} />
+                <Radio value={Role.ADMIN} label={"Admin"} />
               </RadioGroup>
             </div>
           </div>

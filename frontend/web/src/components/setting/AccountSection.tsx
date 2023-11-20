@@ -1,6 +1,7 @@
 import { Button } from "@mui/joy";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Role } from "@/types/proto/api/v2/user_service";
 import useUserStore from "../../stores/v1/user";
 import ChangePasswordDialog from "../ChangePasswordDialog";
 import EditUserinfoDialog from "../EditUserinfoDialog";
@@ -10,7 +11,7 @@ const AccountSection: React.FC = () => {
   const currentUser = useUserStore().getCurrentUser();
   const [showEditUserinfoDialog, setShowEditUserinfoDialog] = useState<boolean>(false);
   const [showChangePasswordDialog, setShowChangePasswordDialog] = useState<boolean>(false);
-  const isAdmin = currentUser.role === "ADMIN";
+  const isAdmin = currentUser.role === Role.ADMIN;
 
   return (
     <>

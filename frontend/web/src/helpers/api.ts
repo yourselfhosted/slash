@@ -1,5 +1,4 @@
 import axios from "axios";
-import { userServiceClient } from "@/grpcweb";
 
 export function signin(email: string, password: string) {
   return axios.post<User>("/api/v1/auth/signin", {
@@ -18,30 +17,6 @@ export function signup(email: string, nickname: string, password: string) {
 
 export function signout() {
   return axios.post("/api/v1/auth/logout");
-}
-
-export function getMyselfUser() {
-  return axios.get<User>("/api/v1/user/me");
-}
-
-export function getUserList() {
-  return axios.get<User[]>("/api/v1/user");
-}
-
-export function getUserById(id: number) {
-  return axios.get<User>(`/api/v1/user/${id}`);
-}
-
-export function createUser(userCreate: UserCreate) {
-  return axios.post<User>("/api/v1/user", userCreate);
-}
-
-export function patchUser(userPatch: UserPatch) {
-  return axios.patch<User>(`/api/v1/user/${userPatch.id}`, userPatch);
-}
-
-export function deleteUser(userId: UserId) {
-  return userServiceClient.deleteUser({ id: userId });
 }
 
 export function getShortcutList(shortcutFind?: ShortcutFind) {

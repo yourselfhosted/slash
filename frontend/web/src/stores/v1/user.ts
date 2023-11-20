@@ -1,33 +1,25 @@
 import { create } from "zustand";
-import { userSettingServiceClient } from "@/grpcweb";
+import { userServiceClient, userSettingServiceClient } from "@/grpcweb";
+import { User } from "@/types/proto/api/v2/user_service";
 import { UserSetting } from "@/types/proto/api/v2/user_setting_service";
-import * as api from "../../helpers/api";
-
-const convertResponseModelUser = (user: User): User => {
-  return {
-    ...user,
-    createdTs: user.createdTs * 1000,
-    updatedTs: user.updatedTs * 1000,
-  };
-};
 
 interface UserState {
-  userMapById: Record<UserId, User>;
-  userSettingMapById: Record<UserId, UserSetting>;
-  currentUserId?: UserId;
+  userMapById: Record<number, User>;
+  userSettingMapById: Record<number, UserSetting>;
+  currentUserId?: number;
 
   // User related actions.
   fetchUserList: () => Promise<User[]>;
   fetchCurrentUser: () => Promise<User>;
-  getOrFetchUserById: (id: UserId) => Promise<User>;
-  getUserById: (id: UserId) => User;
+  getOrFetchUserById: (id: number) => Promise<User>;
+  getUserById: (id: number) => User;
   getCurrentUser: () => User;
-  createUser: (userCreate: UserCreate) => Promise<User>;
-  patchUser: (userPatch: UserPatch) => Promise<void>;
-  deleteUser: (id: UserId) => Promise<void>;
+  createUser: (create: Partial<User>) => Promise<User>;
+  patchUser: (userPatch: Partial<User>) => Promise<void>;
+  deleteUser: (id: number) => Promise<void>;
 
   // User setting related actions.
-  fetchUserSetting: (userId: UserId) => Promise<UserSetting>;
+  fetchUserSetting: (userId: number) => Promise<UserSetting>;
   updateUserSetting: (userSetting: UserSetting, updateMask: string[]) => Promise<UserSetting>;
   getCurrentUserSetting: () => UserSetting;
 }
@@ -36,65 +28,88 @@ const useUserStore = create<UserState>()((set, get) => ({
   userMapById: {},
   userSettingMapById: {},
   fetchUserList: async () => {
-    const { data: userList } = await api.getUserList();
+    const { users } = await userServiceClient.listUsers({});
     const userMap = get().userMapById;
-    userList.forEach((user) => {
-      userMap[user.id] = convertResponseModelUser(user);
+    users.forEach((user) => {
+      userMap[user.id] = user;
     });
     set(userMap);
-    return userList;
+    return users;
   },
   fetchCurrentUser: async () => {
-    const { data } = await api.getMyselfUser();
-    const user = convertResponseModelUser(data);
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      throw new Error("User id not found in localStorage");
+    }
+    const { user } = await userServiceClient.getUser({
+      id: Number(userId),
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
     const userMap = get().userMapById;
     userMap[user.id] = user;
     set({ userMapById: userMap, currentUserId: user.id });
     return user;
   },
-  getOrFetchUserById: async (id: UserId) => {
+  getOrFetchUserById: async (id: number) => {
     const userMap = get().userMapById;
     if (userMap[id]) {
       return userMap[id] as User;
     }
 
-    const { data } = await api.getUserById(id);
-    const user = convertResponseModelUser(data);
+    const { user } = await userServiceClient.getUser({
+      id: Number(id),
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
     userMap[id] = user;
     set(userMap);
     return user;
   },
-  createUser: async (userCreate: UserCreate) => {
-    const { data } = await api.createUser(userCreate);
-    const user = convertResponseModelUser(data);
+  createUser: async (userCreate: Partial<User>) => {
+    const { user } = await userServiceClient.createUser({
+      user: userCreate,
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
     const userMap = get().userMapById;
     userMap[user.id] = user;
     set(userMap);
     return user;
   },
-  patchUser: async (userPatch: UserPatch) => {
-    const { data } = await api.patchUser(userPatch);
-    const user = convertResponseModelUser(data);
+  patchUser: async (userPatch: Partial<User>) => {
+    const { user } = await userServiceClient.updateUser({
+      user: userPatch,
+      updateMask: ["email", "nickname"],
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
     const userMap = get().userMapById;
     userMap[user.id] = user;
     set(userMap);
   },
-  deleteUser: async (userId: UserId) => {
-    await api.deleteUser(userId);
+  deleteUser: async (userId: number) => {
+    await userServiceClient.deleteUser({
+      id: userId,
+    });
     const userMap = get().userMapById;
     delete userMap[userId];
     set(userMap);
   },
-  getUserById: (id: UserId) => {
+  getUserById: (id: number) => {
     const userMap = get().userMapById;
     return userMap[id] as User;
   },
   getCurrentUser: () => {
     const userMap = get().userMapById;
     const currentUserId = get().currentUserId;
-    return userMap[currentUserId as UserId];
+    return userMap[currentUserId as number];
   },
-  fetchUserSetting: async (userId: UserId) => {
+  fetchUserSetting: async (userId: number) => {
     const userSetting = (
       await userSettingServiceClient.getUserSetting({
         id: userId,
@@ -122,7 +137,7 @@ const useUserStore = create<UserState>()((set, get) => ({
   getCurrentUserSetting: () => {
     const userSettingMap = get().userSettingMapById;
     const currentUserId = get().currentUserId;
-    return userSettingMap[currentUserId as UserId];
+    return userSettingMap[currentUserId as number];
   },
 }));
 

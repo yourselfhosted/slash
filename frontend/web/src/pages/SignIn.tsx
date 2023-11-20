@@ -3,16 +3,12 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import useNavigateTo from "@/hooks/useNavigateTo";
 import useWorkspaceStore from "@/stores/v1/workspace";
 import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
-import useUserStore from "../stores/v1/user";
 
 const SignIn: React.FC = () => {
   const { t } = useTranslation();
-  const navigateTo = useNavigateTo();
-  const userStore = useUserStore();
   const workspaceStore = useWorkspaceStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,11 +16,7 @@ const SignIn: React.FC = () => {
   const allowConfirm = email.length > 0 && password.length > 0;
 
   useEffect(() => {
-    if (userStore.getCurrentUser()) {
-      return navigateTo("/", {
-        replace: true,
-      });
-    }
+    localStorage.removeItem("userId");
 
     if (workspaceStore.profile.mode === "demo") {
       setEmail("steven@yourselfhosted.com");
@@ -50,12 +42,10 @@ const SignIn: React.FC = () => {
 
     try {
       actionBtnLoadingState.setLoading();
-      await api.signin(email, password);
-      const user = await userStore.fetchCurrentUser();
+      const { data: user } = await api.signin(email, password);
       if (user) {
-        navigateTo("/", {
-          replace: true,
-        });
+        localStorage.setItem("userId", `${user.id}`);
+        window.location.href = "/";
       } else {
         toast.error("Signin failed");
       }

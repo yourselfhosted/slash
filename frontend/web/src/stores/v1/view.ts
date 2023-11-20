@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { User } from "@/types/proto/api/v2/user_service";
 
 export interface Filter {
   tab?: string;

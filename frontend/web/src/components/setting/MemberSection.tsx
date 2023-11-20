@@ -2,6 +2,7 @@ import { Button, IconButton } from "@mui/joy";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { User } from "@/types/proto/api/v2/user_service";
 import useUserStore from "../../stores/v1/user";
 import { showCommonDialog } from "../Alert";
 import CreateUserDialog from "../CreateUserDialog";

@@ -7,12 +7,10 @@ import useNavigateTo from "@/hooks/useNavigateTo";
 import useWorkspaceStore from "@/stores/v1/workspace";
 import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
-import useUserStore from "../stores/v1/user";
 
 const SignUp: React.FC = () => {
   const { t } = useTranslation();
   const navigateTo = useNavigateTo();
-  const userStore = useUserStore();
   const workspaceStore = useWorkspaceStore();
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
@@ -21,11 +19,7 @@ const SignUp: React.FC = () => {
   const allowConfirm = email.length > 0 && nickname.length > 0 && password.length > 0;
 
   useEffect(() => {
-    if (userStore.getCurrentUser()) {
-      return navigateTo("/", {
-        replace: true,
-      });
-    }
+    localStorage.removeItem("userId");
 
     if (!workspaceStore.profile.enableSignup) {
       return navigateTo("/auth", {
@@ -57,12 +51,10 @@ const SignUp: React.FC = () => {
 
     try {
       actionBtnLoadingState.setLoading();
-      await api.signup(email, nickname, password);
-      const user = await userStore.fetchCurrentUser();
+      const { data: user } = await api.signup(email, nickname, password);
       if (user) {
-        navigateTo("/", {
-          replace: true,
-        });
+        localStorage.setItem("userId", `${user.id}`);
+        window.location.href = "/";
       } else {
         toast.error("Signup failed");
       }
