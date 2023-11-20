@@ -100,7 +100,9 @@ func (s *APIV2Service) GetCollectionByName(ctx context.Context, request *apiv2pb
 
 func (s *APIV2Service) CreateCollection(ctx context.Context, request *apiv2pb.CreateCollectionRequest) (*apiv2pb.CreateCollectionResponse, error) {
 	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
-		collections, err := s.Store.ListCollections(ctx, &store.FindCollection{})
+		collections, err := s.Store.ListCollections(ctx, &store.FindCollection{
+			VisibilityList: []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic},
+		})
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get collection list, err: %v", err)
 		}
