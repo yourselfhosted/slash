@@ -14,6 +14,7 @@ interface UserState {
   getOrFetchUserById: (id: number) => Promise<User>;
   getUserById: (id: number) => User;
   getCurrentUser: () => User;
+  setCurrentUserId: (id: number) => void;
   createUser: (create: Partial<User>) => Promise<User>;
   patchUser: (userPatch: Partial<User>) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
@@ -108,6 +109,12 @@ const useUserStore = create<UserState>()((set, get) => ({
     const userMap = get().userMapById;
     const currentUserId = get().currentUserId;
     return userMap[currentUserId as number];
+  },
+  setCurrentUserId: (id: number) => {
+    localStorage.setItem("userId", `${id}`);
+    set({
+      currentUserId: id,
+    });
   },
   fetchUserSetting: async (userId: number) => {
     const userSetting = (

@@ -42,7 +42,7 @@ const CollectionSpace = () => {
               return [...shortcuts, shortcut];
             });
           } catch (error) {
-            // do nth
+            // Do nothing.
           }
         }
         document.title = `${collection.title} - Slash`;

@@ -16,7 +16,7 @@ function App() {
       try {
         await Promise.all([workspaceStore.fetchWorkspaceProfile(), workspaceStore.fetchWorkspaceSetting(), userStore.fetchCurrentUser()]);
       } catch (error) {
-        // do nth
+        // Do nothing.
       }
       setLoading(false);
     })();
