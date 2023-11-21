@@ -28,14 +28,16 @@ service WorkspaceService {
 message WorkspaceProfile {
   // Current workspace mode: dev, prod.
   string mode = 1;
+  // Current workspace version.
+  string version = 2;
   // The workspace plan.
-  PlanType plan = 2;
+  PlanType plan = 3;
   // Whether to enable other users to sign up.
-  bool enable_signup = 3;
+  bool enable_signup = 4;
   // The custom style.
-  string custom_style = 4;
+  string custom_style = 5;
   // The custom script.
-  string custom_script = 5;
+  string custom_script = 6;
 }
 
 message WorkspaceSetting {

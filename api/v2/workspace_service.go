@@ -13,8 +13,9 @@ import (
 
 func (s *APIV2Service) GetWorkspaceProfile(ctx context.Context, _ *apiv2pb.GetWorkspaceProfileRequest) (*apiv2pb.GetWorkspaceProfileResponse, error) {
 	profile := &apiv2pb.WorkspaceProfile{
-		Mode: s.Profile.Mode,
-		Plan: apiv2pb.PlanType_FREE,
+		Mode:    s.Profile.Mode,
+		Version: s.Profile.Version,
+		Plan:    apiv2pb.PlanType_FREE,
 	}
 
 	// Load subscription plan from license service.

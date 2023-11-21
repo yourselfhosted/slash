@@ -1261,6 +1261,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | mode | [string](#string) |  | Current workspace mode: dev, prod. |
+| version | [string](#string) |  | Current workspace version. |
 | plan | [PlanType](#slash-api-v2-PlanType) |  | The workspace plan. |
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
 | custom_style | [string](#string) |  | The custom style. |
