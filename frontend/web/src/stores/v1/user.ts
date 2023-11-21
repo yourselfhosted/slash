@@ -103,7 +103,7 @@ const useUserStore = create<UserState>()((set, get) => ({
   },
   getUserById: (id: number) => {
     const userMap = get().userMapById;
-    return userMap[id] as User;
+    return userMap[id] || unknownUser;
   },
   getCurrentUser: () => {
     const userMap = get().userMapById;
@@ -147,5 +147,11 @@ const useUserStore = create<UserState>()((set, get) => ({
     return userSettingMap[currentUserId as number];
   },
 }));
+
+const unknownUser: User = User.fromPartial({
+  id: -1,
+  email: "Unknown",
+  nickname: "Unknown",
+});
 
 export default useUserStore;

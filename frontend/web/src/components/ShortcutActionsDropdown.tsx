@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useNavigateTo from "@/hooks/useNavigateTo";
+import useShortcutStore from "@/stores/v1/shortcut";
+import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { Role } from "@/types/proto/api/v2/user_service";
-import { shortcutService } from "../services";
 import useUserStore from "../stores/v1/user";
 import { showCommonDialog } from "./Alert";
 import CreateShortcutDrawer from "./CreateShortcutDrawer";
@@ -18,6 +19,7 @@ const ShortcutActionsDropdown = (props: Props) => {
   const { shortcut } = props;
   const { t } = useTranslation();
   const navigateTo = useNavigateTo();
+  const shortcutStore = useShortcutStore();
   const currentUser = useUserStore().getCurrentUser();
   const [showEditDrawer, setShowEditDrawer] = useState<boolean>(false);
   const [showQRCodeDialog, setShowQRCodeDialog] = useState<boolean>(false);
@@ -29,7 +31,7 @@ const ShortcutActionsDropdown = (props: Props) => {
       content: `Are you sure to delete shortcut \`${shortcut.name}\`? You cannot undo this action.`,
       style: "danger",
       onConfirm: async () => {
-        await shortcutService.deleteShortcutById(shortcut.id);
+        await shortcutStore.deleteShortcut(shortcut.id);
       },
     });
   };

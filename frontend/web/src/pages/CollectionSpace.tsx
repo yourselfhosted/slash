@@ -12,7 +12,6 @@ import useShortcutStore from "@/stores/v1/shortcut";
 import useUserStore from "@/stores/v1/user";
 import { Collection } from "@/types/proto/api/v2/collection_service";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
-import { convertShortcutFromPb } from "@/utils/shortcut";
 
 const CollectionSpace = () => {
   const { collectionName } = useParams();
@@ -90,7 +89,7 @@ const CollectionSpace = () => {
                       : "sm:border-transparent dark:sm:border-transparent"
                   )}
                   key={shortcut.name}
-                  shortcut={convertShortcutFromPb(shortcut)}
+                  shortcut={shortcut}
                   alwaysShowLink={!sm}
                   onClick={() => handleShortcutClick(shortcut)}
                 />

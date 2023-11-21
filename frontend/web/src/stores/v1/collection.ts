@@ -84,8 +84,6 @@ const useCollectionStore = create<CollectionState>()((set, get) => ({
       throw new Error("Collection not found");
     }
 
-    console.log("updatedCollection", updatedCollection);
-
     const collectionMap = get().collectionMapById;
     collectionMap[updatedCollection.id] = updatedCollection;
     set(collectionMap);

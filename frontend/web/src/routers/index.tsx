@@ -11,7 +11,6 @@ import App from "../App";
 import Root from "../layouts/Root";
 import Home from "../pages/Home";
 import ShortcutDetail from "../pages/ShortcutDetail";
-import { shortcutService } from "../services";
 
 const router = createBrowserRouter([
   {
@@ -41,10 +40,6 @@ const router = createBrowserRouter([
           {
             path: "/shortcut/:shortcutId",
             element: <ShortcutDetail />,
-            loader: async ({ params }) => {
-              const shortcut = await shortcutService.getOrFetchShortcutById(Number(params.shortcutId));
-              return shortcut;
-            },
           },
           {
             path: "/setting/general",

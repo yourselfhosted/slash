@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 import { absolutifyLink } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
-import { useAppSelector } from "@/stores";
 import useCollectionStore from "@/stores/v1/collection";
+import useShortcutStore from "@/stores/v1/shortcut";
 import useUserStore from "@/stores/v1/user";
 import { Collection } from "@/types/proto/api/v2/collection_service";
+import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { showCommonDialog } from "./Alert";
 import CreateCollectionDialog from "./CreateCollectionDrawer";
 import Icon from "./Icon";
@@ -28,7 +29,7 @@ const CollectionView = (props: Props) => {
   const navigateTo = useNavigateTo();
   const currentUser = useUserStore().getCurrentUser();
   const collectionStore = useCollectionStore();
-  const { shortcutList } = useAppSelector((state) => state.shortcut);
+  const shortcutList = useShortcutStore().getShortcutList();
   const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
   const shortcuts = collection.shortcutIds
     .map((shortcutId) => shortcutList.find((shortcut) => shortcut?.id === shortcutId))

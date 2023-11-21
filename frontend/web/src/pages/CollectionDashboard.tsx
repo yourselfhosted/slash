@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CollectionView from "@/components/CollectionView";
 import CreateCollectionDrawer from "@/components/CreateCollectionDrawer";
-import { shortcutService } from "@/services";
 import useCollectionStore from "@/stores/v1/collection";
+import useShortcutStore from "@/stores/v1/shortcut";
 import FilterView from "../components/FilterView";
 import Icon from "../components/Icon";
 import useLoading from "../hooks/useLoading";
@@ -16,6 +16,7 @@ interface State {
 const CollectionDashboard: React.FC = () => {
   const { t } = useTranslation();
   const loadingState = useLoading();
+  const shortcutStore = useShortcutStore();
   const collectionStore = useCollectionStore();
   const [state, setState] = useState<State>({
     showCreateCollectionDrawer: false,
@@ -30,7 +31,7 @@ const CollectionDashboard: React.FC = () => {
   });
 
   useEffect(() => {
-    Promise.all([shortcutService.getMyAllShortcuts(), collectionStore.fetchCollectionList()]).finally(() => {
+    Promise.all([shortcutStore.fetchShortcutList(), collectionStore.fetchCollectionList()]).finally(() => {
       loadingState.setFinish();
     });
   }, []);

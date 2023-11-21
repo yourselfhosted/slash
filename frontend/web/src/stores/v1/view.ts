@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { Visibility } from "@/types/proto/api/v2/common";
+import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { User } from "@/types/proto/api/v2/user_service";
 
 export interface Filter {
@@ -102,16 +104,24 @@ export const getOrderedShortcutList = (shortcutList: Shortcut[], order: Order) =
     if (field === "name") {
       return direction === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
     } else if (field === "createdTs") {
-      return direction === "asc" ? a.createdTs - b.createdTs : b.createdTs - a.createdTs;
+      return direction === "asc"
+        ? getDateTimestamp(a.createdTime) - getDateTimestamp(b.createdTime)
+        : getDateTimestamp(b.createdTime) - getDateTimestamp(a.createdTime);
     } else if (field === "updatedTs") {
-      return direction === "asc" ? a.updatedTs - b.updatedTs : b.updatedTs - a.updatedTs;
+      return direction === "asc"
+        ? getDateTimestamp(a.updatedTime) - getDateTimestamp(b.updatedTime)
+        : getDateTimestamp(b.updatedTime) - getDateTimestamp(a.updatedTime);
     } else if (field === "view") {
-      return direction === "asc" ? a.view - b.view : b.view - a.view;
+      return direction === "asc" ? a.viewCount - b.viewCount : b.viewCount - a.viewCount;
     } else {
       return 0;
     }
   });
   return orderedShortcutList;
+};
+
+const getDateTimestamp = (date: Date = new Date()) => {
+  return new Date(date).getTime();
 };
 
 export default useViewStore;

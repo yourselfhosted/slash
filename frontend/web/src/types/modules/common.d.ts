@@ -1,1 +1,0 @@
-type RowStatus = "NORMAL" | "ARCHIVED";

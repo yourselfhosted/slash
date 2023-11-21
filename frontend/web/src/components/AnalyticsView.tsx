@@ -5,7 +5,7 @@ import * as api from "../helpers/api";
 import Icon from "./Icon";
 
 interface Props {
-  shortcutId: ShortcutId;
+  shortcutId: number;
   className?: string;
 }
 

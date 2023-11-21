@@ -1,3 +1,4 @@
+import { Visibility } from "@/types/proto/api/v2/common";
 import Icon from "./Icon";
 
 interface Props {
@@ -7,11 +8,11 @@ interface Props {
 
 const VisibilityIcon = (props: Props) => {
   const { visibility, className } = props;
-  if (visibility === "PRIVATE") {
+  if (visibility === Visibility.PRIVATE) {
     return <Icon.Lock className={className || ""} />;
-  } else if (visibility === "WORKSPACE") {
+  } else if (visibility === Visibility.WORKSPACE) {
     return <Icon.Building2 className={className || ""} />;
-  } else if (visibility === "PUBLIC") {
+  } else if (visibility === Visibility.PUBLIC) {
     return <Icon.Globe2 className={className || ""} />;
   }
   return null;

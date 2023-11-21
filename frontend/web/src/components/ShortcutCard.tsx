@@ -4,6 +4,8 @@ import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { convertVisibilityFromPb } from "@/utils/visibility";
 import { absolutifyLink, getFaviconWithGoogleS2 } from "../helpers/utils";
 import useViewStore from "../stores/v1/view";
 import Icon from "./Icon";
@@ -102,13 +104,18 @@ const ShortcutCard = (props: Props) => {
           {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm leading-4 italic">No tags</span>}
         </div>
         <div className="w-full flex mt-2 gap-2 overflow-x-auto">
-          <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
+          <Tooltip
+            title={t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.description`)}
+            variant="solid"
+            placement="top"
+            arrow
+          >
             <div
               className="w-auto px-2 leading-6 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap border rounded-full cursor-pointer text-gray-500 dark:text-gray-400 text-sm dark:border-zinc-700"
               onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
             >
               <VisibilityIcon className="w-4 h-auto mr-1 opacity-60" visibility={shortcut.visibility} />
-              {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
+              {t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.self`)}
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
@@ -117,7 +124,7 @@ const ShortcutCard = (props: Props) => {
               className="w-auto px-2 leading-6 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap border rounded-full cursor-pointer text-gray-500 dark:text-gray-400 text-sm dark:border-zinc-700"
             >
               <Icon.BarChart2 className="w-4 h-auto mr-1 opacity-80" />
-              {t("shortcut.visits", { count: shortcut.view })}
+              {t("shortcut.visits", { count: shortcut.viewCount })}
             </Link>
           </Tooltip>
         </div>

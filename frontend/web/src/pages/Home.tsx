@@ -1,6 +1,7 @@
 import { Button, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import useShortcutStore from "@/stores/v1/shortcut";
 import CreateShortcutDrawer from "../components/CreateShortcutDrawer";
 import FilterView from "../components/FilterView";
 import Icon from "../components/Icon";
@@ -8,8 +9,6 @@ import ShortcutsContainer from "../components/ShortcutsContainer";
 import ShortcutsNavigator from "../components/ShortcutsNavigator";
 import ViewSetting from "../components/ViewSetting";
 import useLoading from "../hooks/useLoading";
-import { shortcutService } from "../services";
-import { useAppSelector } from "../stores";
 import useUserStore from "../stores/v1/user";
 import useViewStore, { getFilteredShortcutList, getOrderedShortcutList } from "../stores/v1/view";
 
@@ -21,8 +20,9 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
   const loadingState = useLoading();
   const currentUser = useUserStore().getCurrentUser();
+  const shortcutStore = useShortcutStore();
   const viewStore = useViewStore();
-  const { shortcutList } = useAppSelector((state) => state.shortcut);
+  const shortcutList = shortcutStore.getShortcutList();
   const [state, setState] = useState<State>({
     showCreateShortcutDrawer: false,
   });
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
   const orderedShortcutList = getOrderedShortcutList(filteredShortcutList, viewStore.order);
 
   useEffect(() => {
-    Promise.all([shortcutService.getMyAllShortcuts()]).finally(() => {
+    Promise.all([shortcutStore.fetchShortcutList()]).finally(() => {
       loadingState.setFinish();
     });
   }, []);

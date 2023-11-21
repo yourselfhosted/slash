@@ -3,10 +3,11 @@ import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "@/stores";
 import useCollectionStore from "@/stores/v1/collection";
+import useShortcutStore from "@/stores/v1/shortcut";
 import { Collection } from "@/types/proto/api/v2/collection_service";
 import { Visibility } from "@/types/proto/api/v2/common";
+import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
@@ -27,7 +28,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, collectionId } = props;
   const { t } = useTranslation();
   const collectionStore = useCollectionStore();
-  const { shortcutList } = useAppSelector((state) => state.shortcut);
+  const shortcutList = useShortcutStore().getShortcutList();
   const [state, setState] = useState<State>({
     collectionCreate: Collection.fromPartial({
       visibility: Visibility.PRIVATE,
@@ -40,9 +41,9 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   const unselectedShortcuts = shortcutList
     .filter((shortcut) => {
       if (state.collectionCreate.visibility === Visibility.PUBLIC) {
-        return shortcut.visibility === "PUBLIC";
+        return shortcut.visibility === Visibility.PUBLIC;
       } else if (state.collectionCreate.visibility === Visibility.WORKSPACE) {
-        return shortcut.visibility === "PUBLIC" || shortcut.visibility === "WORKSPACE";
+        return shortcut.visibility === Visibility.PUBLIC || shortcut.visibility === Visibility.WORKSPACE;
       } else {
         return true;
       }

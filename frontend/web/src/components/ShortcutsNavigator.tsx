@@ -1,13 +1,13 @@
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "../stores";
+import useShortcutStore from "@/stores/v1/shortcut";
 import useViewStore from "../stores/v1/view";
 import Icon from "./Icon";
 
 const ShortcutsNavigator = () => {
   const { t } = useTranslation();
   const viewStore = useViewStore();
-  const { shortcutList } = useAppSelector((state) => state.shortcut);
+  const shortcutList = useShortcutStore().getShortcutList();
   const tags = shortcutList.map((shortcut) => shortcut.tags).flat();
   const currentTab = viewStore.filter.tab || `tab:all`;
   const sortedTagMap = sortTags(tags);

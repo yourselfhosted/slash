@@ -16,46 +16,42 @@ import { isUndefined, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "@/stores";
+import useShortcutStore from "@/stores/v1/shortcut";
+import { Visibility } from "@/types/proto/api/v2/common";
+import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { convertVisibilityFromPb } from "@/utils/visibility";
 import useLoading from "../hooks/useLoading";
-import { shortcutService } from "../services";
 import Icon from "./Icon";
 import ResourceNameInput from "./ResourceNameInput";
 
 interface Props {
-  shortcutId?: ShortcutId;
+  shortcutId?: number;
   initialShortcut?: Partial<Shortcut>;
   onClose: () => void;
   onConfirm?: () => void;
 }
 
 interface State {
-  shortcutCreate: ShortcutCreate;
+  shortcutCreate: Shortcut;
 }
-
-const visibilities: Visibility[] = ["PRIVATE", "WORKSPACE", "PUBLIC"];
 
 const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, shortcutId, initialShortcut } = props;
   const { t } = useTranslation();
-  const { shortcutList } = useAppSelector((state) => state.shortcut);
   const [state, setState] = useState<State>({
-    shortcutCreate: {
-      name: "",
-      link: "",
-      title: "",
-      description: "",
-      visibility: "PRIVATE",
-      tags: [],
-      openGraphMetadata: {
+    shortcutCreate: Shortcut.fromPartial({
+      visibility: Visibility.PRIVATE,
+      ogMetadata: {
         title: "",
         description: "",
         image: "",
       },
       ...initialShortcut,
-    },
+    }),
   });
+  const shortcutStore = useShortcutStore();
   const [showOpenGraphMetadata, setShowOpenGraphMetadata] = useState<boolean>(false);
+  const shortcutList = shortcutStore.getShortcutList();
   const [tag, setTag] = useState<string>("");
   const tagSuggestions = uniq(shortcutList.map((shortcut) => shortcut.tags).flat());
   const isCreating = isUndefined(shortcutId);
@@ -64,7 +60,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     if (shortcutId) {
-      const shortcut = shortcutService.getShortcutById(shortcutId);
+      const shortcut = shortcutStore.getShortcutById(shortcutId);
       if (shortcut) {
         setState({
           ...state,
@@ -74,7 +70,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             title: shortcut.title,
             description: shortcut.description,
             visibility: shortcut.visibility,
-            openGraphMetadata: shortcut.openGraphMetadata,
+            ogMetadata: shortcut.ogMetadata,
           }),
         });
         setTag(shortcut.tags.join(" "));
@@ -121,7 +117,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        visibility: e.target.value,
+        visibility: Number(e.target.value),
       }),
     });
   };
@@ -142,8 +138,8 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const handleOpenGraphMetadataImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        openGraphMetadata: {
-          ...state.shortcutCreate.openGraphMetadata,
+        ogMetadata: {
+          ...state.shortcutCreate.ogMetadata,
           image: e.target.value,
         },
       }),
@@ -153,8 +149,8 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const handleOpenGraphMetadataTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        openGraphMetadata: {
-          ...state.shortcutCreate.openGraphMetadata,
+        ogMetadata: {
+          ...state.shortcutCreate.ogMetadata,
           title: e.target.value,
         },
       }),
@@ -164,8 +160,8 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const handleOpenGraphMetadataDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        openGraphMetadata: {
-          ...state.shortcutCreate.openGraphMetadata,
+        ogMetadata: {
+          ...state.shortcutCreate.ogMetadata,
           description: e.target.value,
         },
       }),
@@ -188,18 +184,13 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
 
     try {
       if (shortcutId) {
-        await shortcutService.patchShortcut({
+        await shortcutStore.updateShortcut({
+          ...state.shortcutCreate,
           id: shortcutId,
-          name: state.shortcutCreate.name,
-          link: state.shortcutCreate.link,
-          title: state.shortcutCreate.title,
-          description: state.shortcutCreate.description,
-          visibility: state.shortcutCreate.visibility,
           tags: tag.split(" ").filter(Boolean),
-          openGraphMetadata: state.shortcutCreate.openGraphMetadata,
         });
       } else {
-        await shortcutService.createShortcut({
+        await shortcutStore.createShortcut({
           ...state.shortcutCreate,
           tags: tag.split(" ").filter(Boolean),
         });
@@ -281,13 +272,13 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             <span className="mb-2">Visibility</span>
             <div className="w-full flex flex-row justify-start items-center text-base">
               <RadioGroup orientation="horizontal" value={state.shortcutCreate.visibility} onChange={handleVisibilityInputChange}>
-                {visibilities.map((visibility) => (
-                  <Radio key={visibility} value={visibility} label={t(`shortcut.visibility.${visibility.toLowerCase()}.self`)} />
-                ))}
+                <Radio value={Visibility.PRIVATE} label={t(`shortcut.visibility.private.self`)} />
+                <Radio value={Visibility.WORKSPACE} label={t(`shortcut.visibility.workspace.self`)} />
+                <Radio value={Visibility.PUBLIC} label={t(`shortcut.visibility.public.self`)} />
               </RadioGroup>
             </div>
             <p className="mt-3 text-sm text-gray-500 w-full bg-gray-100 border border-gray-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400 px-2 py-1 rounded-md">
-              {t(`shortcut.visibility.${state.shortcutCreate.visibility.toLowerCase()}.description`)}
+              {t(`shortcut.visibility.${convertVisibilityFromPb(state.shortcutCreate.visibility).toLowerCase()}.description`)}
             </p>
           </div>
           <Divider className="text-gray-500">More</Divider>
@@ -316,7 +307,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
                     type="text"
                     placeholder="https://the.link.to/the/image.png"
                     size="sm"
-                    value={state.shortcutCreate.openGraphMetadata.image}
+                    value={state.shortcutCreate.ogMetadata?.image}
                     onChange={handleOpenGraphMetadataImageChange}
                   />
                 </div>
@@ -327,7 +318,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
                     type="text"
                     placeholder="Slash - An open source, self-hosted bookmarks and link sharing platform"
                     size="sm"
-                    value={state.shortcutCreate.openGraphMetadata.title}
+                    value={state.shortcutCreate.ogMetadata?.title}
                     onChange={handleOpenGraphMetadataTitleChange}
                   />
                 </div>
@@ -338,7 +329,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
                     placeholder="An open source, self-hosted bookmarks and link sharing platform."
                     size="sm"
                     maxRows={3}
-                    value={state.shortcutCreate.openGraphMetadata.description}
+                    value={state.shortcutCreate.ogMetadata?.description}
                     onChange={handleOpenGraphMetadataDescriptionChange}
                   />
                 </div>
