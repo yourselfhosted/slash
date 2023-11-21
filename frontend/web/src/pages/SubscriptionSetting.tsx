@@ -70,11 +70,13 @@ const SubscriptionSetting: React.FC = () => {
       <Divider />
       <section className="w-full pb-8 dark:bg-zinc-900 flex items-center justify-center">
         <div className="w-full px-6">
-          <Alert className="!inline-block mb-12">
-            Slash is open source bookmarks and link sharing platform. Our source code is available and accessible on{" "}
-            <Link href="https://github.com/boojack/slash">GitHub</Link> so anyone can get it, inspect it and review it.
-          </Alert>
-          <div className="w-full grid grid-cols-1 gap-12 mt-8 md:grid-cols-3">
+          <div className="max-w-4xl mx-auto mb-12">
+            <Alert className="!inline-block mb-12">
+              Slash is open source bookmarks and link sharing platform. Our source code is available and accessible on{" "}
+              <Link href="https://github.com/boojack/slash">GitHub</Link> so anyone can get it, inspect it and review it.
+            </Alert>
+          </div>
+          <div className="w-full grid grid-cols-1 gap-6 lg:gap-12 mt-8 md:grid-cols-3 md:max-w-4xl mx-auto">
             <div className="flex flex-col p-6 bg-white dark:bg-zinc-800 shadow-lg rounded-lg justify-between border border-gray-300 dark:border-zinc-700">
               <div>
                 <h3 className="text-2xl font-bold text-center dark:text-gray-300">Free</h3>

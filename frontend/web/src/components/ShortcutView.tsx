@@ -26,7 +26,7 @@ const ShortcutView = (props: Props) => {
     >
       <div className={classNames("w-5 h-5 flex justify-center items-center overflow-clip shrink-0")}>
         {favicon ? (
-          <img className="w-full h-auto rounded-lg" src={favicon} decoding="async" loading="lazy" />
+          <img className="w-full h-auto rounded" src={favicon} decoding="async" loading="lazy" />
         ) : (
           <Icon.CircleSlash className="w-full h-auto text-gray-400" />
         )}
