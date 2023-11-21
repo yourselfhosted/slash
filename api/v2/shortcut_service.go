@@ -143,9 +143,13 @@ func (s *APIV2Service) UpdateShortcut(ctx context.Context, request *apiv2pb.Upda
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
 
-	update := &store.UpdateShortcut{}
+	update := &store.UpdateShortcut{
+		ID: shortcut.Id,
+	}
 	for _, path := range request.UpdateMask.Paths {
 		switch path {
+		case "name":
+			update.Name = &request.Shortcut.Name
 		case "link":
 			update.Link = &request.Shortcut.Link
 		case "title":
@@ -160,7 +164,7 @@ func (s *APIV2Service) UpdateShortcut(ctx context.Context, request *apiv2pb.Upda
 			update.Visibility = &visibility
 		case "og_metadata":
 			if request.Shortcut.OgMetadata != nil {
-				update.OpenGraphMetadata = &store.OpenGraphMetadata{
+				update.OpenGraphMetadata = &storepb.OpenGraphMetadata{
 					Title:       request.Shortcut.OgMetadata.Title,
 					Description: request.Shortcut.OgMetadata.Description,
 					Image:       request.Shortcut.OgMetadata.Image,

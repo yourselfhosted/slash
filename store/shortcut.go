@@ -3,21 +3,14 @@ package store
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
 	"google.golang.org/protobuf/encoding/protojson"
 
 	storepb "github.com/boojack/slash/proto/gen/store"
 )
-
-type OpenGraphMetadata struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Image       string `json:"image"`
-}
 
 type UpdateShortcut struct {
 	ID int32
@@ -29,7 +22,7 @@ type UpdateShortcut struct {
 	Description       *string
 	Visibility        *Visibility
 	Tag               *string
-	OpenGraphMetadata *OpenGraphMetadata
+	OpenGraphMetadata *storepb.OpenGraphMetadata
 }
 
 type FindShortcut struct {
@@ -105,9 +98,9 @@ func (s *Store) UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*st
 		set, args = append(set, "tag = ?"), append(args, *update.Tag)
 	}
 	if update.OpenGraphMetadata != nil {
-		openGraphMetadataBytes, err := json.Marshal(update.OpenGraphMetadata)
+		openGraphMetadataBytes, err := protojson.Marshal(update.OpenGraphMetadata)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "Failed to marshal activity payload")
 		}
 		set, args = append(set, "og_metadata = ?"), append(args, string(openGraphMetadataBytes))
 	}

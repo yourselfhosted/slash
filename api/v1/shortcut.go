@@ -182,7 +182,7 @@ func (s *APIV1Service) registerShortcutRoutes(g *echo.Group) {
 			shortcutUpdate.Tag = &tag
 		}
 		if patch.OpenGraphMetadata != nil {
-			shortcutUpdate.OpenGraphMetadata = &store.OpenGraphMetadata{
+			shortcutUpdate.OpenGraphMetadata = &storepb.OpenGraphMetadata{
 				Title:       patch.OpenGraphMetadata.Title,
 				Description: patch.OpenGraphMetadata.Description,
 				Image:       patch.OpenGraphMetadata.Image,
