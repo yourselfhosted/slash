@@ -1,3 +1,4 @@
+import { isEqual } from "lodash-es";
 import { create } from "zustand";
 import { shortcutServiceClient } from "@/grpcweb";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
@@ -9,7 +10,7 @@ interface ShortcutState {
   getShortcutById: (id: number) => Shortcut;
   getShortcutList: () => Shortcut[];
   createShortcut: (shortcut: Shortcut) => Promise<Shortcut>;
-  updateShortcut: (shortcut: Partial<Shortcut>) => Promise<Shortcut>;
+  updateShortcut: (shortcut: Partial<Shortcut>, updateMask: string[]) => Promise<Shortcut>;
   deleteShortcut: (id: number) => Promise<void>;
 }
 
@@ -60,9 +61,10 @@ const useShortcutStore = create<ShortcutState>()((set, get) => ({
     set(shortcutMap);
     return createdShortcut;
   },
-  updateShortcut: async (shortcut: Partial<Shortcut>) => {
+  updateShortcut: async (shortcut: Partial<Shortcut>, updateMask: string[]) => {
     const { shortcut: updatedShortcut } = await shortcutServiceClient.updateShortcut({
       shortcut: shortcut,
+      updateMask,
     });
     if (!updatedShortcut) {
       throw new Error(`Failed to update shortcut`);
@@ -86,5 +88,31 @@ const unknownShortcut: Shortcut = Shortcut.fromPartial({
   id: -1,
   name: "Unknown",
 });
+
+export const getShortcutUpdateMask = (shortcut: Shortcut, updatingShortcut: Shortcut) => {
+  const updateMask: string[] = [];
+  if (!isEqual(shortcut.name, updatingShortcut.name)) {
+    updateMask.push("name");
+  }
+  if (!isEqual(shortcut.link, updatingShortcut.link)) {
+    updateMask.push("link");
+  }
+  if (!isEqual(shortcut.title, updatingShortcut.title)) {
+    updateMask.push("title");
+  }
+  if (!isEqual(shortcut.description, updatingShortcut.description)) {
+    updateMask.push("description");
+  }
+  if (!isEqual(shortcut.tags, updatingShortcut.tags)) {
+    updateMask.push("tags");
+  }
+  if (!isEqual(shortcut.visibility, updatingShortcut.visibility)) {
+    updateMask.push("visibility");
+  }
+  if (!isEqual(shortcut.ogMetadata, updatingShortcut.ogMetadata)) {
+    updateMask.push("og_metadata");
+  }
+  return updateMask;
+};
 
 export default useShortcutStore;

@@ -154,11 +154,11 @@ func (s *APIV2Service) UpdateShortcut(ctx context.Context, request *apiv2pb.Upda
 			update.Link = &request.Shortcut.Link
 		case "title":
 			update.Title = &request.Shortcut.Title
+		case "description":
+			update.Description = &request.Shortcut.Description
 		case "tags":
 			tag := strings.Join(request.Shortcut.Tags, " ")
 			update.Tag = &tag
-		case "description":
-			update.Description = &request.Shortcut.Description
 		case "visibility":
 			visibility := store.Visibility(request.Shortcut.Visibility.String())
 			update.Visibility = &visibility

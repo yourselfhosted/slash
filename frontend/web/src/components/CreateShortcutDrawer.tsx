@@ -16,7 +16,7 @@ import { isUndefined, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import useShortcutStore from "@/stores/v1/shortcut";
+import useShortcutStore, { getShortcutUpdateMask } from "@/stores/v1/shortcut";
 import { Visibility } from "@/types/proto/api/v2/common";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
@@ -184,11 +184,15 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
 
     try {
       if (shortcutId) {
-        await shortcutStore.updateShortcut({
+        const updatingShortcut = {
           ...state.shortcutCreate,
           id: shortcutId,
           tags: tag.split(" ").filter(Boolean),
-        });
+        };
+        await shortcutStore.updateShortcut(
+          updatingShortcut,
+          getShortcutUpdateMask(shortcutStore.getShortcutById(updatingShortcut.id), updatingShortcut)
+        );
       } else {
         await shortcutStore.createShortcut({
           ...state.shortcutCreate,
