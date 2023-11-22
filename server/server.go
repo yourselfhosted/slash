@@ -15,7 +15,6 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	apiv1 "github.com/boojack/slash/api/v1"
 	apiv2 "github.com/boojack/slash/api/v2"
 	"github.com/boojack/slash/internal/log"
 	storepb "github.com/boojack/slash/proto/gen/store"
@@ -104,10 +103,6 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	s.Secret = secret
 
 	rootGroup := e.Group("")
-	// Register API v1 routes.
-	apiV1Service := apiv1.NewAPIV1Service(profile, store, licenseService)
-	apiV1Service.Start(rootGroup, secret)
-
 	s.apiV2Service = apiv2.NewAPIV2Service(secret, profile, store, licenseService, s.Profile.Port+1)
 	// Register gRPC gateway as api v2.
 	if err := s.apiV2Service.RegisterGateway(ctx, e); err != nil {
