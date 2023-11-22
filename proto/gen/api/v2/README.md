@@ -7,6 +7,40 @@
     - [RowStatus](#slash-api-v2-RowStatus)
     - [Visibility](#slash-api-v2-Visibility)
   
+- [api/v2/user_service.proto](#api_v2_user_service-proto)
+    - [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest)
+    - [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse)
+    - [CreateUserRequest](#slash-api-v2-CreateUserRequest)
+    - [CreateUserResponse](#slash-api-v2-CreateUserResponse)
+    - [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest)
+    - [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse)
+    - [DeleteUserRequest](#slash-api-v2-DeleteUserRequest)
+    - [DeleteUserResponse](#slash-api-v2-DeleteUserResponse)
+    - [GetUserRequest](#slash-api-v2-GetUserRequest)
+    - [GetUserResponse](#slash-api-v2-GetUserResponse)
+    - [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest)
+    - [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse)
+    - [ListUsersRequest](#slash-api-v2-ListUsersRequest)
+    - [ListUsersResponse](#slash-api-v2-ListUsersResponse)
+    - [UpdateUserRequest](#slash-api-v2-UpdateUserRequest)
+    - [UpdateUserResponse](#slash-api-v2-UpdateUserResponse)
+    - [User](#slash-api-v2-User)
+    - [UserAccessToken](#slash-api-v2-UserAccessToken)
+  
+    - [Role](#slash-api-v2-Role)
+  
+    - [UserService](#slash-api-v2-UserService)
+  
+- [api/v2/auth_service.proto](#api_v2_auth_service-proto)
+    - [SignInRequest](#slash-api-v2-SignInRequest)
+    - [SignInResponse](#slash-api-v2-SignInResponse)
+    - [SignOutRequest](#slash-api-v2-SignOutRequest)
+    - [SignOutResponse](#slash-api-v2-SignOutResponse)
+    - [SignUpRequest](#slash-api-v2-SignUpRequest)
+    - [SignUpResponse](#slash-api-v2-SignUpResponse)
+  
+    - [AuthService](#slash-api-v2-AuthService)
+  
 - [api/v2/collection_service.proto](#api_v2_collection_service-proto)
     - [Collection](#slash-api-v2-Collection)
     - [CreateCollectionRequest](#slash-api-v2-CreateCollectionRequest)
@@ -53,30 +87,6 @@
     - [PlanType](#slash-api-v2-PlanType)
   
     - [SubscriptionService](#slash-api-v2-SubscriptionService)
-  
-- [api/v2/user_service.proto](#api_v2_user_service-proto)
-    - [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest)
-    - [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse)
-    - [CreateUserRequest](#slash-api-v2-CreateUserRequest)
-    - [CreateUserResponse](#slash-api-v2-CreateUserResponse)
-    - [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest)
-    - [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse)
-    - [DeleteUserRequest](#slash-api-v2-DeleteUserRequest)
-    - [DeleteUserResponse](#slash-api-v2-DeleteUserResponse)
-    - [GetUserRequest](#slash-api-v2-GetUserRequest)
-    - [GetUserResponse](#slash-api-v2-GetUserResponse)
-    - [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest)
-    - [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse)
-    - [ListUsersRequest](#slash-api-v2-ListUsersRequest)
-    - [ListUsersResponse](#slash-api-v2-ListUsersResponse)
-    - [UpdateUserRequest](#slash-api-v2-UpdateUserRequest)
-    - [UpdateUserResponse](#slash-api-v2-UpdateUserResponse)
-    - [User](#slash-api-v2-User)
-    - [UserAccessToken](#slash-api-v2-UserAccessToken)
-  
-    - [Role](#slash-api-v2-Role)
-  
-    - [UserService](#slash-api-v2-UserService)
   
 - [api/v2/user_setting_service.proto](#api_v2_user_setting_service-proto)
     - [GetUserSettingRequest](#slash-api-v2-GetUserSettingRequest)
@@ -145,6 +155,434 @@
  
 
  
+
+ 
+
+
+
+<a name="api_v2_user_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v2/user_service.proto
+
+
+
+<a name="slash-api-v2-CreateUserAccessTokenRequest"></a>
+
+### CreateUserAccessTokenRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  | id is the user id. |
+| description | [string](#string) |  | description is the description of the access token. |
+| expires_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) | optional | expires_at is the expiration time of the access token. If expires_at is not set, the access token will never expire. |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateUserAccessTokenResponse"></a>
+
+### CreateUserAccessTokenResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_token | [UserAccessToken](#slash-api-v2-UserAccessToken) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateUserRequest"></a>
+
+### CreateUserRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateUserResponse"></a>
+
+### CreateUserResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteUserAccessTokenRequest"></a>
+
+### DeleteUserAccessTokenRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  | id is the user id. |
+| access_token | [string](#string) |  | access_token is the access token to delete. |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteUserAccessTokenResponse"></a>
+
+### DeleteUserAccessTokenResponse
+
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteUserRequest"></a>
+
+### DeleteUserRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteUserResponse"></a>
+
+### DeleteUserResponse
+
+
+
+
+
+
+
+<a name="slash-api-v2-GetUserRequest"></a>
+
+### GetUserRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetUserResponse"></a>
+
+### GetUserResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-ListUserAccessTokensRequest"></a>
+
+### ListUserAccessTokensRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  | id is the user id. |
+
+
+
+
+
+
+<a name="slash-api-v2-ListUserAccessTokensResponse"></a>
+
+### ListUserAccessTokensResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_tokens | [UserAccessToken](#slash-api-v2-UserAccessToken) | repeated |  |
+
+
+
+
+
+
+<a name="slash-api-v2-ListUsersRequest"></a>
+
+### ListUsersRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-ListUsersResponse"></a>
+
+### ListUsersResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| users | [User](#slash-api-v2-User) | repeated |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateUserRequest"></a>
+
+### UpdateUserRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateUserResponse"></a>
+
+### UpdateUserResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-User"></a>
+
+### User
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+| row_status | [RowStatus](#slash-api-v2-RowStatus) |  |  |
+| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| role | [Role](#slash-api-v2-Role) |  |  |
+| email | [string](#string) |  |  |
+| nickname | [string](#string) |  |  |
+| password | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UserAccessToken"></a>
+
+### UserAccessToken
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_token | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| issued_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| expires_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="slash-api-v2-Role"></a>
+
+### Role
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| ROLE_UNSPECIFIED | 0 |  |
+| ADMIN | 1 |  |
+| USER | 2 |  |
+
+
+ 
+
+ 
+
+
+<a name="slash-api-v2-UserService"></a>
+
+### UserService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| ListUsers | [ListUsersRequest](#slash-api-v2-ListUsersRequest) | [ListUsersResponse](#slash-api-v2-ListUsersResponse) | ListUsers returns a list of users. |
+| GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) | GetUser returns a user by id. |
+| CreateUser | [CreateUserRequest](#slash-api-v2-CreateUserRequest) | [CreateUserResponse](#slash-api-v2-CreateUserResponse) | CreateUser creates a new user. |
+| UpdateUser | [UpdateUserRequest](#slash-api-v2-UpdateUserRequest) | [UpdateUserResponse](#slash-api-v2-UpdateUserResponse) |  |
+| DeleteUser | [DeleteUserRequest](#slash-api-v2-DeleteUserRequest) | [DeleteUserResponse](#slash-api-v2-DeleteUserResponse) | DeleteUser deletes a user by id. |
+| ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |
+| CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest) | [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse) | CreateUserAccessToken creates a new access token for a user. |
+| DeleteUserAccessToken | [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest) | [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse) | DeleteUserAccessToken deletes an access token for a user. |
+
+ 
+
+
+
+<a name="api_v2_auth_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v2/auth_service.proto
+
+
+
+<a name="slash-api-v2-SignInRequest"></a>
+
+### SignInRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| email | [string](#string) |  |  |
+| password | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-SignInResponse"></a>
+
+### SignInResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+| access_token | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-SignOutRequest"></a>
+
+### SignOutRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-SignOutResponse"></a>
+
+### SignOutResponse
+
+
+
+
+
+
+
+<a name="slash-api-v2-SignUpRequest"></a>
+
+### SignUpRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| email | [string](#string) |  |  |
+| nickname | [string](#string) |  |  |
+| password | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-SignUpResponse"></a>
+
+### SignUpResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+| access_token | [string](#string) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="slash-api-v2-AuthService"></a>
+
+### AuthService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| SignIn | [SignInRequest](#slash-api-v2-SignInRequest) | [SignInResponse](#slash-api-v2-SignInResponse) |  |
+| SignUp | [SignUpRequest](#slash-api-v2-SignUpRequest) | [SignUpResponse](#slash-api-v2-SignUpResponse) |  |
+| SignOut | [SignOutRequest](#slash-api-v2-SignOutRequest) | [SignOutResponse](#slash-api-v2-SignOutResponse) |  |
 
  
 
@@ -746,321 +1184,6 @@
 | ----------- | ------------ | ------------- | ------------|
 | GetSubscription | [GetSubscriptionRequest](#slash-api-v2-GetSubscriptionRequest) | [GetSubscriptionResponse](#slash-api-v2-GetSubscriptionResponse) |  |
 | UpdateSubscription | [UpdateSubscriptionRequest](#slash-api-v2-UpdateSubscriptionRequest) | [UpdateSubscriptionResponse](#slash-api-v2-UpdateSubscriptionResponse) |  |
-
- 
-
-
-
-<a name="api_v2_user_service-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## api/v2/user_service.proto
-
-
-
-<a name="slash-api-v2-CreateUserAccessTokenRequest"></a>
-
-### CreateUserAccessTokenRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  | id is the user id. |
-| description | [string](#string) |  | description is the description of the access token. |
-| expires_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) | optional | expires_at is the expiration time of the access token. If expires_at is not set, the access token will never expire. |
-
-
-
-
-
-
-<a name="slash-api-v2-CreateUserAccessTokenResponse"></a>
-
-### CreateUserAccessTokenResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| access_token | [UserAccessToken](#slash-api-v2-UserAccessToken) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-CreateUserRequest"></a>
-
-### CreateUserRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v2-User) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-CreateUserResponse"></a>
-
-### CreateUserResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v2-User) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-DeleteUserAccessTokenRequest"></a>
-
-### DeleteUserAccessTokenRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  | id is the user id. |
-| access_token | [string](#string) |  | access_token is the access token to delete. |
-
-
-
-
-
-
-<a name="slash-api-v2-DeleteUserAccessTokenResponse"></a>
-
-### DeleteUserAccessTokenResponse
-
-
-
-
-
-
-
-<a name="slash-api-v2-DeleteUserRequest"></a>
-
-### DeleteUserRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-DeleteUserResponse"></a>
-
-### DeleteUserResponse
-
-
-
-
-
-
-
-<a name="slash-api-v2-GetUserRequest"></a>
-
-### GetUserRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-GetUserResponse"></a>
-
-### GetUserResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v2-User) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-ListUserAccessTokensRequest"></a>
-
-### ListUserAccessTokensRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  | id is the user id. |
-
-
-
-
-
-
-<a name="slash-api-v2-ListUserAccessTokensResponse"></a>
-
-### ListUserAccessTokensResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| access_tokens | [UserAccessToken](#slash-api-v2-UserAccessToken) | repeated |  |
-
-
-
-
-
-
-<a name="slash-api-v2-ListUsersRequest"></a>
-
-### ListUsersRequest
-
-
-
-
-
-
-
-<a name="slash-api-v2-ListUsersResponse"></a>
-
-### ListUsersResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| users | [User](#slash-api-v2-User) | repeated |  |
-
-
-
-
-
-
-<a name="slash-api-v2-UpdateUserRequest"></a>
-
-### UpdateUserRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v2-User) |  |  |
-| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-UpdateUserResponse"></a>
-
-### UpdateUserResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v2-User) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-User"></a>
-
-### User
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  |  |
-| row_status | [RowStatus](#slash-api-v2-RowStatus) |  |  |
-| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| role | [Role](#slash-api-v2-Role) |  |  |
-| email | [string](#string) |  |  |
-| nickname | [string](#string) |  |  |
-| password | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v2-UserAccessToken"></a>
-
-### UserAccessToken
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| access_token | [string](#string) |  |  |
-| description | [string](#string) |  |  |
-| issued_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| expires_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-
-
-
-
-
- 
-
-
-<a name="slash-api-v2-Role"></a>
-
-### Role
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| ROLE_UNSPECIFIED | 0 |  |
-| ADMIN | 1 |  |
-| USER | 2 |  |
-
-
- 
-
- 
-
-
-<a name="slash-api-v2-UserService"></a>
-
-### UserService
-
-
-| Method Name | Request Type | Response Type | Description |
-| ----------- | ------------ | ------------- | ------------|
-| ListUsers | [ListUsersRequest](#slash-api-v2-ListUsersRequest) | [ListUsersResponse](#slash-api-v2-ListUsersResponse) | ListUsers returns a list of users. |
-| GetUser | [GetUserRequest](#slash-api-v2-GetUserRequest) | [GetUserResponse](#slash-api-v2-GetUserResponse) | GetUser returns a user by id. |
-| CreateUser | [CreateUserRequest](#slash-api-v2-CreateUserRequest) | [CreateUserResponse](#slash-api-v2-CreateUserResponse) | CreateUser creates a new user. |
-| UpdateUser | [UpdateUserRequest](#slash-api-v2-UpdateUserRequest) | [UpdateUserResponse](#slash-api-v2-UpdateUserResponse) |  |
-| DeleteUser | [DeleteUserRequest](#slash-api-v2-DeleteUserRequest) | [DeleteUserResponse](#slash-api-v2-DeleteUserResponse) | DeleteUser deletes a user by id. |
-| ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v2-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v2-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |
-| CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v2-CreateUserAccessTokenRequest) | [CreateUserAccessTokenResponse](#slash-api-v2-CreateUserAccessTokenResponse) | CreateUserAccessToken creates a new access token for a user. |
-| DeleteUserAccessToken | [DeleteUserAccessTokenRequest](#slash-api-v2-DeleteUserAccessTokenRequest) | [DeleteUserAccessTokenResponse](#slash-api-v2-DeleteUserAccessTokenResponse) | DeleteUserAccessToken deletes an access token for a user. |
 
  
 

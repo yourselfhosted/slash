@@ -1,4 +1,5 @@
 import { createChannel, createClientFactory, FetchTransport } from "nice-grpc-web";
+import { AuthServiceDefinition } from "./types/proto/api/v2/auth_service";
 import { CollectionServiceDefinition } from "./types/proto/api/v2/collection_service";
 import { ShortcutServiceDefinition } from "./types/proto/api/v2/shortcut_service";
 import { SubscriptionServiceDefinition } from "./types/proto/api/v2/subscription_service";
@@ -17,9 +18,11 @@ const channel = createChannel(
 
 const clientFactory = createClientFactory();
 
+export const workspaceServiceClient = clientFactory.create(WorkspaceServiceDefinition, channel);
+
 export const subscriptionServiceClient = clientFactory.create(SubscriptionServiceDefinition, channel);
 
-export const workspaceServiceClient = clientFactory.create(WorkspaceServiceDefinition, channel);
+export const authServiceClient = clientFactory.create(AuthServiceDefinition, channel);
 
 export const userServiceClient = clientFactory.create(UserServiceDefinition, channel);
 

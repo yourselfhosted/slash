@@ -2,10 +2,10 @@ import { Avatar } from "@mui/joy";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
+import { authServiceClient } from "@/grpcweb";
 import useWorkspaceStore from "@/stores/v1/workspace";
 import { PlanType } from "@/types/proto/api/v2/subscription_service";
 import { Role } from "@/types/proto/api/v2/user_service";
-import * as api from "../helpers/api";
 import useUserStore from "../stores/v1/user";
 import AboutDialog from "./AboutDialog";
 import Icon from "./Icon";
@@ -22,7 +22,8 @@ const Header: React.FC = () => {
   const shouldShowRouterSwitch = location.pathname === "/" || location.pathname === "/collections";
 
   const handleSignOutButtonClick = async () => {
-    await api.signout();
+    await authServiceClient.signOut({});
+    document.cookie = "slash.access-token=; path=/;";
     localStorage.removeItem("userId");
     window.location.href = "/auth";
   };

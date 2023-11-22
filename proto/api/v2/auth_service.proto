@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package slash.api.v2;
+
+import "api/v2/user_service.proto";
+import "google/api/annotations.proto";
+
+option go_package = "gen/api/v2";
+
+service AuthService {
+  rpc SignIn(SignInRequest) returns (SignInResponse) {
+    option (google.api.http) = {post: "/api/v2/auth/signin"};
+  }
+  rpc SignUp(SignUpRequest) returns (SignUpResponse) {
+    option (google.api.http) = {post: "/api/v2/auth/signup"};
+  }
+  rpc SignOut(SignOutRequest) returns (SignOutResponse) {
+    option (google.api.http) = {post: "/api/v2/auth/signout"};
+  }
+}
+
+message SignInRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message SignInResponse {
+  User user = 1;
+  string access_token = 2;
+}
+
+message SignUpRequest {
+  string email = 1;
+  string nickname = 2;
+  string password = 3;
+}
+
+message SignUpResponse {
+  User user = 1;
+  string access_token = 2;
+}
+
+message SignOutRequest {}
+
+message SignOutResponse {}

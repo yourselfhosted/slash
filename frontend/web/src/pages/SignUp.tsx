@@ -3,10 +3,10 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { authServiceClient } from "@/grpcweb";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import useUserStore from "@/stores/v1/user";
 import useWorkspaceStore from "@/stores/v1/workspace";
-import * as api from "../helpers/api";
 import useLoading from "../hooks/useLoading";
 
 const SignUp: React.FC = () => {
@@ -51,9 +51,14 @@ const SignUp: React.FC = () => {
 
     try {
       actionBtnLoadingState.setLoading();
-      const { data: user } = await api.signup(email, nickname, password);
+      const { user, accessToken } = await authServiceClient.signUp({
+        email,
+        nickname,
+        password,
+      });
       if (user) {
         userStore.setCurrentUserId(user.id);
+        document.cookie = `slash.access-token=${accessToken}; path=/;`;
         await userStore.fetchCurrentUser();
         navigateTo("/");
       } else {
