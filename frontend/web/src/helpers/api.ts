@@ -18,7 +18,3 @@ export function signup(email: string, nickname: string, password: string) {
 export function signout() {
   return axios.post("/api/v1/auth/logout");
 }
-
-export function getShortcutAnalytics(shortcutId: number) {
-  return axios.get<AnalysisData>(`/api/v1/shortcut/${shortcutId}/analytics`);
-}

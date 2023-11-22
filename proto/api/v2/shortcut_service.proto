@@ -40,6 +40,11 @@ service ShortcutService {
     option (google.api.http) = {delete: "/api/v2/shortcuts/{id}"};
     option (google.api.method_signature) = "id";
   }
+  // GetShortcutAnalytics returns the analytics for a shortcut.
+  rpc GetShortcutAnalytics(GetShortcutAnalyticsRequest) returns (GetShortcutAnalyticsResponse) {
+    option (google.api.http) = {get: "/api/v2/shortcuts/{id}/analytics"};
+    option (google.api.method_signature) = "id";
+  }
 }
 
 message Shortcut {
@@ -115,3 +120,19 @@ message DeleteShortcutRequest {
 }
 
 message DeleteShortcutResponse {}
+
+message GetShortcutAnalyticsRequest {
+  int32 id = 1;
+}
+
+message GetShortcutAnalyticsResponse {
+  message AnalyticsItem {
+    string name = 1;
+    int32 count = 2;
+  }
+  repeated AnalyticsItem references = 1;
+
+  repeated AnalyticsItem devices = 2;
+
+  repeated AnalyticsItem browsers = 3;
+}

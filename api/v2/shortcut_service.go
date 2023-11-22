@@ -6,7 +6,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mssola/useragent"
 	"github.com/pkg/errors"
+	"golang.org/x/exp/slices"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -14,6 +16,7 @@ import (
 
 	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
 	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/boojack/slash/server/metric"
 	"github.com/boojack/slash/store"
 )
 
@@ -216,6 +219,77 @@ func (s *APIV2Service) DeleteShortcut(ctx context.Context, request *apiv2pb.Dele
 	}
 	response := &apiv2pb.DeleteShortcutResponse{}
 	return response, nil
+}
+
+func (s *APIV2Service) GetShortcutAnalytics(ctx context.Context, request *apiv2pb.GetShortcutAnalyticsRequest) (*apiv2pb.GetShortcutAnalyticsResponse, error) {
+	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
+		ID: &request.Id,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get shortcut by name: %v", err)
+	}
+	if shortcut == nil {
+		return nil, status.Errorf(codes.NotFound, "shortcut not found")
+	}
+
+	activities, err := s.Store.ListActivities(ctx, &store.FindActivity{
+		Type:  store.ActivityShortcutView,
+		Where: []string{fmt.Sprintf("json_extract(payload, '$.shortcutId') = %d", request.Id)},
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get activities, err: %v", err)
+	}
+
+	referenceMap := make(map[string]int32)
+	deviceMap := make(map[string]int32)
+	browserMap := make(map[string]int32)
+	for _, activity := range activities {
+		payload := &storepb.ActivityShorcutViewPayload{}
+		if err := protojson.Unmarshal([]byte(activity.Payload), payload); err != nil {
+			return nil, status.Error(codes.Internal, fmt.Sprintf("failed to unmarshal payload, err: %v", err))
+		}
+
+		if _, ok := referenceMap[payload.Referer]; !ok {
+			referenceMap[payload.Referer] = 0
+		}
+		referenceMap[payload.Referer]++
+
+		ua := useragent.New(payload.UserAgent)
+		deviceName := ua.OSInfo().Name
+		browserName, _ := ua.Browser()
+
+		if _, ok := deviceMap[deviceName]; !ok {
+			deviceMap[deviceName] = 0
+		}
+		deviceMap[deviceName]++
+
+		if _, ok := browserMap[browserName]; !ok {
+			browserMap[browserName] = 0
+		}
+		browserMap[browserName]++
+	}
+
+	metric.Enqueue("shortcut analytics")
+	response := &apiv2pb.GetShortcutAnalyticsResponse{
+		References: mapToAnalyticsSlice(referenceMap),
+		Devices:    mapToAnalyticsSlice(deviceMap),
+		Browsers:   mapToAnalyticsSlice(browserMap),
+	}
+	return response, nil
+}
+
+func mapToAnalyticsSlice(m map[string]int32) []*apiv2pb.GetShortcutAnalyticsResponse_AnalyticsItem {
+	analyticsSlice := make([]*apiv2pb.GetShortcutAnalyticsResponse_AnalyticsItem, 0)
+	for key, value := range m {
+		analyticsSlice = append(analyticsSlice, &apiv2pb.GetShortcutAnalyticsResponse_AnalyticsItem{
+			Name:  key,
+			Count: value,
+		})
+	}
+	slices.SortFunc(analyticsSlice, func(i, j *apiv2pb.GetShortcutAnalyticsResponse_AnalyticsItem) int {
+		return int(i.Count - j.Count)
+	})
+	return analyticsSlice
 }
 
 func (s *APIV2Service) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {

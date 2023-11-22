@@ -5,6 +5,7 @@
 
 - [store/activity.proto](#store_activity-proto)
     - [ActivityShorcutCreatePayload](#slash-store-ActivityShorcutCreatePayload)
+    - [ActivityShorcutViewPayload](#slash-store-ActivityShorcutViewPayload)
   
 - [store/common.proto](#store_common-proto)
     - [RowStatus](#slash-store-RowStatus)
@@ -52,6 +53,24 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | shortcut_id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-store-ActivityShorcutViewPayload"></a>
+
+### ActivityShorcutViewPayload
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| shortcut_id | [int32](#int32) |  |  |
+| ip | [string](#string) |  |  |
+| referer | [string](#string) |  |  |
+| user_agent | [string](#string) |  |  |
 
 
 

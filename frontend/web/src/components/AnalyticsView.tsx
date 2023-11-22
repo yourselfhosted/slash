@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import * as api from "../helpers/api";
+import { shortcutServiceClient } from "@/grpcweb";
+import { GetShortcutAnalyticsResponse } from "@/types/proto/api/v2/shortcut_service";
 import Icon from "./Icon";
 
 interface Props {
@@ -12,12 +13,12 @@ interface Props {
 const AnalyticsView: React.FC<Props> = (props: Props) => {
   const { shortcutId, className } = props;
   const { t } = useTranslation();
-  const [analytics, setAnalytics] = useState<AnalysisData | null>(null);
+  const [analytics, setAnalytics] = useState<GetShortcutAnalyticsResponse | null>(null);
   const [selectedDeviceTab, setSelectedDeviceTab] = useState<"os" | "browser">("browser");
 
   useEffect(() => {
-    api.getShortcutAnalytics(shortcutId).then(({ data }) => {
-      setAnalytics(data);
+    shortcutServiceClient.getShortcutAnalytics({ id: shortcutId }).then((response) => {
+      setAnalytics(response);
     });
   }, []);
 
@@ -34,13 +35,13 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
                   <span className="py-2 pr-2 text-right font-semibold text-sm text-gray-500">{t("analytics.visitors")}</span>
                 </div>
                 <div className="w-full divide-y divide-gray-200 dark:divide-zinc-800">
-                  {analytics.referenceData.length === 0 && (
+                  {analytics.references.length === 0 && (
                     <div className="w-full flex flex-row justify-center items-center py-6 text-gray-400">
                       <Icon.PackageOpen className="w-6 h-auto" />
                       <p className="ml-2">No data found.</p>
                     </div>
                   )}
-                  {analytics.referenceData.map((reference) => (
+                  {analytics.references.map((reference) => (
                     <div key={reference.name} className="w-full flex flex-row justify-between items-center">
                       <span className="whitespace-nowrap py-2 px-2 text-sm truncate text-gray-900 dark:text-gray-500">
                         {reference.name ? (
@@ -95,13 +96,13 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
                     <span className="py-2 pr-2 text-right text-sm font-semibold text-gray-500">{t("analytics.visitors")}</span>
                   </div>
                   <div className="w-full divide-y divide-gray-200 dark:divide-zinc-800">
-                    {analytics.browserData.length === 0 && (
+                    {analytics.browsers.length === 0 && (
                       <div className="w-full flex flex-row justify-center items-center py-6 text-gray-400">
                         <Icon.PackageOpen className="w-6 h-auto" />
                         <p className="ml-2">No data found.</p>
                       </div>
                     )}
-                    {analytics.browserData.map((reference) => (
+                    {analytics.browsers.map((reference) => (
                       <div key={reference.name} className="w-full flex flex-row justify-between items-center">
                         <span className="whitespace-nowrap py-2 px-2 text-sm text-gray-900 truncate dark:text-gray-500">
                           {reference.name || "Unknown"}
@@ -118,13 +119,13 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
                     <span className="py-2 pr-2 text-right text-sm font-semibold text-gray-500">{t("analytics.visitors")}</span>
                   </div>
                   <div className="w-full divide-y divide-gray-200">
-                    {analytics.deviceData.length === 0 && (
+                    {analytics.devices.length === 0 && (
                       <div className="w-full flex flex-row justify-center items-center py-6 text-gray-400">
                         <Icon.PackageOpen className="w-6 h-auto" />
                         <p className="ml-2">No data found.</p>
                       </div>
                     )}
-                    {analytics.deviceData.map((device) => (
+                    {analytics.devices.map((device) => (
                       <div key={device.name} className="w-full flex flex-row justify-between items-center">
                         <span className="whitespace-nowrap py-2 px-2 text-sm text-gray-900 truncate">{device.name || "Unknown"}</span>
                         <span className="whitespace-nowrap py-2 pr-2 text-sm text-gray-500 text-right shrink-0">{device.count}</span>

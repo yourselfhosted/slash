@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ShortcutService_ListShortcuts_FullMethodName  = "/slash.api.v2.ShortcutService/ListShortcuts"
-	ShortcutService_GetShortcut_FullMethodName    = "/slash.api.v2.ShortcutService/GetShortcut"
-	ShortcutService_CreateShortcut_FullMethodName = "/slash.api.v2.ShortcutService/CreateShortcut"
-	ShortcutService_UpdateShortcut_FullMethodName = "/slash.api.v2.ShortcutService/UpdateShortcut"
-	ShortcutService_DeleteShortcut_FullMethodName = "/slash.api.v2.ShortcutService/DeleteShortcut"
+	ShortcutService_ListShortcuts_FullMethodName        = "/slash.api.v2.ShortcutService/ListShortcuts"
+	ShortcutService_GetShortcut_FullMethodName          = "/slash.api.v2.ShortcutService/GetShortcut"
+	ShortcutService_CreateShortcut_FullMethodName       = "/slash.api.v2.ShortcutService/CreateShortcut"
+	ShortcutService_UpdateShortcut_FullMethodName       = "/slash.api.v2.ShortcutService/UpdateShortcut"
+	ShortcutService_DeleteShortcut_FullMethodName       = "/slash.api.v2.ShortcutService/DeleteShortcut"
+	ShortcutService_GetShortcutAnalytics_FullMethodName = "/slash.api.v2.ShortcutService/GetShortcutAnalytics"
 )
 
 // ShortcutServiceClient is the client API for ShortcutService service.
@@ -40,6 +41,8 @@ type ShortcutServiceClient interface {
 	UpdateShortcut(ctx context.Context, in *UpdateShortcutRequest, opts ...grpc.CallOption) (*UpdateShortcutResponse, error)
 	// DeleteShortcut deletes a shortcut by id.
 	DeleteShortcut(ctx context.Context, in *DeleteShortcutRequest, opts ...grpc.CallOption) (*DeleteShortcutResponse, error)
+	// GetShortcutAnalytics returns the analytics for a shortcut.
+	GetShortcutAnalytics(ctx context.Context, in *GetShortcutAnalyticsRequest, opts ...grpc.CallOption) (*GetShortcutAnalyticsResponse, error)
 }
 
 type shortcutServiceClient struct {
@@ -95,6 +98,15 @@ func (c *shortcutServiceClient) DeleteShortcut(ctx context.Context, in *DeleteSh
 	return out, nil
 }
 
+func (c *shortcutServiceClient) GetShortcutAnalytics(ctx context.Context, in *GetShortcutAnalyticsRequest, opts ...grpc.CallOption) (*GetShortcutAnalyticsResponse, error) {
+	out := new(GetShortcutAnalyticsResponse)
+	err := c.cc.Invoke(ctx, ShortcutService_GetShortcutAnalytics_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShortcutServiceServer is the server API for ShortcutService service.
 // All implementations must embed UnimplementedShortcutServiceServer
 // for forward compatibility
@@ -109,6 +121,8 @@ type ShortcutServiceServer interface {
 	UpdateShortcut(context.Context, *UpdateShortcutRequest) (*UpdateShortcutResponse, error)
 	// DeleteShortcut deletes a shortcut by id.
 	DeleteShortcut(context.Context, *DeleteShortcutRequest) (*DeleteShortcutResponse, error)
+	// GetShortcutAnalytics returns the analytics for a shortcut.
+	GetShortcutAnalytics(context.Context, *GetShortcutAnalyticsRequest) (*GetShortcutAnalyticsResponse, error)
 	mustEmbedUnimplementedShortcutServiceServer()
 }
 
@@ -130,6 +144,9 @@ func (UnimplementedShortcutServiceServer) UpdateShortcut(context.Context, *Updat
 }
 func (UnimplementedShortcutServiceServer) DeleteShortcut(context.Context, *DeleteShortcutRequest) (*DeleteShortcutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteShortcut not implemented")
+}
+func (UnimplementedShortcutServiceServer) GetShortcutAnalytics(context.Context, *GetShortcutAnalyticsRequest) (*GetShortcutAnalyticsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetShortcutAnalytics not implemented")
 }
 func (UnimplementedShortcutServiceServer) mustEmbedUnimplementedShortcutServiceServer() {}
 
@@ -234,6 +251,24 @@ func _ShortcutService_DeleteShortcut_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShortcutService_GetShortcutAnalytics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetShortcutAnalyticsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShortcutServiceServer).GetShortcutAnalytics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShortcutService_GetShortcutAnalytics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShortcutServiceServer).GetShortcutAnalytics(ctx, req.(*GetShortcutAnalyticsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ShortcutService_ServiceDesc is the grpc.ServiceDesc for ShortcutService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -260,6 +295,10 @@ var ShortcutService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteShortcut",
 			Handler:    _ShortcutService_DeleteShortcut_Handler,
+		},
+		{
+			MethodName: "GetShortcutAnalytics",
+			Handler:    _ShortcutService_GetShortcutAnalytics_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

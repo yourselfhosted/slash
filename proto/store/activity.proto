@@ -7,3 +7,10 @@ option go_package = "gen/store";
 message ActivityShorcutCreatePayload {
   int32 shortcut_id = 1;
 }
+
+message ActivityShorcutViewPayload {
+  int32 shortcut_id = 1;
+  string ip = 2;
+  string referer = 3;
+  string user_agent = 4;
+}

@@ -29,6 +29,9 @@
     - [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse)
     - [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest)
     - [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse)
+    - [GetShortcutAnalyticsRequest](#slash-api-v2-GetShortcutAnalyticsRequest)
+    - [GetShortcutAnalyticsResponse](#slash-api-v2-GetShortcutAnalyticsResponse)
+    - [GetShortcutAnalyticsResponse.AnalyticsItem](#slash-api-v2-GetShortcutAnalyticsResponse-AnalyticsItem)
     - [GetShortcutRequest](#slash-api-v2-GetShortcutRequest)
     - [GetShortcutResponse](#slash-api-v2-GetShortcutResponse)
     - [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest)
@@ -434,6 +437,54 @@
 
 
 
+<a name="slash-api-v2-GetShortcutAnalyticsRequest"></a>
+
+### GetShortcutAnalyticsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetShortcutAnalyticsResponse"></a>
+
+### GetShortcutAnalyticsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| references | [GetShortcutAnalyticsResponse.AnalyticsItem](#slash-api-v2-GetShortcutAnalyticsResponse-AnalyticsItem) | repeated |  |
+| devices | [GetShortcutAnalyticsResponse.AnalyticsItem](#slash-api-v2-GetShortcutAnalyticsResponse-AnalyticsItem) | repeated |  |
+| browsers | [GetShortcutAnalyticsResponse.AnalyticsItem](#slash-api-v2-GetShortcutAnalyticsResponse-AnalyticsItem) | repeated |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetShortcutAnalyticsResponse-AnalyticsItem"></a>
+
+### GetShortcutAnalyticsResponse.AnalyticsItem
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| count | [int32](#int32) |  |  |
+
+
+
+
+
+
 <a name="slash-api-v2-GetShortcutRequest"></a>
 
 ### GetShortcutRequest
@@ -582,6 +633,7 @@
 | CreateShortcut | [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest) | [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse) | CreateShortcut creates a shortcut. |
 | UpdateShortcut | [UpdateShortcutRequest](#slash-api-v2-UpdateShortcutRequest) | [UpdateShortcutResponse](#slash-api-v2-UpdateShortcutResponse) | UpdateShortcut updates a shortcut. |
 | DeleteShortcut | [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest) | [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse) | DeleteShortcut deletes a shortcut by id. |
+| GetShortcutAnalytics | [GetShortcutAnalyticsRequest](#slash-api-v2-GetShortcutAnalyticsRequest) | [GetShortcutAnalyticsResponse](#slash-api-v2-GetShortcutAnalyticsResponse) | GetShortcutAnalytics returns the analytics for a shortcut. |
 
  
 
