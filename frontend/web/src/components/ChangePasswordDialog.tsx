@@ -54,7 +54,7 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
       toast("Password changed");
     } catch (error: any) {
       console.error(error);
-      toast.error(error.response.data.message);
+      toast.error(error.details);
     }
     requestState.setFinish();
   };

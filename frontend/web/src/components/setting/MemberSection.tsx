@@ -34,7 +34,7 @@ const MemberSection = () => {
           await userStore.deleteUser(user.id);
           toast.success(`User \`${user.nickname}\` deleted successfully`);
         } catch (error: any) {
-          toast.error(`Failed to delete user \`${user.nickname}\`: ${error.response.data.message}`);
+          toast.error(`Failed to delete user \`${user.nickname}\`: ${error.details}`);
         }
       },
     });

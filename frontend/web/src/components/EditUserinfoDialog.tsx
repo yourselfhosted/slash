@@ -50,7 +50,7 @@ const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
       toast("User information updated");
     } catch (error: any) {
       console.error(error);
-      toast.error(error.response.data.message);
+      toast.error(error.details);
     }
     requestState.setFinish();
   };
