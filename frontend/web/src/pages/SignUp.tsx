@@ -7,6 +7,7 @@ import { authServiceClient } from "@/grpcweb";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import useUserStore from "@/stores/v1/user";
 import useWorkspaceStore from "@/stores/v1/workspace";
+import { setAccessToken } from "@/utils/auth";
 import useLoading from "../hooks/useLoading";
 
 const SignUp: React.FC = () => {
@@ -58,7 +59,7 @@ const SignUp: React.FC = () => {
       });
       if (user) {
         userStore.setCurrentUserId(user.id);
-        document.cookie = `slash.access-token=${accessToken}; path=/;`;
+        setAccessToken(accessToken);
         await userStore.fetchCurrentUser();
         navigateTo("/");
       } else {
