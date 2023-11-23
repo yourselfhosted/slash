@@ -6,7 +6,6 @@ import { authServiceClient } from "@/grpcweb";
 import useWorkspaceStore from "@/stores/v1/workspace";
 import { PlanType } from "@/types/proto/api/v2/subscription_service";
 import { Role } from "@/types/proto/api/v2/user_service";
-import { removeAccessToken } from "@/utils/auth";
 import useUserStore from "../stores/v1/user";
 import AboutDialog from "./AboutDialog";
 import Icon from "./Icon";
@@ -24,7 +23,6 @@ const Header: React.FC = () => {
 
   const handleSignOutButtonClick = async () => {
     await authServiceClient.signOut({});
-    removeAccessToken();
     localStorage.removeItem("userId");
     window.location.href = "/auth";
   };

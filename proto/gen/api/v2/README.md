@@ -507,7 +507,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user | [User](#slash-api-v2-User) |  |  |
-| access_token | [string](#string) |  |  |
 
 
 
@@ -560,7 +559,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | user | [User](#slash-api-v2-User) |  |  |
-| access_token | [string](#string) |  |  |
 
 
 

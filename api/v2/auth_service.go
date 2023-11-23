@@ -46,10 +46,15 @@ func (s *APIV2Service) SignIn(ctx context.Context, request *apiv2pb.SignInReques
 		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
 	}
 
+	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
+		"Set-Cookie": fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", auth.AccessTokenCookieName, accessToken, time.Now().Add(auth.AccessTokenDuration).Format(time.RFC1123)),
+	})); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
+	}
+
 	metric.Enqueue("user sign in")
 	return &apiv2pb.SignInResponse{
-		User:        convertUserFromStore(user),
-		AccessToken: accessToken,
+		User: convertUserFromStore(user),
 	}, nil
 }
 
@@ -108,18 +113,25 @@ func (s *APIV2Service) SignUp(ctx context.Context, request *apiv2pb.SignUpReques
 		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
 	}
 
+	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
+		"Set-Cookie": fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", auth.AccessTokenCookieName, accessToken, time.Now().Add(auth.AccessTokenDuration).Format(time.RFC1123)),
+	})); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
+	}
+
 	metric.Enqueue("user sign up")
 	return &apiv2pb.SignUpResponse{
-		User:        convertUserFromStore(user),
-		AccessToken: accessToken,
+		User: convertUserFromStore(user),
 	}, nil
 }
 
 func (*APIV2Service) SignOut(ctx context.Context, _ *apiv2pb.SignOutRequest) (*apiv2pb.SignOutResponse, error) {
+	// Set the cookie header to expire access token.
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
-		auth.AccessTokenCookieName: "",
+		"Set-Cookie": fmt.Sprintf("%s=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict", auth.AccessTokenCookieName),
 	})); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
+
 	return &apiv2pb.SignOutResponse{}, nil
 }

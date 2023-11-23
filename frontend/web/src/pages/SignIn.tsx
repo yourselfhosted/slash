@@ -7,7 +7,6 @@ import { authServiceClient } from "@/grpcweb";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import useUserStore from "@/stores/v1/user";
 import useWorkspaceStore from "@/stores/v1/workspace";
-import { setAccessToken } from "@/utils/auth";
 import useLoading from "../hooks/useLoading";
 
 const SignIn: React.FC = () => {
@@ -45,11 +44,9 @@ const SignIn: React.FC = () => {
 
     try {
       actionBtnLoadingState.setLoading();
-      const { user, accessToken } = await authServiceClient.signIn({ email, password });
+      const { user } = await authServiceClient.signIn({ email, password });
       if (user) {
         userStore.setCurrentUserId(user.id);
-        console.log("accessToken", accessToken);
-        setAccessToken(accessToken);
         await userStore.fetchCurrentUser();
         navigateTo("/");
       } else {
