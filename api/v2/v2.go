@@ -11,10 +11,10 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/server/service/license"
-	"github.com/boojack/slash/store"
+	apiv2pb "github.com/yourselfhosted/slash/proto/gen/api/v2"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/service/license"
+	"github.com/yourselfhosted/slash/store"
 )
 
 type APIV2Service struct {

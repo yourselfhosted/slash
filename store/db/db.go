@@ -14,8 +14,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/server/version"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/version"
 )
 
 //go:embed migration

@@ -44,7 +44,7 @@ Assume that docker compose is deployed in the `/opt/slash` directory.
 
 ```bash
 mkdir -p /opt/slash && cd /opt/slash
-curl -#LO https://github.com/boojack/slash/raw/main/docker-compose.yml
+curl -#LO https://github.com/yourselfhosted/slash/raw/main/docker-compose.yml
 docker compose up -d
 ```
 

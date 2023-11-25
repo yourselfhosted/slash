@@ -29,7 +29,7 @@ issues:
 linters-settings:
   goimports:
     # Put imports beginning with prefix after 3rd-party packages.
-    local-prefixes: github.com/boojack/slash
+    local-prefixes: github.com/yourselfhosted/slash
   revive:
     # Default to run all linters so that new rules in the future could automatically be added to the static check.
     enable-all-rules: true

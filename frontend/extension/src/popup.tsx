@@ -62,7 +62,14 @@ const IndexPopup = () => {
                 <IconButton size="sm" variant="plain" color="neutral" onClick={handleSettingButtonClick}>
                   <Icon.Settings className="w-5 h-auto text-gray-500 dark:text-gray-400" />
                 </IconButton>
-                <IconButton size="sm" variant="plain" color="neutral" component="a" href="https://github.com/boojack/slash" target="_blank">
+                <IconButton
+                  size="sm"
+                  variant="plain"
+                  color="neutral"
+                  component="a"
+                  href="https://github.com/yourselfhosted/slash"
+                  target="_blank"
+                >
                   <Icon.Github className="w-5 h-auto text-gray-500 dark:text-gray-400" />
                 </IconButton>
               </div>

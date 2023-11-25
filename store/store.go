@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"sync"
 
-	"github.com/boojack/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/profile"
 )
 
 // Store provides database access to all raw objects.

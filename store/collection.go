@@ -7,8 +7,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/boojack/slash/internal/util"
-	storepb "github.com/boojack/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/internal/util"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 )
 
 type UpdateCollection struct {

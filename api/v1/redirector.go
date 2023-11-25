@@ -11,9 +11,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/server/metric"
-	"github.com/boojack/slash/store"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/store"
 )
 
 func (s *APIV1Service) registerRedirectorRoutes(g *echo.Group) {

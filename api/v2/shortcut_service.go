@@ -14,10 +14,10 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/server/metric"
-	"github.com/boojack/slash/store"
+	apiv2pb "github.com/yourselfhosted/slash/proto/gen/api/v2"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/store"
 )
 
 func (s *APIV2Service) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShortcutsRequest) (*apiv2pb.ListShortcutsResponse, error) {

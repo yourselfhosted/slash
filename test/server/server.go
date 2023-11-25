@@ -14,12 +14,12 @@ import (
 	// sqlite driver.
 	_ "modernc.org/sqlite"
 
-	"github.com/boojack/slash/api/auth"
-	"github.com/boojack/slash/server"
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/store"
-	"github.com/boojack/slash/store/db"
-	"github.com/boojack/slash/test"
+	"github.com/yourselfhosted/slash/api/auth"
+	"github.com/yourselfhosted/slash/server"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/store"
+	"github.com/yourselfhosted/slash/store/db"
+	"github.com/yourselfhosted/slash/test"
 )
 
 type TestingServer struct {

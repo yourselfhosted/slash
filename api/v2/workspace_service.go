@@ -6,9 +6,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/store"
+	apiv2pb "github.com/yourselfhosted/slash/proto/gen/api/v2"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/store"
 )
 
 func (s *APIV2Service) GetWorkspaceProfile(ctx context.Context, _ *apiv2pb.GetWorkspaceProfileRequest) (*apiv2pb.GetWorkspaceProfileResponse, error) {

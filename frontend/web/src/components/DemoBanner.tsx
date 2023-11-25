@@ -13,7 +13,7 @@ const DemoBanner: React.FC = () => {
         <span>✨🔗 Slash - An open source, self-hosted bookmarks and link sharing platform</span>
         <a
           className="shadow flex flex-row justify-center items-center px-2 py-1 rounded-md text-sm sm:text-base text-white bg-blue-600 hover:bg-blue-700"
-          href="https://github.com/boojack/slash#deploy-with-docker-in-seconds"
+          href="https://github.com/yourselfhosted/slash#deploy-with-docker-in-seconds"
           target="_blank"
         >
           Install

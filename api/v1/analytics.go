@@ -10,8 +10,8 @@ import (
 	"github.com/mssola/useragent"
 	"golang.org/x/exp/slices"
 
-	"github.com/boojack/slash/server/metric"
-	"github.com/boojack/slash/store"
+	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/store"
 )
 
 type ReferenceInfo struct {

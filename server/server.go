@@ -15,15 +15,15 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	apiv1 "github.com/boojack/slash/api/v1"
-	apiv2 "github.com/boojack/slash/api/v2"
-	"github.com/boojack/slash/internal/log"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/server/metric"
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/server/service/license"
-	"github.com/boojack/slash/server/service/resource"
-	"github.com/boojack/slash/store"
+	apiv1 "github.com/yourselfhosted/slash/api/v1"
+	apiv2 "github.com/yourselfhosted/slash/api/v2"
+	"github.com/yourselfhosted/slash/internal/log"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/service/license"
+	"github.com/yourselfhosted/slash/server/service/resource"
+	"github.com/yourselfhosted/slash/store"
 )
 
 type Server struct {

@@ -10,10 +10,10 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/boojack/slash/internal/util"
-	"github.com/boojack/slash/server/metric"
-	"github.com/boojack/slash/server/service/license"
-	"github.com/boojack/slash/store"
+	"github.com/yourselfhosted/slash/internal/util"
+	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/server/service/license"
+	"github.com/yourselfhosted/slash/store"
 )
 
 const (

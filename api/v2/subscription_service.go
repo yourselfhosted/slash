@@ -6,7 +6,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
+	apiv2pb "github.com/yourselfhosted/slash/proto/gen/api/v2"
 )
 
 func (s *APIV2Service) GetSubscription(ctx context.Context, _ *apiv2pb.GetSubscriptionRequest) (*apiv2pb.GetSubscriptionResponse, error) {

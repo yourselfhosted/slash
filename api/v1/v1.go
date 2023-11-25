@@ -3,9 +3,9 @@ package v1
 import (
 	"github.com/labstack/echo/v4"
 
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/server/service/license"
-	"github.com/boojack/slash/store"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/service/license"
+	"github.com/yourselfhosted/slash/store"
 )
 
 type APIV1Service struct {

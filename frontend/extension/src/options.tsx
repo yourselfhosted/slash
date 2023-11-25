@@ -70,7 +70,7 @@ const IndexOptions = () => {
       <div className="w-full flex flex-row justify-center items-center">
         <a
           className="bg-yellow-100 dark:bg-yellow-500 dark:opacity-70 mt-12 py-2 px-3 rounded-full border dark:border-yellow-600 flex flex-row justify-start items-center cursor-pointer shadow hover:underline hover:text-blue-600"
-          href="https://github.com/boojack/slash#browser-extension"
+          href="https://github.com/yourselfhosted/slash#browser-extension"
           target="_blank"
         >
           <Icon.HelpCircle className="w-4 h-auto" />

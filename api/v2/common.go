@@ -1,8 +1,8 @@
 package v2
 
 import (
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
-	"github.com/boojack/slash/store"
+	apiv2pb "github.com/yourselfhosted/slash/proto/gen/api/v2"
+	"github.com/yourselfhosted/slash/store"
 )
 
 func convertRowStatusFromStore(rowStatus store.RowStatus) apiv2pb.RowStatus {

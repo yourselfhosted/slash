@@ -5,8 +5,8 @@ import (
 	"net"
 	"testing"
 
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/server/version"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/version"
 )
 
 func getUnusedPort() int {

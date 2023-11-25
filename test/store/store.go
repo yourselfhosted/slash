@@ -8,9 +8,9 @@ import (
 	// sqlite driver.
 	_ "modernc.org/sqlite"
 
-	"github.com/boojack/slash/store"
-	"github.com/boojack/slash/store/db"
-	test "github.com/boojack/slash/test"
+	"github.com/yourselfhosted/slash/store"
+	"github.com/yourselfhosted/slash/store/db"
+	test "github.com/yourselfhosted/slash/test"
 )
 
 func NewTestingStore(ctx context.Context, t *testing.T) *store.Store {

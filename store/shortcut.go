@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 )
 
 type UpdateShortcut struct {

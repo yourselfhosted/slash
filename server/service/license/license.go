@@ -7,10 +7,10 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/store"
+	apiv2pb "github.com/yourselfhosted/slash/proto/gen/api/v2"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/store"
 )
 
 type LicenseService struct {

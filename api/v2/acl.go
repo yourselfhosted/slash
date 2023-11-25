@@ -12,10 +12,10 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/boojack/slash/api/auth"
-	"github.com/boojack/slash/internal/util"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/store"
+	"github.com/yourselfhosted/slash/api/auth"
+	"github.com/yourselfhosted/slash/internal/util"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/store"
 )
 
 // ContextKey is the key type of context value.

@@ -12,12 +12,12 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/boojack/slash/api/auth"
-	apiv2pb "github.com/boojack/slash/proto/gen/api/v2"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/server/metric"
-	"github.com/boojack/slash/server/service/license"
-	"github.com/boojack/slash/store"
+	"github.com/yourselfhosted/slash/api/auth"
+	apiv2pb "github.com/yourselfhosted/slash/proto/gen/api/v2"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/server/service/license"
+	"github.com/yourselfhosted/slash/store"
 )
 
 func (s *APIV2Service) SignIn(ctx context.Context, request *apiv2pb.SignInRequest) (*apiv2pb.SignInResponse, error) {

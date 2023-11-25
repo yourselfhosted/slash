@@ -1,4 +1,4 @@
-module github.com/boojack/slash
+module github.com/yourselfhosted/slash
 
 go 1.21
 

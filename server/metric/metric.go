@@ -3,7 +3,7 @@ package metric
 import (
 	"github.com/posthog/posthog-go"
 
-	"github.com/boojack/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/profile"
 )
 
 const (

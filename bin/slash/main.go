@@ -13,12 +13,12 @@ import (
 	"go.uber.org/zap"
 	_ "modernc.org/sqlite"
 
-	"github.com/boojack/slash/internal/log"
-	"github.com/boojack/slash/server"
-	"github.com/boojack/slash/server/metric"
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/store"
-	"github.com/boojack/slash/store/db"
+	"github.com/yourselfhosted/slash/internal/log"
+	"github.com/yourselfhosted/slash/server"
+	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/store"
+	"github.com/yourselfhosted/slash/store/db"
 )
 
 const (
@@ -134,7 +134,7 @@ func printGreetings() {
 	fmt.Printf("Version %s has been started on port %d\n", serverProfile.Version, serverProfile.Port)
 	println("---")
 	println("See more in:")
-	fmt.Printf("👉GitHub: %s\n", "https://github.com/boojack/slash")
+	fmt.Printf("👉GitHub: %s\n", "https://github.com/yourselfhosted/slash")
 	println("---")
 }
 

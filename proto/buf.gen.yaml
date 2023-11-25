@@ -2,7 +2,7 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/boojack/slash/proto/gen
+    default: github.com/yourselfhosted/slash/proto/gen
     except:
       - buf.build/googleapis/googleapis
 plugins:

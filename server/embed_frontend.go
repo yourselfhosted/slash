@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/boojack/slash/internal/util"
+	"github.com/yourselfhosted/slash/internal/util"
 )
 
 //go:embed dist

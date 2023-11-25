@@ -1,7 +1,7 @@
 package store
 
 import (
-	storepb "github.com/boojack/slash/proto/gen/store"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 )
 
 // RowStatus is the status for a row.

@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
 
-	apiv1 "github.com/boojack/slash/api/v1"
+	apiv1 "github.com/yourselfhosted/slash/api/v1"
 )
 
 func TestAuthServer(t *testing.T) {

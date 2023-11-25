@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 
-	"github.com/boojack/slash/server/version"
+	"github.com/yourselfhosted/slash/server/version"
 )
 
 // Profile is the configuration to start main server.

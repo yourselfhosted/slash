@@ -25,7 +25,7 @@ const AboutDialog: React.FC<Props> = (props: Props) => {
           </p>
           <div className="mt-1">
             <span className="mr-2">See more in</span>
-            <Link variant="plain" href="https://github.com/boojack/slash" target="_blank">
+            <Link variant="plain" href="https://github.com/yourselfhosted/slash" target="_blank">
               GitHub
             </Link>
           </div>

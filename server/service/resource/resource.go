@@ -9,8 +9,8 @@ import (
 	"github.com/h2non/filetype"
 	"github.com/labstack/echo/v4"
 
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/store"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/store"
 )
 
 const (

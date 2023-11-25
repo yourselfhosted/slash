@@ -6,9 +6,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/server/profile"
-	"github.com/boojack/slash/store"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/store"
 )
 
 type WorkspaceProfile struct {

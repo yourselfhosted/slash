@@ -11,11 +11,11 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/boojack/slash/api/auth"
-	storepb "github.com/boojack/slash/proto/gen/store"
-	"github.com/boojack/slash/server/metric"
-	"github.com/boojack/slash/server/service/license"
-	"github.com/boojack/slash/store"
+	"github.com/yourselfhosted/slash/api/auth"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/server/service/license"
+	"github.com/yourselfhosted/slash/store"
 )
 
 type SignInRequest struct {
