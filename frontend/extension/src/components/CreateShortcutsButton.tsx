@@ -7,7 +7,7 @@ import { Visibility } from "@/types/proto/api/v2/common";
 import { CreateShortcutResponse, OpenGraphMetadata } from "@/types/proto/api/v2/shortcut_service";
 import Icon from "./Icon";
 
-const generateTempName = (length = 6) => {
+const generateTempName = (length = 8) => {
   let result = "";
   const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
