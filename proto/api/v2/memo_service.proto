@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package slash.api.v2;
+
+import "api/v2/common.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gen/api/v2";
+
+service MemoService {
+  // ListMemos returns a list of memos.
+  rpc ListMemos(ListMemosRequest) returns (ListMemosResponse) {
+    option (google.api.http) = {get: "/api/v2/memos"};
+  }
+  // GetMemo returns a memo by id.
+  rpc GetMemo(GetMemoRequest) returns (GetMemoResponse) {
+    option (google.api.http) = {get: "/api/v2/memos/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+  // CreateMemo creates a memo.
+  rpc CreateMemo(CreateMemoRequest) returns (CreateMemoResponse) {
+    option (google.api.http) = {
+      post: "/api/v2/memos"
+      body: "memo"
+    };
+  }
+  // UpdateMemo updates a memo.
+  rpc UpdateMemo(UpdateMemoRequest) returns (UpdateMemoResponse) {
+    option (google.api.http) = {
+      put: "/api/v2/memos/{memo.id}"
+      body: "memo"
+    };
+    option (google.api.method_signature) = "memo,update_mask";
+  }
+  // DeleteMemo deletes a memo by id.
+  rpc DeleteMemo(DeleteMemoRequest) returns (DeleteMemoResponse) {
+    option (google.api.http) = {delete: "/api/v2/memos/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+}
+
+message Memo {
+  int32 id = 1;
+
+  int32 creator_id = 2;
+
+  google.protobuf.Timestamp created_time = 3;
+
+  google.protobuf.Timestamp updated_time = 4;
+
+  RowStatus row_status = 5;
+
+  string name = 6;
+
+  string title = 7;
+
+  string content = 8;
+
+  repeated string tags = 9;
+
+  Visibility visibility = 10;
+}
+
+message ListMemosRequest {}
+
+message ListMemosResponse {
+  repeated Memo memos = 1;
+}
+
+message GetMemoRequest {
+  int32 id = 1;
+}
+
+message GetMemoResponse {
+  Memo memo = 1;
+}
+
+message CreateMemoRequest {
+  Memo memo = 1;
+}
+
+message CreateMemoResponse {
+  Memo memo = 1;
+}
+
+message UpdateMemoRequest {
+  Memo memo = 1;
+
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateMemoResponse {
+  Memo memo = 1;
+}
+
+message DeleteMemoRequest {
+  int32 id = 1;
+}
+
+message DeleteMemoResponse {}

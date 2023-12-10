@@ -60,6 +60,21 @@
   
     - [CollectionService](#slash-api-v2-CollectionService)
   
+- [api/v2/memo_service.proto](#api_v2_memo_service-proto)
+    - [CreateMemoRequest](#slash-api-v2-CreateMemoRequest)
+    - [CreateMemoResponse](#slash-api-v2-CreateMemoResponse)
+    - [DeleteMemoRequest](#slash-api-v2-DeleteMemoRequest)
+    - [DeleteMemoResponse](#slash-api-v2-DeleteMemoResponse)
+    - [GetMemoRequest](#slash-api-v2-GetMemoRequest)
+    - [GetMemoResponse](#slash-api-v2-GetMemoResponse)
+    - [ListMemosRequest](#slash-api-v2-ListMemosRequest)
+    - [ListMemosResponse](#slash-api-v2-ListMemosResponse)
+    - [Memo](#slash-api-v2-Memo)
+    - [UpdateMemoRequest](#slash-api-v2-UpdateMemoRequest)
+    - [UpdateMemoResponse](#slash-api-v2-UpdateMemoResponse)
+  
+    - [MemoService](#slash-api-v2-MemoService)
+  
 - [api/v2/shortcut_service.proto](#api_v2_shortcut_service-proto)
     - [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest)
     - [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse)
@@ -834,6 +849,201 @@
 | CreateCollection | [CreateCollectionRequest](#slash-api-v2-CreateCollectionRequest) | [CreateCollectionResponse](#slash-api-v2-CreateCollectionResponse) | CreateCollection creates a collection. |
 | UpdateCollection | [UpdateCollectionRequest](#slash-api-v2-UpdateCollectionRequest) | [UpdateCollectionResponse](#slash-api-v2-UpdateCollectionResponse) | UpdateCollection updates a collection. |
 | DeleteCollection | [DeleteCollectionRequest](#slash-api-v2-DeleteCollectionRequest) | [DeleteCollectionResponse](#slash-api-v2-DeleteCollectionResponse) | DeleteCollection deletes a collection by id. |
+
+ 
+
+
+
+<a name="api_v2_memo_service-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## api/v2/memo_service.proto
+
+
+
+<a name="slash-api-v2-CreateMemoRequest"></a>
+
+### CreateMemoRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| memo | [Memo](#slash-api-v2-Memo) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-CreateMemoResponse"></a>
+
+### CreateMemoResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| memo | [Memo](#slash-api-v2-Memo) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteMemoRequest"></a>
+
+### DeleteMemoRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-DeleteMemoResponse"></a>
+
+### DeleteMemoResponse
+
+
+
+
+
+
+
+<a name="slash-api-v2-GetMemoRequest"></a>
+
+### GetMemoRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-GetMemoResponse"></a>
+
+### GetMemoResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| memo | [Memo](#slash-api-v2-Memo) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-ListMemosRequest"></a>
+
+### ListMemosRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-ListMemosResponse"></a>
+
+### ListMemosResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| memos | [Memo](#slash-api-v2-Memo) | repeated |  |
+
+
+
+
+
+
+<a name="slash-api-v2-Memo"></a>
+
+### Memo
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [int32](#int32) |  |  |
+| creator_id | [int32](#int32) |  |  |
+| created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| row_status | [RowStatus](#slash-api-v2-RowStatus) |  |  |
+| name | [string](#string) |  |  |
+| title | [string](#string) |  |  |
+| content | [string](#string) |  |  |
+| tags | [string](#string) | repeated |  |
+| visibility | [Visibility](#slash-api-v2-Visibility) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateMemoRequest"></a>
+
+### UpdateMemoRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| memo | [Memo](#slash-api-v2-Memo) |  |  |
+| update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v2-UpdateMemoResponse"></a>
+
+### UpdateMemoResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| memo | [Memo](#slash-api-v2-Memo) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="slash-api-v2-MemoService"></a>
+
+### MemoService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| ListMemos | [ListMemosRequest](#slash-api-v2-ListMemosRequest) | [ListMemosResponse](#slash-api-v2-ListMemosResponse) | ListMemos returns a list of memos. |
+| GetMemo | [GetMemoRequest](#slash-api-v2-GetMemoRequest) | [GetMemoResponse](#slash-api-v2-GetMemoResponse) | GetMemo returns a memo by id. |
+| CreateMemo | [CreateMemoRequest](#slash-api-v2-CreateMemoRequest) | [CreateMemoResponse](#slash-api-v2-CreateMemoResponse) | CreateMemo creates a memo. |
+| UpdateMemo | [UpdateMemoRequest](#slash-api-v2-UpdateMemoRequest) | [UpdateMemoResponse](#slash-api-v2-UpdateMemoResponse) | UpdateMemo updates a memo. |
+| DeleteMemo | [DeleteMemoRequest](#slash-api-v2-DeleteMemoRequest) | [DeleteMemoResponse](#slash-api-v2-DeleteMemoResponse) | DeleteMemo deletes a memo by id. |
 
  
 
