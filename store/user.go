@@ -238,6 +238,10 @@ func (s *Store) DeleteUser(ctx context.Context, delete *DeleteUser) error {
 		return err
 	}
 
+	if err := vacuumMemo(ctx, tx); err != nil {
+		return err
+	}
+
 	if err := tx.Commit(); err != nil {
 		return err
 	}
