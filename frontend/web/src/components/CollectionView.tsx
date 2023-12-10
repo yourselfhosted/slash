@@ -61,34 +61,38 @@ const CollectionView = (props: Props) => {
       <div className={classNames("w-full flex flex-col justify-start items-start border rounded-lg hover:shadow dark:border-zinc-800")}>
         <div className="bg-gray-100 dark:bg-zinc-800 px-3 py-2 w-full flex flex-row justify-between items-center rounded-t-lg">
           <div className="w-auto flex flex-col justify-start items-start mr-2">
-            <div className="w-full truncate" onClick={handleCopyCollectionLink}>
-              <span className="leading-6 font-medium dark:text-gray-400">{collection.title}</span>
-              <span className="ml-1 leading-6 text-gray-500 dark:text-gray-400">(c/{collection.name})</span>
+            <div className="w-full truncate">
+              <Link className="leading-6 font-medium dark:text-gray-400" to={`/c/${collection.name}`}>
+                {collection.title}
+              </Link>
+              <span className="ml-1 leading-6 text-gray-500 dark:text-gray-400" onClick={handleCopyCollectionLink}>
+                (c/{collection.name})
+              </span>
             </div>
             <p className="text-sm text-gray-500">{collection.description}</p>
           </div>
           <div className="flex flex-row justify-end items-center shrink-0">
-            <Link className="w-full text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`}>
-              <Icon.Share className="w-5 h-auto mr-2" />
+            <Link className="w-full text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`} target="_blank">
+              <Icon.Share className="w-4 h-auto mr-2" />
             </Link>
             {showAdminActions && (
               <Dropdown
                 trigger={
                   <button className="flex flex-row justify-center items-center rounded text-gray-400 cursor-pointer hover:text-gray-500">
-                    <Icon.MoreVertical className="w-5 h-auto" />
+                    <Icon.MoreVertical className="w-4 h-auto" />
                   </button>
                 }
-                actionsClassName="!w-28 dark:text-gray-500"
+                actionsClassName="!w-28 text-sm"
                 actions={
                   <>
                     <button
-                      className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
+                      className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       onClick={() => setShowEditDialog(true)}
                     >
                       <Icon.Edit className="w-4 h-auto mr-2" /> {t("common.edit")}
                     </button>
                     <button
-                      className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
+                      className="w-full px-2 flex flex-row justify-start items-center text-left text-red-600 dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       onClick={() => {
                         handleDeleteCollectionButtonClick();
                       }}
