@@ -19,15 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthService_SignIn_FullMethodName  = "/slash.api.v2.AuthService/SignIn"
-	AuthService_SignUp_FullMethodName  = "/slash.api.v2.AuthService/SignUp"
-	AuthService_SignOut_FullMethodName = "/slash.api.v2.AuthService/SignOut"
+	AuthService_GetAuthStatus_FullMethodName = "/slash.api.v2.AuthService/GetAuthStatus"
+	AuthService_SignIn_FullMethodName        = "/slash.api.v2.AuthService/SignIn"
+	AuthService_SignUp_FullMethodName        = "/slash.api.v2.AuthService/SignUp"
+	AuthService_SignOut_FullMethodName       = "/slash.api.v2.AuthService/SignOut"
 )
 
 // AuthServiceClient is the client API for AuthService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
+	GetAuthStatus(ctx context.Context, in *GetAuthStatusRequest, opts ...grpc.CallOption) (*GetAuthStatusResponse, error)
 	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
 	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
 	SignOut(ctx context.Context, in *SignOutRequest, opts ...grpc.CallOption) (*SignOutResponse, error)
@@ -39,6 +41,15 @@ type authServiceClient struct {
 
 func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 	return &authServiceClient{cc}
+}
+
+func (c *authServiceClient) GetAuthStatus(ctx context.Context, in *GetAuthStatusRequest, opts ...grpc.CallOption) (*GetAuthStatusResponse, error) {
+	out := new(GetAuthStatusResponse)
+	err := c.cc.Invoke(ctx, AuthService_GetAuthStatus_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *authServiceClient) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error) {
@@ -72,6 +83,7 @@ func (c *authServiceClient) SignOut(ctx context.Context, in *SignOutRequest, opt
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
 type AuthServiceServer interface {
+	GetAuthStatus(context.Context, *GetAuthStatusRequest) (*GetAuthStatusResponse, error)
 	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
 	SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error)
 	SignOut(context.Context, *SignOutRequest) (*SignOutResponse, error)
@@ -82,6 +94,9 @@ type AuthServiceServer interface {
 type UnimplementedAuthServiceServer struct {
 }
 
+func (UnimplementedAuthServiceServer) GetAuthStatus(context.Context, *GetAuthStatusRequest) (*GetAuthStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuthStatus not implemented")
+}
 func (UnimplementedAuthServiceServer) SignIn(context.Context, *SignInRequest) (*SignInResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
 }
@@ -102,6 +117,24 @@ type UnsafeAuthServiceServer interface {
 
 func RegisterAuthServiceServer(s grpc.ServiceRegistrar, srv AuthServiceServer) {
 	s.RegisterService(&AuthService_ServiceDesc, srv)
+}
+
+func _AuthService_GetAuthStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAuthStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetAuthStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetAuthStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetAuthStatus(ctx, req.(*GetAuthStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _AuthService_SignIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -165,6 +198,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "slash.api.v2.AuthService",
 	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetAuthStatus",
+			Handler:    _AuthService_GetAuthStatus_Handler,
+		},
 		{
 			MethodName: "SignIn",
 			Handler:    _AuthService_SignIn_Handler,

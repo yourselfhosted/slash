@@ -8,6 +8,9 @@ import "google/api/annotations.proto";
 option go_package = "gen/api/v2";
 
 service AuthService {
+  rpc GetAuthStatus(GetAuthStatusRequest) returns (GetAuthStatusResponse) {
+    option (google.api.http) = {post: "/api/v2/auth/status"};
+  }
   rpc SignIn(SignInRequest) returns (SignInResponse) {
     option (google.api.http) = {post: "/api/v2/auth/signin"};
   }
@@ -17,6 +20,12 @@ service AuthService {
   rpc SignOut(SignOutRequest) returns (SignOutResponse) {
     option (google.api.http) = {post: "/api/v2/auth/signout"};
   }
+}
+
+message GetAuthStatusRequest {}
+
+message GetAuthStatusResponse {
+  User user = 1;
 }
 
 message SignInRequest {

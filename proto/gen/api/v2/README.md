@@ -32,6 +32,8 @@
     - [UserService](#slash-api-v2-UserService)
   
 - [api/v2/auth_service.proto](#api_v2_auth_service-proto)
+    - [GetAuthStatusRequest](#slash-api-v2-GetAuthStatusRequest)
+    - [GetAuthStatusResponse](#slash-api-v2-GetAuthStatusResponse)
     - [SignInRequest](#slash-api-v2-SignInRequest)
     - [SignInResponse](#slash-api-v2-SignInResponse)
     - [SignOutRequest](#slash-api-v2-SignOutRequest)
@@ -482,6 +484,31 @@
 
 
 
+<a name="slash-api-v2-GetAuthStatusRequest"></a>
+
+### GetAuthStatusRequest
+
+
+
+
+
+
+
+<a name="slash-api-v2-GetAuthStatusResponse"></a>
+
+### GetAuthStatusResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#slash-api-v2-User) |  |  |
+
+
+
+
+
+
 <a name="slash-api-v2-SignInRequest"></a>
 
 ### SignInRequest
@@ -578,6 +605,7 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
+| GetAuthStatus | [GetAuthStatusRequest](#slash-api-v2-GetAuthStatusRequest) | [GetAuthStatusResponse](#slash-api-v2-GetAuthStatusResponse) |  |
 | SignIn | [SignInRequest](#slash-api-v2-SignInRequest) | [SignInResponse](#slash-api-v2-SignInResponse) |  |
 | SignUp | [SignUpRequest](#slash-api-v2-SignUpRequest) | [SignUpResponse](#slash-api-v2-SignUpResponse) |  |
 | SignOut | [SignOutRequest](#slash-api-v2-SignOutRequest) | [SignOutResponse](#slash-api-v2-SignOutResponse) |  |

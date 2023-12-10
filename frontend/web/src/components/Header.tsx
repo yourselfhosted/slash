@@ -23,7 +23,6 @@ const Header: React.FC = () => {
 
   const handleSignOutButtonClick = async () => {
     await authServiceClient.signOut({});
-    localStorage.removeItem("userId");
     window.location.href = "/auth";
   };
 

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { userServiceClient, userSettingServiceClient } from "@/grpcweb";
+import { authServiceClient, userServiceClient, userSettingServiceClient } from "@/grpcweb";
 import { User } from "@/types/proto/api/v2/user_service";
 import { UserSetting } from "@/types/proto/api/v2/user_setting_service";
 
@@ -38,13 +38,7 @@ const useUserStore = create<UserState>()((set, get) => ({
     return users;
   },
   fetchCurrentUser: async () => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      throw new Error("User id not found in localStorage");
-    }
-    const { user } = await userServiceClient.getUser({
-      id: Number(userId),
-    });
+    const { user } = await authServiceClient.getAuthStatus({});
     if (!user) {
       throw new Error("User not found");
     }
@@ -111,7 +105,6 @@ const useUserStore = create<UserState>()((set, get) => ({
     return userMap[currentUserId as number];
   },
   setCurrentUserId: (id: number) => {
-    localStorage.setItem("userId", `${id}`);
     set({
       currentUserId: id,
     });

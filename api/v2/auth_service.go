@@ -20,6 +20,19 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
+func (s *APIV2Service) GetAuthStatus(ctx context.Context, _ *apiv2pb.GetAuthStatusRequest) (*apiv2pb.GetAuthStatusResponse, error) {
+	user, err := getCurrentUser(ctx, s.Store)
+	if err != nil {
+		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+	}
+	if user == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "user not found")
+	}
+	return &apiv2pb.GetAuthStatusResponse{
+		User: convertUserFromStore(user),
+	}, nil
+}
+
 func (s *APIV2Service) SignIn(ctx context.Context, request *apiv2pb.SignInRequest) (*apiv2pb.SignInResponse, error) {
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
 		Email: &request.Email,
