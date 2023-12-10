@@ -111,19 +111,19 @@ const ShortcutCard = (props: Props) => {
             arrow
           >
             <div
-              className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-500 text-xs"
+              className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-400 text-sm"
               onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
             >
-              <VisibilityIcon className="w-3 h-auto mr-0.5 opacity-70" visibility={shortcut.visibility} />
+              <VisibilityIcon className="w-4 h-auto mr-1 opacity-70" visibility={shortcut.visibility} />
               {t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.self`)}
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
             <Link
               to={`/shortcut/${shortcut.id}#analytics`}
-              className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-500 text-xs"
+              className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-400 text-sm"
             >
-              <Icon.BarChart2 className="w-3 h-auto mr-0.5 opacity-70" />
+              <Icon.BarChart2 className="w-4 h-auto mr-1 opacity-70" />
               {t("shortcut.visits", { count: shortcut.viewCount })}
             </Link>
           </Tooltip>

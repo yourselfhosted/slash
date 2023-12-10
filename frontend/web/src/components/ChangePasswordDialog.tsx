@@ -62,7 +62,7 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
   return (
     <Modal open={true}>
       <ModalDialog>
-        <div className="flex flex-row justify-between items-center w-80 mb-4">
+        <div className="flex flex-row justify-between items-center w-80">
           <span className="text-lg font-medium">Change Password</span>
           <Button variant="plain" onClick={handleCloseBtnClick}>
             <Icon.X className="w-5 h-auto text-gray-600" />

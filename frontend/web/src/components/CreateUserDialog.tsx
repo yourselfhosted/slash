@@ -125,7 +125,7 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
   return (
     <Modal open={true}>
       <ModalDialog>
-        <div className="flex flex-row justify-between items-center w-80 sm:w-96 mb-4">
+        <div className="flex flex-row justify-between items-center w-80 sm:w-96">
           <span className="text-lg font-medium">{isCreating ? "Create User" : "Edit User"}</span>
           <Button variant="plain" onClick={onClose}>
             <Icon.X className="w-5 h-auto text-gray-600" />
