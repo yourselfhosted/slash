@@ -103,7 +103,7 @@ const ShortcutCard = (props: Props) => {
           })}
           {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm leading-4 italic">No tags</span>}
         </div>
-        <div className="w-full flex mt-2 gap-2 overflow-x-auto">
+        <div className="w-full mt-2 flex gap-2 overflow-x-auto">
           <Tooltip
             title={t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.description`)}
             variant="solid"
@@ -111,19 +111,19 @@ const ShortcutCard = (props: Props) => {
             arrow
           >
             <div
-              className="w-auto px-2 leading-6 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap border rounded-full cursor-pointer text-gray-500 dark:text-gray-400 text-sm dark:border-zinc-700"
+              className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-500 text-xs"
               onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
             >
-              <VisibilityIcon className="w-4 h-auto mr-1 opacity-60" visibility={shortcut.visibility} />
+              <VisibilityIcon className="w-3 h-auto mr-0.5 opacity-70" visibility={shortcut.visibility} />
               {t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.self`)}
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
             <Link
               to={`/shortcut/${shortcut.id}#analytics`}
-              className="w-auto px-2 leading-6 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap border rounded-full cursor-pointer text-gray-500 dark:text-gray-400 text-sm dark:border-zinc-700"
+              className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-500 text-xs"
             >
-              <Icon.BarChart2 className="w-4 h-auto mr-1 opacity-80" />
+              <Icon.BarChart2 className="w-3 h-auto mr-0.5 opacity-70" />
               {t("shortcut.visits", { count: shortcut.viewCount })}
             </Link>
           </Tooltip>

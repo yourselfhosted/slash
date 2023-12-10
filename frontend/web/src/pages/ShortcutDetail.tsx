@@ -78,7 +78,7 @@ const ShortcutDetail = () => {
   return (
     <>
       <div className="mx-auto max-w-8xl w-full px-3 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
-        <div className="mt-8 w-12 h-12 flex justify-center items-center overflow-clip">
+        <div className="mt-4 sm:mt-8 w-12 h-12 flex justify-center items-center overflow-clip">
           {favicon ? (
             <img className="w-full h-auto rounded-lg" src={favicon} decoding="async" loading="lazy" />
           ) : (
@@ -156,8 +156,8 @@ const ShortcutDetail = () => {
             ></Dropdown>
           )}
         </div>
-        {shortcut.description && <p className="w-full break-all mt-2 text-gray-400 text-sm dark:text-gray-500">{shortcut.description}</p>}
-        <div className="mt-4 ml-1 flex flex-row justify-start items-start flex-wrap gap-2">
+        {shortcut.description && <p className="w-full break-all mt-4 text-gray-500 dark:text-gray-400">{shortcut.description}</p>}
+        <div className="mt-2 flex flex-row justify-start items-start flex-wrap gap-2">
           {shortcut.tags.map((tag) => {
             return (
               <span key={tag} className="max-w-[8rem] truncate text-gray-400 text leading-4 dark:text-gray-500">

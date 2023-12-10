@@ -43,7 +43,7 @@ const Header: React.FC = () => {
             )}
             {shouldShowRouterSwitch && (
               <>
-                <span className="font-mono opacity-60 mx-1">/</span>
+                <span className="font-mono opacity-60 mx-1 dark:text-gray-400">/</span>
                 <Dropdown
                   trigger={
                     <button className="flex flex-row justify-end items-center cursor-pointer">
@@ -51,20 +51,20 @@ const Header: React.FC = () => {
                       <Icon.ChevronsUpDown className="ml-1 w-4 h-auto text-gray-600 dark:text-gray-400" />
                     </button>
                   }
-                  actionsClassName="!w-36 -left-4"
+                  actionsClassName="!w-32 -left-4 text-sm"
                   actions={
                     <>
                       <Link
                         to="/"
                         className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       >
-                        <Icon.SquareSlash className="w-5 h-auto mr-2 opacity-70" /> Shortcuts
+                        <Icon.SquareSlash className="w-4 h-auto mr-2 opacity-70" /> Shortcuts
                       </Link>
                       <Link
                         to="/collections"
                         className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                       >
-                        <Icon.LibrarySquare className="w-5 h-auto mr-2 opacity-70" /> Collections
+                        <Icon.LibrarySquare className="w-4 h-auto mr-2 opacity-70" /> Collections
                       </Link>
                     </>
                   }
@@ -81,34 +81,34 @@ const Header: React.FC = () => {
                   <Icon.ChevronDown className="ml-2 w-5 h-auto text-gray-600 dark:text-gray-400" />
                 </button>
               }
-              actionsClassName="!w-32"
+              actionsClassName="!w-32 text-sm"
               actions={
                 <>
                   <Link
                     to="/setting/general"
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                   >
-                    <Icon.User className="w-4 h-auto mr-2" /> {t("user.profile")}
+                    <Icon.User className="w-4 h-auto mr-2 opacity-70" /> {t("user.profile")}
                   </Link>
                   {isAdmin && (
                     <Link
                       to="/setting/workspace"
                       className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     >
-                      <Icon.Settings className="w-4 h-auto mr-2" /> {t("settings.self")}
+                      <Icon.Settings className="w-4 h-auto mr-2 opacity-70" /> {t("settings.self")}
                     </Link>
                   )}
                   <button
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     onClick={() => setShowAboutDialog(true)}
                   >
-                    <Icon.Info className="w-4 h-auto mr-2" /> {t("common.about")}
+                    <Icon.Info className="w-4 h-auto mr-2 opacity-70" /> {t("common.about")}
                   </button>
                   <button
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
                     onClick={() => handleSignOutButtonClick()}
                   >
-                    <Icon.LogOut className="w-4 h-auto mr-2" /> {t("auth.sign-out")}
+                    <Icon.LogOut className="w-4 h-auto mr-2 opacity-70" /> {t("auth.sign-out")}
                   </button>
                 </>
               }
