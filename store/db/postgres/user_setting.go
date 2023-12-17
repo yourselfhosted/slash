@@ -2,9 +2,7 @@ package postgres
 
 import (
 	"context"
-	"database/sql"
 	"errors"
-	"fmt"
 	"strings"
 
 	"google.golang.org/protobuf/encoding/protojson"
@@ -51,10 +49,10 @@ func (d *DB) ListUserSettings(ctx context.Context, find *store.FindUserSetting) 
 	where, args := []string{"1 = 1"}, []any{}
 
 	if v := find.Key; v != storepb.UserSettingKey_USER_SETTING_KEY_UNSPECIFIED {
-		where, args = append(where, fmt.Sprintf("key = $%d", len(args)+1)), append(args, v.String())
+		where, args = append(where, "key = "+placeholder(len(args)+1)), append(args, v.String())
 	}
 	if v := find.UserID; v != nil {
-		where, args = append(where, fmt.Sprintf("user_id = $%d", len(args)+1)), append(args, *find.UserID)
+		where, args = append(where, "user_id = "+placeholder(len(args)+1)), append(args, *find.UserID)
 	}
 
 	query := `
@@ -109,14 +107,4 @@ func (d *DB) ListUserSettings(ctx context.Context, find *store.FindUserSetting) 
 	}
 
 	return userSettingList, nil
-}
-
-func vacuumUserSetting(ctx context.Context, tx *sql.Tx) error {
-	stmt := `DELETE FROM user_setting WHERE user_id NOT IN (SELECT id FROM "user")`
-	_, err := tx.ExecContext(ctx, stmt)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

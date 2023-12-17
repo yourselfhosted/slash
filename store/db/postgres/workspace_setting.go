@@ -55,7 +55,7 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 	where, args := []string{"1 = 1"}, []interface{}{}
 
 	if find.Key != storepb.WorkspaceSettingKey_WORKSPACE_SETTING_KEY_UNSPECIFIED {
-		where, args = append(where, "key = $"+placeholder(len(args)+1)), append(args, find.Key.String())
+		where, args = append(where, "key = "+placeholder(len(args)+1)), append(args, find.Key.String())
 	}
 
 	query := `

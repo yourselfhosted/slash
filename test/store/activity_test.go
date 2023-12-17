@@ -12,11 +12,13 @@ import (
 func TestActivityStore(t *testing.T) {
 	ctx := context.Background()
 	ts := NewTestingStore(ctx, t)
+	user, err := createTestingAdminUser(ctx, ts)
+	require.NoError(t, err)
 	list, err := ts.ListActivities(ctx, &store.FindActivity{})
 	require.NoError(t, err)
 	require.Equal(t, 0, len(list))
 	activity, err := ts.CreateActivity(ctx, &store.Activity{
-		CreatorID: -1,
+		CreatorID: user.ID,
 		Type:      store.ActivityShortcutCreate,
 		Level:     store.ActivityInfo,
 		Payload:   "",

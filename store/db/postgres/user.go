@@ -41,21 +41,20 @@ func (d *DB) CreateUser(ctx context.Context, create *store.User) (*store.User, e
 func (d *DB) UpdateUser(ctx context.Context, update *store.UpdateUser) (*store.User, error) {
 	set, args := []string{}, []any{}
 	if v := update.RowStatus; v != nil {
-		set, args = append(set, "row_status = $"+placeholder(len(args)+1)), append(args, *v)
+		set, args = append(set, "row_status = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := update.Email; v != nil {
-		set, args = append(set, "email = $"+placeholder(len(args)+1)), append(args, *v)
+		set, args = append(set, "email = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := update.Nickname; v != nil {
-		set, args = append(set, "nickname = $"+placeholder(len(args)+1)), append(args, *v)
+		set, args = append(set, "nickname = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := update.PasswordHash; v != nil {
-		set, args = append(set, "password_hash = $"+placeholder(len(args)+1)), append(args, *v)
+		set, args = append(set, "password_hash = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := update.Role; v != nil {
-		set, args = append(set, "role = $"+placeholder(len(args)+1)), append(args, *v)
+		set, args = append(set, "role = "+placeholder(len(args)+1)), append(args, *v)
 	}
-
 	if len(set) == 0 {
 		return nil, errors.New("no fields to update")
 	}
@@ -63,7 +62,7 @@ func (d *DB) UpdateUser(ctx context.Context, update *store.UpdateUser) (*store.U
 	stmt := `
 		UPDATE "user"
 		SET ` + strings.Join(set, ", ") + `
-		WHERE id = $` + placeholder(len(args)+1) + `
+		WHERE id = ` + placeholder(len(args)+1) + `
 		RETURNING id, created_ts, updated_ts, row_status, email, nickname, password_hash, role
 	`
 	args = append(args, update.ID)
@@ -88,19 +87,19 @@ func (d *DB) ListUsers(ctx context.Context, find *store.FindUser) ([]*store.User
 	where, args := []string{"1 = 1"}, []any{}
 
 	if v := find.ID; v != nil {
-		where, args = append(where, "id = $"+placeholder(len(args)+1)), append(args, *v)
+		where, args = append(where, "id = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := find.RowStatus; v != nil {
-		where, args = append(where, "row_status = $"+placeholder(len(args)+1)), append(args, v.String())
+		where, args = append(where, "row_status = "+placeholder(len(args)+1)), append(args, v.String())
 	}
 	if v := find.Email; v != nil {
-		where, args = append(where, "email = $"+placeholder(len(args)+1)), append(args, *v)
+		where, args = append(where, "email = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := find.Nickname; v != nil {
-		where, args = append(where, "nickname = $"+placeholder(len(args)+1)), append(args, *v)
+		where, args = append(where, "nickname = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := find.Role; v != nil {
-		where, args = append(where, "role = $"+placeholder(len(args)+1)), append(args, *v)
+		where, args = append(where, "role = "+placeholder(len(args)+1)), append(args, *v)
 	}
 
 	query := `
@@ -149,32 +148,10 @@ func (d *DB) ListUsers(ctx context.Context, find *store.FindUser) ([]*store.User
 }
 
 func (d *DB) DeleteUser(ctx context.Context, delete *store.DeleteUser) error {
-	tx, err := d.db.BeginTx(ctx, nil)
-	if err != nil {
+	if _, err := d.db.ExecContext(ctx, `DELETE FROM "user" WHERE id = $1`, delete.ID); err != nil {
 		return err
 	}
-	defer tx.Rollback()
-
-	if _, err := tx.ExecContext(ctx, `
-		DELETE FROM "user" WHERE id = $1
-	`, delete.ID); err != nil {
-		return err
-	}
-
-	if err := vacuumUserSetting(ctx, tx); err != nil {
-		return err
-	}
-	if err := vacuumShortcut(ctx, tx); err != nil {
-		return err
-	}
-	if err := vacuumMemo(ctx, tx); err != nil {
-		return err
-	}
-	if err := vacuumCollection(ctx, tx); err != nil {
-		return err
-	}
-
-	return tx.Commit()
+	return nil
 }
 
 func placeholder(n int) string {

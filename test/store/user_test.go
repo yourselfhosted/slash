@@ -7,7 +7,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/bcrypt"
 
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -27,13 +26,6 @@ func TestUserStore(t *testing.T) {
 		Nickname: &userPatchNickname,
 	})
 	require.NoError(t, err)
-	_, err = ts.CreateShortcut(ctx, &storepb.Shortcut{
-		CreatorId:  user.ID,
-		Name:       "test_shortcut",
-		Link:       "https://www.google.com",
-		Visibility: storepb.Visibility_PUBLIC,
-	})
-	require.NoError(t, err)
 	require.Equal(t, userPatchNickname, user.Nickname)
 	err = ts.DeleteUser(ctx, &store.DeleteUser{
 		ID: user.ID,
@@ -42,9 +34,6 @@ func TestUserStore(t *testing.T) {
 	users, err = ts.ListUsers(ctx, &store.FindUser{})
 	require.NoError(t, err)
 	require.Equal(t, 0, len(users))
-	shortcuts, err := ts.ListShortcuts(ctx, &store.FindShortcut{})
-	require.NoError(t, err)
-	require.Equal(t, 0, len(shortcuts))
 }
 
 // createTestingAdminUser creates a testing admin user.

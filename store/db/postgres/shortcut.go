@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"strings"
 
@@ -204,12 +203,6 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 
 func (d *DB) DeleteShortcut(ctx context.Context, delete *store.DeleteShortcut) error {
 	_, err := d.db.ExecContext(ctx, "DELETE FROM shortcut WHERE id = $1", delete.ID)
-	return err
-}
-
-func vacuumShortcut(ctx context.Context, tx *sql.Tx) error {
-	stmt := `DELETE FROM shortcut WHERE creator_id NOT IN (SELECT id FROM "user")`
-	_, err := tx.ExecContext(ctx, stmt)
 	return err
 }
 

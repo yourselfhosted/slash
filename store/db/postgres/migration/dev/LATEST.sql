@@ -1,3 +1,13 @@
+-- drop all tables first (PostgreSQL style)
+DROP TABLE IF EXISTS migration_history CASCADE;
+DROP TABLE IF EXISTS workspace_setting CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS user_setting CASCADE;
+DROP TABLE IF EXISTS shortcut CASCADE;
+DROP TABLE IF EXISTS activity CASCADE;
+DROP TABLE IF EXISTS collection CASCADE;
+DROP TABLE IF EXISTS memo CASCADE;
+
 -- migration_history
 CREATE TABLE migration_history (
   version TEXT NOT NULL PRIMARY KEY,
@@ -11,7 +21,7 @@ CREATE TABLE workspace_setting (
 );
 
 -- user
-CREATE TABLE user (
+CREATE TABLE "user" (
   id SERIAL PRIMARY KEY,
   created_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   updated_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
@@ -22,11 +32,11 @@ CREATE TABLE user (
   role TEXT NOT NULL CHECK (role IN ('ADMIN', 'USER')) DEFAULT 'USER'
 );
 
-CREATE INDEX idx_user_email ON user(email);
+CREATE INDEX idx_user_email ON "user"(email);
 
 -- user_setting
 CREATE TABLE user_setting (
-  user_id INTEGER REFERENCES user(id) NOT NULL,
+  user_id INTEGER REFERENCES "user"(id) NOT NULL,
   key TEXT NOT NULL,
   value TEXT NOT NULL,
   PRIMARY KEY (user_id, key)
@@ -35,7 +45,7 @@ CREATE TABLE user_setting (
 -- shortcut
 CREATE TABLE shortcut (
   id SERIAL PRIMARY KEY,
-  creator_id INTEGER REFERENCES user(id) NOT NULL,
+  creator_id INTEGER REFERENCES "user"(id) NOT NULL,
   created_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   updated_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',
@@ -53,7 +63,7 @@ CREATE INDEX idx_shortcut_name ON shortcut(name);
 -- activity
 CREATE TABLE activity (
   id SERIAL PRIMARY KEY,
-  creator_id INTEGER REFERENCES user(id) NOT NULL,
+  creator_id INTEGER REFERENCES "user"(id) NOT NULL,
   created_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   type TEXT NOT NULL DEFAULT '',
   level TEXT NOT NULL CHECK (level IN ('INFO', 'WARN', 'ERROR')) DEFAULT 'INFO',
@@ -63,7 +73,7 @@ CREATE TABLE activity (
 -- collection
 CREATE TABLE collection (
   id SERIAL PRIMARY KEY,
-  creator_id INTEGER REFERENCES user(id) NOT NULL,
+  creator_id INTEGER REFERENCES "user"(id) NOT NULL,
   created_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   updated_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   name TEXT NOT NULL UNIQUE,
@@ -78,7 +88,7 @@ CREATE INDEX idx_collection_name ON collection(name);
 -- memo
 CREATE TABLE memo (
   id SERIAL PRIMARY KEY,
-  creator_id INTEGER REFERENCES user(id) NOT NULL,
+  creator_id INTEGER REFERENCES "user"(id) NOT NULL,
   created_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   updated_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',

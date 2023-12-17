@@ -6,23 +6,20 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/lib/pq"
 	"github.com/pkg/errors"
 
-	"github.com/yourselfhosted/slash/internal/util"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/store"
 )
 
 func (d *DB) CreateCollection(ctx context.Context, create *storepb.Collection) (*storepb.Collection, error) {
 	set := []string{"creator_id", "name", "title", "description", "shortcut_ids", "visibility"}
-	args := []any{create.CreatorId, create.Name, create.Title, create.Description, strings.Trim(strings.Join(strings.Fields(fmt.Sprint(create.ShortcutIds)), ","), "[]"), create.Visibility.String()}
-	placeholder := []string{"$1", "$2", "$3", "$4", "$5", "$6"}
+	args := []any{create.CreatorId, create.Name, create.Title, create.Description, pq.Array(create.ShortcutIds), create.Visibility.String()}
 
 	stmt := `
-		INSERT INTO collection (
-			` + strings.Join(set, ", ") + `
-		)
-		VALUES (` + strings.Join(placeholder, ",") + `)
+		INSERT INTO collection (` + strings.Join(set, ", ") + `)
+		VALUES (` + placeholders(len(args)) + `)
 		RETURNING id, created_ts, updated_ts
 	`
 	if err := d.db.QueryRowContext(ctx, stmt, args...).Scan(
@@ -39,35 +36,34 @@ func (d *DB) CreateCollection(ctx context.Context, create *storepb.Collection) (
 func (d *DB) UpdateCollection(ctx context.Context, update *store.UpdateCollection) (*storepb.Collection, error) {
 	set, args := []string{}, []any{}
 	if update.Name != nil {
-		set, args = append(set, "name = $1"), append(args, *update.Name)
+		set, args = append(set, "name = "+placeholder(len(args)+1)), append(args, *update.Name)
 	}
 	if update.Title != nil {
-		set, args = append(set, "title = $2"), append(args, *update.Title)
+		set, args = append(set, "title = "+placeholder(len(args)+1)), append(args, *update.Title)
 	}
 	if update.Description != nil {
-		set, args = append(set, "description = $3"), append(args, *update.Description)
+		set, args = append(set, "description = "+placeholder(len(args)+1)), append(args, *update.Description)
 	}
 	if update.ShortcutIDs != nil {
-		set, args = append(set, "shortcut_ids = $4"), append(args, strings.Trim(strings.Join(strings.Fields(fmt.Sprint(update.ShortcutIDs)), ","), "[]"))
+		set, args = append(set, "shortcut_ids = "+placeholder(len(args)+1)), append(args, pq.Array(update.ShortcutIDs))
 	}
 	if update.Visibility != nil {
-		set, args = append(set, "visibility = $5"), append(args, update.Visibility.String())
+		set, args = append(set, "visibility = "+placeholder(len(args)+1)), append(args, update.Visibility.String())
 	}
 	if len(set) == 0 {
 		return nil, errors.New("no update specified")
 	}
-	args = append(args, update.ID)
 
 	stmt := `
 		UPDATE collection
-		SET
-			` + strings.Join(set, ", ") + `
-		WHERE
-			id = $6
+		SET ` + strings.Join(set, ", ") + `
+		WHERE id = ` + placeholder(len(args)+1) + `
 		RETURNING id, creator_id, created_ts, updated_ts, name, title, description, shortcut_ids, visibility
 	`
+	args = append(args, update.ID)
 	collection := &storepb.Collection{}
-	var shortcutIDs, visibility string
+	var shortcutIDs []sql.NullInt32
+	var visibility string
 	if err := d.db.QueryRowContext(ctx, stmt, args...).Scan(
 		&collection.Id,
 		&collection.CreatorId,
@@ -76,20 +72,16 @@ func (d *DB) UpdateCollection(ctx context.Context, update *store.UpdateCollectio
 		&collection.Name,
 		&collection.Title,
 		&collection.Description,
-		&shortcutIDs,
+		pq.Array(&shortcutIDs),
 		&visibility,
 	); err != nil {
 		return nil, err
 	}
 
 	collection.ShortcutIds = []int32{}
-	if shortcutIDs != "" {
-		for _, idStr := range strings.Split(shortcutIDs, ",") {
-			shortcutID, err := util.ConvertStringToInt32(idStr)
-			if err != nil {
-				return nil, errors.Wrap(err, "failed to convert shortcut id")
-			}
-			collection.ShortcutIds = append(collection.ShortcutIds, shortcutID)
+	for _, id := range shortcutIDs {
+		if id.Valid {
+			collection.ShortcutIds = append(collection.ShortcutIds, id.Int32)
 		}
 	}
 	collection.Visibility = convertVisibilityStringToStorepb(visibility)
@@ -99,19 +91,18 @@ func (d *DB) UpdateCollection(ctx context.Context, update *store.UpdateCollectio
 func (d *DB) ListCollections(ctx context.Context, find *store.FindCollection) ([]*storepb.Collection, error) {
 	where, args := []string{"1 = 1"}, []any{}
 	if v := find.ID; v != nil {
-		where, args = append(where, "id = $1"), append(args, *v)
+		where, args = append(where, "id = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := find.CreatorID; v != nil {
-		where, args = append(where, "creator_id = $2"), append(args, *v)
+		where, args = append(where, "creator_id = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := find.Name; v != nil {
-		where, args = append(where, "name = $3"), append(args, *v)
+		where, args = append(where, "name = "+placeholder(len(args)+1)), append(args, *v)
 	}
 	if v := find.VisibilityList; len(v) != 0 {
 		list := []string{}
-		for i, visibility := range v {
-			list = append(list, fmt.Sprintf("$%d", len(args)+i+1))
-			args = append(args, visibility)
+		for _, visibility := range v {
+			list, args = append(list, placeholder(len(args)+1)), append(args, visibility)
 		}
 		where = append(where, fmt.Sprintf("visibility IN (%s)", strings.Join(list, ",")))
 	}
@@ -140,7 +131,8 @@ func (d *DB) ListCollections(ctx context.Context, find *store.FindCollection) ([
 	list := make([]*storepb.Collection, 0)
 	for rows.Next() {
 		collection := &storepb.Collection{}
-		var shortcutIDs, visibility string
+		var shortcutIDs []sql.NullInt32
+		var visibility string
 		if err := rows.Scan(
 			&collection.Id,
 			&collection.CreatorId,
@@ -149,20 +141,16 @@ func (d *DB) ListCollections(ctx context.Context, find *store.FindCollection) ([
 			&collection.Name,
 			&collection.Title,
 			&collection.Description,
-			&shortcutIDs,
+			pq.Array(&shortcutIDs),
 			&visibility,
 		); err != nil {
 			return nil, err
 		}
 
 		collection.ShortcutIds = []int32{}
-		if shortcutIDs != "" {
-			for _, idStr := range strings.Split(shortcutIDs, ",") {
-				shortcutID, err := util.ConvertStringToInt32(idStr)
-				if err != nil {
-					return nil, errors.Wrap(err, "failed to convert shortcut id")
-				}
-				collection.ShortcutIds = append(collection.ShortcutIds, shortcutID)
+		for _, id := range shortcutIDs {
+			if id.Valid {
+				collection.ShortcutIds = append(collection.ShortcutIds, id.Int32)
 			}
 		}
 		collection.Visibility = storepb.Visibility(storepb.Visibility_value[visibility])
@@ -177,16 +165,6 @@ func (d *DB) ListCollections(ctx context.Context, find *store.FindCollection) ([
 
 func (d *DB) DeleteCollection(ctx context.Context, delete *store.DeleteCollection) error {
 	if _, err := d.db.ExecContext(ctx, `DELETE FROM collection WHERE id = $1`, delete.ID); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func vacuumCollection(ctx context.Context, tx *sql.Tx) error {
-	stmt := `DELETE FROM collection WHERE creator_id NOT IN (SELECT id FROM user)`
-	_, err := tx.ExecContext(ctx, stmt)
-	if err != nil {
 		return err
 	}
 

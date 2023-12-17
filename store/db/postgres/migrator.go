@@ -108,7 +108,7 @@ func (d *DB) Migrate(ctx context.Context) error {
 			}
 			// In demo mode, we should seed the database.
 			if d.profile.Mode == "demo" {
-				if err := d.seed(ctx); err != nil {
+				if err := d.Seed(ctx); err != nil {
 					return errors.Wrap(err, "failed to seed")
 				}
 			}
@@ -119,7 +119,7 @@ func (d *DB) Migrate(ctx context.Context) error {
 }
 
 const (
-	latestSchemaFileName = "LATEST__SCHEMA.sql"
+	latestSchemaFileName = "LATEST.sql"
 )
 
 func (d *DB) applyLatestSchema(ctx context.Context) error {
@@ -172,7 +172,7 @@ func (d *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion str
 	return nil
 }
 
-func (d *DB) seed(ctx context.Context) error {
+func (d *DB) Seed(ctx context.Context) error {
 	filenames, err := fs.Glob(seedFS, fmt.Sprintf("%s/*.sql", "seed"))
 	if err != nil {
 		return errors.Wrap(err, "failed to read seed files")
