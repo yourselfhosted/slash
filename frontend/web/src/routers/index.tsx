@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import CollectionDashboard from "@/pages/CollectionDashboard";
 import CollectionSpace from "@/pages/CollectionSpace";
 import NotFound from "@/pages/NotFound";
+import ShortcutSpace from "@/pages/ShortcutSpace";
 import SignIn from "@/pages/SignIn";
 import SignUp from "@/pages/SignUp";
 import SubscriptionSetting from "@/pages/SubscriptionSetting";
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
             element: <CollectionDashboard />,
           },
           {
-            path: "/shortcut/:shortcutId",
+            path: "/shortcut/*",
             element: <ShortcutDetail />,
           },
           {
@@ -56,7 +57,11 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "c/:collectionName",
+        path: "s/*",
+        element: <ShortcutSpace />,
+      },
+      {
+        path: "c/*",
         element: <CollectionSpace />,
       },
       {

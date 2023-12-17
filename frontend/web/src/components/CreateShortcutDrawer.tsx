@@ -25,7 +25,7 @@ import Icon from "./Icon";
 import ResourceNameInput from "./ResourceNameInput";
 
 interface Props {
-  shortcutId?: number;
+  shortcutName?: string;
   initialShortcut?: Partial<Shortcut>;
   onClose: () => void;
   onConfirm?: () => void;
@@ -36,7 +36,7 @@ interface State {
 }
 
 const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
-  const { onClose, onConfirm, shortcutId, initialShortcut } = props;
+  const { onClose, onConfirm, shortcutName, initialShortcut } = props;
   const { t } = useTranslation();
   const [state, setState] = useState<State>({
     shortcutCreate: Shortcut.fromPartial({
@@ -54,13 +54,13 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const shortcutList = shortcutStore.getShortcutList();
   const [tag, setTag] = useState<string>("");
   const tagSuggestions = uniq(shortcutList.map((shortcut) => shortcut.tags).flat());
-  const isCreating = isUndefined(shortcutId);
+  const isCreating = isUndefined(shortcutName);
   const loadingState = useLoading(!isCreating);
   const requestState = useLoading(false);
 
   useEffect(() => {
-    if (shortcutId) {
-      const shortcut = shortcutStore.getShortcutById(shortcutId);
+    if (shortcutName) {
+      const shortcut = shortcutStore.getShortcutByName(shortcutName);
       if (shortcut) {
         setState({
           ...state,
@@ -77,7 +77,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
         loadingState.setFinish();
       }
     }
-  }, [shortcutId]);
+  }, [shortcutName]);
 
   if (loadingState.isLoading) {
     return null;
@@ -183,15 +183,15 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
     }
 
     try {
-      if (shortcutId) {
+      if (shortcutName) {
         const updatingShortcut = {
           ...state.shortcutCreate,
-          id: shortcutId,
+          name: shortcutName,
           tags: tag.split(" ").filter(Boolean),
         };
         await shortcutStore.updateShortcut(
           updatingShortcut,
-          getShortcutUpdateMask(shortcutStore.getShortcutById(updatingShortcut.id), updatingShortcut)
+          getShortcutUpdateMask(shortcutStore.getShortcutByName(updatingShortcut.name), updatingShortcut)
         );
       } else {
         await shortcutStore.createShortcut({

@@ -31,7 +31,7 @@ const ShortcutActionsDropdown = (props: Props) => {
       content: `Are you sure to delete shortcut \`${shortcut.name}\`? You cannot undo this action.`,
       style: "danger",
       onConfirm: async () => {
-        await shortcutStore.deleteShortcut(shortcut.id);
+        await shortcutStore.deleteShortcut(shortcut.name);
       },
     });
   };
@@ -82,7 +82,7 @@ const ShortcutActionsDropdown = (props: Props) => {
 
       {showEditDrawer && (
         <CreateShortcutDrawer
-          shortcutId={shortcut.id}
+          shortcutName={shortcut.name}
           onClose={() => setShowEditDrawer(false)}
           onConfirm={() => setShowEditDrawer(false)}
         />

@@ -60,14 +60,14 @@ func request_ShortcutService_GetShortcut_0(ctx context.Context, marshaler runtim
 		_   = err
 	)
 
-	val, ok = pathParams["id"]
+	val, ok = pathParams["name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
 	}
 
-	protoReq.Id, err = runtime.Int32(val)
+	protoReq.Name, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
 	msg, err := client.GetShortcut(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -86,14 +86,14 @@ func local_request_ShortcutService_GetShortcut_0(ctx context.Context, marshaler 
 		_   = err
 	)
 
-	val, ok = pathParams["id"]
+	val, ok = pathParams["name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
 	}
 
-	protoReq.Id, err = runtime.Int32(val)
+	protoReq.Name, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
 	msg, err := server.GetShortcut(ctx, &protoReq)
@@ -136,7 +136,7 @@ func local_request_ShortcutService_CreateShortcut_0(ctx context.Context, marshal
 }
 
 var (
-	filter_ShortcutService_UpdateShortcut_0 = &utilities.DoubleArray{Encoding: map[string]int{"shortcut": 0, "id": 1}, Base: []int{1, 4, 5, 2, 0, 0, 0, 0}, Check: []int{0, 1, 1, 2, 4, 2, 2, 3}}
+	filter_ShortcutService_UpdateShortcut_0 = &utilities.DoubleArray{Encoding: map[string]int{"shortcut": 0, "name": 1}, Base: []int{1, 4, 5, 2, 0, 0, 0, 0}, Check: []int{0, 1, 1, 2, 4, 2, 2, 3}}
 )
 
 func request_ShortcutService_UpdateShortcut_0(ctx context.Context, marshaler runtime.Marshaler, client ShortcutServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -158,14 +158,14 @@ func request_ShortcutService_UpdateShortcut_0(ctx context.Context, marshaler run
 		_   = err
 	)
 
-	val, ok = pathParams["shortcut.id"]
+	val, ok = pathParams["shortcut.name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "shortcut.id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "shortcut.name")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "shortcut.id", val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "shortcut.name", val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "shortcut.id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "shortcut.name", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -199,14 +199,14 @@ func local_request_ShortcutService_UpdateShortcut_0(ctx context.Context, marshal
 		_   = err
 	)
 
-	val, ok = pathParams["shortcut.id"]
+	val, ok = pathParams["shortcut.name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "shortcut.id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "shortcut.name")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "shortcut.id", val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "shortcut.name", val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "shortcut.id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "shortcut.name", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -232,14 +232,14 @@ func request_ShortcutService_DeleteShortcut_0(ctx context.Context, marshaler run
 		_   = err
 	)
 
-	val, ok = pathParams["id"]
+	val, ok = pathParams["name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
 	}
 
-	protoReq.Id, err = runtime.Int32(val)
+	protoReq.Name, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
 	msg, err := client.DeleteShortcut(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -258,14 +258,14 @@ func local_request_ShortcutService_DeleteShortcut_0(ctx context.Context, marshal
 		_   = err
 	)
 
-	val, ok = pathParams["id"]
+	val, ok = pathParams["name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
 	}
 
-	protoReq.Id, err = runtime.Int32(val)
+	protoReq.Name, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
 	msg, err := server.DeleteShortcut(ctx, &protoReq)
@@ -284,14 +284,14 @@ func request_ShortcutService_GetShortcutAnalytics_0(ctx context.Context, marshal
 		_   = err
 	)
 
-	val, ok = pathParams["id"]
+	val, ok = pathParams["name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
 	}
 
-	protoReq.Id, err = runtime.Int32(val)
+	protoReq.Name, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
 	msg, err := client.GetShortcutAnalytics(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -310,14 +310,14 @@ func local_request_ShortcutService_GetShortcutAnalytics_0(ctx context.Context, m
 		_   = err
 	)
 
-	val, ok = pathParams["id"]
+	val, ok = pathParams["name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
 	}
 
-	protoReq.Id, err = runtime.Int32(val)
+	protoReq.Name, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
 	}
 
 	msg, err := server.GetShortcutAnalytics(ctx, &protoReq)
@@ -364,7 +364,7 @@ func RegisterShortcutServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.ShortcutService/GetShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.ShortcutService/GetShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{name}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -414,7 +414,7 @@ func RegisterShortcutServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.ShortcutService/UpdateShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{shortcut.id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.ShortcutService/UpdateShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{shortcut.name}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -439,7 +439,7 @@ func RegisterShortcutServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.ShortcutService/DeleteShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.ShortcutService/DeleteShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{name}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -464,7 +464,7 @@ func RegisterShortcutServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.ShortcutService/GetShortcutAnalytics", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{id}/analytics"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/slash.api.v2.ShortcutService/GetShortcutAnalytics", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{name}/analytics"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -550,7 +550,7 @@ func RegisterShortcutServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.ShortcutService/GetShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.ShortcutService/GetShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{name}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -594,7 +594,7 @@ func RegisterShortcutServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.ShortcutService/UpdateShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{shortcut.id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.ShortcutService/UpdateShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{shortcut.name}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -616,7 +616,7 @@ func RegisterShortcutServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.ShortcutService/DeleteShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.ShortcutService/DeleteShortcut", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{name}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -638,7 +638,7 @@ func RegisterShortcutServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.ShortcutService/GetShortcutAnalytics", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{id}/analytics"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/slash.api.v2.ShortcutService/GetShortcutAnalytics", runtime.WithHTTPPathPattern("/api/v2/shortcuts/{name}/analytics"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -660,15 +660,15 @@ func RegisterShortcutServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 var (
 	pattern_ShortcutService_ListShortcuts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v2", "shortcuts"}, ""))
 
-	pattern_ShortcutService_GetShortcut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v2", "shortcuts", "id"}, ""))
+	pattern_ShortcutService_GetShortcut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v2", "shortcuts", "name"}, ""))
 
 	pattern_ShortcutService_CreateShortcut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v2", "shortcuts"}, ""))
 
-	pattern_ShortcutService_UpdateShortcut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v2", "shortcuts", "shortcut.id"}, ""))
+	pattern_ShortcutService_UpdateShortcut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v2", "shortcuts", "shortcut.name"}, ""))
 
-	pattern_ShortcutService_DeleteShortcut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v2", "shortcuts", "id"}, ""))
+	pattern_ShortcutService_DeleteShortcut_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v2", "shortcuts", "name"}, ""))
 
-	pattern_ShortcutService_GetShortcutAnalytics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v2", "shortcuts", "id", "analytics"}, ""))
+	pattern_ShortcutService_GetShortcutAnalytics_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v2", "shortcuts", "name", "analytics"}, ""))
 )
 
 var (

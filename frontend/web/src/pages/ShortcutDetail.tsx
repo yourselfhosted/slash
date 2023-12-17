@@ -28,11 +28,11 @@ interface State {
 const ShortcutDetail = () => {
   const { t } = useTranslation();
   const params = useParams();
+  const shortcutName = params["*"] || "";
   const navigateTo = useNavigateTo();
-  const shortcutId = Number(params.shortcutId);
   const shortcutStore = useShortcutStore();
   const userStore = useUserStore();
-  const shortcut = shortcutStore.getShortcutById(shortcutId);
+  const shortcut = shortcutStore.getShortcutByName(shortcutName);
   const currentUser = useUserStore().getCurrentUser();
   const [state, setState] = useState<State>({
     showEditDrawer: false,
@@ -46,11 +46,11 @@ const ShortcutDetail = () => {
 
   useEffect(() => {
     (async () => {
-      const shortcut = await shortcutStore.getOrFetchShortcutById(shortcutId);
+      const shortcut = await shortcutStore.getOrFetchShortcutByName(shortcutName);
       await userStore.getOrFetchUserById(shortcut.creatorId);
       loadingState.setFinish();
     })();
-  }, [shortcutId]);
+  }, [shortcutName]);
 
   if (loadingState.isLoading) {
     return null;
@@ -67,7 +67,7 @@ const ShortcutDetail = () => {
       content: `Are you sure to delete shortcut \`${shortcut.name}\`? You cannot undo this action.`,
       style: "danger",
       onConfirm: async () => {
-        await shortcutStore.deleteShortcut(shortcut.id);
+        await shortcutStore.deleteShortcut(shortcut.name);
         navigateTo("/", {
           replace: true,
         });
@@ -198,7 +198,7 @@ const ShortcutDetail = () => {
             <Icon.BarChart2 className="w-6 h-auto mr-1" />
             {t("analytics.self")}
           </h3>
-          <AnalyticsView className="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4" shortcutId={shortcut.id} />
+          <AnalyticsView className="mt-4 w-full grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4" shortcutName={shortcut.name} />
         </div>
       </div>
 
@@ -206,7 +206,7 @@ const ShortcutDetail = () => {
 
       {state.showEditDrawer && (
         <CreateShortcutDrawer
-          shortcutId={shortcut.id}
+          shortcutName={shortcut.name}
           onClose={() =>
             setState({
               ...state,

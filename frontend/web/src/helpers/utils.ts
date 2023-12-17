@@ -10,6 +10,11 @@ export const absolutifyLink = (rel: string): string => {
   return anchor.href;
 };
 
+export const isURL = (str: string): boolean => {
+  const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  return urlRegex.test(str);
+};
+
 export const releaseGuard = () => {
   return import.meta.env.MODE === "development";
 };

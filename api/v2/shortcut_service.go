@@ -54,7 +54,7 @@ func (s *APIV2Service) ListShortcuts(ctx context.Context, _ *apiv2pb.ListShortcu
 
 func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv2pb.GetShortcutRequest) (*apiv2pb.GetShortcutResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
-		ID: &request.Id,
+		Name: &request.Name,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get shortcut by name: %v", err)
@@ -79,6 +79,38 @@ func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv2pb.GetShor
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
 	}
 	response := &apiv2pb.GetShortcutResponse{
+		Shortcut: composedShortcut,
+	}
+	return response, nil
+}
+
+func (s *APIV2Service) GetShortcutById(ctx context.Context, request *apiv2pb.GetShortcutByIdRequest) (*apiv2pb.GetShortcutByIdResponse, error) {
+	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
+		ID: &request.Id,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get shortcut by id: %v", err)
+	}
+	if shortcut == nil {
+		return nil, status.Errorf(codes.NotFound, "shortcut not found")
+	}
+
+	userID, ok := ctx.Value(userIDContextKey).(int32)
+	if ok {
+		if shortcut.Visibility == storepb.Visibility_PRIVATE && shortcut.CreatorId != userID {
+			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+		}
+	} else {
+		if shortcut.Visibility != storepb.Visibility_PUBLIC {
+			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+		}
+	}
+
+	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
+	}
+	response := &apiv2pb.GetShortcutByIdResponse{
 		Shortcut: composedShortcut,
 	}
 	return response, nil
@@ -199,7 +231,7 @@ func (s *APIV2Service) DeleteShortcut(ctx context.Context, request *apiv2pb.Dele
 		return nil, status.Errorf(codes.Internal, "failed to get current user, err: %v", err)
 	}
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
-		ID: &request.Id,
+		Name: &request.Name,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get shortcut by name: %v", err)
@@ -223,7 +255,7 @@ func (s *APIV2Service) DeleteShortcut(ctx context.Context, request *apiv2pb.Dele
 
 func (s *APIV2Service) GetShortcutAnalytics(ctx context.Context, request *apiv2pb.GetShortcutAnalyticsRequest) (*apiv2pb.GetShortcutAnalyticsResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
-		ID: &request.Id,
+		Name: &request.Name,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get shortcut by name: %v", err)
@@ -234,7 +266,7 @@ func (s *APIV2Service) GetShortcutAnalytics(ctx context.Context, request *apiv2p
 
 	activities, err := s.Store.ListActivities(ctx, &store.FindActivity{
 		Type:  store.ActivityShortcutView,
-		Where: []string{fmt.Sprintf("json_extract(payload, '$.shortcutId') = %d", request.Id)},
+		Where: []string{fmt.Sprintf("json_extract(payload, '$.shortcutId') = %d", shortcut.Id)},
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get activities, err: %v", err)

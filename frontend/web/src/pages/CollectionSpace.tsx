@@ -14,7 +14,8 @@ import { Collection } from "@/types/proto/api/v2/collection_service";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 
 const CollectionSpace = () => {
-  const { collectionName } = useParams();
+  const params = useParams();
+  const collectionName = params["*"];
   const { sm } = useResponsiveWidth();
   const userStore = useUserStore();
   const collectionStore = useCollectionStore();
@@ -36,7 +37,7 @@ const CollectionSpace = () => {
         setShortcuts([]);
         for (const shortcutId of collection.shortcutIds) {
           try {
-            const shortcut = await shortcutStore.getOrFetchShortcutById(shortcutId);
+            const shortcut = await shortcutStore.fetchShortcutById(shortcutId);
             setShortcuts((shortcuts) => {
               return [...shortcuts, shortcut];
             });

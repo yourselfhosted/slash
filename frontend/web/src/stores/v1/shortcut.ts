@@ -4,50 +4,61 @@ import { shortcutServiceClient } from "@/grpcweb";
 import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 
 interface ShortcutState {
-  shortcutMapById: Record<number, Shortcut>;
+  shortcutMapByName: Record<string, Shortcut>;
   fetchShortcutList: () => Promise<Shortcut[]>;
-  getOrFetchShortcutById: (id: number) => Promise<Shortcut>;
-  getShortcutById: (id: number) => Shortcut;
+  fetchShortcutById: (id: number) => Promise<Shortcut>;
+  getOrFetchShortcutByName: (name: string) => Promise<Shortcut>;
+  getShortcutByName: (name: string) => Shortcut;
   getShortcutList: () => Shortcut[];
   createShortcut: (shortcut: Shortcut) => Promise<Shortcut>;
   updateShortcut: (shortcut: Partial<Shortcut>, updateMask: string[]) => Promise<Shortcut>;
-  deleteShortcut: (id: number) => Promise<void>;
+  deleteShortcut: (name: string) => Promise<void>;
 }
 
 const useShortcutStore = create<ShortcutState>()((set, get) => ({
   shortcutMapById: {},
+  shortcutMapByName: {},
   fetchShortcutList: async () => {
     const { shortcuts } = await shortcutServiceClient.listShortcuts({});
-    const shortcutMap = get().shortcutMapById;
+    const shortcutMap = get().shortcutMapByName;
     shortcuts.forEach((shortcut) => {
-      shortcutMap[shortcut.id] = shortcut;
+      shortcutMap[shortcut.name] = shortcut;
     });
     set(shortcutMap);
     return shortcuts;
   },
-  getOrFetchShortcutById: async (id: number) => {
-    const shortcutMap = get().shortcutMapById;
-    if (shortcutMap[id]) {
-      return shortcutMap[id] as Shortcut;
-    }
-
-    const { shortcut } = await shortcutServiceClient.getShortcut({
+  fetchShortcutById: async (id: number) => {
+    const { shortcut } = await shortcutServiceClient.getShortcutById({
       id: id,
     });
     if (!shortcut) {
       throw new Error(`Shortcut with id ${id} not found`);
     }
+    return shortcut;
+  },
+  getOrFetchShortcutByName: async (name: string) => {
+    const shortcutMap = get().shortcutMapByName;
+    if (shortcutMap[name]) {
+      return shortcutMap[name] as Shortcut;
+    }
 
-    shortcutMap[id] = shortcut;
+    const { shortcut } = await shortcutServiceClient.getShortcut({
+      name,
+    });
+    if (!shortcut) {
+      throw new Error(`Shortcut with name ${name} not found`);
+    }
+
+    shortcutMap[name] = shortcut;
     set(shortcutMap);
     return shortcut;
   },
-  getShortcutById: (id: number) => {
-    const shortcutMap = get().shortcutMapById;
-    return shortcutMap[id] || unknownShortcut;
+  getShortcutByName: (name: string) => {
+    const shortcutMap = get().shortcutMapByName;
+    return shortcutMap[name] || unknownShortcut;
   },
   getShortcutList: () => {
-    return Object.values(get().shortcutMapById);
+    return Object.values(get().shortcutMapByName);
   },
   createShortcut: async (shortcut: Shortcut) => {
     const { shortcut: createdShortcut } = await shortcutServiceClient.createShortcut({
@@ -56,8 +67,8 @@ const useShortcutStore = create<ShortcutState>()((set, get) => ({
     if (!createdShortcut) {
       throw new Error(`Failed to create shortcut`);
     }
-    const shortcutMap = get().shortcutMapById;
-    shortcutMap[createdShortcut.id] = createdShortcut;
+    const shortcutMap = get().shortcutMapByName;
+    shortcutMap[createdShortcut.name] = createdShortcut;
     set(shortcutMap);
     return createdShortcut;
   },
@@ -69,17 +80,17 @@ const useShortcutStore = create<ShortcutState>()((set, get) => ({
     if (!updatedShortcut) {
       throw new Error(`Failed to update shortcut`);
     }
-    const shortcutMap = get().shortcutMapById;
-    shortcutMap[updatedShortcut.id] = updatedShortcut;
+    const shortcutMap = get().shortcutMapByName;
+    shortcutMap[updatedShortcut.name] = updatedShortcut;
     set(shortcutMap);
     return updatedShortcut;
   },
-  deleteShortcut: async (id: number) => {
+  deleteShortcut: async (name: string) => {
     await shortcutServiceClient.deleteShortcut({
-      id: id,
+      name,
     });
-    const shortcutMap = get().shortcutMapById;
-    delete shortcutMap[id];
+    const shortcutMap = get().shortcutMapByName;
+    delete shortcutMap[name];
     set(shortcutMap);
   },
 }));

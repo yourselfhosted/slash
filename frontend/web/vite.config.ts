@@ -23,10 +23,6 @@ export default defineConfig({
         target: devProxyServer,
         xfwd: true,
       },
-      "^/s/": {
-        target: devProxyServer,
-        xfwd: true,
-      },
     },
   },
   resolve: {
