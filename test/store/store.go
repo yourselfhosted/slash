@@ -22,8 +22,10 @@ func NewTestingStore(ctx context.Context, t *testing.T) *store.Store {
 	if err := dbDriver.Migrate(ctx); err != nil {
 		fmt.Printf("failed to migrate db, error: %+v\n", err)
 	}
-	if err := dbDriver.Seed(ctx); err != nil {
-		fmt.Printf("failed to seed db, error: %+v\n", err)
+	if profile.Driver == "postgres" {
+		if err := dbDriver.Seed(ctx); err != nil {
+			fmt.Printf("failed to seed db, error: %+v\n", err)
+		}
 	}
 
 	store := store.New(dbDriver, profile)
