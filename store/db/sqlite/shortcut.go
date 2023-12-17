@@ -43,7 +43,7 @@ func (d *DB) CreateShortcut(ctx context.Context, create *storepb.Shortcut) (*sto
 	); err != nil {
 		return nil, err
 	}
-	create.RowStatus = convertRowStatusStringToStorepb(rowStatus)
+	create.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 	shortcut := create
 	return shortcut, nil
 }
@@ -109,7 +109,7 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 	); err != nil {
 		return nil, err
 	}
-	shortcut.RowStatus = convertRowStatusStringToStorepb(rowStatus)
+	shortcut.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 	shortcut.Visibility = convertVisibilityStringToStorepb(visibility)
 	shortcut.Tags = filterTags(strings.Split(tags, " "))
 	var ogMetadata storepb.OpenGraphMetadata
@@ -190,7 +190,7 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 		); err != nil {
 			return nil, err
 		}
-		shortcut.RowStatus = convertRowStatusStringToStorepb(rowStatus)
+		shortcut.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 		shortcut.Visibility = storepb.Visibility(storepb.Visibility_value[visibility])
 		shortcut.Tags = filterTags(strings.Split(tags, " "))
 		var ogMetadata storepb.OpenGraphMetadata
@@ -216,16 +216,7 @@ func (d *DB) DeleteShortcut(ctx context.Context, delete *store.DeleteShortcut) e
 }
 
 func vacuumShortcut(ctx context.Context, tx *sql.Tx) error {
-	stmt := `
-	DELETE FROM 
-		shortcut 
-	WHERE 
-		creator_id NOT IN (
-			SELECT 
-				id 
-			FROM 
-				user
-		)`
+	stmt := `DELETE FROM shortcut WHERE creator_id NOT IN (SELECT id FROM user)`
 	_, err := tx.ExecContext(ctx, stmt)
 	if err != nil {
 		return err

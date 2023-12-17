@@ -163,12 +163,13 @@ func (d *DB) DeleteUser(ctx context.Context, delete *store.DeleteUser) error {
 	if err := vacuumUserSetting(ctx, tx); err != nil {
 		return err
 	}
-
 	if err := vacuumShortcut(ctx, tx); err != nil {
 		return err
 	}
-
 	if err := vacuumMemo(ctx, tx); err != nil {
+		return err
+	}
+	if err := vacuumCollection(ctx, tx); err != nil {
 		return err
 	}
 

@@ -33,7 +33,7 @@ func (d *DB) CreateMemo(ctx context.Context, create *storepb.Memo) (*storepb.Mem
 	); err != nil {
 		return nil, err
 	}
-	create.RowStatus = convertRowStatusStringToStorepb(rowStatus)
+	create.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 	memo := create
 	return memo, nil
 }
@@ -87,7 +87,7 @@ func (d *DB) UpdateMemo(ctx context.Context, update *store.UpdateMemo) (*storepb
 	); err != nil {
 		return nil, err
 	}
-	memo.RowStatus = convertRowStatusStringToStorepb(rowStatus)
+	memo.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 	memo.Visibility = convertVisibilityStringToStorepb(visibility)
 	memo.Tags = filterTags(strings.Split(tags, " "))
 	return memo, nil
@@ -159,7 +159,7 @@ func (d *DB) ListMemos(ctx context.Context, find *store.FindMemo) ([]*storepb.Me
 		); err != nil {
 			return nil, err
 		}
-		memo.RowStatus = convertRowStatusStringToStorepb(rowStatus)
+		memo.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 		memo.Visibility = storepb.Visibility(storepb.Visibility_value[visibility])
 		memo.Tags = filterTags(strings.Split(tags, " "))
 		list = append(list, memo)
@@ -179,16 +179,7 @@ func (d *DB) DeleteMemo(ctx context.Context, delete *store.DeleteMemo) error {
 }
 
 func vacuumMemo(ctx context.Context, tx *sql.Tx) error {
-	stmt := `
-	DELETE FROM 
-		memo 
-	WHERE 
-		creator_id NOT IN (
-			SELECT 
-				id 
-			FROM 
-				user
-		)`
+	stmt := `DELETE FROM memo WHERE creator_id NOT IN (SELECT id FROM user)`
 	_, err := tx.ExecContext(ctx, stmt)
 	if err != nil {
 		return err

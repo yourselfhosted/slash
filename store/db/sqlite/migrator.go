@@ -229,6 +229,5 @@ func getMinorVersionList() []string {
 	}
 
 	sort.Sort(version.SortVersion(minorVersionList))
-
 	return minorVersionList
 }

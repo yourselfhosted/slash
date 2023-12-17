@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 
@@ -176,6 +177,16 @@ func (d *DB) ListCollections(ctx context.Context, find *store.FindCollection) ([
 
 func (d *DB) DeleteCollection(ctx context.Context, delete *store.DeleteCollection) error {
 	if _, err := d.db.ExecContext(ctx, `DELETE FROM collection WHERE id = ?`, delete.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func vacuumCollection(ctx context.Context, tx *sql.Tx) error {
+	stmt := `DELETE FROM collection WHERE creator_id NOT IN (SELECT id FROM user)`
+	_, err := tx.ExecContext(ctx, stmt)
+	if err != nil {
 		return err
 	}
 
