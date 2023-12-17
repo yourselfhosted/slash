@@ -3,6 +3,7 @@ package server
 import (
 	"embed"
 	"fmt"
+	"html/template"
 	"io/fs"
 	"net/http"
 	"strings"
@@ -142,18 +143,18 @@ Sitemap: %s/sitemap.xml`, instanceURL, instanceURL)
 
 func generateShortcutMetadata(shortcut *storepb.Shortcut) string {
 	metadataList := []string{
-		fmt.Sprintf(`<title>%s</title>`, shortcut.OgMetadata.Title),
-		fmt.Sprintf(`<meta name="description" content="%s" />`, shortcut.OgMetadata.Description),
-		fmt.Sprintf(`<meta property="og:title" content="%s" />`, shortcut.OgMetadata.Title),
-		fmt.Sprintf(`<meta property="og:description" content="%s" />`, shortcut.OgMetadata.Description),
-		fmt.Sprintf(`<meta property="og:image" content="%s" />`, shortcut.OgMetadata.Image),
+		fmt.Sprintf(`<title>%s</title>`, template.HTMLEscapeString(shortcut.OgMetadata.Title)),
+		fmt.Sprintf(`<meta name="description" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Description)),
+		fmt.Sprintf(`<meta property="og:title" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Title)),
+		fmt.Sprintf(`<meta property="og:description" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Description)),
+		fmt.Sprintf(`<meta property="og:image" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Image)),
 		`<meta property="og:type" content="website" />`,
 		// Twitter related metadata.
-		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, shortcut.OgMetadata.Title),
-		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, shortcut.OgMetadata.Description),
-		fmt.Sprintf(`<meta name="twitter:image" content="%s" />`, shortcut.OgMetadata.Image),
+		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Title)),
+		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Description)),
+		fmt.Sprintf(`<meta name="twitter:image" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Image)),
 		`<meta name="twitter:card" content="summary_large_image" />`,
-		fmt.Sprintf(`<meta property="og:url" content="%s" />`, shortcut.Link),
+		fmt.Sprintf(`<meta property="og:url" content="%s" />`, template.HTMLEscapeString(shortcut.Link)),
 	}
 	return strings.Join(metadataList, "\n")
 }
