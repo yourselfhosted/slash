@@ -22,7 +22,14 @@ const SubscriptionFAQ = () => {
         <Accordion>
           <AccordionSummary>{`Can I get a refund if Slash doesn't meet my needs?`}</AccordionSummary>
           <AccordionDetails>
-            Yes, absolutely! You can send a email to me at `yourselfhosted@gmail.com`. I will refund you as soon as possible.
+            Yes, absolutely! You can contact us with `yourselfhosted@gmail.com`. I will refund you as soon as possible.
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary>Is there a Lifetime license?</AccordionSummary>
+          <AccordionDetails>
+            {`As software requires someone to maintain it, so we won't sell a lifetime service, since humans are not immortal yet. But if you
+            really want it, please contact us "yourselfhosted@gmail.com".`}
           </AccordionDetails>
         </Accordion>
       </AccordionGroup>
