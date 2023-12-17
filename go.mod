@@ -74,6 +74,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.1
 	github.com/h2non/filetype v1.1.3
 	github.com/improbable-eng/grpc-web v0.15.0
+	github.com/lib/pq v1.10.9
 	github.com/mssola/useragent v1.0.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1

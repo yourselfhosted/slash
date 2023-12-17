@@ -5,6 +5,7 @@ import (
 
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
+	"github.com/yourselfhosted/slash/store/db/postgres"
 	"github.com/yourselfhosted/slash/store/db/sqlite"
 )
 
@@ -16,6 +17,8 @@ func NewDBDriver(profile *profile.Profile) (store.Driver, error) {
 	switch profile.Driver {
 	case "sqlite":
 		driver, err = sqlite.NewDB(profile)
+	case "postgres":
+		driver, err = postgres.NewDB(profile)
 	default:
 		return nil, errors.New("unknown db driver")
 	}

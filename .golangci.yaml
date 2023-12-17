@@ -65,6 +65,8 @@ linters-settings:
         disabled: true
       - name: early-return
         disabled: true
+      - name: use-any
+        disabled: true
       - name: exported
         arguments:
           - "disableStutteringCheck"
