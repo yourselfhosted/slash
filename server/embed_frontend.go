@@ -45,10 +45,6 @@ func (s *FrontendService) Serve(e *echo.Echo) {
 	}))
 
 	assetsGroup := e.Group("assets")
-	assetsGroup.Use(middleware.GzipWithConfig(middleware.GzipConfig{
-		Skipper: defaultRequestSkipper,
-		Level:   5,
-	}))
 	assetsGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			c.Response().Header().Set(echo.HeaderCacheControl, "max-age=31536000, immutable")
