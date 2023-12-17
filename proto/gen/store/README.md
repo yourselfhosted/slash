@@ -416,6 +416,7 @@
 | custom_style | [string](#string) |  |  |
 | custom_script | [string](#string) |  |  |
 | auto_backup | [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting) |  |  |
+| instance_url | [string](#string) |  |  |
 
 
 
@@ -438,6 +439,7 @@
 | WORKSPACE_SETTING_CUSTOM_STYLE | 4 | The custom style. |
 | WORKSPACE_SETTING_CUSTOM_SCRIPT | 5 | The custom script. |
 | WORKSPACE_SETTING_AUTO_BACKUP | 6 | The auto backup setting. |
+| WORKSPACE_SETTING_INSTANCE_URL | 7 | The instance URL. |
 
 
  

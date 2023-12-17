@@ -39,6 +39,8 @@ func (d *DB) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.Workspa
 			return nil, err
 		}
 		valueString = string(valueBytes)
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL {
+		valueString = upsert.GetInstanceUrl()
 	} else {
 		return nil, errors.New("invalid workspace setting key")
 	}
@@ -102,6 +104,8 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 				return nil, err
 			}
 			workspaceSetting.Value = &storepb.WorkspaceSetting_AutoBackup{AutoBackup: autoBackupSetting}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL {
+			workspaceSetting.Value = &storepb.WorkspaceSetting_InstanceUrl{InstanceUrl: valueString}
 		} else {
 			continue
 		}

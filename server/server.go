@@ -90,7 +90,9 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 		},
 	}))
 
-	embedFrontend(e)
+	// Serve frontend.
+	frontendService := NewFrontendService(profile, store)
+	frontendService.Serve(e)
 
 	// In dev mode, we'd like to set the const secret key to make signin session persistence.
 	secret := "slash"

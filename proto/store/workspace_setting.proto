@@ -14,6 +14,7 @@ message WorkspaceSetting {
     string custom_style = 5;
     string custom_script = 6;
     AutoBackupWorkspaceSetting auto_backup = 7;
+    string instance_url = 8;
   }
 }
 
@@ -31,6 +32,8 @@ enum WorkspaceSettingKey {
   WORKSPACE_SETTING_CUSTOM_SCRIPT = 5;
   // The auto backup setting.
   WORKSPACE_SETTING_AUTO_BACKUP = 6;
+  // The instance URL.
+  WORKSPACE_SETTING_INSTANCE_URL = 7;
 }
 
 message AutoBackupWorkspaceSetting {
