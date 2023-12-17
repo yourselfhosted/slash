@@ -1,7 +1,6 @@
 package store
 
 import (
-	"database/sql"
 	"sync"
 
 	"github.com/yourselfhosted/slash/server/profile"
@@ -9,8 +8,8 @@ import (
 
 // Store provides database access to all raw objects.
 type Store struct {
-	db      *sql.DB
 	profile *profile.Profile
+	driver  Driver
 
 	workspaceSettingCache sync.Map // map[string]*WorkspaceSetting
 	userCache             sync.Map // map[int]*User
@@ -19,14 +18,14 @@ type Store struct {
 }
 
 // New creates a new instance of Store.
-func New(db *sql.DB, profile *profile.Profile) *Store {
+func New(driver Driver, profile *profile.Profile) *Store {
 	return &Store{
-		db:      db,
+		driver:  driver,
 		profile: profile,
 	}
 }
 
 // Close closes the database connection.
 func (s *Store) Close() error {
-	return s.db.Close()
+	return s.driver.Close()
 }

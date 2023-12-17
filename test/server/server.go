@@ -31,12 +31,17 @@ type TestingServer struct {
 
 func NewTestingServer(ctx context.Context, t *testing.T) (*TestingServer, error) {
 	profile := test.GetTestingProfile(t)
-	db := db.NewDB(profile)
-	if err := db.Open(ctx); err != nil {
-		return nil, errors.Wrap(err, "failed to open db")
+	dbDriver, err := db.NewDBDriver(profile)
+	if err != nil {
+		fmt.Printf("failed to create db driver, error: %+v\n", err)
+		return nil, err
+	}
+	if err := dbDriver.Migrate(ctx); err != nil {
+		fmt.Printf("failed to migrate db, error: %+v\n", err)
+		return nil, err
 	}
 
-	store := store.New(db.DBInstance, profile)
+	store := store.New(dbDriver, profile)
 	server, err := server.NewServer(ctx, profile, store)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create server")

@@ -23,6 +23,9 @@ type Profile struct {
 	Data string `json:"-"`
 	// DSN points to where slash stores its own data
 	DSN string `json:"-"`
+	// Driver is the database driver
+	// sqlite, mysql
+	Driver string `json:"-"`
 	// Version is the current version of server
 	Version string `json:"version"`
 }

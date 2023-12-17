@@ -30,20 +30,27 @@ var (
 	mode          string
 	port          int
 	data          string
+	driver        string
+	dsn           string
 
 	rootCmd = &cobra.Command{
 		Use:   "slash",
 		Short: `An open source, self-hosted bookmarks and link sharing platform.`,
 		Run: func(_cmd *cobra.Command, _args []string) {
 			ctx, cancel := context.WithCancel(context.Background())
-			db := db.NewDB(serverProfile)
-			if err := db.Open(ctx); err != nil {
+			dbDriver, err := db.NewDBDriver(serverProfile)
+			if err != nil {
 				cancel()
-				log.Error("failed to open database", zap.Error(err))
+				log.Error("failed to create db driver", zap.Error(err))
+				return
+			}
+			if err := dbDriver.Migrate(ctx); err != nil {
+				cancel()
+				log.Error("failed to migrate db", zap.Error(err))
 				return
 			}
 
-			storeInstance := store.New(db.DBInstance, serverProfile)
+			storeInstance := store.New(dbDriver, serverProfile)
 			s, err := server.NewServer(ctx, serverProfile, storeInstance)
 			if err != nil {
 				cancel()
@@ -92,6 +99,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&mode, "mode", "m", "demo", `mode of server, can be "prod" or "dev" or "demo"`)
 	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 8082, "port of server")
 	rootCmd.PersistentFlags().StringVarP(&data, "data", "d", "", "data directory")
+	rootCmd.PersistentFlags().StringVarP(&driver, "driver", "", "", "database driver")
+	rootCmd.PersistentFlags().StringVarP(&dsn, "dsn", "", "", "database source name(aka. DSN)")
 
 	err := viper.BindPFlag("mode", rootCmd.PersistentFlags().Lookup("mode"))
 	if err != nil {
@@ -105,9 +114,18 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	err = viper.BindPFlag("driver", rootCmd.PersistentFlags().Lookup("driver"))
+	if err != nil {
+		panic(err)
+	}
+	err = viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
+	if err != nil {
+		panic(err)
+	}
 
 	viper.SetDefault("mode", "demo")
 	viper.SetDefault("port", 8082)
+	viper.SetDefault("driver", "sqlite")
 	viper.SetEnvPrefix("slash")
 }
 
