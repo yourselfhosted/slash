@@ -1,4 +1,3 @@
--- drop all tables first (PostgreSQL style)
 DROP TABLE IF EXISTS migration_history CASCADE;
 DROP TABLE IF EXISTS workspace_setting CASCADE;
 DROP TABLE IF EXISTS "user" CASCADE;
@@ -63,7 +62,7 @@ CREATE INDEX idx_shortcut_name ON shortcut(name);
 -- activity
 CREATE TABLE activity (
   id SERIAL PRIMARY KEY,
-  creator_id INTEGER REFERENCES "user"(id) NOT NULL,
+  creator_id INTEGER NOT NULL,
   created_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   type TEXT NOT NULL DEFAULT '',
   level TEXT NOT NULL CHECK (level IN ('INFO', 'WARN', 'ERROR')) DEFAULT 'INFO',

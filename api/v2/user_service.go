@@ -19,6 +19,11 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
+const (
+	// BotID is the id of bot.
+	BotID = 0
+)
+
 func (s *APIV2Service) ListUsers(ctx context.Context, _ *apiv2pb.ListUsersRequest) (*apiv2pb.ListUsersResponse, error) {
 	users, err := s.Store.ListUsers(ctx, &store.FindUser{})
 	if err != nil {

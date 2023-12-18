@@ -1200,6 +1200,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | name | [string](#string) |  |  |
+| record_view | [bool](#bool) |  |  |
 
 
 

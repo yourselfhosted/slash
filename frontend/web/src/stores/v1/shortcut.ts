@@ -7,7 +7,7 @@ interface ShortcutState {
   shortcutMapByName: Record<string, Shortcut>;
   fetchShortcutList: () => Promise<Shortcut[]>;
   fetchShortcutById: (id: number) => Promise<Shortcut>;
-  getOrFetchShortcutByName: (name: string) => Promise<Shortcut>;
+  getOrFetchShortcutByName: (name: string, recordView?: boolean) => Promise<Shortcut>;
   getShortcutByName: (name: string) => Shortcut;
   getShortcutList: () => Shortcut[];
   createShortcut: (shortcut: Shortcut) => Promise<Shortcut>;
@@ -36,7 +36,7 @@ const useShortcutStore = create<ShortcutState>()((set, get) => ({
     }
     return shortcut;
   },
-  getOrFetchShortcutByName: async (name: string) => {
+  getOrFetchShortcutByName: async (name: string, recordView = false) => {
     const shortcutMap = get().shortcutMapByName;
     if (shortcutMap[name]) {
       return shortcutMap[name] as Shortcut;
@@ -44,6 +44,7 @@ const useShortcutStore = create<ShortcutState>()((set, get) => ({
 
     const { shortcut } = await shortcutServiceClient.getShortcut({
       name,
+      recordView,
     });
     if (!shortcut) {
       throw new Error(`Shortcut with name ${name} not found`);

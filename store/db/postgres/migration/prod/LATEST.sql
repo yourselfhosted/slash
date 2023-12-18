@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS migration_history CASCADE;
+DROP TABLE IF EXISTS workspace_setting CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS user_setting CASCADE;
+DROP TABLE IF EXISTS shortcut CASCADE;
+DROP TABLE IF EXISTS activity CASCADE;
+DROP TABLE IF EXISTS collection CASCADE;
+DROP TABLE IF EXISTS memo CASCADE;
+
 -- migration_history
 CREATE TABLE migration_history (
   version TEXT NOT NULL PRIMARY KEY,
@@ -53,7 +62,7 @@ CREATE INDEX idx_shortcut_name ON shortcut(name);
 -- activity
 CREATE TABLE activity (
   id SERIAL PRIMARY KEY,
-  creator_id INTEGER REFERENCES "user"(id) NOT NULL,
+  creator_id INTEGER NOT NULL,
   created_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
   type TEXT NOT NULL DEFAULT '',
   level TEXT NOT NULL CHECK (level IN ('INFO', 'WARN', 'ERROR')) DEFAULT 'INFO',

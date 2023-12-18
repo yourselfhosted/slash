@@ -13,7 +13,7 @@ const ShortcutSpace = () => {
   useEffect(() => {
     (async () => {
       try {
-        await shortcutStore.getOrFetchShortcutByName(shortcutName);
+        await shortcutStore.getOrFetchShortcutByName(shortcutName, true);
       } catch (error: any) {
         console.error(error);
         toast.error(error.details);
@@ -26,6 +26,7 @@ const ShortcutSpace = () => {
   }
 
   if (isURL(shortcut.link)) {
+    window.document.title = "Redirecting...";
     window.location.href = shortcut.link;
     return null;
   }

@@ -10,6 +10,8 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/exp/slices"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -71,6 +73,13 @@ func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv2pb.GetShor
 	} else {
 		if shortcut.Visibility != storepb.Visibility_PUBLIC {
 			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+		}
+	}
+
+	// Create activity if request is from record view.
+	if request.RecordView {
+		if err := s.createShortcutViewActivity(ctx, shortcut); err != nil {
+			fmt.Printf("failed to create activity, err: %v", err)
 		}
 	}
 
@@ -322,6 +331,35 @@ func mapToAnalyticsSlice(m map[string]int32) []*apiv2pb.GetShortcutAnalyticsResp
 		return int(i.Count - j.Count)
 	})
 	return analyticsSlice
+}
+
+func (s *APIV2Service) createShortcutViewActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
+	p, _ := peer.FromContext(ctx)
+	headers, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return errors.New("Failed to get metadata from context")
+	}
+	payload := &storepb.ActivityShorcutViewPayload{
+		ShortcutId: shortcut.Id,
+		Ip:         p.Addr.String(),
+		Referer:    headers.Get("referer")[0],
+		UserAgent:  headers.Get("user-agent")[0],
+	}
+	payloadStr, err := protojson.Marshal(payload)
+	if err != nil {
+		return errors.Wrap(err, "Failed to marshal activity payload")
+	}
+	activity := &store.Activity{
+		CreatorID: BotID,
+		Type:      store.ActivityShortcutCreate,
+		Level:     store.ActivityInfo,
+		Payload:   string(payloadStr),
+	}
+	_, err = s.Store.CreateActivity(ctx, activity)
+	if err != nil {
+		return errors.Wrap(err, "Failed to create activity")
+	}
+	return nil
 }
 
 func (s *APIV2Service) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {

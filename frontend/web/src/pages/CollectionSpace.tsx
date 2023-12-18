@@ -32,7 +32,6 @@ const CollectionSpace = () => {
     (async () => {
       try {
         const collection = await collectionStore.fetchCollectionByName(collectionName);
-        await userStore.getOrFetchUserById(collection.creatorId);
         setCollection(collection);
         setShortcuts([]);
         for (const shortcutId of collection.shortcutIds) {
