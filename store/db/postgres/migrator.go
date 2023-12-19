@@ -8,7 +8,6 @@ import (
 	"os"
 	"regexp"
 	"sort"
-	"time"
 
 	"github.com/pkg/errors"
 
@@ -72,16 +71,6 @@ func (d *DB) Migrate(ctx context.Context) error {
 
 			if version.IsVersionGreaterThan(version.GetSchemaVersion(currentVersion), latestMigrationHistoryVersion) {
 				minorVersionList := getMinorVersionList()
-				// backup the raw database file before migration
-				rawBytes, err := os.ReadFile(d.profile.DSN)
-				if err != nil {
-					return errors.Wrap(err, "failed to read raw database file")
-				}
-				backupDBFilePath := fmt.Sprintf("%s/memos_%s_%d_backup.db", d.profile.Data, d.profile.Version, time.Now().Unix())
-				if err := os.WriteFile(backupDBFilePath, rawBytes, 0644); err != nil {
-					return errors.Wrap(err, "failed to write raw database file")
-				}
-				println("succeed to copy a backup database file")
 				println("start migrate")
 				for _, minorVersion := range minorVersionList {
 					normalizedVersion := minorVersion + ".0"
@@ -93,11 +82,6 @@ func (d *DB) Migrate(ctx context.Context) error {
 					}
 				}
 				println("end migrate")
-
-				// remove the created backup db file after migrate succeed
-				if err := os.Remove(backupDBFilePath); err != nil {
-					println(fmt.Sprintf("Failed to remove temp database file, err %v", err))
-				}
 			}
 		}
 	} else {
