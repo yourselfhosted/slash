@@ -56,9 +56,9 @@ type Activity struct {
 }
 
 type FindActivity struct {
-	Type  ActivityType
-	Level ActivityLevel
-	Where []string
+	Type              ActivityType
+	Level             ActivityLevel
+	PayloadShortcutID *int32
 }
 
 func (s *Store) CreateActivity(ctx context.Context, create *Activity) (*Activity, error) {

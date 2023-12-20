@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/yourselfhosted/slash/store"
@@ -42,8 +43,8 @@ func (d *DB) ListActivities(ctx context.Context, find *store.FindActivity) ([]*s
 	if find.Level != "" {
 		where, args = append(where, "level = "+placeholder(len(args)+1)), append(args, find.Level.String())
 	}
-	if find.Where != nil {
-		where = append(where, find.Where...)
+	if find.PayloadShortcutID != nil {
+		where, args = append(where, fmt.Sprintf("CAST(payload as JSON)->>'shortcutId' = %s", placeholder(len(args)+1))), append(args, *find.PayloadShortcutID)
 	}
 
 	query := `

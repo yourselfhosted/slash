@@ -42,8 +42,8 @@ func (d *DB) ListActivities(ctx context.Context, find *store.FindActivity) ([]*s
 	if find.Level != "" {
 		where, args = append(where, "level = ?"), append(args, find.Level.String())
 	}
-	if find.Where != nil {
-		where = append(where, find.Where...)
+	if find.PayloadShortcutID != nil {
+		where, args = append(where, "json_extract(payload, '$.shortcutId') = ?"), append(args, *find.PayloadShortcutID)
 	}
 
 	query := `

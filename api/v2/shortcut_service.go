@@ -274,8 +274,8 @@ func (s *APIV2Service) GetShortcutAnalytics(ctx context.Context, request *apiv2p
 	}
 
 	activities, err := s.Store.ListActivities(ctx, &store.FindActivity{
-		Type:  store.ActivityShortcutView,
-		Where: []string{fmt.Sprintf("json_extract(payload, '$.shortcutId') = %d", shortcut.Id)},
+		Type:              store.ActivityShortcutView,
+		PayloadShortcutID: &shortcut.Id,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get activities, err: %v", err)
@@ -404,9 +404,9 @@ func (s *APIV2Service) convertShortcutFromStorepb(ctx context.Context, shortcut 
 	}
 
 	activityList, err := s.Store.ListActivities(ctx, &store.FindActivity{
-		Type:  store.ActivityShortcutView,
-		Level: store.ActivityInfo,
-		Where: []string{fmt.Sprintf("json_extract(payload, '$.shortcutId') = %d", composedShortcut.Id)},
+		Type:              store.ActivityShortcutView,
+		Level:             store.ActivityInfo,
+		PayloadShortcutID: &composedShortcut.Id,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to list activities")

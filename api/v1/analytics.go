@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"github.com/mssola/useragent"
 	"golang.org/x/exp/slices"
 
+	"github.com/yourselfhosted/slash/internal/util"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -38,13 +38,13 @@ type AnalysisData struct {
 func (s *APIV1Service) registerAnalyticsRoutes(g *echo.Group) {
 	g.GET("/shortcut/:shortcutId/analytics", func(c echo.Context) error {
 		ctx := c.Request().Context()
-		shortcutID, err := strconv.Atoi(c.Param("shortcutId"))
+		shortcutID, err := util.ConvertStringToInt32(c.Param("shortcutId"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("shortcut id is not a number: %s", c.Param("shortcutId"))).SetInternal(err)
 		}
 		activities, err := s.Store.ListActivities(ctx, &store.FindActivity{
-			Type:  store.ActivityShortcutView,
-			Where: []string{fmt.Sprintf("json_extract(payload, '$.shortcutId') = %d", shortcutID)},
+			Type:              store.ActivityShortcutView,
+			PayloadShortcutID: &shortcutID,
 		})
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("failed to get activities, err: %s", err)).SetInternal(err)

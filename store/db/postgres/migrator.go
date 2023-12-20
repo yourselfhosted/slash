@@ -5,14 +5,18 @@ import (
 	"embed"
 	"fmt"
 	"io/fs"
-	"os"
 	"regexp"
 	"sort"
+	"strings"
 
 	"github.com/pkg/errors"
 
 	"github.com/yourselfhosted/slash/server/version"
 	"github.com/yourselfhosted/slash/store"
+)
+
+const (
+	latestSchemaFileName = "LATEST.sql"
 )
 
 //go:embed migration
@@ -21,135 +25,131 @@ var migrationFS embed.FS
 //go:embed seed
 var seedFS embed.FS
 
-// Migrate applies the latest schema to the database.
 func (d *DB) Migrate(ctx context.Context) error {
-	currentVersion := version.GetCurrentVersion(d.profile.Mode)
-	if d.profile.Mode == "prod" {
-		_, err := os.Stat(d.profile.DSN)
-		if err != nil {
-			// If db file not exists, we should create a new one with latest schema.
-			if errors.Is(err, os.ErrNotExist) {
-				if err := d.applyLatestSchema(ctx); err != nil {
-					return errors.Wrap(err, "failed to apply latest schema")
-				}
-				// Upsert the newest version to migration_history.
-				if _, err := d.UpsertMigrationHistory(ctx, &store.UpsertMigrationHistory{
-					Version: currentVersion,
-				}); err != nil {
-					return errors.Wrap(err, "failed to upsert migration history")
-				}
-			} else {
-				return errors.Wrap(err, "failed to get db file stat")
-			}
-		} else {
-			// If db file exists, we should check if we need to migrate the database.
-			migrationHistoryList, err := d.ListMigrationHistories(ctx, &store.FindMigrationHistory{})
-			if err != nil {
-				return errors.Wrap(err, "failed to find migration history")
-			}
-			// If no migration history, we should apply the latest version migration and upsert the migration history.
-			if len(migrationHistoryList) == 0 {
-				minorVersion := version.GetMinorVersion(currentVersion)
-				if err := d.applyMigrationForMinorVersion(ctx, minorVersion); err != nil {
-					return errors.Wrapf(err, "failed to apply version %s migration", minorVersion)
-				}
-				_, err := d.UpsertMigrationHistory(ctx, &store.UpsertMigrationHistory{
-					Version: currentVersion,
-				})
-				if err != nil {
-					return errors.Wrap(err, "failed to upsert migration history")
-				}
-				return nil
-			}
-
-			migrationHistoryVersionList := []string{}
-			for _, migrationHistory := range migrationHistoryList {
-				migrationHistoryVersionList = append(migrationHistoryVersionList, migrationHistory.Version)
-			}
-			sort.Sort(version.SortVersion(migrationHistoryVersionList))
-			latestMigrationHistoryVersion := migrationHistoryVersionList[len(migrationHistoryVersionList)-1]
-
-			if version.IsVersionGreaterThan(version.GetSchemaVersion(currentVersion), latestMigrationHistoryVersion) {
-				minorVersionList := getMinorVersionList()
-				println("start migrate")
-				for _, minorVersion := range minorVersionList {
-					normalizedVersion := minorVersion + ".0"
-					if version.IsVersionGreaterThan(normalizedVersion, latestMigrationHistoryVersion) && version.IsVersionGreaterOrEqualThan(currentVersion, normalizedVersion) {
-						println("applying migration for", normalizedVersion)
-						if err := d.applyMigrationForMinorVersion(ctx, minorVersion); err != nil {
-							return errors.Wrap(err, "failed to apply minor version migration")
-						}
-					}
-				}
-				println("end migrate")
-			}
-		}
-	} else {
-		// In non-prod mode, we should always migrate the database.
-		if _, err := os.Stat(d.profile.DSN); errors.Is(err, os.ErrNotExist) {
-			if err := d.applyLatestSchema(ctx); err != nil {
-				return errors.Wrap(err, "failed to apply latest schema")
-			}
-			// In demo mode, we should seed the database.
-			if d.profile.Mode == "demo" {
-				if err := d.Seed(ctx); err != nil {
-					return errors.Wrap(err, "failed to seed")
-				}
-			}
-		}
+	if d.profile.IsDev() {
+		return d.nonProdMigrate(ctx)
 	}
 
+	return d.prodMigrate(ctx)
+}
+
+func (d *DB) nonProdMigrate(ctx context.Context) error {
+	rows, err := d.db.QueryContext(ctx, "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';")
+	if err != nil {
+		return errors.Errorf("failed to query database tables: %s", err)
+	}
+	if rows.Err() != nil {
+		return errors.Errorf("failed to query database tables: %s", err)
+	}
+	defer rows.Close()
+
+	var tables []string
+	for rows.Next() {
+		var table string
+		err := rows.Scan(&table)
+		if err != nil {
+			return errors.Errorf("failed to scan table name: %s", err)
+		}
+		tables = append(tables, table)
+	}
+
+	if len(tables) != 0 {
+		return nil
+	}
+
+	println("no tables in the database. start migration")
+
+	buf, err := migrationFS.ReadFile("migration/dev/" + latestSchemaFileName)
+	if err != nil {
+		return errors.Errorf("failed to read latest schema file: %s", err)
+	}
+
+	stmt := string(buf)
+	if _, err := d.db.ExecContext(ctx, stmt); err != nil {
+		return errors.Errorf("failed to exec SQL %s: %s", stmt, err)
+	}
+
+	// In demo mode, we should seed the database.
+	if d.profile.Mode == "demo" {
+		if err := d.Seed(ctx); err != nil {
+			return errors.Wrap(err, "failed to seed")
+		}
+	}
 	return nil
 }
 
-const (
-	latestSchemaFileName = "LATEST.sql"
-)
+func (d *DB) prodMigrate(ctx context.Context) error {
+	currentVersion := version.GetCurrentVersion(d.profile.Mode)
+	migrationHistoryList, err := d.ListMigrationHistories(ctx, &store.FindMigrationHistory{})
+	// If there is no migration history, we should apply the latest schema.
+	if err != nil || len(migrationHistoryList) == 0 {
+		buf, err := migrationFS.ReadFile("migration/prod/" + latestSchemaFileName)
+		if err != nil {
+			return errors.Errorf("failed to read latest schema file: %s", err)
+		}
 
-func (d *DB) applyLatestSchema(ctx context.Context) error {
-	schemaMode := "dev"
-	if d.profile.Mode == "prod" {
-		schemaMode = "prod"
+		stmt := string(buf)
+		if _, err := d.db.ExecContext(ctx, stmt); err != nil {
+			return errors.Errorf("failed to exec SQL %s: %s", stmt, err)
+		}
+		if _, err := d.UpsertMigrationHistory(ctx, &store.UpsertMigrationHistory{
+			Version: currentVersion,
+		}); err != nil {
+			return errors.Wrap(err, "failed to upsert migration history")
+		}
+		return nil
 	}
-	latestSchemaPath := fmt.Sprintf("migration/%s/%s", schemaMode, latestSchemaFileName)
-	buf, err := migrationFS.ReadFile(latestSchemaPath)
-	if err != nil {
-		return errors.Wrapf(err, "failed to read latest schema %q", latestSchemaPath)
+
+	migrationHistoryVersionList := []string{}
+	for _, migrationHistory := range migrationHistoryList {
+		migrationHistoryVersionList = append(migrationHistoryVersionList, migrationHistory.Version)
 	}
-	stmt := string(buf)
-	if err := d.execute(ctx, stmt); err != nil {
-		return errors.Wrapf(err, "migrate error: %s", stmt)
+	sort.Sort(version.SortVersion(migrationHistoryVersionList))
+	latestMigrationHistoryVersion := migrationHistoryVersionList[len(migrationHistoryVersionList)-1]
+	if !version.IsVersionGreaterThan(version.GetSchemaVersion(currentVersion), latestMigrationHistoryVersion) {
+		return nil
 	}
+
+	println("start migrate")
+	for _, minorVersion := range getMinorVersionList() {
+		normalizedVersion := minorVersion + ".0"
+		if version.IsVersionGreaterThan(normalizedVersion, latestMigrationHistoryVersion) && version.IsVersionGreaterOrEqualThan(currentVersion, normalizedVersion) {
+			println("applying migration for", normalizedVersion)
+			if err := d.applyMigrationForMinorVersion(ctx, minorVersion); err != nil {
+				return errors.Wrap(err, "failed to apply minor version migration")
+			}
+		}
+	}
+	println("end migrate")
 	return nil
 }
 
 func (d *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion string) error {
-	filenames, err := fs.Glob(migrationFS, fmt.Sprintf("%s/%s/*.sql", "migration/prod", minorVersion))
+	filenames, err := fs.Glob(migrationFS, fmt.Sprintf("migration/prod/%s/*.sql", minorVersion))
 	if err != nil {
 		return errors.Wrap(err, "failed to read ddl files")
 	}
 
 	sort.Strings(filenames)
-	migrationStmt := ""
-
 	// Loop over all migration files and execute them in order.
 	for _, filename := range filenames {
 		buf, err := migrationFS.ReadFile(filename)
 		if err != nil {
 			return errors.Wrapf(err, "failed to read minor version migration file, filename=%s", filename)
 		}
-		stmt := string(buf)
-		migrationStmt += stmt
-		if err := d.execute(ctx, stmt); err != nil {
-			return errors.Wrapf(err, "migrate error: %s", stmt)
+		for _, stmt := range strings.Split(string(buf), ";") {
+			if strings.TrimSpace(stmt) == "" {
+				continue
+			}
+			if _, err := d.db.ExecContext(ctx, stmt); err != nil {
+				return errors.Wrapf(err, "migrate error: %s", stmt)
+			}
 		}
 	}
 
 	// Upsert the newest version to migration_history.
 	version := minorVersion + ".0"
-	if _, err = d.UpsertMigrationHistory(ctx, &store.UpsertMigrationHistory{
-		Version: version,
-	}); err != nil {
+	if _, err = d.UpsertMigrationHistory(ctx, &store.UpsertMigrationHistory{Version: version}); err != nil {
 		return errors.Wrapf(err, "failed to upsert migration history with version: %s", version)
 	}
 

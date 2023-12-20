@@ -318,9 +318,9 @@ func (s *APIV1Service) composeShortcut(ctx context.Context, shortcut *Shortcut) 
 	shortcut.Creator = convertUserFromStore(user)
 
 	activityList, err := s.Store.ListActivities(ctx, &store.FindActivity{
-		Type:  store.ActivityShortcutView,
-		Level: store.ActivityInfo,
-		Where: []string{fmt.Sprintf("json_extract(payload, '$.shortcutId') = %d", shortcut.ID)},
+		Type:              store.ActivityShortcutView,
+		Level:             store.ActivityInfo,
+		PayloadShortcutID: &shortcut.ID,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to list activities")

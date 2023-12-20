@@ -118,27 +118,27 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*storepb.Shortcut, error) {
 	where, args := []string{"1 = 1"}, []any{}
 	if v := find.ID; v != nil {
-		where, args = append(where, fmt.Sprintf("id = $%d", len(args)+1)), append(args, *v)
+		where, args = append(where, fmt.Sprintf("id = %s", placeholder(len(args)+1))), append(args, *v)
 	}
 	if v := find.CreatorID; v != nil {
-		where, args = append(where, fmt.Sprintf("creator_id = $%d", len(args)+1)), append(args, *v)
+		where, args = append(where, fmt.Sprintf("creator_id = %s", placeholder(len(args)+1))), append(args, *v)
 	}
 	if v := find.RowStatus; v != nil {
-		where, args = append(where, fmt.Sprintf("row_status = $%d", len(args)+1)), append(args, *v)
+		where, args = append(where, fmt.Sprintf("row_status = %s", placeholder(len(args)+1))), append(args, *v)
 	}
 	if v := find.Name; v != nil {
-		where, args = append(where, fmt.Sprintf("name = $%d", len(args)+1)), append(args, *v)
+		where, args = append(where, fmt.Sprintf("name = %s", placeholder(len(args)+1))), append(args, *v)
 	}
 	if v := find.VisibilityList; len(v) != 0 {
 		list := []string{}
 		for _, visibility := range v {
-			list = append(list, fmt.Sprintf("$%d", len(args)+1))
+			list = append(list, placeholder(len(args)+1))
 			args = append(args, visibility)
 		}
 		where = append(where, fmt.Sprintf("visibility IN (%s)", strings.Join(list, ",")))
 	}
 	if v := find.Tag; v != nil {
-		where, args = append(where, fmt.Sprintf("tag LIKE $%d", len(args)+1)), append(args, "%"+*v+"%")
+		where, args = append(where, fmt.Sprintf("tag LIKE %s", placeholder(len(args)+1))), append(args, "%"+*v+"%")
 	}
 
 	rows, err := d.db.QueryContext(ctx, fmt.Sprintf(`
