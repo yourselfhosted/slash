@@ -36,7 +36,7 @@ const CollectionSpace = () => {
         setShortcuts([]);
         for (const shortcutId of collection.shortcutIds) {
           try {
-            const shortcut = await shortcutStore.fetchShortcutById(shortcutId);
+            const shortcut = await shortcutStore.getOrFetchShortcutById(shortcutId);
             setShortcuts((shortcuts) => {
               return [...shortcuts, shortcut];
             });

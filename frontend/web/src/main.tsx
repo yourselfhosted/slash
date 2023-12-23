@@ -1,4 +1,3 @@
-import "@fontsource/inter";
 import { CssVarsProvider } from "@mui/joy";
 import { createRoot } from "react-dom/client";
 import { Toaster } from "react-hot-toast";

@@ -83,8 +83,8 @@
     - [GetShortcutAnalyticsRequest](#slash-api-v2-GetShortcutAnalyticsRequest)
     - [GetShortcutAnalyticsResponse](#slash-api-v2-GetShortcutAnalyticsResponse)
     - [GetShortcutAnalyticsResponse.AnalyticsItem](#slash-api-v2-GetShortcutAnalyticsResponse-AnalyticsItem)
-    - [GetShortcutByIdRequest](#slash-api-v2-GetShortcutByIdRequest)
-    - [GetShortcutByIdResponse](#slash-api-v2-GetShortcutByIdResponse)
+    - [GetShortcutByNameRequest](#slash-api-v2-GetShortcutByNameRequest)
+    - [GetShortcutByNameResponse](#slash-api-v2-GetShortcutByNameResponse)
     - [GetShortcutRequest](#slash-api-v2-GetShortcutRequest)
     - [GetShortcutResponse](#slash-api-v2-GetShortcutResponse)
     - [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest)
@@ -1096,7 +1096,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  |  |
+| id | [int32](#int32) |  |  |
 
 
 
@@ -1121,7 +1121,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  |  |
+| id | [int32](#int32) |  |  |
 
 
 
@@ -1161,24 +1161,24 @@
 
 
 
-<a name="slash-api-v2-GetShortcutByIdRequest"></a>
+<a name="slash-api-v2-GetShortcutByNameRequest"></a>
 
-### GetShortcutByIdRequest
+### GetShortcutByNameRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  |  |
+| name | [string](#string) |  |  |
 
 
 
 
 
 
-<a name="slash-api-v2-GetShortcutByIdResponse"></a>
+<a name="slash-api-v2-GetShortcutByNameResponse"></a>
 
-### GetShortcutByIdResponse
+### GetShortcutByNameResponse
 
 
 
@@ -1199,7 +1199,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  |  |
+| id | [int32](#int32) |  |  |
 | record_view | [bool](#bool) |  |  |
 
 
@@ -1336,8 +1336,8 @@
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | ListShortcuts | [ListShortcutsRequest](#slash-api-v2-ListShortcutsRequest) | [ListShortcutsResponse](#slash-api-v2-ListShortcutsResponse) | ListShortcuts returns a list of shortcuts. |
-| GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by name. |
-| GetShortcutById | [GetShortcutByIdRequest](#slash-api-v2-GetShortcutByIdRequest) | [GetShortcutByIdResponse](#slash-api-v2-GetShortcutByIdResponse) | GetShortcutById returns a shortcut by id. |
+| GetShortcut | [GetShortcutRequest](#slash-api-v2-GetShortcutRequest) | [GetShortcutResponse](#slash-api-v2-GetShortcutResponse) | GetShortcut returns a shortcut by id. |
+| GetShortcutByName | [GetShortcutByNameRequest](#slash-api-v2-GetShortcutByNameRequest) | [GetShortcutByNameResponse](#slash-api-v2-GetShortcutByNameResponse) | GetShortcutByName returns a shortcut by name. |
 | CreateShortcut | [CreateShortcutRequest](#slash-api-v2-CreateShortcutRequest) | [CreateShortcutResponse](#slash-api-v2-CreateShortcutResponse) | CreateShortcut creates a shortcut. |
 | UpdateShortcut | [UpdateShortcutRequest](#slash-api-v2-UpdateShortcutRequest) | [UpdateShortcutResponse](#slash-api-v2-UpdateShortcutResponse) | UpdateShortcut updates a shortcut. |
 | DeleteShortcut | [DeleteShortcutRequest](#slash-api-v2-DeleteShortcutRequest) | [DeleteShortcutResponse](#slash-api-v2-DeleteShortcutResponse) | DeleteShortcut deletes a shortcut by name. |

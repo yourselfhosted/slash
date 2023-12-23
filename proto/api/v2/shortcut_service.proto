@@ -15,13 +15,13 @@ service ShortcutService {
   rpc ListShortcuts(ListShortcutsRequest) returns (ListShortcutsResponse) {
     option (google.api.http) = {get: "/api/v2/shortcuts"};
   }
-  // GetShortcut returns a shortcut by name.
+  // GetShortcut returns a shortcut by id.
   rpc GetShortcut(GetShortcutRequest) returns (GetShortcutResponse) {
-    option (google.api.http) = {get: "/api/v2/shortcuts/{name}"};
-    option (google.api.method_signature) = "name";
+    option (google.api.http) = {get: "/api/v2/shortcuts/{id}"};
+    option (google.api.method_signature) = "id";
   }
-  // GetShortcutById returns a shortcut by id.
-  rpc GetShortcutById(GetShortcutByIdRequest) returns (GetShortcutByIdResponse) {}
+  // GetShortcutByName returns a shortcut by name.
+  rpc GetShortcutByName(GetShortcutByNameRequest) returns (GetShortcutByNameResponse) {}
   // CreateShortcut creates a shortcut.
   rpc CreateShortcut(CreateShortcutRequest) returns (CreateShortcutResponse) {
     option (google.api.http) = {
@@ -32,20 +32,20 @@ service ShortcutService {
   // UpdateShortcut updates a shortcut.
   rpc UpdateShortcut(UpdateShortcutRequest) returns (UpdateShortcutResponse) {
     option (google.api.http) = {
-      put: "/api/v2/shortcuts/{shortcut.name}"
+      put: "/api/v2/shortcuts/{shortcut.id}"
       body: "shortcut"
     };
     option (google.api.method_signature) = "shortcut,update_mask";
   }
   // DeleteShortcut deletes a shortcut by name.
   rpc DeleteShortcut(DeleteShortcutRequest) returns (DeleteShortcutResponse) {
-    option (google.api.http) = {delete: "/api/v2/shortcuts/{name}"};
-    option (google.api.method_signature) = "name";
+    option (google.api.http) = {delete: "/api/v2/shortcuts/{id}"};
+    option (google.api.method_signature) = "id";
   }
   // GetShortcutAnalytics returns the analytics for a shortcut.
   rpc GetShortcutAnalytics(GetShortcutAnalyticsRequest) returns (GetShortcutAnalyticsResponse) {
-    option (google.api.http) = {get: "/api/v2/shortcuts/{name}/analytics"};
-    option (google.api.method_signature) = "name";
+    option (google.api.http) = {get: "/api/v2/shortcuts/{id}/analytics"};
+    option (google.api.method_signature) = "id";
   }
 }
 
@@ -92,7 +92,7 @@ message ListShortcutsResponse {
 }
 
 message GetShortcutRequest {
-  string name = 1;
+  int32 id = 1;
 
   bool record_view = 2;
 }
@@ -101,11 +101,11 @@ message GetShortcutResponse {
   Shortcut shortcut = 1;
 }
 
-message GetShortcutByIdRequest {
-  int32 id = 1;
+message GetShortcutByNameRequest {
+  string name = 1;
 }
 
-message GetShortcutByIdResponse {
+message GetShortcutByNameResponse {
   Shortcut shortcut = 1;
 }
 
@@ -128,13 +128,13 @@ message UpdateShortcutResponse {
 }
 
 message DeleteShortcutRequest {
-  string name = 1;
+  int32 id = 1;
 }
 
 message DeleteShortcutResponse {}
 
 message GetShortcutAnalyticsRequest {
-  string name = 1;
+  int32 id = 1;
 }
 
 message GetShortcutAnalyticsResponse {

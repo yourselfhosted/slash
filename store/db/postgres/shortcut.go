@@ -77,8 +77,8 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 	if len(set) == 0 {
 		return nil, errors.New("no update specified")
 	}
-	args = append(args, update.ID)
 
+	args = append(args, update.ID)
 	stmt := fmt.Sprintf(`
 		UPDATE shortcut
 		SET %s

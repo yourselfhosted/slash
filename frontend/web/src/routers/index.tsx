@@ -39,7 +39,7 @@ const router = createBrowserRouter([
             element: <CollectionDashboard />,
           },
           {
-            path: "/shortcut/*",
+            path: "/shortcut/:shortcutId",
             element: <ShortcutDetail />,
           },
           {

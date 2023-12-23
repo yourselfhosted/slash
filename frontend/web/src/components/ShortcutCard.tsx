@@ -38,8 +38,9 @@ const ShortcutCard = (props: Props) => {
         <div className="w-full flex flex-row justify-between items-center">
           <div className="w-[calc(100%-16px)] flex flex-row justify-start items-center mr-1 shrink-0">
             <Link
-              to={`/shortcut/${shortcut.name}`}
               className={classNames("w-8 h-8 flex justify-center items-center overflow-clip shrink-0")}
+              to={`/shortcut/${shortcut.id}`}
+              unstable_viewTransition
             >
               {favicon ? (
                 <img className="w-full h-auto rounded" src={favicon} decoding="async" loading="lazy" />
@@ -123,8 +124,9 @@ const ShortcutCard = (props: Props) => {
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>
             <Link
-              to={`/shortcut/${shortcut.name}#analytics`}
               className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-400 text-sm"
+              to={`/shortcut/${shortcut.id}#analytics`}
+              unstable_viewTransition
             >
               <Icon.BarChart2 className="w-4 h-auto mr-1 opacity-70" />
               {t("shortcut.visits", { count: shortcut.viewCount })}

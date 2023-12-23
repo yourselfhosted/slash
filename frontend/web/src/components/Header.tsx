@@ -19,7 +19,8 @@ const Header: React.FC = () => {
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
   const profile = workspaceStore.profile;
   const isAdmin = currentUser.role === Role.ADMIN;
-  const shouldShowRouterSwitch = location.pathname === "/" || location.pathname === "/collections";
+  const shouldShowRouterSwitch = location.pathname === "/" || location.pathname === "/collections" || location.pathname === "/memos";
+  const selectedSection = location.pathname === "/" ? "Shortcuts" : location.pathname === "/collections" ? "Collections" : "Memos";
 
   const handleSignOutButtonClick = async () => {
     await authServiceClient.signOut({});
@@ -31,7 +32,7 @@ const Header: React.FC = () => {
       <div className="w-full bg-gray-50 dark:bg-zinc-800 border-b border-b-gray-200 dark:border-b-zinc-800">
         <div className="w-full max-w-8xl mx-auto px-3 md:px-12 py-3 flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center shrink mr-2">
-            <Link to="/" className="cursor-pointer flex flex-row justify-start items-center dark:text-gray-400">
+            <Link to="/" className="cursor-pointer flex flex-row justify-start items-center dark:text-gray-400" unstable_viewTransition>
               <img id="logo-img" src="/logo.png" className="w-7 h-auto mr-2 -mt-0.5 dark:opacity-80 rounded-full shadow" alt="" />
               Slash
             </Link>
@@ -46,7 +47,7 @@ const Header: React.FC = () => {
                 <Dropdown
                   trigger={
                     <button className="flex flex-row justify-end items-center cursor-pointer">
-                      <span className="dark:text-gray-400">{location.pathname === "/" ? "Shortcuts" : "Collections"}</span>
+                      <span className="dark:text-gray-400">{selectedSection}</span>
                       <Icon.ChevronsUpDown className="ml-1 w-4 h-auto text-gray-600 dark:text-gray-400" />
                     </button>
                   }
@@ -54,14 +55,16 @@ const Header: React.FC = () => {
                   actions={
                     <>
                       <Link
-                        to="/"
                         className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                        to="/"
+                        unstable_viewTransition
                       >
                         <Icon.SquareSlash className="w-4 h-auto mr-2 opacity-70" /> Shortcuts
                       </Link>
                       <Link
-                        to="/collections"
                         className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                        to="/collections"
+                        unstable_viewTransition
                       >
                         <Icon.LibrarySquare className="w-4 h-auto mr-2 opacity-70" /> Collections
                       </Link>
@@ -84,15 +87,17 @@ const Header: React.FC = () => {
               actions={
                 <>
                   <Link
-                    to="/setting/general"
                     className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                    to="/setting/general"
+                    unstable_viewTransition
                   >
                     <Icon.User className="w-4 h-auto mr-2 opacity-70" /> {t("user.profile")}
                   </Link>
                   {isAdmin && (
                     <Link
-                      to="/setting/workspace"
                       className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                      to="/setting/workspace"
+                      unstable_viewTransition
                     >
                       <Icon.Settings className="w-4 h-auto mr-2 opacity-70" /> {t("settings.self")}
                     </Link>

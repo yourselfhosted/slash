@@ -51,15 +51,13 @@ const Root: React.FC = () => {
   }, [currentUserSetting]);
 
   return (
-    <>
-      {isInitialized && (
-        <div className="w-full h-auto flex flex-col justify-start items-start dark:bg-zinc-900">
-          <Header />
-          <Navigator />
-          <Outlet />
-        </div>
-      )}
-    </>
+    isInitialized && (
+      <div className="w-full h-auto flex flex-col justify-start items-start dark:bg-zinc-900">
+        <Header />
+        <Navigator />
+        <Outlet />
+      </div>
+    )
   );
 };
 

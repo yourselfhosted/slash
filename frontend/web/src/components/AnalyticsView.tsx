@@ -6,18 +6,18 @@ import { GetShortcutAnalyticsResponse } from "@/types/proto/api/v2/shortcut_serv
 import Icon from "./Icon";
 
 interface Props {
-  shortcutName: string;
+  shortcutId: number;
   className?: string;
 }
 
 const AnalyticsView: React.FC<Props> = (props: Props) => {
-  const { shortcutName, className } = props;
+  const { shortcutId, className } = props;
   const { t } = useTranslation();
   const [analytics, setAnalytics] = useState<GetShortcutAnalyticsResponse | null>(null);
   const [selectedDeviceTab, setSelectedDeviceTab] = useState<"os" | "browser">("browser");
 
   useEffect(() => {
-    shortcutServiceClient.getShortcutAnalytics({ name: shortcutName }).then((response) => {
+    shortcutServiceClient.getShortcutAnalytics({ id: shortcutId }).then((response) => {
       setAnalytics(response);
     });
   }, []);

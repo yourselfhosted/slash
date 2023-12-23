@@ -115,7 +115,7 @@ const SignUp: React.FC = () => {
           </form>
           <p className="w-full mt-4 text-sm">
             <span className="dark:text-gray-500">{"Already has an account?"}</span>
-            <Link to="/auth" className="cursor-pointer ml-2 text-blue-600 hover:underline">
+            <Link className="cursor-pointer ml-2 text-blue-600 hover:underline" to="/auth" unstable_viewTransition>
               {t("auth.sign-in")}
             </Link>
           </p>
