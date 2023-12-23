@@ -44,12 +44,14 @@ message WorkspaceSetting {
   string license_key = 1;
   // Whether to enable other users to sign up.
   bool enable_signup = 2;
+  // The instance URL.
+  string instance_url = 3;
   // The custom style.
-  string custom_style = 3;
+  string custom_style = 4;
   // The custom script.
-  string custom_script = 4;
+  string custom_script = 5;
   // The auto backup setting.
-  AutoBackupWorkspaceSetting auto_backup = 5;
+  AutoBackupWorkspaceSetting auto_backup = 6;
 }
 
 message AutoBackupWorkspaceSetting {

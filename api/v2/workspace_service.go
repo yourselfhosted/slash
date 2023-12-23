@@ -62,6 +62,8 @@ func (s *APIV2Service) GetWorkspaceSetting(ctx context.Context, _ *apiv2pb.GetWo
 	for _, v := range workspaceSettings {
 		if v.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
 			workspaceSetting.EnableSignup = v.GetEnableSignup()
+		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL {
+			workspaceSetting.InstanceUrl = v.GetInstanceUrl()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE {
 			workspaceSetting.CustomStyle = v.GetCustomStyle()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT {
@@ -98,6 +100,15 @@ func (s *APIV2Service) UpdateWorkspaceSetting(ctx context.Context, request *apiv
 				Key: storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP,
 				Value: &storepb.WorkspaceSetting_EnableSignup{
 					EnableSignup: request.Setting.EnableSignup,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "instance_url" {
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL,
+				Value: &storepb.WorkspaceSetting_InstanceUrl{
+					InstanceUrl: request.Setting.InstanceUrl,
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)

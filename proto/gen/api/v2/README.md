@@ -1726,6 +1726,7 @@
 | ----- | ---- | ----- | ----------- |
 | license_key | [string](#string) |  |  |
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
+| instance_url | [string](#string) |  | The instance URL. |
 | custom_style | [string](#string) |  | The custom style. |
 | custom_script | [string](#string) |  | The custom script. |
 | auto_backup | [AutoBackupWorkspaceSetting](#slash-api-v2-AutoBackupWorkspaceSetting) |  | The auto backup setting. |

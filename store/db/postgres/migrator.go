@@ -81,15 +81,16 @@ func (d *DB) prodMigrate(ctx context.Context) error {
 	migrationHistoryList, err := d.ListMigrationHistories(ctx, &store.FindMigrationHistory{})
 	// If there is no migration history, we should apply the latest schema.
 	if err != nil || len(migrationHistoryList) == 0 {
-		buf, err := migrationFS.ReadFile("migration/prod/" + latestSchemaFileName)
+		latestSchemaBytes, err := migrationFS.ReadFile("migration/prod/" + latestSchemaFileName)
 		if err != nil {
 			return errors.Errorf("failed to read latest schema file: %s", err)
 		}
 
-		stmt := string(buf)
-		if _, err := d.db.ExecContext(ctx, stmt); err != nil {
-			return errors.Errorf("failed to exec SQL %s: %s", stmt, err)
+		latestSchema := string(latestSchemaBytes)
+		if _, err := d.db.ExecContext(ctx, latestSchema); err != nil {
+			return errors.Errorf("failed to exec SQL %s: %s", latestSchema, err)
 		}
+		// After applying the latest schema, we should insert the latest version to migration_history.
 		if _, err := d.UpsertMigrationHistory(ctx, &store.UpsertMigrationHistory{
 			Version: currentVersion,
 		}); err != nil {
@@ -104,6 +105,7 @@ func (d *DB) prodMigrate(ctx context.Context) error {
 	}
 	sort.Sort(version.SortVersion(migrationHistoryVersionList))
 	latestMigrationHistoryVersion := migrationHistoryVersionList[len(migrationHistoryVersionList)-1]
+	// If the latest migration history version is greater than or equal to the current version, we will not apply any migration.
 	if !version.IsVersionGreaterThan(version.GetSchemaVersion(currentVersion), latestMigrationHistoryVersion) {
 		return nil
 	}

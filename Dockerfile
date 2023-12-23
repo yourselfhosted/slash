@@ -15,7 +15,6 @@ FROM golang:1.21-alpine AS backend
 WORKDIR /backend-build
 
 COPY . .
-COPY --from=frontend /frontend-build/frontend/web/dist ./server/dist
 
 RUN CGO_ENABLED=0 go build -o slash ./bin/slash/main.go
 
@@ -26,6 +25,7 @@ WORKDIR /usr/local/slash
 RUN apk add --no-cache tzdata
 ENV TZ="UTC"
 
+COPY --from=frontend /frontend-build/frontend/web/dist /usr/local/slash/dist
 COPY --from=backend /backend-build/slash /usr/local/slash/
 
 EXPOSE 5231

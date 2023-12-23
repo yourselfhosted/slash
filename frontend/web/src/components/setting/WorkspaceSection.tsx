@@ -1,4 +1,4 @@
-import { Button, Checkbox, Textarea } from "@mui/joy";
+import { Button, Checkbox, Input, Textarea } from "@mui/joy";
 import { isEqual } from "lodash-es";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -21,6 +21,13 @@ const WorkspaceSection: React.FC = () => {
     });
   };
 
+  const handleInstanceUrlChange = async (value: string) => {
+    setWorkspaceSetting({
+      ...workspaceSetting,
+      instanceUrl: value,
+    });
+  };
+
   const handleCustomStyleChange = async (value: string) => {
     setWorkspaceSetting({
       ...workspaceSetting,
@@ -32,6 +39,9 @@ const WorkspaceSection: React.FC = () => {
     const updateMask: string[] = [];
     if (!isEqual(originalWorkspaceSetting.current.enableSignup, workspaceSetting.enableSignup)) {
       updateMask.push("enable_signup");
+    }
+    if (!isEqual(originalWorkspaceSetting.current.instanceUrl, workspaceSetting.instanceUrl)) {
+      updateMask.push("instance_url");
     }
     if (!isEqual(originalWorkspaceSetting.current.customStyle, workspaceSetting.customStyle)) {
       updateMask.push("custom_style");
@@ -59,6 +69,15 @@ const WorkspaceSection: React.FC = () => {
   return (
     <div className="w-full flex flex-col justify-start items-start space-y-4">
       <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">{t("settings.workspace.self")}</p>
+      <div className="w-full flex flex-col justify-start items-start">
+        <p className="mt-2 dark:text-gray-400">Instance URL</p>
+        <Input
+          className="w-full mt-2"
+          placeholder="Your instance URL. Using for website SEO. Leave it empty if you don't want cawler to index your website."
+          value={workspaceSetting.instanceUrl}
+          onChange={(event) => handleInstanceUrlChange(event.target.value)}
+        />
+      </div>
       <div className="w-full flex flex-col justify-start items-start">
         <p className="mt-2 dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
         <Textarea

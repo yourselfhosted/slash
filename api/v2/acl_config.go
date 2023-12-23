@@ -8,8 +8,9 @@ var allowedMethodsWhenUnauthorized = map[string]bool{
 	"/slash.api.v2.AuthService/SignIn":                    true,
 	"/slash.api.v2.AuthService/SignUp":                    true,
 	"/slash.api.v2.AuthService/SignOut":                   true,
+	"/memos.api.v2.AuthService/GetAuthStatus":             true,
 	"/slash.api.v2.ShortcutService/GetShortcut":           true,
-	"/slash.api.v2.ShortcutService/GetShortcutById":       true,
+	"/slash.api.v2.ShortcutService/GetShortcutByName":     true,
 	"/slash.api.v2.CollectionService/GetCollectionByName": true,
 }
 
