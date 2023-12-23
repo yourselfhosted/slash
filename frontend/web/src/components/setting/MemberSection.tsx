@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { User } from "@/types/proto/api/v2/user_service";
+import { convertRoleFromPb } from "@/utils/user";
 import useUserStore from "../../stores/v1/user";
 import { showCommonDialog } from "../Alert";
 import CreateUserDialog from "../CreateUserDialog";
@@ -89,7 +90,7 @@ const MemberSection = () => {
                       <tr key={user.email}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">{user.nickname}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.email}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.role}</td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{convertRoleFromPb(user.role)}</td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
                           <IconButton
                             size="sm"
