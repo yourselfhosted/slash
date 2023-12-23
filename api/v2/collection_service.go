@@ -99,6 +99,10 @@ func (s *APIV2Service) GetCollectionByName(ctx context.Context, request *apiv2pb
 }
 
 func (s *APIV2Service) CreateCollection(ctx context.Context, request *apiv2pb.CreateCollectionRequest) (*apiv2pb.CreateCollectionResponse, error) {
+	if request.Collection.Name == "" || request.Collection.Title == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "name and title are required")
+	}
+
 	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
 		collections, err := s.Store.ListCollections(ctx, &store.FindCollection{
 			VisibilityList: []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic},

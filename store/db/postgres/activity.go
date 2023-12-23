@@ -44,7 +44,7 @@ func (d *DB) ListActivities(ctx context.Context, find *store.FindActivity) ([]*s
 		where, args = append(where, "level = "+placeholder(len(args)+1)), append(args, find.Level.String())
 	}
 	if find.PayloadShortcutID != nil {
-		where, args = append(where, fmt.Sprintf("CAST(payload as JSON)->>'shortcutId' = %s", placeholder(len(args)+1))), append(args, *find.PayloadShortcutID)
+		where, args = append(where, fmt.Sprintf("CAST(payload::JSON->>'shortcutId' AS INTEGER) = %s", placeholder(len(args)+1))), append(args, *find.PayloadShortcutID)
 	}
 
 	query := `

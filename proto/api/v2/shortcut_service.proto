@@ -93,8 +93,6 @@ message ListShortcutsResponse {
 
 message GetShortcutRequest {
   int32 id = 1;
-
-  bool record_view = 2;
 }
 
 message GetShortcutResponse {

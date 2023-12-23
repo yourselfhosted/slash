@@ -34,7 +34,7 @@ const useShortcutStore = create(
       }
       return shortcut;
     },
-    getOrFetchShortcutById: async (id: number, recordView = false) => {
+    getOrFetchShortcutById: async (id: number) => {
       const shortcutMap = get().shortcutMapById;
       if (shortcutMap[id]) {
         return shortcutMap[id] as Shortcut;
@@ -42,7 +42,6 @@ const useShortcutStore = create(
 
       const { shortcut } = await shortcutServiceClient.getShortcut({
         id,
-        recordView,
       });
       if (!shortcut) {
         throw new Error(`Shortcut with id ${id} not found`);

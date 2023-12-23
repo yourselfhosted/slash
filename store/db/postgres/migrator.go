@@ -57,8 +57,6 @@ func (d *DB) nonProdMigrate(ctx context.Context) error {
 		return nil
 	}
 
-	println("no tables in the database. start migration")
-
 	buf, err := migrationFS.ReadFile("migration/dev/" + latestSchemaFileName)
 	if err != nil {
 		return errors.Errorf("failed to read latest schema file: %s", err)

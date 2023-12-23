@@ -11,7 +11,6 @@ import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
-import ResourceNameInput from "./ResourceNameInput";
 import ShortcutView from "./ShortcutView";
 
 interface Props {
@@ -83,10 +82,10 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleNameChange = (name: string) => {
+  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       collectionCreate: Object.assign(state.collectionCreate, {
-        name: name.replace(/\s+/g, "-"),
+        name: e.target.value.replace(/\s+/g, "-"),
       }),
     });
   };
@@ -162,7 +161,18 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
       <ModalClose />
       <DialogContent className="max-w-full sm:max-w-sm">
         <div className="overflow-y-auto w-full mt-2 px-3 pb-4">
-          <ResourceNameInput name={state.collectionCreate.name} onChange={handleNameChange} />
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">
+              Name <span className="text-red-600">*</span>
+            </span>
+            <Input
+              className="w-full"
+              type="text"
+              placeholder="The memorable name of the collection"
+              value={state.collectionCreate.name}
+              onChange={handleNameInputChange}
+            />
+          </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Title <span className="text-red-600">*</span>
@@ -206,7 +216,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
             <p className="mb-2">
               <span>Shortcuts</span>
               <span className="opacity-60">({selectedShortcuts.length})</span>
-              {selectedShortcuts.length === 0 && <span className="ml-2 italic opacity-80 text-sm">Select a shortcut first</span>}
+              {selectedShortcuts.length === 0 && <span className="ml-2 italic opacity-80 text-sm">(Select a shortcut first)</span>}
             </p>
             <div className="w-full py-1 px-px flex flex-row justify-start items-start flex-wrap overflow-hidden gap-2">
               {selectedShortcuts.map((shortcut) => {

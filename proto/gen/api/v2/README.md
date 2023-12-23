@@ -1200,7 +1200,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
-| record_view | [bool](#bool) |  |  |
 
 
 

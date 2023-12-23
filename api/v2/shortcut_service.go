@@ -76,13 +76,6 @@ func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv2pb.GetShor
 		}
 	}
 
-	// Create activity if request is from record view.
-	if request.RecordView {
-		if err := s.createShortcutViewActivity(ctx, shortcut); err != nil {
-			fmt.Printf("failed to create activity, err: %v", err)
-		}
-	}
-
 	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
@@ -115,6 +108,11 @@ func (s *APIV2Service) GetShortcutByName(ctx context.Context, request *apiv2pb.G
 		}
 	}
 
+	// Create shortcut view activity.
+	if err := s.createShortcutViewActivity(ctx, shortcut); err != nil {
+		fmt.Printf("failed to create activity, err: %v", err)
+	}
+
 	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
@@ -126,6 +124,10 @@ func (s *APIV2Service) GetShortcutByName(ctx context.Context, request *apiv2pb.G
 }
 
 func (s *APIV2Service) CreateShortcut(ctx context.Context, request *apiv2pb.CreateShortcutRequest) (*apiv2pb.CreateShortcutResponse, error) {
+	if request.Shortcut.Name == "" || request.Shortcut.Link == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "name and link are required")
+	}
+
 	userID := ctx.Value(userIDContextKey).(int32)
 	shortcut := &storepb.Shortcut{
 		CreatorId:   userID,
@@ -351,7 +353,7 @@ func (s *APIV2Service) createShortcutViewActivity(ctx context.Context, shortcut 
 	}
 	activity := &store.Activity{
 		CreatorID: BotID,
-		Type:      store.ActivityShortcutCreate,
+		Type:      store.ActivityShortcutView,
 		Level:     store.ActivityInfo,
 		Payload:   string(payloadStr),
 	}

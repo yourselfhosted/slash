@@ -22,7 +22,6 @@ import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
 import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
-import ResourceNameInput from "./ResourceNameInput";
 
 interface Props {
   shortcutId?: number;
@@ -90,10 +89,10 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleNameChange = (name: string) => {
+  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        name: name.replace(/\s+/g, "-"),
+        name: e.target.value.replace(/\s+/g, "-"),
       }),
     });
   };
@@ -177,24 +176,25 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveBtnClick = async () => {
-    if (!state.shortcutCreate.name || !state.shortcutCreate.title || !state.shortcutCreate.link) {
+    if (!state.shortcutCreate.name || !state.shortcutCreate.link) {
       toast.error("Please fill in required fields.");
       return;
     }
 
     try {
+      const tags = tag.split(" ").filter(Boolean);
       if (shortcutId) {
         const originShortcut = shortcutStore.getShortcutById(shortcutId);
         const updatingShortcut = {
           ...state.shortcutCreate,
           id: shortcutId,
-          tags: tag.split(" ").filter(Boolean),
+          tags,
         };
         await shortcutStore.updateShortcut(updatingShortcut, getShortcutUpdateMask(originShortcut, updatingShortcut));
       } else {
         await shortcutStore.createShortcut({
           ...state.shortcutCreate,
-          tags: tag.split(" ").filter(Boolean),
+          tags,
         });
       }
 
@@ -213,9 +213,20 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
     <Drawer anchor="right" open={true} onClose={onClose}>
       <DialogTitle>{isCreating ? "Create Shortcut" : "Edit Shortcut"}</DialogTitle>
       <ModalClose />
-      <DialogContent className="max-w-full sm:max-w-sm">
+      <DialogContent className="w-full">
         <div className="overflow-y-auto w-full mt-2 px-3 pb-4">
-          <ResourceNameInput name={state.shortcutCreate.name} onChange={handleNameChange} />
+          <div className="w-full flex flex-col justify-start items-start mb-3">
+            <span className="mb-2">
+              Name <span className="text-red-600">*</span>
+            </span>
+            <Input
+              className="w-full"
+              type="text"
+              placeholder="The memorable name of the shortcut"
+              value={state.shortcutCreate.name}
+              onChange={handleNameInputChange}
+            />
+          </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Link <span className="text-red-600">*</span>
@@ -229,9 +240,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             />
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Title <span className="text-red-600">*</span>
-            </span>
+            <span className="mb-2">Title</span>
             <Input
               className="w-full"
               type="text"
