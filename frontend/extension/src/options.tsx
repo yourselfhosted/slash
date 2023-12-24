@@ -2,12 +2,12 @@ import { Button, CssVarsProvider, Divider, Input, Select, Option } from "@mui/jo
 import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import Icon from "./components/Icon";
 import Logo from "./components/Logo";
 import PullShortcutsButton from "./components/PullShortcutsButton";
 import ShortcutsContainer from "./components/ShortcutsContainer";
 import useColorTheme from "./hooks/useColorTheme";
+import useShortcutStore from "./store/shortcut";
 import "./style.css";
 
 interface SettingState {
@@ -38,7 +38,8 @@ const IndexOptions = () => {
     domain,
     accessToken,
   });
-  const [shortcuts] = useStorage<Shortcut[]>("shortcuts", []);
+  const shortcutStore = useShortcutStore();
+  const shortcuts = shortcutStore.getShortcutList();
   const isInitialized = domain && accessToken;
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const IndexOptions = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full px-4">
       <div className="w-full flex flex-row justify-center items-center">
         <a
           className="bg-yellow-100 dark:bg-yellow-500 dark:opacity-70 mt-12 py-2 px-3 rounded-full border dark:border-yellow-600 flex flex-row justify-start items-center cursor-pointer shadow hover:underline hover:text-blue-600"
@@ -93,7 +94,7 @@ const IndexOptions = () => {
               <span className="dark:text-gray-400">Instance URL</span>
               {domain !== "" && (
                 <a
-                  className="text-sm flex flex-row justify-start items-center dark:text-gray-400 hover:underline hover:text-blue-600"
+                  className="text-sm flex flex-row justify-start items-center underline text-blue-600 hover:opacity-80"
                   href={domain}
                   target="_blank"
                 >

@@ -1,32 +1,24 @@
 import { IconButton } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
-import axios from "axios";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { ListShortcutsResponse } from "@/types/proto/api/v2/shortcut_service";
+import useShortcutStore from "@/store/shortcut";
 import Icon from "./Icon";
 
 const PullShortcutsButton = () => {
-  const [domain] = useStorage("domain");
+  const [instanceUrl] = useStorage("domain");
   const [accessToken] = useStorage("access_token");
-  const [, setShortcuts] = useStorage("shortcuts");
+  const shortcutStore = useShortcutStore();
 
   useEffect(() => {
-    if (domain && accessToken) {
+    if (instanceUrl && accessToken) {
       handlePullShortcuts(true);
     }
-  }, [domain, accessToken]);
+  }, [instanceUrl, accessToken]);
 
   const handlePullShortcuts = async (silence = false) => {
     try {
-      const {
-        data: { shortcuts },
-      } = await axios.get<ListShortcutsResponse>(`${domain}/api/v2/shortcuts`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setShortcuts(shortcuts);
+      await shortcutStore.fetchShortcutList(instanceUrl, accessToken);
       if (!silence) {
         toast.success("Shortcuts pulled");
       }

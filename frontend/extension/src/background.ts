@@ -1,5 +1,4 @@
 import { Storage } from "@plasmohq/storage";
-import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 
 const storage = new Storage();
 const urlRegex = /https?:\/\/s\/(.+)/;
@@ -13,12 +12,8 @@ chrome.webRequest.onBeforeRequest.addListener(
 
       const shortcutName = getShortcutNameFromUrl(param.url);
       if (shortcutName) {
-        const shortcuts = (await storage.getItem<Shortcut[]>("shortcuts")) || [];
-        const shortcut = shortcuts.find((shortcut) => shortcut.name === shortcutName);
-        if (!shortcut) {
-          return;
-        }
-        return chrome.tabs.update({ url: shortcut.link });
+        const instanceUrl = (await storage.getItem<string>("domain")) || "";
+        return chrome.tabs.update({ url: `${instanceUrl}/s/${shortcutName}` });
       }
     })();
   },

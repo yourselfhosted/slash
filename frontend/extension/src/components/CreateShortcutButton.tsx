@@ -1,23 +1,11 @@
 import { Button, IconButton, Input, Modal, ModalDialog } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import useShortcutStore from "@/store/shortcut";
 import { Visibility } from "@/types/proto/api/v2/common";
-import { CreateShortcutResponse, OpenGraphMetadata } from "@/types/proto/api/v2/shortcut_service";
+import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import Icon from "./Icon";
-
-const generateName = (length = 8) => {
-  let result = "";
-  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-  const charactersLength = characters.length;
-  let counter = 0;
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    counter += 1;
-  }
-  return result;
-};
 
 interface State {
   name: string;
@@ -25,10 +13,10 @@ interface State {
   link: string;
 }
 
-const CreateShortcutsButton = () => {
-  const [domain] = useStorage("domain");
+const CreateShortcutButton = () => {
+  const [instanceUrl] = useStorage("domain");
   const [accessToken] = useStorage("access_token");
-  const [shortcuts, setShortcuts] = useStorage("shortcuts");
+  const shortcutStore = useShortcutStore();
   const [state, setState] = useState<State>({
     name: "",
     title: "",
@@ -54,7 +42,7 @@ const CreateShortcutsButton = () => {
       const tab = tabs[0];
       setState((state) => ({
         ...state,
-        name: generateName(),
+        name: "",
         title: tab.title || "",
         link: tab.url || "",
       }));
@@ -94,25 +82,16 @@ const CreateShortcutsButton = () => {
 
     setIsLoading(true);
     try {
-      const {
-        data: { shortcut },
-      } = await axios.post<CreateShortcutResponse>(
-        `${domain}/api/v2/shortcuts`,
-        {
+      await shortcutStore.createShortcut(
+        instanceUrl,
+        accessToken,
+        Shortcut.fromPartial({
           name: state.name,
           title: state.title,
           link: state.link,
-          visibility: Visibility.PRIVATE,
-          ogMetadata: OpenGraphMetadata.fromPartial({}),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+          visibility: Visibility.PUBLIC,
+        })
       );
-
-      setShortcuts([shortcut, ...shortcuts]);
       toast.success("Shortcut created successfully");
       setShowModal(false);
     } catch (error: any) {
@@ -171,4 +150,4 @@ const CreateShortcutsButton = () => {
   );
 };
 
-export default CreateShortcutsButton;
+export default CreateShortcutButton;

@@ -1,21 +1,31 @@
 import { Button, CssVarsProvider, Divider, IconButton } from "@mui/joy";
 import { useStorage } from "@plasmohq/storage/hook";
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
-import CreateShortcutsButton from "@/components/CreateShortcutsButton";
+import CreateShortcutButton from "@/components/CreateShortcutButton";
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import PullShortcutsButton from "@/components/PullShortcutsButton";
 import ShortcutsContainer from "@/components/ShortcutsContainer";
-import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
 import useColorTheme from "./hooks/useColorTheme";
+import useShortcutStore from "./store/shortcut";
 import "./style.css";
 
 const IndexPopup = () => {
   useColorTheme();
-  const [domain] = useStorage<string>("domain", "");
+  const [instanceUrl] = useStorage<string>("domain", "");
   const [accessToken] = useStorage<string>("access_token", "");
-  const [shortcuts] = useStorage<Shortcut[]>("shortcuts", []);
-  const isInitialized = domain && accessToken;
+  const shortcutStore = useShortcutStore();
+  const shortcuts = shortcutStore.getShortcutList();
+  const isInitialized = instanceUrl && accessToken;
+
+  useEffect(() => {
+    if (!isInitialized) {
+      return;
+    }
+
+    shortcutStore.fetchShortcutList(instanceUrl, accessToken);
+  }, [isInitialized]);
 
   const handleSettingButtonClick = () => {
     chrome.runtime.openOptionsPage();
@@ -41,7 +51,7 @@ const IndexPopup = () => {
             </>
           )}
         </div>
-        <div>{isInitialized && <CreateShortcutsButton />}</div>
+        <div>{isInitialized && <CreateShortcutButton />}</div>
       </div>
 
       <div className="w-full mt-4">
@@ -75,8 +85,8 @@ const IndexPopup = () => {
               </div>
               <div className="flex flex-row justify-end items-center">
                 <a
-                  className="text-sm flex flex-row justify-start items-center text-gray-500 dark:text-gray-400 hover:underline hover:text-blue-600"
-                  href={domain}
+                  className="text-sm flex flex-row justify-start items-center underline text-blue-600 hover:opacity-80"
+                  href={instanceUrl}
                   target="_blank"
                 >
                   <span className="mr-1">Go to my Slash</span>
