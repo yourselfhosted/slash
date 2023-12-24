@@ -27,7 +27,8 @@ const CollectionView = (props: Props) => {
   const { t } = useTranslation();
   const { sm } = useResponsiveWidth();
   const navigateTo = useNavigateTo();
-  const currentUser = useUserStore().getCurrentUser();
+  const userStore = useUserStore();
+  const currentUser = userStore.getCurrentUser();
   const collectionStore = useCollectionStore();
   const shortcutList = useShortcutStore().getShortcutList();
   const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
@@ -71,9 +72,9 @@ const CollectionView = (props: Props) => {
             </div>
             <p className="text-sm text-gray-500">{collection.description}</p>
           </div>
-          <div className="flex flex-row justify-end items-center shrink-0">
+          <div className="flex flex-row justify-end items-center shrink-0 gap-2">
             <Link className="w-full text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`} target="_blank">
-              <Icon.Share className="w-4 h-auto mr-2" />
+              <Icon.Share className="w-4 h-auto" />
             </Link>
             {showAdminActions && (
               <Dropdown

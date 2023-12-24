@@ -11,13 +11,13 @@ const SubscriptionFAQ = () => {
         <Accordion>
           <AccordionSummary>Can I use the Free plan in my team?</AccordionSummary>
           <AccordionDetails>
-            Of course you can. In the free plan, you can invite up to 5 members to your team. If you need more, you can upgrade to the Pro
-            plan.
+            Of course you can. In the free plan, you can invite up to 5 members to your team. If you need more, you should upgrade to the
+            Pro plan.
           </AccordionDetails>
         </Accordion>
         <Accordion>
           <AccordionSummary>How many devices can the license key be used on?</AccordionSummary>
-          <AccordionDetails>{`It's unlimited for now, but please don't abuse it.`}</AccordionDetails>
+          <AccordionDetails>{`It's unlimited for now, but please do not abuse it.`}</AccordionDetails>
         </Accordion>
         <Accordion>
           <AccordionSummary>{`Can I get a refund if Slash doesn't meet my needs?`}</AccordionSummary>
