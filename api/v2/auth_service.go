@@ -3,7 +3,6 @@ package v2
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -38,25 +37,25 @@ func (s *APIV2Service) SignIn(ctx context.Context, request *apiv2pb.SignInReques
 		Email: &request.Email,
 	})
 	if err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to find user by email %s", request.Email))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to find user by email %s", request.Email))
 	}
 	if user == nil {
-		return nil, status.Errorf(http.StatusUnauthorized, fmt.Sprintf("user not found with email %s", request.Email))
+		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("user not found with email %s", request.Email))
 	} else if user.RowStatus == store.Archived {
-		return nil, status.Errorf(http.StatusForbidden, fmt.Sprintf("user has been archived with email %s", request.Email))
+		return nil, status.Errorf(codes.PermissionDenied, fmt.Sprintf("user has been archived with email %s", request.Email))
 	}
 
 	// Compare the stored hashed password, with the hashed version of the password that was received.
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(request.Password)); err != nil {
-		return nil, status.Errorf(http.StatusUnauthorized, "unmatched email and password")
+		return nil, status.Errorf(codes.InvalidArgument, "unmatched email and password")
 	}
 
 	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, time.Now().Add(auth.AccessTokenDuration), []byte(s.Secret))
 	if err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to generate tokens, err: %s", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate tokens, err: %s", err))
 	}
 	if err := s.UpsertAccessTokenToStore(ctx, user, accessToken, "user login"); err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
 	}
 
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
@@ -76,25 +75,25 @@ func (s *APIV2Service) SignUp(ctx context.Context, request *apiv2pb.SignUpReques
 		Key: storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP,
 	})
 	if err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to get workspace setting, err: %s", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to get workspace setting, err: %s", err))
 	}
 	if enableSignUpSetting != nil && !enableSignUpSetting.GetEnableSignup() {
-		return nil, status.Errorf(http.StatusForbidden, "sign up is not allowed")
+		return nil, status.Errorf(codes.PermissionDenied, "sign up is not allowed")
 	}
 
 	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
 		userList, err := s.Store.ListUsers(ctx, &store.FindUser{})
 		if err != nil {
-			return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to list users, err: %s", err))
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to list users, err: %s", err))
 		}
 		if len(userList) >= 5 {
-			return nil, status.Errorf(http.StatusBadRequest, "maximum number of users reached")
+			return nil, status.Errorf(codes.InvalidArgument, "maximum number of users reached")
 		}
 	}
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to generate password hash, err: %s", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate password hash, err: %s", err))
 	}
 
 	create := &store.User{
@@ -104,7 +103,7 @@ func (s *APIV2Service) SignUp(ctx context.Context, request *apiv2pb.SignUpReques
 	}
 	existingUsers, err := s.Store.ListUsers(ctx, &store.FindUser{})
 	if err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to list users, err: %s", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to list users, err: %s", err))
 	}
 	// The first user to sign up is an admin by default.
 	if len(existingUsers) == 0 {
@@ -115,15 +114,15 @@ func (s *APIV2Service) SignUp(ctx context.Context, request *apiv2pb.SignUpReques
 
 	user, err := s.Store.CreateUser(ctx, create)
 	if err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to create user, err: %s", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to create user, err: %s", err))
 	}
 
 	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, time.Now().Add(auth.AccessTokenDuration), []byte(s.Secret))
 	if err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to generate tokens, err: %s", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate tokens, err: %s", err))
 	}
 	if err := s.UpsertAccessTokenToStore(ctx, user, accessToken, "user login"); err != nil {
-		return nil, status.Errorf(http.StatusInternalServerError, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
 	}
 
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{

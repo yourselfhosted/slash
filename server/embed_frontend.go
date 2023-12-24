@@ -133,15 +133,25 @@ Sitemap: %s/sitemap.xml`, instanceURL, instanceURL)
 }
 
 func generateShortcutMetadata(shortcut *storepb.Shortcut) string {
+	title, description := shortcut.Title, shortcut.Description
+	if shortcut.OgMetadata != nil {
+		if shortcut.OgMetadata.Title != "" {
+			title = shortcut.OgMetadata.Title
+		}
+		if shortcut.OgMetadata.Description != "" {
+			description = shortcut.OgMetadata.Description
+		}
+	}
+
 	metadataList := []string{
-		fmt.Sprintf(`<meta name="description" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Description)),
-		fmt.Sprintf(`<meta property="og:title" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Title)),
-		fmt.Sprintf(`<meta property="og:description" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Description)),
+		fmt.Sprintf(`<meta name="description" content="%s" />`, template.HTMLEscapeString(description)),
+		fmt.Sprintf(`<meta property="og:title" content="%s" />`, template.HTMLEscapeString(title)),
+		fmt.Sprintf(`<meta property="og:description" content="%s" />`, template.HTMLEscapeString(description)),
 		fmt.Sprintf(`<meta property="og:image" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Image)),
 		`<meta property="og:type" content="website" />`,
 		// Twitter related metadata.
-		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Title)),
-		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Description)),
+		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, template.HTMLEscapeString(title)),
+		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, template.HTMLEscapeString(description)),
 		fmt.Sprintf(`<meta name="twitter:image" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Image)),
 		`<meta name="twitter:card" content="summary_large_image" />`,
 		fmt.Sprintf(`<meta property="og:url" content="%s" />`, template.HTMLEscapeString(shortcut.Link)),

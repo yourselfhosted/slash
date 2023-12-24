@@ -9,7 +9,6 @@ var allowedMethodsWhenUnauthorized = map[string]bool{
 	"/slash.api.v2.AuthService/SignUp":                    true,
 	"/slash.api.v2.AuthService/SignOut":                   true,
 	"/memos.api.v2.AuthService/GetAuthStatus":             true,
-	"/slash.api.v2.ShortcutService/GetShortcut":           true,
 	"/slash.api.v2.ShortcutService/GetShortcutByName":     true,
 	"/slash.api.v2.CollectionService/GetCollectionByName": true,
 }
@@ -26,6 +25,7 @@ var allowedMethodsOnlyForAdmin = map[string]bool{
 	"/slash.api.v2.UserService/CreateUser":                  true,
 	"/slash.api.v2.UserService/DeleteUser":                  true,
 	"/slash.api.v2.WorkspaceService/UpdateWorkspaceSetting": true,
+	"/slash.api.v2.SubscriptionService/UpdateSubscription":  true,
 }
 
 // isOnlyForAdminAllowedMethod returns true if the method is allowed to be called only by admin.
