@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/yourselfhosted/slash/store"
@@ -152,8 +151,4 @@ func (d *DB) DeleteUser(ctx context.Context, delete *store.DeleteUser) error {
 		return err
 	}
 	return nil
-}
-
-func placeholder(n int) string {
-	return "$" + fmt.Sprint(n)
 }
