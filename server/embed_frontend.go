@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"html/template"
 	"net/http"
 	"os"
 	"strings"
@@ -15,6 +14,10 @@ import (
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
+)
+
+const (
+	headerMetadataPlaceholder = "<!-- slash.metadata -->"
 )
 
 type FrontendService struct {
@@ -61,7 +64,7 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 		}
 
 		// Inject shortcut metadata into `index.html`.
-		indexHTML := strings.ReplaceAll(rawIndexHTML, "<!-- slash.metadata -->", generateShortcutMetadata(shortcut))
+		indexHTML := strings.ReplaceAll(rawIndexHTML, headerMetadataPlaceholder, generateShortcutMetadata(shortcut).String())
 		return c.HTML(http.StatusOK, indexHTML)
 	})
 
@@ -79,7 +82,7 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 		}
 
 		// Inject collection metadata into `index.html`.
-		indexHTML := strings.ReplaceAll(rawIndexHTML, "<!-- slash.metadata -->", generateCollectionMetadata(collection))
+		indexHTML := strings.ReplaceAll(rawIndexHTML, headerMetadataPlaceholder, generateCollectionMetadata(collection).String())
 		return c.HTML(http.StatusOK, indexHTML)
 	})
 }
@@ -132,7 +135,8 @@ Sitemap: %s/sitemap.xml`, instanceURL, instanceURL)
 	})
 }
 
-func generateShortcutMetadata(shortcut *storepb.Shortcut) string {
+func generateShortcutMetadata(shortcut *storepb.Shortcut) *Metadata {
+	metadata := getDefaultMetadata()
 	title, description := shortcut.Title, shortcut.Description
 	if shortcut.OgMetadata != nil {
 		if shortcut.OgMetadata.Title != "" {
@@ -141,38 +145,49 @@ func generateShortcutMetadata(shortcut *storepb.Shortcut) string {
 		if shortcut.OgMetadata.Description != "" {
 			description = shortcut.OgMetadata.Description
 		}
+		metadata.ImageURL = shortcut.OgMetadata.Image
 	}
-
-	metadataList := []string{
-		fmt.Sprintf(`<meta name="description" content="%s" />`, template.HTMLEscapeString(description)),
-		fmt.Sprintf(`<meta property="og:title" content="%s" />`, template.HTMLEscapeString(title)),
-		fmt.Sprintf(`<meta property="og:description" content="%s" />`, template.HTMLEscapeString(description)),
-		fmt.Sprintf(`<meta property="og:image" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Image)),
-		`<meta property="og:type" content="website" />`,
-		// Twitter related metadata.
-		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, template.HTMLEscapeString(title)),
-		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, template.HTMLEscapeString(description)),
-		fmt.Sprintf(`<meta name="twitter:image" content="%s" />`, template.HTMLEscapeString(shortcut.OgMetadata.Image)),
-		`<meta name="twitter:card" content="summary_large_image" />`,
-		fmt.Sprintf(`<meta property="og:url" content="%s" />`, template.HTMLEscapeString(shortcut.Link)),
-	}
-	return strings.Join(metadataList, "\n")
+	metadata.Title = title
+	metadata.Description = description
+	return metadata
 }
 
-func generateCollectionMetadata(collection *storepb.Collection) string {
-	metadataList := []string{
-		fmt.Sprintf(`<meta name="description" content="%s" />`, template.HTMLEscapeString(collection.Description)),
-		fmt.Sprintf(`<meta property="og:title" content="%s" />`, template.HTMLEscapeString(collection.Title)),
-		fmt.Sprintf(`<meta property="og:description" content="%s" />`, template.HTMLEscapeString(collection.Description)),
-		`<meta property="og:type" content="website" />`,
-		// Twitter related metadata.
-		fmt.Sprintf(`<meta name="twitter:title" content="%s" />`, template.HTMLEscapeString(collection.Title)),
-		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, template.HTMLEscapeString(collection.Description)),
-	}
-	return strings.Join(metadataList, "\n")
+func generateCollectionMetadata(collection *storepb.Collection) *Metadata {
+	metadata := getDefaultMetadata()
+	metadata.Title = collection.Title
+	metadata.Description = collection.Description
+	return metadata
 }
 
 func getRawIndexHTML() string {
 	bytes, _ := os.ReadFile("dist/index.html")
 	return string(bytes)
+}
+
+type Metadata struct {
+	Title       string
+	Description string
+	ImageURL    string
+}
+
+func getDefaultMetadata() *Metadata {
+	return &Metadata{
+		Title: "Slash",
+	}
+}
+
+func (m *Metadata) String() string {
+	metadataList := []string{
+		fmt.Sprintf(`<title>%s</title>`, m.Title),
+		fmt.Sprintf(`<meta name="description" content="%s" />`, m.Description),
+		fmt.Sprintf(`<meta property="og:title" content="%s" />`, m.Title),
+		fmt.Sprintf(`<meta property="og:description" content="%s" />`, m.Description),
+		fmt.Sprintf(`<meta property="og:image" content="%s" />`, m.ImageURL),
+		`<meta property="og:type" content="website" />`,
+		// Twitter related fields.
+		fmt.Sprintf(`<meta property="twitter:title" content="%s" />`, m.Title),
+		fmt.Sprintf(`<meta property="twitter:description" content="%s" />`, m.Description),
+		fmt.Sprintf(`<meta property="twitter:image" content="%s" />`, m.ImageURL),
+	}
+	return strings.Join(metadataList, "\n")
 }

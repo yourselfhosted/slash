@@ -11,8 +11,6 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	// sqlite driver.
-	_ "modernc.org/sqlite"
 
 	"github.com/yourselfhosted/slash/api/auth"
 	"github.com/yourselfhosted/slash/server"

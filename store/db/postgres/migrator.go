@@ -22,9 +22,6 @@ const (
 //go:embed migration
 var migrationFS embed.FS
 
-//go:embed seed
-var seedFS embed.FS
-
 func (d *DB) Migrate(ctx context.Context) error {
 	if d.profile.IsDev() {
 		return d.nonProdMigrate(ctx)
@@ -67,12 +64,6 @@ func (d *DB) nonProdMigrate(ctx context.Context) error {
 		return errors.Errorf("failed to exec SQL %s: %s", stmt, err)
 	}
 
-	// In demo mode, we should seed the database.
-	if d.profile.Mode == "demo" {
-		if err := d.Seed(ctx); err != nil {
-			return errors.Wrap(err, "failed to seed")
-		}
-	}
 	return nil
 }
 
@@ -154,43 +145,6 @@ func (d *DB) applyMigrationForMinorVersion(ctx context.Context, minorVersion str
 	}
 
 	return nil
-}
-
-func (d *DB) Seed(ctx context.Context) error {
-	filenames, err := fs.Glob(seedFS, fmt.Sprintf("%s/*.sql", "seed"))
-	if err != nil {
-		return errors.Wrap(err, "failed to read seed files")
-	}
-
-	sort.Strings(filenames)
-
-	// Loop over all seed files and execute them in order.
-	for _, filename := range filenames {
-		buf, err := seedFS.ReadFile(filename)
-		if err != nil {
-			return errors.Wrapf(err, "failed to read seed file, filename=%s", filename)
-		}
-		stmt := string(buf)
-		if err := d.execute(ctx, stmt); err != nil {
-			return errors.Wrapf(err, "seed error: %s", stmt)
-		}
-	}
-	return nil
-}
-
-// execute runs a single SQL statement within a transaction.
-func (d *DB) execute(ctx context.Context, stmt string) error {
-	tx, err := d.db.Begin()
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback()
-
-	if _, err := tx.ExecContext(ctx, stmt); err != nil {
-		return errors.Wrap(err, "failed to execute statement")
-	}
-
-	return tx.Commit()
 }
 
 // minorDirRegexp is a regular expression for minor version directory.

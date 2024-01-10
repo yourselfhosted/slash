@@ -4,6 +4,8 @@ import (
 	"database/sql"
 
 	"github.com/pkg/errors"
+	// SQLite driver.
+	_ "modernc.org/sqlite"
 
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"

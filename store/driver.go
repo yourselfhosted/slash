@@ -14,7 +14,6 @@ type Driver interface {
 	Close() error
 
 	Migrate(ctx context.Context) error
-	Seed(ctx context.Context) error
 
 	// MigrationHistory model related methods.
 	UpsertMigrationHistory(ctx context.Context, upsert *UpsertMigrationHistory) (*MigrationHistory, error)

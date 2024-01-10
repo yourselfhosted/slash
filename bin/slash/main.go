@@ -11,7 +11,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	_ "modernc.org/sqlite"
 
 	"github.com/yourselfhosted/slash/internal/log"
 	"github.com/yourselfhosted/slash/server"
