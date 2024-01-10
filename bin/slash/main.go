@@ -31,6 +31,7 @@ var (
 	data          string
 	driver        string
 	dsn           string
+	enableMetric  bool
 
 	rootCmd = &cobra.Command{
 		Use:   "slash",
@@ -57,8 +58,10 @@ var (
 				return
 			}
 
-			// nolint
-			metric.NewMetricClient(s.Secret, *serverProfile)
+			if serverProfile.Metric {
+				// nolint
+				metric.NewMetricClient(s.Secret, *serverProfile)
+			}
 
 			c := make(chan os.Signal, 1)
 			// Trigger graceful shutdown on SIGINT or SIGTERM.
@@ -100,6 +103,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&data, "data", "d", "", "data directory")
 	rootCmd.PersistentFlags().StringVarP(&driver, "driver", "", "", "database driver")
 	rootCmd.PersistentFlags().StringVarP(&dsn, "dsn", "", "", "database source name(aka. DSN)")
+	rootCmd.PersistentFlags().BoolVarP(&enableMetric, "metric", "", true, "allow metric collection")
 
 	err := viper.BindPFlag("mode", rootCmd.PersistentFlags().Lookup("mode"))
 	if err != nil {
@@ -121,10 +125,15 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	err = viper.BindPFlag("metric", rootCmd.PersistentFlags().Lookup("metric"))
+	if err != nil {
+		panic(err)
+	}
 
 	viper.SetDefault("mode", "demo")
 	viper.SetDefault("port", 8082)
 	viper.SetDefault("driver", "sqlite")
+	viper.SetDefault("metric", true)
 	viper.SetEnvPrefix("slash")
 }
 
@@ -143,6 +152,7 @@ func initConfig() {
 	println("port:", serverProfile.Port)
 	println("mode:", serverProfile.Mode)
 	println("version:", serverProfile.Version)
+	println("metric:", serverProfile.Metric)
 	println("---")
 }
 
