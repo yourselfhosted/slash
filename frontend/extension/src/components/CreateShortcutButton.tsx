@@ -50,6 +50,18 @@ const CreateShortcutButton = () => {
     });
   };
 
+  const generateRandomName = () => {
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    let name = "";
+    for (let i = 0; i < 8; i++) {
+      name += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setState((state) => ({
+      ...state,
+      name,
+    }));
+  };
+
   const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState((state) => ({
       ...state,
@@ -118,7 +130,18 @@ const CreateShortcutButton = () => {
           <div className="overflow-x-hidden w-full flex flex-col justify-start items-center">
             <div className="w-full flex flex-row justify-start items-center mb-2">
               <span className="block w-12 mr-2 shrink-0">Name</span>
-              <Input className="grow" type="text" placeholder="Unique shortcut name" value={state.name} onChange={handleNameInputChange} />
+              <Input
+                className="grow"
+                type="text"
+                placeholder="Unique shortcut name"
+                value={state.name}
+                onChange={handleNameInputChange}
+                endDecorator={
+                  <IconButton size="sm" onClick={generateRandomName}>
+                    <Icon.RefreshCcw className="w-4 h-auto cursor-pointer" />
+                  </IconButton>
+                }
+              />
             </div>
             <div className="w-full flex flex-row justify-start items-center mb-2">
               <span className="block w-12 mr-2 shrink-0">Title</span>
