@@ -39,7 +39,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const { t } = useTranslation();
   const [state, setState] = useState<State>({
     shortcutCreate: Shortcut.fromPartial({
-      visibility: Visibility.PRIVATE,
+      visibility: Visibility.PUBLIC,
       ogMetadata: {
         title: "",
         description: "",
