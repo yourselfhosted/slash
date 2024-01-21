@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import LogoBase64 from "data-base64:../..//assets/icon.png";
+import LogoBase64 from "data-base64:../../assets/icon.png";
 
 interface Props {
   className?: string;
