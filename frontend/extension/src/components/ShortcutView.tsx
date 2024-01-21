@@ -22,7 +22,7 @@ const ShortcutView = (props: Props) => {
     <>
       <div
         className={classNames(
-          "group w-full px-3 py-2 flex flex-col justify-start items-start border rounded-lg hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
+          "group w-auto px-3 py-2 flex flex-col justify-start items-start border rounded-lg hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
         )}
       >
         <div className="w-full flex flex-row justify-start items-center">
@@ -51,7 +51,7 @@ const ShortcutView = (props: Props) => {
                     </>
                   )}
                 </div>
-                <span className="hidden group-hover:block ml-1 cursor-pointer shrink-0">
+                <span className="ml-1 cursor-pointer shrink-0 opacity-80">
                   <Icon.ExternalLink className="w-4 h-auto text-gray-600" />
                 </span>
               </button>

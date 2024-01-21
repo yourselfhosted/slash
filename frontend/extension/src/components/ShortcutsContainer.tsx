@@ -14,7 +14,7 @@ const ShortcutsContainer = () => {
           <span className="mx-1 text-sm">Please make sure you have signed in your instance.</span>
         </a>
       </div>
-      <div className={classNames("w-full grid grid-cols-2 gap-2")}>
+      <div className={classNames("w-full flex flex-row justify-start items-start flex-wrap gap-2")}>
         {shortcuts.map((shortcut) => {
           return <ShortcutView key={shortcut.id} shortcut={shortcut} />;
         })}
