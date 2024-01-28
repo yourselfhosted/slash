@@ -36,7 +36,8 @@ const ShortcutSpace = () => {
       navigateTo("/404");
       return null;
     }
-    console.log("currentUser", currentUser);
+
+    // If shortcut is not found, prompt user to create it.
     return (
       <>
         <div className="w-full h-[100svh] flex flex-col justify-center items-center p-4">
@@ -59,12 +60,14 @@ const ShortcutSpace = () => {
       </>
     );
   }
+
   // If shortcut is a URL, redirect to it directly.
   if (isURL(shortcut.link)) {
     window.document.title = "Redirecting...";
     window.location.href = shortcut.link;
     return null;
   }
+
   // Otherwise, render the shortcut link as plain text.
   return <div>{shortcut.link}</div>;
 };
