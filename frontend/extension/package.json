@@ -9,7 +9,7 @@
     "package": "plasmo package",
     "lint": "eslint --ext .js,.ts,.tsx, src",
     "lint-fix": "eslint --ext .js,.ts,.tsx, src --fix",
-    "type-gen": "cd ../../proto && buf generate"
+    "postinstall": "cd ../../proto && buf generate"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
