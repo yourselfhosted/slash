@@ -17,6 +17,7 @@ const ShortcutSpace = () => {
   const currentUser = userStore.getCurrentUser();
   const shortcutStore = useShortcutStore();
   const [shortcut, setShortcut] = useState<Shortcut>();
+  const [loading, setLoading] = useState(true);
   const [showCreateShortcutDrawer, setShowCreateShortcutDrawer] = useState(false);
 
   useEffect(() => {
@@ -28,8 +29,13 @@ const ShortcutSpace = () => {
         console.error(error);
         toast.error(error.details);
       }
+      setLoading(false);
     })();
   }, [shortcutName]);
+
+  if (loading) {
+    return null;
+  }
 
   if (!shortcut) {
     if (!currentUser) {
