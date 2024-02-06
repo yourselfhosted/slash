@@ -2,7 +2,6 @@ package sqlite
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"strings"
 
@@ -175,16 +174,6 @@ func (d *DB) DeleteMemo(ctx context.Context, delete *store.DeleteMemo) error {
 	if _, err := d.db.ExecContext(ctx, `DELETE FROM memo WHERE id = ?`, delete.ID); err != nil {
 		return err
 	}
-	return nil
-}
-
-func vacuumMemo(ctx context.Context, tx *sql.Tx) error {
-	stmt := `DELETE FROM memo WHERE creator_id NOT IN (SELECT id FROM user)`
-	_, err := tx.ExecContext(ctx, stmt)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
