@@ -95,8 +95,8 @@ const ShortcutDetail = () => {
           <div className="truncate text-3xl">
             {shortcut.title ? (
               <>
-                <span>{shortcut.title}</span>
-                <span className="text-gray-400">(s/{shortcut.name})</span>
+                <span className="dark:text-gray-400">{shortcut.title}</span>
+                <span className="text-gray-500">(s/{shortcut.name})</span>
               </>
             ) : (
               <>
