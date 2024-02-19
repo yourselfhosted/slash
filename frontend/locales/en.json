@@ -76,7 +76,8 @@
       "enable-user-signup": {
         "self": "Enable user signup",
         "description": "Once enabled, other users can signup."
-      }
+      },
+      "default-visibility": "Default visibility"
     }
   }
 }

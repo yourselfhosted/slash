@@ -1,10 +1,11 @@
-import { Button, Checkbox, Input, Textarea } from "@mui/joy";
+import { Button, Checkbox, Input, Select, Textarea, Option } from "@mui/joy";
 import { isEqual } from "lodash-es";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
 import useWorkspaceStore from "@/stores/v1/workspace";
+import { Visibility } from "@/types/proto/api/v1/common";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 
 const WorkspaceSection: React.FC = () => {
@@ -35,6 +36,13 @@ const WorkspaceSection: React.FC = () => {
     });
   };
 
+  const handleDefaultVisibilityChange = async (value: Visibility) => {
+    setWorkspaceSetting({
+      ...workspaceSetting,
+      defaultVisibility: value,
+    });
+  };
+
   const handleSaveWorkspaceSetting = async () => {
     const updateMask: string[] = [];
     if (!isEqual(originalWorkspaceSetting.current.enableSignup, workspaceSetting.enableSignup)) {
@@ -45,6 +53,9 @@ const WorkspaceSection: React.FC = () => {
     }
     if (!isEqual(originalWorkspaceSetting.current.customStyle, workspaceSetting.customStyle)) {
       updateMask.push("custom_style");
+    }
+    if (!isEqual(originalWorkspaceSetting.current.defaultVisibility, workspaceSetting.defaultVisibility)) {
+      updateMask.push("default_visibility");
     }
     if (updateMask.length === 0) {
       toast.error("No changes made");
@@ -59,6 +70,7 @@ const WorkspaceSection: React.FC = () => {
         })
       ).setting as WorkspaceSetting;
       setWorkspaceSetting(setting);
+      await workspaceStore.fetchWorkspaceSetting();
       originalWorkspaceSetting.current = setting;
       toast.success("Workspace setting saved successfully");
     } catch (error: any) {
@@ -96,6 +108,19 @@ const WorkspaceSection: React.FC = () => {
           onChange={(event) => handleEnableSignUpChange(event.target.checked)}
         />
         <p className="mt-2 text-gray-500">{t("settings.workspace.enable-user-signup.description")}</p>
+      </div>
+      <div className="w-full flex flex-row justify-between items-center">
+        <div className="flex flex-row justify-start items-center gap-x-1">
+          <span className="dark:text-gray-400">{t("settings.workspace.default-visibility")}</span>
+        </div>
+        <Select
+          defaultValue={workspaceSetting.defaultVisibility || Visibility.PRIVATE}
+          onChange={(_, value) => handleDefaultVisibilityChange(value as Visibility)}
+        >
+          <Option value={Visibility.PRIVATE}>{t(`shortcut.visibility.private.self`)}</Option>
+          <Option value={Visibility.WORKSPACE}>{t(`shortcut.visibility.workspace.self`)}</Option>
+          <Option value={Visibility.PUBLIC}>{t(`shortcut.visibility.public.self`)}</Option>
+        </Select>
       </div>
       <div>
         <Button variant="outlined" color="neutral" disabled={!allowSave} onClick={handleSaveWorkspaceSetting}>

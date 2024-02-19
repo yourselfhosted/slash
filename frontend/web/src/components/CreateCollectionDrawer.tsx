@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import useCollectionStore from "@/stores/v1/collection";
 import useShortcutStore from "@/stores/v1/shortcut";
+import useWorkspaceStore from "@/stores/v1/workspace";
 import { Collection } from "@/types/proto/api/v1/collection_service";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
@@ -26,6 +27,7 @@ interface State {
 const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   const { onClose, onConfirm, collectionId } = props;
   const { t } = useTranslation();
+  const workspaceStore = useWorkspaceStore();
   const collectionStore = useCollectionStore();
   const shortcutList = useShortcutStore().getShortcutList();
   const [state, setState] = useState<State>({
@@ -48,6 +50,16 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
       }
     })
     .filter((shortcut) => !selectedShortcuts.find((selectedShortcut) => selectedShortcut.id === shortcut.id));
+
+  useEffect(() => {
+    if (workspaceStore.setting.defaultVisibility !== Visibility.VISIBILITY_UNSPECIFIED) {
+      setPartialState({
+        collectionCreate: Object.assign(state.collectionCreate, {
+          visibility: workspaceStore.setting.defaultVisibility,
+        }),
+      });
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {

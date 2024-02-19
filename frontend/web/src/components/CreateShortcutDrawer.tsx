@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import useShortcutStore, { getShortcutUpdateMask } from "@/stores/v1/shortcut";
+import useWorkspaceStore from "@/stores/v1/workspace";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
@@ -49,6 +50,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
     }),
   });
   const shortcutStore = useShortcutStore();
+  const workspaceStore = useWorkspaceStore();
   const [showOpenGraphMetadata, setShowOpenGraphMetadata] = useState<boolean>(false);
   const shortcutList = shortcutStore.getShortcutList();
   const [tag, setTag] = useState<string>("");
@@ -56,6 +58,16 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const isCreating = isUndefined(shortcutId);
   const loadingState = useLoading(!isCreating);
   const requestState = useLoading(false);
+
+  useEffect(() => {
+    if (workspaceStore.setting.defaultVisibility !== Visibility.VISIBILITY_UNSPECIFIED) {
+      setPartialState({
+        shortcutCreate: Object.assign(state.shortcutCreate, {
+          visibility: workspaceStore.setting.defaultVisibility,
+        }),
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (shortcutId) {

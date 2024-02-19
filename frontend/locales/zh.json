@@ -76,7 +76,8 @@
       "enable-user-signup": {
         "self": "启用用户注册",
         "description": "允许其他用户注册新账号"
-      }
+      },
+      "default-visibility": "默认可见性"
     }
   }
 }

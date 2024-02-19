@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package slash.api.v1;
 
+import "api/v1/common.proto";
 import "api/v1/subscription_service.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
@@ -50,8 +51,10 @@ message WorkspaceSetting {
   string custom_style = 4;
   // The custom script.
   string custom_script = 5;
-  // The auto backup setting.
+  // The auto backup setting. (Unimplemented)
   AutoBackupWorkspaceSetting auto_backup = 6;
+  // The default visibility of shortcuts and collections.
+  Visibility default_visibility = 7;
 }
 
 message AutoBackupWorkspaceSetting {

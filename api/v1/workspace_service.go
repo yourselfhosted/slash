@@ -68,6 +68,8 @@ func (s *APIV2Service) GetWorkspaceSetting(ctx context.Context, _ *apiv1pb.GetWo
 			workspaceSetting.CustomStyle = v.GetCustomStyle()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT {
 			workspaceSetting.CustomScript = v.GetCustomScript()
+		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY {
+			workspaceSetting.DefaultVisibility = apiv1pb.Visibility(v.GetDefaultVisibility())
 		} else if isAdmin {
 			// For some settings, only admin can get the value.
 			if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY {
@@ -127,6 +129,15 @@ func (s *APIV2Service) UpdateWorkspaceSetting(ctx context.Context, request *apiv
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT,
 				Value: &storepb.WorkspaceSetting_CustomScript{
 					CustomScript: request.Setting.CustomScript,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "default_visibility" {
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY,
+				Value: &storepb.WorkspaceSetting_DefaultVisibility{
+					DefaultVisibility: storepb.Visibility(request.Setting.DefaultVisibility),
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)

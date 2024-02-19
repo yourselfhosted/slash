@@ -410,13 +410,14 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | key | [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey) |  |  |
-| license_key | [string](#string) |  |  |
-| secret_session | [string](#string) |  |  |
-| enable_signup | [bool](#bool) |  |  |
-| custom_style | [string](#string) |  |  |
-| custom_script | [string](#string) |  |  |
-| auto_backup | [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting) |  |  |
-| instance_url | [string](#string) |  |  |
+| license_key | [string](#string) |  | The license key of workspace. |
+| secret_session | [string](#string) |  | The secret session key used to encrypt session data. |
+| enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
+| custom_style | [string](#string) |  | The custom style. |
+| custom_script | [string](#string) |  | The custom script. |
+| auto_backup | [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting) |  | The auto backup setting. (Unimplemented) |
+| instance_url | [string](#string) |  | The instance URL of workspace. |
+| default_visibility | [Visibility](#slash-store-Visibility) |  | The default visibility of shortcuts and collections. |
 
 
 
@@ -440,6 +441,7 @@
 | WORKSPACE_SETTING_CUSTOM_SCRIPT | 5 | The custom script. |
 | WORKSPACE_SETTING_AUTO_BACKUP | 6 | The auto backup setting. |
 | WORKSPACE_SETTING_INSTANCE_URL | 7 | The instance URL. |
+| WORKSPACE_SETTING_DEFAULT_VISIBILITY | 8 | The default visibility of shortcuts and collections. |
 
 
  

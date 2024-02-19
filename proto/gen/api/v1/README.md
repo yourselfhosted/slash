@@ -1729,7 +1729,8 @@
 | instance_url | [string](#string) |  | The instance URL. |
 | custom_style | [string](#string) |  | The custom style. |
 | custom_script | [string](#string) |  | The custom script. |
-| auto_backup | [AutoBackupWorkspaceSetting](#slash-api-v1-AutoBackupWorkspaceSetting) |  | The auto backup setting. |
+| auto_backup | [AutoBackupWorkspaceSetting](#slash-api-v1-AutoBackupWorkspaceSetting) |  | The auto backup setting. (Unimplemented) |
+| default_visibility | [Visibility](#slash-api-v1-Visibility) |  | The default visibility of shortcuts and collections. |
 
 
 

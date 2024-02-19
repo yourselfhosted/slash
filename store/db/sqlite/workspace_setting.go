@@ -41,6 +41,8 @@ func (d *DB) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.Workspa
 		valueString = string(valueBytes)
 	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL {
 		valueString = upsert.GetInstanceUrl()
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY {
+		valueString = upsert.GetDefaultVisibility().String()
 	} else {
 		return nil, errors.New("invalid workspace setting key")
 	}
@@ -106,6 +108,8 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 			workspaceSetting.Value = &storepb.WorkspaceSetting_AutoBackup{AutoBackup: autoBackupSetting}
 		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL {
 			workspaceSetting.Value = &storepb.WorkspaceSetting_InstanceUrl{InstanceUrl: valueString}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY {
+			workspaceSetting.Value = &storepb.WorkspaceSetting_DefaultVisibility{DefaultVisibility: storepb.Visibility(storepb.Visibility_value[valueString])}
 		} else {
 			continue
 		}
