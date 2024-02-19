@@ -6,7 +6,6 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -16,7 +15,6 @@ import (
 	"go.uber.org/zap"
 
 	apiv1 "github.com/yourselfhosted/slash/api/v1"
-	apiv2 "github.com/yourselfhosted/slash/api/v2"
 	"github.com/yourselfhosted/slash/internal/log"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/metric"
@@ -36,7 +34,7 @@ type Server struct {
 	licenseService *license.LicenseService
 
 	// API services.
-	apiV2Service *apiv2.APIV2Service
+	apiV2Service *apiv1.APIV2Service
 }
 
 func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store) (*Server, error) {
@@ -60,34 +58,6 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 			`"status":${status},"error":"${error}"}` + "\n",
 	}))
 
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		Skipper:      grpcRequestSkipper,
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
-	}))
-
-	e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
-		Skipper: grpcRequestSkipper,
-		Timeout: 30 * time.Second,
-	}))
-
-	e.Use(middleware.RateLimiterWithConfig(middleware.RateLimiterConfig{
-		Skipper: grpcRequestSkipper,
-		Store: middleware.NewRateLimiterMemoryStoreWithConfig(
-			middleware.RateLimiterMemoryStoreConfig{Rate: 30, Burst: 60, ExpiresIn: 3 * time.Minute},
-		),
-		IdentifierExtractor: func(ctx echo.Context) (string, error) {
-			id := ctx.RealIP()
-			return id, nil
-		},
-		ErrorHandler: func(context echo.Context, err error) error {
-			return context.JSON(http.StatusForbidden, nil)
-		},
-		DenyHandler: func(context echo.Context, identifier string, err error) error {
-			return context.JSON(http.StatusTooManyRequests, nil)
-		},
-	}))
-
 	// Serve frontend.
 	frontendService := NewFrontendService(profile, store)
 	frontendService.Serve(ctx, e)
@@ -109,12 +79,8 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	})
 
 	rootGroup := e.Group("")
-	// Register API v1 routes.
-	apiV1Service := apiv1.NewAPIV1Service(profile, store, licenseService)
-	apiV1Service.Start(rootGroup, secret)
-
-	s.apiV2Service = apiv2.NewAPIV2Service(secret, profile, store, licenseService, s.Profile.Port+1)
-	// Register gRPC gateway as api v2.
+	s.apiV2Service = apiv1.NewAPIV2Service(secret, profile, store, licenseService, s.Profile.Port+1)
+	// Register gRPC gateway as api v1.
 	if err := s.apiV2Service.RegisterGateway(ctx, e); err != nil {
 		return nil, errors.Wrap(err, "failed to register gRPC gateway")
 	}
@@ -165,10 +131,6 @@ func (s *Server) Shutdown(ctx context.Context) {
 
 func (s *Server) GetEcho() *echo.Echo {
 	return s.e
-}
-
-func grpcRequestSkipper(c echo.Context) bool {
-	return strings.HasPrefix(c.Request().URL.Path, "/slash.api.v2.")
 }
 
 func (s *Server) getSecretSessionName(ctx context.Context) (string, error) {

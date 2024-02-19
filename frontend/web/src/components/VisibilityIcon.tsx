@@ -1,4 +1,4 @@
-import { Visibility } from "@/types/proto/api/v2/common";
+import { Visibility } from "@/types/proto/api/v1/common";
 import Icon from "./Icon";
 
 interface Props {

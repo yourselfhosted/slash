@@ -1,11 +1,11 @@
 import { createChannel, createClientFactory, FetchTransport } from "nice-grpc-web";
-import { AuthServiceDefinition } from "./types/proto/api/v2/auth_service";
-import { CollectionServiceDefinition } from "./types/proto/api/v2/collection_service";
-import { ShortcutServiceDefinition } from "./types/proto/api/v2/shortcut_service";
-import { SubscriptionServiceDefinition } from "./types/proto/api/v2/subscription_service";
-import { UserServiceDefinition } from "./types/proto/api/v2/user_service";
-import { UserSettingServiceDefinition } from "./types/proto/api/v2/user_setting_service";
-import { WorkspaceServiceDefinition } from "./types/proto/api/v2/workspace_service";
+import { AuthServiceDefinition } from "./types/proto/api/v1/auth_service";
+import { CollectionServiceDefinition } from "./types/proto/api/v1/collection_service";
+import { ShortcutServiceDefinition } from "./types/proto/api/v1/shortcut_service";
+import { SubscriptionServiceDefinition } from "./types/proto/api/v1/subscription_service";
+import { UserServiceDefinition } from "./types/proto/api/v1/user_service";
+import { UserSettingServiceDefinition } from "./types/proto/api/v1/user_setting_service";
+import { WorkspaceServiceDefinition } from "./types/proto/api/v1/workspace_service";
 
 const address = import.meta.env.MODE === "development" ? "http://localhost:8082" : window.location.origin;
 

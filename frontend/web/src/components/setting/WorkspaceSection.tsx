@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
 import useWorkspaceStore from "@/stores/v1/workspace";
-import { WorkspaceSetting } from "@/types/proto/api/v2/workspace_service";
+import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 
 const WorkspaceSection: React.FC = () => {
   const { t } = useTranslation();

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/Icon";
 import { stringifyPlanType } from "@/stores/v1/subscription";
 import useWorkspaceStore from "@/stores/v1/workspace";
-import { Role } from "@/types/proto/api/v2/user_service";
+import { Role } from "@/types/proto/api/v1/user_service";
 import MemberSection from "../components/setting/MemberSection";
 import WorkspaceSection from "../components/setting/WorkspaceSection";
 import useUserStore from "../stores/v1/user";

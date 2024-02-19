@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { shortcutServiceClient } from "@/grpcweb";
-import { GetShortcutAnalyticsResponse } from "@/types/proto/api/v2/shortcut_service";
+import { GetShortcutAnalyticsResponse } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
 
 interface Props {

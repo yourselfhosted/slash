@@ -2,7 +2,7 @@ import { isEqual } from "lodash-es";
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import { shortcutServiceClient } from "@/grpcweb";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 
 interface State {
   shortcutMapById: Record<number, Shortcut>;

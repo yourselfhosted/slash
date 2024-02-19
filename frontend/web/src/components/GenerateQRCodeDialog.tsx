@@ -3,7 +3,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import { useRef } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { absolutifyLink } from "../helpers/utils";
 import Icon from "./Icon";
 

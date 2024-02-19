@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { workspaceServiceClient } from "@/grpcweb";
-import { WorkspaceProfile, WorkspaceSetting } from "@/types/proto/api/v2/workspace_service";
+import { WorkspaceProfile, WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 
 interface WorkspaceState {
   profile: WorkspaceProfile;

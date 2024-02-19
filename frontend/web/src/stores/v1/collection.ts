@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { collectionServiceClient } from "@/grpcweb";
-import { Collection } from "@/types/proto/api/v2/collection_service";
+import { Collection } from "@/types/proto/api/v1/collection_service";
 
 interface CollectionState {
   collectionMapById: Record<number, Collection>;

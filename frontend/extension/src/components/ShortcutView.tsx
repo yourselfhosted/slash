@@ -1,7 +1,7 @@
 import { useStorage } from "@plasmohq/storage/hook";
 import classNames from "classnames";
 import { getFaviconWithGoogleS2 } from "@/helpers/utils";
-import type { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import type { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
 
 interface Props {

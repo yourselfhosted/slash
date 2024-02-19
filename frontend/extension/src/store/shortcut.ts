@@ -1,7 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { CreateShortcutResponse, ListShortcutsResponse, Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { CreateShortcutResponse, ListShortcutsResponse, Shortcut } from "@/types/proto/api/v1/shortcut_service";
 
 interface State {
   shortcutMapById: Record<number, Shortcut>;

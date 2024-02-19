@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { userServiceClient } from "@/grpcweb";
-import { UserAccessToken } from "@/types/proto/api/v2/user_service";
+import { UserAccessToken } from "@/types/proto/api/v1/user_service";
 import useUserStore from "../../stores/v1/user";
 import { showCommonDialog } from "../Alert";
 import CreateAccessTokenDialog from "../CreateAccessTokenDialog";

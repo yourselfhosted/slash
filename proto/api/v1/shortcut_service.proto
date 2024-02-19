@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package slash.api.v1;
+
+import "api/v1/common.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gen/api/v1";
+
+service ShortcutService {
+  // ListShortcuts returns a list of shortcuts.
+  rpc ListShortcuts(ListShortcutsRequest) returns (ListShortcutsResponse) {
+    option (google.api.http) = {get: "/api/v1/shortcuts"};
+  }
+  // GetShortcut returns a shortcut by id.
+  rpc GetShortcut(GetShortcutRequest) returns (GetShortcutResponse) {
+    option (google.api.http) = {get: "/api/v1/shortcuts/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+  // GetShortcutByName returns a shortcut by name.
+  rpc GetShortcutByName(GetShortcutByNameRequest) returns (GetShortcutByNameResponse) {}
+  // CreateShortcut creates a shortcut.
+  rpc CreateShortcut(CreateShortcutRequest) returns (CreateShortcutResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/shortcuts"
+      body: "shortcut"
+    };
+  }
+  // UpdateShortcut updates a shortcut.
+  rpc UpdateShortcut(UpdateShortcutRequest) returns (UpdateShortcutResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/shortcuts/{shortcut.id}"
+      body: "shortcut"
+    };
+    option (google.api.method_signature) = "shortcut,update_mask";
+  }
+  // DeleteShortcut deletes a shortcut by name.
+  rpc DeleteShortcut(DeleteShortcutRequest) returns (DeleteShortcutResponse) {
+    option (google.api.http) = {delete: "/api/v1/shortcuts/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+  // GetShortcutAnalytics returns the analytics for a shortcut.
+  rpc GetShortcutAnalytics(GetShortcutAnalyticsRequest) returns (GetShortcutAnalyticsResponse) {
+    option (google.api.http) = {get: "/api/v1/shortcuts/{id}/analytics"};
+    option (google.api.method_signature) = "id";
+  }
+}
+
+message Shortcut {
+  int32 id = 1;
+
+  int32 creator_id = 2;
+
+  google.protobuf.Timestamp created_time = 3;
+
+  google.protobuf.Timestamp updated_time = 4;
+
+  RowStatus row_status = 5;
+
+  string name = 6;
+
+  string link = 7;
+
+  string title = 8;
+
+  repeated string tags = 9;
+
+  string description = 10;
+
+  Visibility visibility = 11;
+
+  int32 view_count = 12;
+
+  OpenGraphMetadata og_metadata = 13;
+}
+
+message OpenGraphMetadata {
+  string title = 1;
+
+  string description = 2;
+
+  string image = 3;
+}
+
+message ListShortcutsRequest {}
+
+message ListShortcutsResponse {
+  repeated Shortcut shortcuts = 1;
+}
+
+message GetShortcutRequest {
+  int32 id = 1;
+}
+
+message GetShortcutResponse {
+  Shortcut shortcut = 1;
+}
+
+message GetShortcutByNameRequest {
+  string name = 1;
+}
+
+message GetShortcutByNameResponse {
+  Shortcut shortcut = 1;
+}
+
+message CreateShortcutRequest {
+  Shortcut shortcut = 1;
+}
+
+message CreateShortcutResponse {
+  Shortcut shortcut = 1;
+}
+
+message UpdateShortcutRequest {
+  Shortcut shortcut = 1;
+
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateShortcutResponse {
+  Shortcut shortcut = 1;
+}
+
+message DeleteShortcutRequest {
+  int32 id = 1;
+}
+
+message DeleteShortcutResponse {}
+
+message GetShortcutAnalyticsRequest {
+  int32 id = 1;
+}
+
+message GetShortcutAnalyticsResponse {
+  message AnalyticsItem {
+    string name = 1;
+    int32 count = 2;
+  }
+  repeated AnalyticsItem references = 1;
+
+  repeated AnalyticsItem devices = 2;
+
+  repeated AnalyticsItem browsers = 3;
+}

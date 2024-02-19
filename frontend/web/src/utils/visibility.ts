@@ -1,4 +1,4 @@
-import { Visibility } from "@/types/proto/api/v2/common";
+import { Visibility } from "@/types/proto/api/v1/common";
 
 export const convertVisibilityFromPb = (visibility: Visibility): string => {
   if (visibility === Visibility.PRIVATE) {

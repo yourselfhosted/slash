@@ -1,15 +1,33 @@
 package v1
 
-// RowStatus is the status for a row.
-type RowStatus string
+import (
+	"context"
 
-const (
-	// Normal is the status for a normal row.
-	Normal RowStatus = "NORMAL"
-	// Archived is the status for an archived row.
-	Archived RowStatus = "ARCHIVED"
+	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	"github.com/yourselfhosted/slash/store"
 )
 
-func (s RowStatus) String() string {
-	return string(s)
+func convertRowStatusFromStore(rowStatus store.RowStatus) apiv1pb.RowStatus {
+	switch rowStatus {
+	case store.Normal:
+		return apiv1pb.RowStatus_NORMAL
+	case store.Archived:
+		return apiv1pb.RowStatus_ARCHIVED
+	default:
+		return apiv1pb.RowStatus_ROW_STATUS_UNSPECIFIED
+	}
+}
+
+func getCurrentUser(ctx context.Context, s *store.Store) (*store.User, error) {
+	userID, ok := ctx.Value(userIDContextKey).(int32)
+	if !ok {
+		return nil, nil
+	}
+	user, err := s.GetUser(ctx, &store.FindUser{
+		ID: &userID,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

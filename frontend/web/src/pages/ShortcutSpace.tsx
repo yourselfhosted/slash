@@ -7,7 +7,7 @@ import { isURL } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import useShortcutStore from "@/stores/v1/shortcut";
 import useUserStore from "@/stores/v1/user";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 
 const ShortcutSpace = () => {
   const params = useParams();

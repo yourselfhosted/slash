@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package slash.api.v1;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/field_mask.proto";
+
+option go_package = "gen/api/v1";
+
+service UserSettingService {
+  // GetUserSetting returns the user setting.
+  rpc GetUserSetting(GetUserSettingRequest) returns (GetUserSettingResponse) {
+    option (google.api.http) = {get: "/api/v1/users/{id}/settings"};
+    option (google.api.method_signature) = "id";
+  }
+  // UpdateUserSetting updates the user setting.
+  rpc UpdateUserSetting(UpdateUserSettingRequest) returns (UpdateUserSettingResponse) {
+    option (google.api.http) = {
+      patch: "/api/v1/users/{id}/settings"
+      body: "user_setting"
+    };
+    option (google.api.method_signature) = "user_setting,update_mask";
+  }
+}
+
+message UserSetting {
+  // id is the user id.
+  int32 id = 1;
+
+  enum Locale {
+    LOCALE_UNSPECIFIED = 0;
+    LOCALE_EN = 1;
+    LOCALE_ZH = 2;
+  }
+  // locale is the user locale.
+  Locale locale = 2;
+
+  enum ColorTheme {
+    COLOR_THEME_UNSPECIFIED = 0;
+    COLOR_THEME_SYSTEM = 1;
+    COLOR_THEME_LIGHT = 2;
+    COLOR_THEME_DARK = 3;
+  }
+  // color_theme is the user color theme.
+  ColorTheme color_theme = 3;
+}
+
+message GetUserSettingRequest {
+  // id is the user id.
+  int32 id = 1;
+}
+
+message GetUserSettingResponse {
+  UserSetting user_setting = 1;
+}
+
+message UpdateUserSettingRequest {
+  // id is the user id.
+  int32 id = 1;
+
+  // user_setting is the user setting to update.
+  UserSetting user_setting = 2;
+
+  // update_mask is the field mask to update.
+  google.protobuf.FieldMask update_mask = 3;
+}
+
+message UpdateUserSettingResponse {
+  UserSetting user_setting = 1;
+}

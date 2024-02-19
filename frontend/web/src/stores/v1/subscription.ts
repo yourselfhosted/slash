@@ -1,4 +1,4 @@
-import { PlanType } from "@/types/proto/api/v2/subscription_service";
+import { PlanType } from "@/types/proto/api/v1/subscription_service";
 
 export const stringifyPlanType = (planType: PlanType) => {
   if (planType === PlanType.FREE) {

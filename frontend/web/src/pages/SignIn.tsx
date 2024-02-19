@@ -3,6 +3,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import Icon from "@/components/Icon";
 import { authServiceClient } from "@/grpcweb";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import useUserStore from "@/stores/v1/user";
@@ -64,7 +65,7 @@ const SignIn: React.FC = () => {
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
-            <img id="logo-img" src="/logo.png" className="w-12 h-auto mr-2 -mt-1 rounded-full shadow" alt="logo" />
+            <Icon.CircleSlash className="w-12 h-auto dark:text-gray-500 mr-2" strokeWidth={1.5} />
             <span className="text-3xl opacity-80 dark:text-gray-500">Slash</span>
           </div>
           <form className="w-full mt-6" onSubmit={handleSigninBtnClick}>

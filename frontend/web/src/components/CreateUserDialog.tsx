@@ -3,7 +3,7 @@ import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { Role, User } from "@/types/proto/api/v2/user_service";
+import { Role, User } from "@/types/proto/api/v1/user_service";
 import useLoading from "../hooks/useLoading";
 import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";

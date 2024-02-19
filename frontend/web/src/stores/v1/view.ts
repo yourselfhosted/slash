@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Visibility } from "@/types/proto/api/v2/common";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
-import { User } from "@/types/proto/api/v2/user_service";
+import { Visibility } from "@/types/proto/api/v1/common";
+import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
+import { User } from "@/types/proto/api/v1/user_service";
 
 export interface Filter {
   tab?: string;

@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package slash.api.v1;
+
+import "api/v1/common.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "gen/api/v1";
+
+service UserService {
+  // ListUsers returns a list of users.
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {get: "/api/v1/users"};
+  }
+  // GetUser returns a user by id.
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {get: "/api/v1/users/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+  // CreateUser creates a new user.
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users"
+      body: "user"
+    };
+  }
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      patch: "/api/v1/users/{user.id}"
+      body: "user"
+    };
+    option (google.api.method_signature) = "user,update_mask";
+  }
+  // DeleteUser deletes a user by id.
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (google.api.http) = {delete: "/api/v1/users/{id}"};
+    option (google.api.method_signature) = "id";
+  }
+  // ListUserAccessTokens returns a list of access tokens for a user.
+  rpc ListUserAccessTokens(ListUserAccessTokensRequest) returns (ListUserAccessTokensResponse) {
+    option (google.api.http) = {get: "/api/v1/users/{id}/access_tokens"};
+    option (google.api.method_signature) = "id";
+  }
+  // CreateUserAccessToken creates a new access token for a user.
+  rpc CreateUserAccessToken(CreateUserAccessTokenRequest) returns (CreateUserAccessTokenResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users/{id}/access_tokens"
+      body: "*"
+    };
+    option (google.api.method_signature) = "id";
+  }
+  // DeleteUserAccessToken deletes an access token for a user.
+  rpc DeleteUserAccessToken(DeleteUserAccessTokenRequest) returns (DeleteUserAccessTokenResponse) {
+    option (google.api.http) = {delete: "/api/v1/users/{id}/access_tokens/{access_token}"};
+    option (google.api.method_signature) = "id,access_token";
+  }
+}
+
+message User {
+  int32 id = 1;
+
+  RowStatus row_status = 2;
+
+  google.protobuf.Timestamp created_time = 3;
+
+  google.protobuf.Timestamp updated_time = 4;
+
+  Role role = 6;
+
+  string email = 7;
+
+  string nickname = 8;
+
+  string password = 9;
+}
+
+enum Role {
+  ROLE_UNSPECIFIED = 0;
+
+  ADMIN = 1;
+
+  USER = 2;
+}
+
+message ListUsersRequest {}
+
+message ListUsersResponse {
+  repeated User users = 1;
+}
+
+message GetUserRequest {
+  int32 id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  User user = 1;
+
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateUserResponse {
+  User user = 1;
+}
+
+message DeleteUserRequest {
+  int32 id = 1;
+}
+
+message DeleteUserResponse {}
+
+message ListUserAccessTokensRequest {
+  // id is the user id.
+  int32 id = 1;
+}
+
+message ListUserAccessTokensResponse {
+  repeated UserAccessToken access_tokens = 1;
+}
+
+message CreateUserAccessTokenRequest {
+  // id is the user id.
+  int32 id = 1;
+  // description is the description of the access token.
+  string description = 2;
+  // expires_at is the expiration time of the access token.
+  // If expires_at is not set, the access token will never expire.
+  optional google.protobuf.Timestamp expires_at = 3;
+}
+
+message CreateUserAccessTokenResponse {
+  UserAccessToken access_token = 1;
+}
+
+message DeleteUserAccessTokenRequest {
+  // id is the user id.
+  int32 id = 1;
+  // access_token is the access token to delete.
+  string access_token = 2;
+}
+
+message DeleteUserAccessTokenResponse {}
+
+message UserAccessToken {
+  string access_token = 1;
+  string description = 2;
+  google.protobuf.Timestamp issued_at = 3;
+  google.protobuf.Timestamp expires_at = 4;
+}

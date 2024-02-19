@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { authServiceClient, userServiceClient, userSettingServiceClient } from "@/grpcweb";
-import { User } from "@/types/proto/api/v2/user_service";
-import { UserSetting } from "@/types/proto/api/v2/user_setting_service";
+import { User } from "@/types/proto/api/v1/user_service";
+import { UserSetting } from "@/types/proto/api/v1/user_setting_service";
 
 interface UserState {
   userMapById: Record<number, User>;

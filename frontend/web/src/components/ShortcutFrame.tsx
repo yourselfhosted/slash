@@ -2,7 +2,7 @@ import { Divider } from "@mui/joy";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { getFaviconWithGoogleS2 } from "@/helpers/utils";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
 
 interface Props {

@@ -3,8 +3,8 @@ import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import useShortcutStore from "@/store/shortcut";
-import { Visibility } from "@/types/proto/api/v2/common";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { Visibility } from "@/types/proto/api/v1/common";
+import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
 
 interface State {

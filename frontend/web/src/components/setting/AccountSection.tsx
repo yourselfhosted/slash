@@ -1,7 +1,7 @@
 import { Button } from "@mui/joy";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Role } from "@/types/proto/api/v2/user_service";
+import { Role } from "@/types/proto/api/v1/user_service";
 import useUserStore from "../../stores/v1/user";
 import ChangePasswordDialog from "../ChangePasswordDialog";
 import EditUserinfoDialog from "../EditUserinfoDialog";

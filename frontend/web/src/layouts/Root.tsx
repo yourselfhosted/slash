@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
 import Navigator from "@/components/Navigator";
 import useNavigateTo from "@/hooks/useNavigateTo";
-import { UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v2/user_setting_service";
+import { UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v1/user_setting_service";
 import Header from "../components/Header";
 import useUserStore from "../stores/v1/user";
 

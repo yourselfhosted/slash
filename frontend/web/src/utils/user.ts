@@ -1,4 +1,4 @@
-import { Role } from "@/types/proto/api/v2/user_service";
+import { Role } from "@/types/proto/api/v1/user_service";
 
 export const convertRoleFromPb = (role: Role): string => {
   if (role === Role.ADMIN) {

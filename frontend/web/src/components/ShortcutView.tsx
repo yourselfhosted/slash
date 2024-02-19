@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { Link } from "react-router-dom";
-import { Shortcut } from "@/types/proto/api/v2/shortcut_service";
+import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { getFaviconWithGoogleS2 } from "../helpers/utils";
 import Icon from "./Icon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";

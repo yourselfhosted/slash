@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	apiv2pb "github.com/yourselfhosted/slash/proto/gen/api/v2"
+	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
@@ -17,7 +17,7 @@ type LicenseService struct {
 	Profile *profile.Profile
 	Store   *store.Store
 
-	cachedSubscription *apiv2pb.Subscription
+	cachedSubscription *apiv1pb.Subscription
 }
 
 // NewLicenseService creates a new LicenseService.
@@ -25,21 +25,21 @@ func NewLicenseService(profile *profile.Profile, store *store.Store) *LicenseSer
 	return &LicenseService{
 		Profile: profile,
 		Store:   store,
-		cachedSubscription: &apiv2pb.Subscription{
-			Plan: apiv2pb.PlanType_FREE,
+		cachedSubscription: &apiv1pb.Subscription{
+			Plan: apiv1pb.PlanType_FREE,
 		},
 	}
 }
 
-func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv2pb.Subscription, error) {
+func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv1pb.Subscription, error) {
 	workspaceSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get workspace setting")
 	}
-	subscription := &apiv2pb.Subscription{
-		Plan: apiv2pb.PlanType_FREE,
+	subscription := &apiv1pb.Subscription{
+		Plan: apiv1pb.PlanType_FREE,
 	}
 	licenseKey := ""
 	if workspaceSetting != nil {
@@ -54,7 +54,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv2pb.Subscri
 		return nil, errors.Wrap(err, "failed to validate license key")
 	}
 	if validateResponse.Valid {
-		subscription.Plan = apiv2pb.PlanType_PRO
+		subscription.Plan = apiv1pb.PlanType_PRO
 		if validateResponse.LicenseKey.ExpiresAt != nil && *validateResponse.LicenseKey.ExpiresAt != "" {
 			expiresTime, err := time.Parse("2006-01-02 15:04:05", *validateResponse.LicenseKey.ExpiresAt)
 			if err != nil {
@@ -72,7 +72,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv2pb.Subscri
 	return subscription, nil
 }
 
-func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey string) (*apiv2pb.Subscription, error) {
+func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey string) (*apiv1pb.Subscription, error) {
 	if licenseKey == "" {
 		return nil, errors.New("license key is required")
 	}
@@ -95,7 +95,7 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 	return s.LoadSubscription(ctx)
 }
 
-func (s *LicenseService) GetSubscription(ctx context.Context) (*apiv2pb.Subscription, error) {
+func (s *LicenseService) GetSubscription(ctx context.Context) (*apiv1pb.Subscription, error) {
 	return s.LoadSubscription(ctx)
 }
 

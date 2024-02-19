@@ -39,7 +39,7 @@ func (s *FrontendService) Serve(ctx context.Context, e *echo.Echo) {
 		HTML5: true,
 		Root:  "dist",
 		Skipper: func(c echo.Context) bool {
-			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v2", "/robots.txt", "/sitemap.xml", "/s/:shortcutName")
+			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/robots.txt", "/sitemap.xml", "/s/:shortcutName")
 		},
 	}))
 
