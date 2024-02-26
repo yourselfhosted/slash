@@ -18,7 +18,7 @@ const useShortcutStore = create(
     fetchShortcutList: async (instanceUrl: string, accessToken: string) => {
       const {
         data: { shortcuts },
-      } = await axios.get<ListShortcutsResponse>(`${instanceUrl}/api/v2/shortcuts`, {
+      } = await axios.get<ListShortcutsResponse>(`${instanceUrl}/api/v1/shortcuts`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -36,7 +36,7 @@ const useShortcutStore = create(
     createShortcut: async (instanceUrl: string, accessToken: string, create: Shortcut) => {
       const {
         data: { shortcut },
-      } = await axios.post<CreateShortcutResponse>(`${instanceUrl}/api/v2/shortcuts`, create, {
+      } = await axios.post<CreateShortcutResponse>(`${instanceUrl}/api/v1/shortcuts`, create, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
