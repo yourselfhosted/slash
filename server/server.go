@@ -14,11 +14,11 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	apiv1 "github.com/yourselfhosted/slash/api/v1"
 	"github.com/yourselfhosted/slash/internal/log"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/profile"
+	apiv1 "github.com/yourselfhosted/slash/server/route/api/v1"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/server/service/resource"
 	"github.com/yourselfhosted/slash/store"

@@ -12,9 +12,9 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/yourselfhosted/slash/api/auth"
 	"github.com/yourselfhosted/slash/internal/util"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/route/auth"
 	"github.com/yourselfhosted/slash/store"
 )
 
