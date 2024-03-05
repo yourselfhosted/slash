@@ -152,7 +152,6 @@ func initConfig() {
 	println("port:", serverProfile.Port)
 	println("mode:", serverProfile.Mode)
 	println("version:", serverProfile.Version)
-	println("metric:", serverProfile.Metric)
 	println("---")
 }
 

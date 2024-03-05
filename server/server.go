@@ -10,7 +10,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -34,7 +33,7 @@ type Server struct {
 	licenseService *license.LicenseService
 
 	// API services.
-	apiV2Service *apiv1.APIV2Service
+	apiV1Service *apiv1.APIV2Service
 }
 
 func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store) (*Server, error) {
@@ -51,12 +50,6 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 		Store:          store,
 		licenseService: licenseService,
 	}
-
-	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: `{"time":"${time_rfc3339}",` +
-			`"method":"${method}","uri":"${uri}",` +
-			`"status":${status},"error":"${error}"}` + "\n",
-	}))
 
 	// Serve frontend.
 	frontendService := NewFrontendService(profile, store)
@@ -79,9 +72,9 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	})
 
 	rootGroup := e.Group("")
-	s.apiV2Service = apiv1.NewAPIV2Service(secret, profile, store, licenseService, s.Profile.Port+1)
+	s.apiV1Service = apiv1.NewAPIV2Service(secret, profile, store, licenseService, s.Profile.Port+1)
 	// Register gRPC gateway as api v1.
-	if err := s.apiV2Service.RegisterGateway(ctx, e); err != nil {
+	if err := s.apiV1Service.RegisterGateway(ctx, e); err != nil {
 		return nil, errors.Wrap(err, "failed to register gRPC gateway")
 	}
 
@@ -103,7 +96,7 @@ func (s *Server) Start(ctx context.Context) error {
 		return err
 	}
 	go func() {
-		if err := s.apiV2Service.GetGRPCServer().Serve(listen); err != nil {
+		if err := s.apiV1Service.GetGRPCServer().Serve(listen); err != nil {
 			slog.Log(ctx, slog.LevelError, "failed to start grpc server")
 		}
 	}()

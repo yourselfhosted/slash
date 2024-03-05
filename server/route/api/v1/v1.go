@@ -40,6 +40,7 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 	authProvider := NewGRPCAuthInterceptor(store, secret)
 	grpcServer := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
+			NewLoggerInterceptor().LoggerInterceptor,
 			authProvider.AuthenticationInterceptor,
 		),
 	)
