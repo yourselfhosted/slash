@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,9 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
 
-	"github.com/yourselfhosted/slash/internal/log"
 	"github.com/yourselfhosted/slash/server"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/profile"
@@ -41,12 +40,12 @@ var (
 			dbDriver, err := db.NewDBDriver(serverProfile)
 			if err != nil {
 				cancel()
-				log.Error("failed to create db driver", zap.Error(err))
+				slog.Error("failed to create db driver", err)
 				return
 			}
 			if err := dbDriver.Migrate(ctx); err != nil {
 				cancel()
-				log.Error("failed to migrate db", zap.Error(err))
+				slog.Error("failed to migrate db", err)
 				return
 			}
 
@@ -54,7 +53,7 @@ var (
 			s, err := server.NewServer(ctx, serverProfile, storeInstance)
 			if err != nil {
 				cancel()
-				log.Error("failed to create server", zap.Error(err))
+				slog.Error("failed to create server", err)
 				return
 			}
 
@@ -70,7 +69,7 @@ var (
 			signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 			go func() {
 				sig := <-c
-				log.Info(fmt.Sprintf("%s received.\n", sig.String()))
+				slog.Info(fmt.Sprintf("%s received.\n", sig.String()))
 				s.Shutdown(ctx)
 				cancel()
 			}()
@@ -79,7 +78,7 @@ var (
 
 			if err := s.Start(ctx); err != nil {
 				if err != http.ErrServerClosed {
-					log.Error("failed to start server", zap.Error(err))
+					slog.Error("failed to start server", err)
 					cancel()
 				}
 			}
@@ -91,7 +90,6 @@ var (
 )
 
 func Execute() error {
-	defer log.Sync()
 	return rootCmd.Execute()
 }
 
@@ -142,7 +140,7 @@ func initConfig() {
 	var err error
 	serverProfile, err = profile.GetProfile()
 	if err != nil {
-		log.Error("failed to get profile", zap.Error(err))
+		slog.Error("failed to get profile", err)
 		return
 	}
 
