@@ -128,7 +128,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
-        visibility: Number(e.target.value),
+        visibility: e.target.value,
       }),
     });
   };

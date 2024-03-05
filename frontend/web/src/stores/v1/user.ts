@@ -54,7 +54,7 @@ const useUserStore = create<UserState>()((set, get) => ({
     }
 
     const { user } = await userServiceClient.getUser({
-      id: Number(id),
+      id: id,
     });
     if (!user) {
       throw new Error("User not found");

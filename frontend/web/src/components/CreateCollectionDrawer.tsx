@@ -113,7 +113,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       collectionCreate: Object.assign(state.collectionCreate, {
-        visibility: Number(e.target.value),
+        visibility: e.target.value,
       }),
     });
   };
