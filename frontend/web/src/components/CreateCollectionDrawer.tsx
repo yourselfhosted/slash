@@ -51,6 +51,13 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
     })
     .filter((shortcut) => !selectedShortcuts.find((selectedShortcut) => selectedShortcut.id === shortcut.id));
 
+  const setPartialState = (partialState: Partial<State>) => {
+    setState({
+      ...state,
+      ...partialState,
+    });
+  };
+
   useEffect(() => {
     if (workspaceStore.setting.defaultVisibility !== Visibility.VISIBILITY_UNSPECIFIED) {
       setPartialState({
@@ -86,13 +93,6 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   if (loadingState.isLoading) {
     return null;
   }
-
-  const setPartialState = (partialState: Partial<State>) => {
-    setState({
-      ...state,
-      ...partialState,
-    });
-  };
 
   const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({

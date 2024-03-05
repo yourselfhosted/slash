@@ -59,6 +59,13 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const loadingState = useLoading(!isCreating);
   const requestState = useLoading(false);
 
+  const setPartialState = (partialState: Partial<State>) => {
+    setState({
+      ...state,
+      ...partialState,
+    });
+  };
+
   useEffect(() => {
     if (workspaceStore.setting.defaultVisibility !== Visibility.VISIBILITY_UNSPECIFIED) {
       setPartialState({
@@ -93,13 +100,6 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   if (loadingState.isLoading) {
     return null;
   }
-
-  const setPartialState = (partialState: Partial<State>) => {
-    setState({
-      ...state,
-      ...partialState,
-    });
-  };
 
   const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
