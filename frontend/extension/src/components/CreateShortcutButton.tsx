@@ -22,6 +22,7 @@ const CreateShortcutButton = () => {
     title: "",
     link: "",
   });
+  const [tag, setTag] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -83,6 +84,11 @@ const CreateShortcutButton = () => {
     }));
   };
 
+  const handleTagsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value as string;
+    setTag(text);
+  };
+
   const handleSaveBtnClick = async () => {
     if (isLoading) {
       return;
@@ -94,6 +100,7 @@ const CreateShortcutButton = () => {
 
     setIsLoading(true);
     try {
+      const tags = tag.split(" ").filter(Boolean);
       await shortcutStore.createShortcut(
         instanceUrl,
         accessToken,
@@ -102,6 +109,7 @@ const CreateShortcutButton = () => {
           title: state.title,
           link: state.link,
           visibility: Visibility.PUBLIC,
+          tags,
         })
       );
       toast.success("Shortcut created successfully");
@@ -156,6 +164,10 @@ const CreateShortcutButton = () => {
                 value={state.link}
                 onChange={handleLinkInputChange}
               />
+            </div>
+            <div className="w-full flex flex-row justify-start items-center mb-2">
+              <span className="block w-12 mr-2 shrink-0">Tags</span>
+              <Input className="grow" type="text" placeholder="The tags of shortcut" value={tag} onChange={handleTagsInputChange} />
             </div>
 
             <div className="w-full flex flex-row justify-end items-center mt-2 space-x-2">
