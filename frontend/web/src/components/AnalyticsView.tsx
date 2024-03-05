@@ -23,7 +23,7 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
   }, []);
 
   return (
-    <div className={classNames("w-full", className)}>
+    <div className={classNames("relative w-full", className)}>
       {analytics ? (
         <>
           <div className="w-full">
@@ -138,7 +138,7 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
           </div>
         </>
       ) : (
-        <div className="py-12 w-full flex flex-row justify-center items-center opacity-80">
+        <div className="absolute py-12 w-full flex flex-row justify-center items-center opacity-80">
           <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
           {t("common.loading")}
         </div>

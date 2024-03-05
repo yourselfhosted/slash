@@ -171,8 +171,8 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
     <Drawer anchor="right" open={true} onClose={onClose}>
       <DialogTitle>{isCreating ? "Create Collection" : "Edit Collection"}</DialogTitle>
       <ModalClose />
-      <DialogContent className="w-full max-w-full sm:max-w-[24rem]">
-        <div className="overflow-y-auto w-full mt-2 px-3 pb-4">
+      <DialogContent className="w-full max-w-full">
+        <div className="overflow-y-auto w-full mt-2 px-4 pb-4 sm:w-[24rem]">
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Name <span className="text-red-600">*</span>
