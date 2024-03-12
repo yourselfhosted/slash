@@ -77,7 +77,7 @@ func (d *DB) Migrate(ctx context.Context) error {
 				if err != nil {
 					return errors.Wrap(err, "failed to read raw database file")
 				}
-				backupDBFilePath := fmt.Sprintf("%s/memos_%s_%d_backup.db", d.profile.Data, d.profile.Version, time.Now().Unix())
+				backupDBFilePath := fmt.Sprintf("%s/slash_%s_%d_backup.db", d.profile.Data, d.profile.Version, time.Now().Unix())
 				if err := os.WriteFile(backupDBFilePath, rawBytes, 0644); err != nil {
 					return errors.Wrap(err, "failed to write raw database file")
 				}

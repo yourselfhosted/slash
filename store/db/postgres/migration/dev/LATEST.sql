@@ -74,19 +74,3 @@ CREATE TABLE collection (
 );
 
 CREATE INDEX idx_collection_name ON collection(name);
-
--- memo
-CREATE TABLE memo (
-  id SERIAL PRIMARY KEY,
-  creator_id INTEGER REFERENCES "user"(id) NOT NULL,
-  created_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
-  updated_ts BIGINT NOT NULL DEFAULT EXTRACT(EPOCH FROM NOW()),
-  row_status TEXT NOT NULL CHECK (row_status IN ('NORMAL', 'ARCHIVED')) DEFAULT 'NORMAL',
-  name TEXT NOT NULL UNIQUE,
-  title TEXT NOT NULL DEFAULT '',
-  content TEXT NOT NULL DEFAULT '',
-  visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE',
-  tag TEXT NOT NULL DEFAULT ''
-);
-
-CREATE INDEX idx_memo_name ON memo(name);

@@ -8,7 +8,7 @@ import (
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
 	"github.com/yourselfhosted/slash/store/db"
-	test "github.com/yourselfhosted/slash/test"
+	"github.com/yourselfhosted/slash/test"
 )
 
 func NewTestingStore(ctx context.Context, t *testing.T) *store.Store {
@@ -35,8 +35,7 @@ func resetTestingDB(ctx context.Context, profile *profile.Profile, dbDriver stor
 		DROP TABLE IF EXISTS user_setting CASCADE;
 		DROP TABLE IF EXISTS shortcut CASCADE;
 		DROP TABLE IF EXISTS activity CASCADE;
-		DROP TABLE IF EXISTS collection CASCADE;
-		DROP TABLE IF EXISTS memo CASCADE;`)
+		DROP TABLE IF EXISTS collection CASCADE;`)
 		if err != nil {
 			fmt.Printf("failed to reset testing db, error: %+v\n", err)
 			panic(err)

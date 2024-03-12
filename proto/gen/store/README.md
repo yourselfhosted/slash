@@ -14,9 +14,6 @@
 - [store/collection.proto](#store_collection-proto)
     - [Collection](#slash-store-Collection)
   
-- [store/memo.proto](#store_memo-proto)
-    - [Memo](#slash-store-Memo)
-  
 - [store/shortcut.proto](#store_shortcut-proto)
     - [OpenGraphMetadata](#slash-store-OpenGraphMetadata)
     - [Shortcut](#slash-store-Shortcut)
@@ -155,46 +152,6 @@
 | title | [string](#string) |  |  |
 | description | [string](#string) |  |  |
 | shortcut_ids | [int32](#int32) | repeated |  |
-| visibility | [Visibility](#slash-store-Visibility) |  |  |
-
-
-
-
-
- 
-
- 
-
- 
-
- 
-
-
-
-<a name="store_memo-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## store/memo.proto
-
-
-
-<a name="slash-store-Memo"></a>
-
-### Memo
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  |  |
-| creator_id | [int32](#int32) |  |  |
-| created_ts | [int64](#int64) |  |  |
-| updated_ts | [int64](#int64) |  |  |
-| row_status | [RowStatus](#slash-store-RowStatus) |  |  |
-| name | [string](#string) |  |  |
-| title | [string](#string) |  |  |
-| content | [string](#string) |  |  |
-| tags | [string](#string) | repeated |  |
 | visibility | [Visibility](#slash-store-Visibility) |  |  |
 
 

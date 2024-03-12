@@ -19,7 +19,7 @@ const Header: React.FC = () => {
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
   const profile = workspaceStore.profile;
   const isAdmin = currentUser.role === Role.ADMIN;
-  const shouldShowRouterSwitch = location.pathname === "/" || location.pathname === "/collections" || location.pathname === "/memos";
+  const shouldShowRouterSwitch = location.pathname === "/" || location.pathname === "/collections";
   const selectedSection = location.pathname === "/" ? "Shortcuts" : location.pathname === "/collections" ? "Collections" : "Memos";
 
   const handleSignOutButtonClick = async () => {

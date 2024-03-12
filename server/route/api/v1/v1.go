@@ -25,7 +25,6 @@ type APIV2Service struct {
 	apiv1pb.UnimplementedUserSettingServiceServer
 	apiv1pb.UnimplementedShortcutServiceServer
 	apiv1pb.UnimplementedCollectionServiceServer
-	apiv1pb.UnimplementedMemoServiceServer
 
 	Secret         string
 	Profile        *profile.Profile
@@ -60,7 +59,6 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 	apiv1pb.RegisterUserSettingServiceServer(grpcServer, apiV2Service)
 	apiv1pb.RegisterShortcutServiceServer(grpcServer, apiV2Service)
 	apiv1pb.RegisterCollectionServiceServer(grpcServer, apiV2Service)
-	apiv1pb.RegisterMemoServiceServer(grpcServer, apiV2Service)
 	reflection.Register(grpcServer)
 
 	return apiV2Service
@@ -103,9 +101,6 @@ func (s *APIV2Service) RegisterGateway(ctx context.Context, e *echo.Echo) error 
 		return err
 	}
 	if err := apiv1pb.RegisterCollectionServiceHandler(context.Background(), gwMux, conn); err != nil {
-		return err
-	}
-	if err := apiv1pb.RegisterMemoServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
 	e.Any("/api/v1/*", echo.WrapHandler(gwMux))

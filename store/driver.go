@@ -29,12 +29,6 @@ type Driver interface {
 	ListCollections(ctx context.Context, find *FindCollection) ([]*storepb.Collection, error)
 	DeleteCollection(ctx context.Context, delete *DeleteCollection) error
 
-	// Memo model related methods.
-	CreateMemo(ctx context.Context, create *storepb.Memo) (*storepb.Memo, error)
-	UpdateMemo(ctx context.Context, update *UpdateMemo) (*storepb.Memo, error)
-	ListMemos(ctx context.Context, find *FindMemo) ([]*storepb.Memo, error)
-	DeleteMemo(ctx context.Context, delete *DeleteMemo) error
-
 	// Shortcut model related methods.
 	CreateShortcut(ctx context.Context, create *storepb.Shortcut) (*storepb.Shortcut, error)
 	UpdateShortcut(ctx context.Context, update *UpdateShortcut) (*storepb.Shortcut, error)
