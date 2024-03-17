@@ -1,12 +1,12 @@
 import classNames from "classnames";
-import LogoBase64 from "data-base64:../../assets/icon.png";
+import Icon from "./Icon";
 
 interface Props {
   className?: string;
 }
 
 const Logo = ({ className }: Props) => {
-  return <img className={classNames("rounded-full", className)} src={LogoBase64} alt="" />;
+  return <Icon.CircleSlash className={classNames("dark:text-gray-500", className)} strokeWidth={1.5} />;
 };
 
 export default Logo;

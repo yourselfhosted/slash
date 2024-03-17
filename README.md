@@ -1,7 +1,5 @@
 # Slash
 
-<img align="right" src="./docs/assets/logo.png" height="64px" alt="logo">
-
 **Slash** is an open source, self-hosted bookmarks and link sharing platform. It allows you to organize your links with tags, and share them with custom shortened URLs. Slash also supports team sharing of link libraries for easy collaboration.
 
 🧩 Browser extension(v1.0.0) now available! - [Chrome Web Store](https://chrome.google.com/webstore/detail/slash/ebaiehmkammnacjadffpicipfckgeobg), [Firefox Add-on](https://addons.mozilla.org/firefox/addon/your-slash/)

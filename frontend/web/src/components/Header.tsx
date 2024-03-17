@@ -33,7 +33,7 @@ const Header: React.FC = () => {
         <div className="w-full max-w-8xl mx-auto px-4 sm:px-6 md:px-12 py-3 flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center shrink mr-2">
             <Link to="/" className="cursor-pointer flex flex-row justify-start items-center dark:text-gray-400" unstable_viewTransition>
-              <img id="logo-img" src="/logo.png" className="w-7 h-auto mr-2 -mt-0.5 dark:opacity-80 rounded-full shadow" alt="" />
+              <Icon.CircleSlash className="w-7 h-auto dark:text-gray-500 mr-2" strokeWidth={1.5} />
               Slash
             </Link>
             {profile.plan === PlanType.PRO && (
