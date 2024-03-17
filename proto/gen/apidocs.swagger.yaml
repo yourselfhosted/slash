@@ -1,0 +1,1164 @@
+swagger: "2.0"
+info:
+  title: api/v1/common.proto
+  version: version not set
+tags:
+  - name: UserService
+  - name: AuthService
+  - name: CollectionService
+  - name: ShortcutService
+  - name: SubscriptionService
+  - name: UserSettingService
+  - name: WorkspaceService
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /api/v1/auth/signin:
+    post:
+      operationId: AuthService_SignIn
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1SignInResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: email
+          in: query
+          required: false
+          type: string
+        - name: password
+          in: query
+          required: false
+          type: string
+      tags:
+        - AuthService
+  /api/v1/auth/signout:
+    post:
+      operationId: AuthService_SignOut
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1SignOutResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - AuthService
+  /api/v1/auth/signup:
+    post:
+      operationId: AuthService_SignUp
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1SignUpResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: email
+          in: query
+          required: false
+          type: string
+        - name: nickname
+          in: query
+          required: false
+          type: string
+        - name: password
+          in: query
+          required: false
+          type: string
+      tags:
+        - AuthService
+  /api/v1/auth/status:
+    post:
+      operationId: AuthService_GetAuthStatus
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetAuthStatusResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - AuthService
+  /api/v1/collections:
+    get:
+      summary: ListCollections returns a list of collections.
+      operationId: CollectionService_ListCollections
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1ListCollectionsResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - CollectionService
+    post:
+      summary: CreateCollection creates a collection.
+      operationId: CollectionService_CreateCollection
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1CreateCollectionResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: collection
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/apiv1Collection'
+      tags:
+        - CollectionService
+  /api/v1/collections/{collection.id}:
+    put:
+      summary: UpdateCollection updates a collection.
+      operationId: CollectionService_UpdateCollection
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1UpdateCollectionResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: collection.id
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: collection
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creatorId:
+                type: integer
+                format: int32
+              createdTime:
+                type: string
+                format: date-time
+              updatedTime:
+                type: string
+                format: date-time
+              name:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              shortcutIds:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+              visibility:
+                $ref: '#/definitions/apiv1Visibility'
+        - name: updateMask
+          in: query
+          required: false
+          type: string
+      tags:
+        - CollectionService
+  /api/v1/collections/{id}:
+    get:
+      summary: GetCollection returns a collection by id.
+      operationId: CollectionService_GetCollection
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetCollectionResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - CollectionService
+    delete:
+      summary: DeleteCollection deletes a collection by id.
+      operationId: CollectionService_DeleteCollection
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1DeleteCollectionResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - CollectionService
+  /api/v1/shortcuts:
+    get:
+      summary: ListShortcuts returns a list of shortcuts.
+      operationId: ShortcutService_ListShortcuts
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1ListShortcutsResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - ShortcutService
+    post:
+      summary: CreateShortcut creates a shortcut.
+      operationId: ShortcutService_CreateShortcut
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1CreateShortcutResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: shortcut
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/apiv1Shortcut'
+      tags:
+        - ShortcutService
+  /api/v1/shortcuts/{id}:
+    get:
+      summary: GetShortcut returns a shortcut by id.
+      operationId: ShortcutService_GetShortcut
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetShortcutResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - ShortcutService
+    delete:
+      summary: DeleteShortcut deletes a shortcut by name.
+      operationId: ShortcutService_DeleteShortcut
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1DeleteShortcutResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - ShortcutService
+  /api/v1/shortcuts/{id}/analytics:
+    get:
+      summary: GetShortcutAnalytics returns the analytics for a shortcut.
+      operationId: ShortcutService_GetShortcutAnalytics
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetShortcutAnalyticsResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - ShortcutService
+  /api/v1/shortcuts/{shortcut.id}:
+    put:
+      summary: UpdateShortcut updates a shortcut.
+      operationId: ShortcutService_UpdateShortcut
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1UpdateShortcutResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: shortcut.id
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: shortcut
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              creatorId:
+                type: integer
+                format: int32
+              createdTime:
+                type: string
+                format: date-time
+              updatedTime:
+                type: string
+                format: date-time
+              rowStatus:
+                $ref: '#/definitions/apiv1RowStatus'
+              name:
+                type: string
+              link:
+                type: string
+              title:
+                type: string
+              tags:
+                type: array
+                items:
+                  type: string
+              description:
+                type: string
+              visibility:
+                $ref: '#/definitions/apiv1Visibility'
+              viewCount:
+                type: integer
+                format: int32
+              ogMetadata:
+                $ref: '#/definitions/apiv1OpenGraphMetadata'
+        - name: updateMask
+          in: query
+          required: false
+          type: string
+      tags:
+        - ShortcutService
+  /api/v1/users:
+    get:
+      summary: ListUsers returns a list of users.
+      operationId: UserService_ListUsers
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1ListUsersResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - UserService
+    post:
+      summary: CreateUser creates a new user.
+      operationId: UserService_CreateUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1CreateUserResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1User'
+      tags:
+        - UserService
+  /api/v1/users/{id}:
+    get:
+      summary: GetUser returns a user by id.
+      operationId: UserService_GetUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetUserResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - UserService
+    delete:
+      summary: DeleteUser deletes a user by id.
+      operationId: UserService_DeleteUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1DeleteUserResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - UserService
+  /api/v1/users/{id}/access_tokens:
+    get:
+      summary: ListUserAccessTokens returns a list of access tokens for a user.
+      operationId: UserService_ListUserAccessTokens
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1ListUserAccessTokensResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          description: id is the user id.
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - UserService
+    post:
+      summary: CreateUserAccessToken creates a new access token for a user.
+      operationId: UserService_CreateUserAccessToken
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1CreateUserAccessTokenResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          description: id is the user id.
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserServiceCreateUserAccessTokenBody'
+      tags:
+        - UserService
+  /api/v1/users/{id}/access_tokens/{accessToken}:
+    delete:
+      summary: DeleteUserAccessToken deletes an access token for a user.
+      operationId: UserService_DeleteUserAccessToken
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1DeleteUserAccessTokenResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          description: id is the user id.
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: accessToken
+          description: access_token is the access token to delete.
+          in: path
+          required: true
+          type: string
+      tags:
+        - UserService
+  /api/v1/users/{id}/settings:
+    get:
+      summary: GetUserSetting returns the user setting.
+      operationId: UserSettingService_GetUserSetting
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetUserSettingResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          description: id is the user id.
+          in: path
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - UserSettingService
+    patch:
+      summary: UpdateUserSetting updates the user setting.
+      operationId: UserSettingService_UpdateUserSetting
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1UpdateUserSettingResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: id
+          description: id is the user id.
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: userSetting
+          description: user_setting is the user setting to update.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/apiv1UserSetting'
+      tags:
+        - UserSettingService
+  /api/v1/users/{user.id}:
+    patch:
+      operationId: UserService_UpdateUser
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1UpdateUserResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: user.id
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: user
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              rowStatus:
+                $ref: '#/definitions/apiv1RowStatus'
+              createdTime:
+                type: string
+                format: date-time
+              updatedTime:
+                type: string
+                format: date-time
+              role:
+                $ref: '#/definitions/v1Role'
+              email:
+                type: string
+              nickname:
+                type: string
+              password:
+                type: string
+      tags:
+        - UserService
+  /api/v1/workspace/profile:
+    get:
+      operationId: WorkspaceService_GetWorkspaceProfile
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetWorkspaceProfileResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - WorkspaceService
+  /api/v1/workspace/setting:
+    get:
+      operationId: WorkspaceService_GetWorkspaceSetting
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetWorkspaceSettingResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - WorkspaceService
+    patch:
+      operationId: WorkspaceService_UpdateWorkspaceSetting
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1UpdateWorkspaceSettingResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: setting
+          description: The user setting.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/apiv1WorkspaceSetting'
+      tags:
+        - WorkspaceService
+  /v1/subscription:
+    get:
+      operationId: SubscriptionService_GetSubscription
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetSubscriptionResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - SubscriptionService
+    patch:
+      operationId: SubscriptionService_UpdateSubscription
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1UpdateSubscriptionResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1UpdateSubscriptionRequest'
+      tags:
+        - SubscriptionService
+definitions:
+  GetShortcutAnalyticsResponseAnalyticsItem:
+    type: object
+    properties:
+      name:
+        type: string
+      count:
+        type: integer
+        format: int32
+  UserServiceCreateUserAccessTokenBody:
+    type: object
+    properties:
+      description:
+        type: string
+        description: description is the description of the access token.
+      expiresAt:
+        type: string
+        format: date-time
+        description: |-
+          expires_at is the expiration time of the access token.
+          If expires_at is not set, the access token will never expire.
+  UserSettingColorTheme:
+    type: string
+    enum:
+      - COLOR_THEME_UNSPECIFIED
+      - COLOR_THEME_SYSTEM
+      - COLOR_THEME_LIGHT
+      - COLOR_THEME_DARK
+    default: COLOR_THEME_UNSPECIFIED
+  UserSettingLocale:
+    type: string
+    enum:
+      - LOCALE_UNSPECIFIED
+      - LOCALE_EN
+      - LOCALE_ZH
+    default: LOCALE_UNSPECIFIED
+  apiv1AutoBackupWorkspaceSetting:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        description: Whether auto backup is enabled.
+      cronExpression:
+        type: string
+        description: |-
+          The cron expression for auto backup.
+          For example, "0 0 0 * * *" means backup at 00:00:00 every day.
+          See https://en.wikipedia.org/wiki/Cron for more details.
+      maxKeep:
+        type: integer
+        format: int32
+        description: The maximum number of backups to keep.
+  apiv1Collection:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      creatorId:
+        type: integer
+        format: int32
+      createdTime:
+        type: string
+        format: date-time
+      updatedTime:
+        type: string
+        format: date-time
+      name:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+      shortcutIds:
+        type: array
+        items:
+          type: integer
+          format: int32
+      visibility:
+        $ref: '#/definitions/apiv1Visibility'
+  apiv1OpenGraphMetadata:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      image:
+        type: string
+  apiv1RowStatus:
+    type: string
+    enum:
+      - ROW_STATUS_UNSPECIFIED
+      - NORMAL
+      - ARCHIVED
+    default: ROW_STATUS_UNSPECIFIED
+  apiv1Shortcut:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      creatorId:
+        type: integer
+        format: int32
+      createdTime:
+        type: string
+        format: date-time
+      updatedTime:
+        type: string
+        format: date-time
+      rowStatus:
+        $ref: '#/definitions/apiv1RowStatus'
+      name:
+        type: string
+      link:
+        type: string
+      title:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      description:
+        type: string
+      visibility:
+        $ref: '#/definitions/apiv1Visibility'
+      viewCount:
+        type: integer
+        format: int32
+      ogMetadata:
+        $ref: '#/definitions/apiv1OpenGraphMetadata'
+  apiv1UserSetting:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: id is the user id.
+      locale:
+        $ref: '#/definitions/UserSettingLocale'
+        description: locale is the user locale.
+      colorTheme:
+        $ref: '#/definitions/UserSettingColorTheme'
+        description: color_theme is the user color theme.
+  apiv1Visibility:
+    type: string
+    enum:
+      - VISIBILITY_UNSPECIFIED
+      - PRIVATE
+      - WORKSPACE
+      - PUBLIC
+    default: VISIBILITY_UNSPECIFIED
+  apiv1WorkspaceSetting:
+    type: object
+    properties:
+      licenseKey:
+        type: string
+      enableSignup:
+        type: boolean
+        description: Whether to enable other users to sign up.
+      instanceUrl:
+        type: string
+        description: The instance URL.
+      customStyle:
+        type: string
+        description: The custom style.
+      customScript:
+        type: string
+        description: The custom script.
+      autoBackup:
+        $ref: '#/definitions/apiv1AutoBackupWorkspaceSetting'
+        title: The auto backup setting. (Unimplemented)
+      defaultVisibility:
+        $ref: '#/definitions/apiv1Visibility'
+        description: The default visibility of shortcuts and collections.
+  protobufAny:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: {}
+  rpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      details:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/protobufAny'
+  v1CreateCollectionResponse:
+    type: object
+    properties:
+      collection:
+        $ref: '#/definitions/apiv1Collection'
+  v1CreateShortcutResponse:
+    type: object
+    properties:
+      shortcut:
+        $ref: '#/definitions/apiv1Shortcut'
+  v1CreateUserAccessTokenResponse:
+    type: object
+    properties:
+      accessToken:
+        $ref: '#/definitions/v1UserAccessToken'
+  v1CreateUserResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/v1User'
+  v1DeleteCollectionResponse:
+    type: object
+  v1DeleteShortcutResponse:
+    type: object
+  v1DeleteUserAccessTokenResponse:
+    type: object
+  v1DeleteUserResponse:
+    type: object
+  v1GetAuthStatusResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/v1User'
+  v1GetCollectionByNameResponse:
+    type: object
+    properties:
+      collection:
+        $ref: '#/definitions/apiv1Collection'
+  v1GetCollectionResponse:
+    type: object
+    properties:
+      collection:
+        $ref: '#/definitions/apiv1Collection'
+  v1GetShortcutAnalyticsResponse:
+    type: object
+    properties:
+      references:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/GetShortcutAnalyticsResponseAnalyticsItem'
+      devices:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/GetShortcutAnalyticsResponseAnalyticsItem'
+      browsers:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/GetShortcutAnalyticsResponseAnalyticsItem'
+  v1GetShortcutByNameResponse:
+    type: object
+    properties:
+      shortcut:
+        $ref: '#/definitions/apiv1Shortcut'
+  v1GetShortcutResponse:
+    type: object
+    properties:
+      shortcut:
+        $ref: '#/definitions/apiv1Shortcut'
+  v1GetSubscriptionResponse:
+    type: object
+    properties:
+      subscription:
+        $ref: '#/definitions/v1Subscription'
+  v1GetUserResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/v1User'
+  v1GetUserSettingResponse:
+    type: object
+    properties:
+      userSetting:
+        $ref: '#/definitions/apiv1UserSetting'
+  v1GetWorkspaceProfileResponse:
+    type: object
+    properties:
+      profile:
+        $ref: '#/definitions/v1WorkspaceProfile'
+        description: The workspace profile.
+  v1GetWorkspaceSettingResponse:
+    type: object
+    properties:
+      setting:
+        $ref: '#/definitions/apiv1WorkspaceSetting'
+        description: The user setting.
+  v1ListCollectionsResponse:
+    type: object
+    properties:
+      collections:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/apiv1Collection'
+  v1ListShortcutsResponse:
+    type: object
+    properties:
+      shortcuts:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/apiv1Shortcut'
+  v1ListUserAccessTokensResponse:
+    type: object
+    properties:
+      accessTokens:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/v1UserAccessToken'
+  v1ListUsersResponse:
+    type: object
+    properties:
+      users:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/v1User'
+  v1PlanType:
+    type: string
+    enum:
+      - PLAN_TYPE_UNSPECIFIED
+      - FREE
+      - PRO
+    default: PLAN_TYPE_UNSPECIFIED
+  v1Role:
+    type: string
+    enum:
+      - ROLE_UNSPECIFIED
+      - ADMIN
+      - USER
+    default: ROLE_UNSPECIFIED
+  v1SignInResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/v1User'
+  v1SignOutResponse:
+    type: object
+  v1SignUpResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/v1User'
+  v1Subscription:
+    type: object
+    properties:
+      plan:
+        $ref: '#/definitions/v1PlanType'
+        readOnly: true
+      startedTime:
+        type: string
+        format: date-time
+        readOnly: true
+      expiresTime:
+        type: string
+        format: date-time
+        readOnly: true
+  v1UpdateCollectionResponse:
+    type: object
+    properties:
+      collection:
+        $ref: '#/definitions/apiv1Collection'
+  v1UpdateShortcutResponse:
+    type: object
+    properties:
+      shortcut:
+        $ref: '#/definitions/apiv1Shortcut'
+  v1UpdateSubscriptionRequest:
+    type: object
+    properties:
+      licenseKey:
+        type: string
+    required:
+      - licenseKey
+  v1UpdateSubscriptionResponse:
+    type: object
+    properties:
+      subscription:
+        $ref: '#/definitions/v1Subscription'
+  v1UpdateUserResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/v1User'
+  v1UpdateUserSettingResponse:
+    type: object
+    properties:
+      userSetting:
+        $ref: '#/definitions/apiv1UserSetting'
+  v1UpdateWorkspaceSettingResponse:
+    type: object
+    properties:
+      setting:
+        $ref: '#/definitions/apiv1WorkspaceSetting'
+        description: The user setting.
+  v1User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      rowStatus:
+        $ref: '#/definitions/apiv1RowStatus'
+      createdTime:
+        type: string
+        format: date-time
+      updatedTime:
+        type: string
+        format: date-time
+      role:
+        $ref: '#/definitions/v1Role'
+      email:
+        type: string
+      nickname:
+        type: string
+      password:
+        type: string
+  v1UserAccessToken:
+    type: object
+    properties:
+      accessToken:
+        type: string
+      description:
+        type: string
+      issuedAt:
+        type: string
+        format: date-time
+      expiresAt:
+        type: string
+        format: date-time
+  v1WorkspaceProfile:
+    type: object
+    properties:
+      mode:
+        type: string
+        description: 'Current workspace mode: dev, prod.'
+      version:
+        type: string
+        description: Current workspace version.
+      plan:
+        $ref: '#/definitions/v1PlanType'
+        description: The workspace plan.
+      enableSignup:
+        type: boolean
+        description: Whether to enable other users to sign up.
+      customStyle:
+        type: string
+        description: The custom style.
+      customScript:
+        type: string
+        description: The custom script.

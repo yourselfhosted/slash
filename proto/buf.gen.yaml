@@ -46,3 +46,6 @@ plugins:
     out: gen
     opt:
       - markdown,README.md,source_relative
+  - plugin: buf.build/grpc-ecosystem/openapiv2:v2.19.0
+    out: gen
+    opt: output_format=yaml,allow_merge=true
