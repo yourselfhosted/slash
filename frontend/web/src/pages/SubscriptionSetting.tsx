@@ -72,7 +72,7 @@ const SubscriptionSetting: React.FC = () => {
         <div className="w-full px-6">
           <div className="max-w-4xl mx-auto mb-12">
             <Alert className="!inline-block mb-12">
-              Slash is open source bookmarks and link sharing platform. Our source code is available and accessible on{" "}
+              Slash is open source links shortener and sharing platform. Our source code is available and accessible on{" "}
               <Link href="https://github.com/yourselfhosted/slash" target="_blank">
                 GitHub
               </Link>{" "}

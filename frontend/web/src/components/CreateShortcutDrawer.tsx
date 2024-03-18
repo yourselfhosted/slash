@@ -339,7 +339,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
                   <Input
                     className="w-full"
                     type="text"
-                    placeholder="Slash - An open source, self-hosted bookmarks and link sharing platform"
+                    placeholder="Slash - An open source, self-hosted links shortener and sharing platform"
                     size="sm"
                     value={state.shortcutCreate.ogMetadata?.title}
                     onChange={handleOpenGraphMetadataTitleChange}
@@ -349,7 +349,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
                   <span className="mb-2 text-sm">Description</span>
                   <Textarea
                     className="w-full"
-                    placeholder="An open source, self-hosted bookmarks and link sharing platform."
+                    placeholder="An open source, self-hosted links shortener and sharing platform."
                     size="sm"
                     maxRows={3}
                     value={state.shortcutCreate.ogMetadata?.description}

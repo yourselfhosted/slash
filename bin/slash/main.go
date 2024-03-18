@@ -34,7 +34,7 @@ var (
 
 	rootCmd = &cobra.Command{
 		Use:   "slash",
-		Short: `An open source, self-hosted bookmarks and link sharing platform.`,
+		Short: `An open source, self-hosted links shortener and sharing platform.`,
 		Run: func(_ *cobra.Command, _ []string) {
 			ctx, cancel := context.WithCancel(context.Background())
 			dbDriver, err := db.NewDBDriver(serverProfile)
