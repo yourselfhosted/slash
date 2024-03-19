@@ -1,7 +1,7 @@
 {
   "name": "slash-extension",
   "displayName": "Slash",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "An open source, self-hosted links shortener and sharing platform. Save and share your links very easily.",
   "scripts": {
     "dev": "plasmo dev",

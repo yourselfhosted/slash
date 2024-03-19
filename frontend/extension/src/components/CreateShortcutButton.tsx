@@ -3,7 +3,6 @@ import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import useShortcutStore from "@/store/shortcut";
-import { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
 
@@ -108,7 +107,6 @@ const CreateShortcutButton = () => {
           name: state.name,
           title: state.title,
           link: state.link,
-          visibility: Visibility.PUBLIC,
           tags,
         })
       );
@@ -116,7 +114,7 @@ const CreateShortcutButton = () => {
       setShowModal(false);
     } catch (error: any) {
       console.error(error);
-      toast.error(error.details);
+      toast.error(error.response.data.message);
     }
     setIsLoading(false);
   };
