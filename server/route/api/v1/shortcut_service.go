@@ -145,6 +145,18 @@ func (s *APIV2Service) CreateShortcut(ctx context.Context, request *apiv1pb.Crea
 		Visibility:  storepb.Visibility(request.Shortcut.Visibility),
 		OgMetadata:  &storepb.OpenGraphMetadata{},
 	}
+	if shortcutCreate.Visibility == storepb.Visibility_VISIBILITY_UNSPECIFIED {
+		getWorkspaceSettingResponse, err := s.GetWorkspaceSetting(ctx, nil)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get workspace setting, err: %v", err)
+		}
+		workspaceSetting := getWorkspaceSettingResponse.Setting
+		visibility := apiv1pb.Visibility_PRIVATE
+		if workspaceSetting.DefaultVisibility != apiv1pb.Visibility_VISIBILITY_UNSPECIFIED {
+			visibility = workspaceSetting.DefaultVisibility
+		}
+		shortcutCreate.Visibility = storepb.Visibility(visibility)
+	}
 	if request.Shortcut.OgMetadata != nil {
 		shortcutCreate.OgMetadata = &storepb.OpenGraphMetadata{
 			Title:       request.Shortcut.OgMetadata.Title,
