@@ -56,13 +56,13 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv1pb.Subscri
 	if validateResponse.Valid {
 		subscription.Plan = apiv1pb.PlanType_PRO
 		if validateResponse.LicenseKey.ExpiresAt != nil && *validateResponse.LicenseKey.ExpiresAt != "" {
-			expiresTime, err := time.Parse("2006-01-02 15:04:05", *validateResponse.LicenseKey.ExpiresAt)
+			expiresTime, err := time.Parse(time.RFC3339Nano, *validateResponse.LicenseKey.ExpiresAt)
 			if err != nil {
 				return nil, errors.Wrap(err, "failed to parse license key expires time")
 			}
 			subscription.ExpiresTime = timestamppb.New(expiresTime)
 		}
-		startedTime, err := time.Parse("2006-01-02 15:04:05", validateResponse.LicenseKey.CreatedAt)
+		startedTime, err := time.Parse(time.RFC3339Nano, validateResponse.LicenseKey.CreatedAt)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to parse license key created time")
 		}
