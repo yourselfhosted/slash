@@ -47,7 +47,7 @@ const MemberSection = () => {
         <div className="w-full">
           <div className="sm:flex sm:items-center">
             <div className="sm:flex-auto">
-              <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">{t("user.self")}</p>
+              <p className="text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("user.self")}</p>
               <p className="mt-2 text-sm text-gray-700 dark:text-gray-600">
                 A list of all the users in your workspace including their nickname, email and role.
               </p>

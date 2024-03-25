@@ -58,9 +58,9 @@ const PreferenceSection: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="w-full flex flex-col justify-start items-start gap-y-2">
-        <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">{t("settings.preference.self")}</p>
+    <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
+      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("settings.preference.self")}</p>
+      <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center gap-x-1">
             <span className="dark:text-gray-400">{t("settings.preference.color-theme")}</span>
@@ -91,7 +91,7 @@ const PreferenceSection: React.FC = () => {
           </Select>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

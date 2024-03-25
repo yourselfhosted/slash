@@ -79,53 +79,55 @@ const WorkspaceSection: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col justify-start items-start space-y-4">
-      <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">{t("settings.workspace.self")}</p>
-      <div className="w-full flex flex-col justify-start items-start">
-        <p className="mt-2 dark:text-gray-400">Instance URL</p>
-        <Input
-          className="w-full mt-2"
-          placeholder="Your instance URL. Using for website SEO. Leave it empty if you don't want cawler to index your website."
-          value={workspaceSetting.instanceUrl}
-          onChange={(event) => handleInstanceUrlChange(event.target.value)}
-        />
-      </div>
-      <div className="w-full flex flex-col justify-start items-start">
-        <p className="mt-2 dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
-        <Textarea
-          className="w-full mt-2"
-          placeholder="* {font-family: ui-monospace Monaco Consolas;}"
-          minRows={2}
-          maxRows={5}
-          value={workspaceSetting.customStyle}
-          onChange={(event) => handleCustomStyleChange(event.target.value)}
-        />
-      </div>
-      <div className="w-full flex flex-col justify-start items-start">
-        <Checkbox
-          label={t("settings.workspace.enable-user-signup.self")}
-          checked={workspaceSetting.enableSignup}
-          onChange={(event) => handleEnableSignUpChange(event.target.checked)}
-        />
-        <p className="mt-2 text-gray-500">{t("settings.workspace.enable-user-signup.description")}</p>
-      </div>
-      <div className="w-full flex flex-row justify-between items-center">
-        <div className="flex flex-row justify-start items-center gap-x-1">
-          <span className="dark:text-gray-400">{t("settings.workspace.default-visibility")}</span>
+    <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
+      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("settings.workspace.self")}</p>
+      <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
+        <div className="w-full flex flex-col justify-start items-start">
+          <p className="dark:text-gray-400">Instance URL</p>
+          <Input
+            className="w-full mt-2"
+            placeholder="Your instance URL. Using for website SEO. Leave it empty if you don't want cawler to index your website."
+            value={workspaceSetting.instanceUrl}
+            onChange={(event) => handleInstanceUrlChange(event.target.value)}
+          />
         </div>
-        <Select
-          defaultValue={workspaceSetting.defaultVisibility || Visibility.PRIVATE}
-          onChange={(_, value) => handleDefaultVisibilityChange(value as Visibility)}
-        >
-          <Option value={Visibility.PRIVATE}>{t(`shortcut.visibility.private.self`)}</Option>
-          <Option value={Visibility.WORKSPACE}>{t(`shortcut.visibility.workspace.self`)}</Option>
-          <Option value={Visibility.PUBLIC}>{t(`shortcut.visibility.public.self`)}</Option>
-        </Select>
-      </div>
-      <div>
-        <Button variant="outlined" color="neutral" disabled={!allowSave} onClick={handleSaveWorkspaceSetting}>
-          {t("common.save")}
-        </Button>
+        <div className="w-full flex flex-col justify-start items-start">
+          <p className="mt-2 dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
+          <Textarea
+            className="w-full mt-2"
+            placeholder="* {font-family: ui-monospace Monaco Consolas;}"
+            minRows={2}
+            maxRows={5}
+            value={workspaceSetting.customStyle}
+            onChange={(event) => handleCustomStyleChange(event.target.value)}
+          />
+        </div>
+        <div className="w-full flex flex-col justify-start items-start">
+          <Checkbox
+            label={t("settings.workspace.enable-user-signup.self")}
+            checked={workspaceSetting.enableSignup}
+            onChange={(event) => handleEnableSignUpChange(event.target.checked)}
+          />
+          <p className="mt-2 text-gray-500">{t("settings.workspace.enable-user-signup.description")}</p>
+        </div>
+        <div className="w-full flex flex-row justify-between items-center">
+          <div className="flex flex-row justify-start items-center gap-x-1">
+            <span className="dark:text-gray-400">{t("settings.workspace.default-visibility")}</span>
+          </div>
+          <Select
+            defaultValue={workspaceSetting.defaultVisibility || Visibility.PRIVATE}
+            onChange={(_, value) => handleDefaultVisibilityChange(value as Visibility)}
+          >
+            <Option value={Visibility.PRIVATE}>{t(`shortcut.visibility.private.self`)}</Option>
+            <Option value={Visibility.WORKSPACE}>{t(`shortcut.visibility.workspace.self`)}</Option>
+            <Option value={Visibility.PUBLIC}>{t(`shortcut.visibility.public.self`)}</Option>
+          </Select>
+        </div>
+        <div>
+          <Button variant="outlined" color="neutral" disabled={!allowSave} onClick={handleSaveWorkspaceSetting}>
+            {t("common.save")}
+          </Button>
+        </div>
       </div>
     </div>
   );
