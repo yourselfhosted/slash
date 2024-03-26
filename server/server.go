@@ -16,6 +16,7 @@ import (
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/profile"
 	apiv1 "github.com/yourselfhosted/slash/server/route/api/v1"
+	"github.com/yourselfhosted/slash/server/route/frontend"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/server/service/resource"
 	"github.com/yourselfhosted/slash/store"
@@ -50,7 +51,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	}
 
 	// Serve frontend.
-	frontendService := NewFrontendService(profile, store)
+	frontendService := frontend.NewFrontendService(profile, store)
 	frontendService.Serve(ctx, e)
 
 	// In dev mode, we'd like to set the const secret key to make signin session persistence.

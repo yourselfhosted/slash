@@ -1,4 +1,4 @@
-package server
+package frontend
 
 import (
 	"context"
@@ -12,6 +12,7 @@ import (
 
 	"github.com/yourselfhosted/slash/internal/util"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -63,6 +64,7 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 			return c.HTML(http.StatusOK, rawIndexHTML)
 		}
 
+		metric.Enqueue("shortcut view")
 		// Inject shortcut metadata into `index.html`.
 		indexHTML := strings.ReplaceAll(rawIndexHTML, headerMetadataPlaceholder, generateShortcutMetadata(shortcut).String())
 		return c.HTML(http.StatusOK, indexHTML)
@@ -81,6 +83,7 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 			return c.HTML(http.StatusOK, rawIndexHTML)
 		}
 
+		metric.Enqueue("collection view")
 		// Inject collection metadata into `index.html`.
 		indexHTML := strings.ReplaceAll(rawIndexHTML, headerMetadataPlaceholder, generateCollectionMetadata(collection).String())
 		return c.HTML(http.StatusOK, indexHTML)

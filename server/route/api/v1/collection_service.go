@@ -100,7 +100,6 @@ func (s *APIV2Service) GetCollectionByName(ctx context.Context, request *apiv1pb
 	response := &apiv1pb.GetCollectionByNameResponse{
 		Collection: convertCollectionFromStore(collection),
 	}
-	metric.Enqueue("collection view")
 	return response, nil
 }
 
