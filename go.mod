@@ -29,7 +29,7 @@ require (
 )
 
 require (
-	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
+	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
@@ -53,11 +53,11 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240318140521-94a12d6c2237 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240401170217-c3f982113cda // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b // indirect
-	modernc.org/libc v1.47.0 // indirect
+	modernc.org/libc v1.49.0 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/strutil v1.2.0 // indirect
@@ -75,10 +75,10 @@ require (
 	github.com/mssola/useragent v1.0.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1
-	github.com/posthog/posthog-go v0.0.0-20240315130956-036dfa9f3555
-	golang.org/x/exp v0.0.0-20240318143956-a85f2c67cd81
+	github.com/posthog/posthog-go v0.0.0-20240327112532-87b23fe11103
+	golang.org/x/exp v0.0.0-20240325151524-a685a6edb6d8
 	golang.org/x/mod v0.16.0
-	google.golang.org/genproto/googleapis/api v0.0.0-20240318140521-94a12d6c2237
+	google.golang.org/genproto/googleapis/api v0.0.0-20240401170217-c3f982113cda
 	google.golang.org/grpc v1.62.1
 	google.golang.org/protobuf v1.33.0
 	modernc.org/sqlite v1.29.5
