@@ -1,14 +1,15 @@
 import { Button, CssVarsProvider, Divider, Input, Select, Option } from "@mui/joy";
-import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import Icon from "./components/Icon";
 import Logo from "./components/Logo";
 import PullShortcutsButton from "./components/PullShortcutsButton";
 import ShortcutsContainer from "./components/ShortcutsContainer";
+import { StorageContextProvider, useStorageContext } from "./context";
 import useColorTheme from "./hooks/useColorTheme";
 import useShortcutStore from "./store/shortcut";
 import "./style.css";
+import { Visibility } from "./types/proto/api/v1/common";
 
 interface SettingState {
   domain: string;
@@ -32,22 +33,21 @@ const colorThemeOptions = [
 
 const IndexOptions = () => {
   const { colorTheme, setColorTheme } = useColorTheme();
-  const [domain, setDomain] = useStorage<string>("domain", (v) => (v ? v : ""));
-  const [accessToken, setAccessToken] = useStorage<string>("access_token", (v) => (v ? v : ""));
+  const context = useStorageContext();
   const [settingState, setSettingState] = useState<SettingState>({
-    domain,
-    accessToken,
+    domain: context.instanceUrl || "",
+    accessToken: context.accessToken || "",
   });
   const shortcutStore = useShortcutStore();
   const shortcuts = shortcutStore.getShortcutList();
-  const isInitialized = domain && accessToken;
+  const isInitialized = context.instanceUrl && context.accessToken;
 
   useEffect(() => {
     setSettingState({
-      domain,
-      accessToken,
+      domain: context.instanceUrl || "",
+      accessToken: context.accessToken || "",
     });
-  }, [domain, accessToken]);
+  }, [context]);
 
   const setPartialSettingState = (partialSettingState: Partial<SettingState>) => {
     setSettingState((prevState) => ({
@@ -57,13 +57,17 @@ const IndexOptions = () => {
   };
 
   const handleSaveSetting = () => {
-    setDomain(settingState.domain);
-    setAccessToken(settingState.accessToken);
+    context.setInstanceUrl(settingState.domain);
+    context.setAccessToken(settingState.accessToken);
     toast.success("Setting saved");
   };
 
   const handleSelectColorTheme = async (colorTheme: string) => {
     setColorTheme(colorTheme as any);
+  };
+
+  const handleDefaultVisibilitySelect = (value: Visibility) => {
+    context.setDefaultVisibility(value);
   };
 
   return (
@@ -92,10 +96,10 @@ const IndexOptions = () => {
           <div className="w-full flex flex-col justify-start items-start mb-4">
             <div className="mb-2 text-base w-full flex flex-row justify-between items-center">
               <span className="dark:text-gray-400">Instance URL</span>
-              {domain !== "" && (
+              {context.instanceUrl !== "" && (
                 <a
                   className="text-sm flex flex-row justify-start items-center underline text-blue-600 hover:opacity-80"
-                  href={domain}
+                  href={context.instanceUrl}
                   target="_blank"
                 >
                   <span className="mr-1">Go to my Slash</span>
@@ -133,9 +137,9 @@ const IndexOptions = () => {
 
           <Divider className="!my-6" />
 
-          <p className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-500">Preference</p>
+          <p className="text-base font-semibold leading-6 mb-2 text-gray-900 dark:text-gray-500">Preference</p>
 
-          <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-full flex flex-row justify-between items-center mb-2">
             <div className="flex flex-row justify-start items-center gap-x-1">
               <span className="dark:text-gray-400">Color Theme</span>
             </div>
@@ -147,6 +151,17 @@ const IndexOptions = () => {
                   </Option>
                 );
               })}
+            </Select>
+          </div>
+
+          <div className="w-full flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-start items-center gap-x-1">
+              <span className="dark:text-gray-400">Default Visibility</span>
+            </div>
+            <Select defaultValue={context.defaultVisibility} onChange={(_, value) => handleDefaultVisibilitySelect(value as Visibility)}>
+              <Option value={Visibility.PRIVATE}>Private</Option>
+              <Option value={Visibility.WORKSPACE}>Workspace</Option>
+              <Option value={Visibility.PUBLIC}>Public</Option>
             </Select>
           </div>
         </div>
@@ -170,10 +185,12 @@ const IndexOptions = () => {
 
 const Options = () => {
   return (
-    <CssVarsProvider>
-      <IndexOptions />
-      <Toaster position="top-center" />
-    </CssVarsProvider>
+    <StorageContextProvider>
+      <CssVarsProvider>
+        <IndexOptions />
+        <Toaster position="top-center" />
+      </CssVarsProvider>
+    </StorageContextProvider>
   );
 };
 

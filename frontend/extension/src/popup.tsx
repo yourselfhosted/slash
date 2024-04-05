@@ -1,5 +1,4 @@
 import { Button, CssVarsProvider, Divider, IconButton } from "@mui/joy";
-import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import CreateShortcutButton from "@/components/CreateShortcutButton";
@@ -7,24 +6,24 @@ import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import PullShortcutsButton from "@/components/PullShortcutsButton";
 import ShortcutsContainer from "@/components/ShortcutsContainer";
+import { StorageContextProvider, useStorageContext } from "./context";
 import useColorTheme from "./hooks/useColorTheme";
 import useShortcutStore from "./store/shortcut";
 import "./style.css";
 
 const IndexPopup = () => {
   useColorTheme();
-  const [instanceUrl] = useStorage<string>("domain", "");
-  const [accessToken] = useStorage<string>("access_token", "");
+  const context = useStorageContext();
   const shortcutStore = useShortcutStore();
   const shortcuts = shortcutStore.getShortcutList();
-  const isInitialized = instanceUrl && accessToken;
+  const isInitialized = context.instanceUrl && context.accessToken;
 
   useEffect(() => {
     if (!isInitialized) {
       return;
     }
 
-    shortcutStore.fetchShortcutList(instanceUrl, accessToken);
+    shortcutStore.fetchShortcutList(context.instanceUrl, context.accessToken);
   }, [isInitialized]);
 
   const handleSettingButtonClick = () => {
@@ -86,7 +85,7 @@ const IndexPopup = () => {
               <div className="flex flex-row justify-end items-center">
                 <a
                   className="text-sm flex flex-row justify-start items-center underline text-blue-600 hover:opacity-80"
-                  href={instanceUrl}
+                  href={context.instanceUrl}
                   target="_blank"
                 >
                   <span className="mr-1">Go to my Slash</span>
@@ -117,10 +116,12 @@ const IndexPopup = () => {
 
 const Popup = () => {
   return (
-    <CssVarsProvider>
-      <IndexPopup />
-      <Toaster position="top-center" />
-    </CssVarsProvider>
+    <StorageContextProvider>
+      <CssVarsProvider>
+        <IndexPopup />
+        <Toaster position="top-center" />
+      </CssVarsProvider>
+    </StorageContextProvider>
   );
 };
 
