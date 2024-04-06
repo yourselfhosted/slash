@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, Select, Textarea, Option } from "@mui/joy";
+import { Button, Input, Select, Textarea, Option, Switch } from "@mui/joy";
 import { isEqual } from "lodash-es";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -8,7 +8,7 @@ import useWorkspaceStore from "@/stores/v1/workspace";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 
-const WorkspaceSection: React.FC = () => {
+const WorkspaceSection = () => {
   const { t } = useTranslation();
   const workspaceStore = useWorkspaceStore();
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(workspaceStore.setting);
@@ -26,6 +26,13 @@ const WorkspaceSection: React.FC = () => {
     setWorkspaceSetting({
       ...workspaceSetting,
       instanceUrl: value,
+    });
+  };
+
+  const handleFaviconProvierChange = async (value: string) => {
+    setWorkspaceSetting({
+      ...workspaceSetting,
+      faviconProvider: value,
     });
   };
 
@@ -57,6 +64,9 @@ const WorkspaceSection: React.FC = () => {
     if (!isEqual(originalWorkspaceSetting.current.defaultVisibility, workspaceSetting.defaultVisibility)) {
       updateMask.push("default_visibility");
     }
+    if (!isEqual(originalWorkspaceSetting.current.faviconProvider, workspaceSetting.faviconProvider)) {
+      updateMask.push("favicon_provider");
+    }
     if (updateMask.length === 0) {
       toast.error("No changes made");
       return;
@@ -83,7 +93,7 @@ const WorkspaceSection: React.FC = () => {
       <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("settings.workspace.self")}</p>
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <div className="w-full flex flex-col justify-start items-start">
-          <p className="dark:text-gray-400">Instance URL</p>
+          <p className="font-medium dark:text-gray-400">Instance URL</p>
           <Input
             className="w-full mt-2"
             placeholder="Your instance URL. Using for website SEO. Leave it empty if you don't want cawler to index your website."
@@ -92,7 +102,16 @@ const WorkspaceSection: React.FC = () => {
           />
         </div>
         <div className="w-full flex flex-col justify-start items-start">
-          <p className="mt-2 dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
+          <p className="font-medium dark:text-gray-400">Favicon Provider</p>
+          <Input
+            className="w-full mt-2"
+            placeholder="The provider of favicon. Empty for default Google S2."
+            value={workspaceSetting.faviconProvider}
+            onChange={(event) => handleFaviconProvierChange(event.target.value)}
+          />
+        </div>
+        <div className="w-full flex flex-col justify-start items-start">
+          <p className="mt-2 font-medium dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
           <Textarea
             className="w-full mt-2"
             placeholder="* {font-family: ui-monospace Monaco Consolas;}"
@@ -102,17 +121,22 @@ const WorkspaceSection: React.FC = () => {
             onChange={(event) => handleCustomStyleChange(event.target.value)}
           />
         </div>
-        <div className="w-full flex flex-col justify-start items-start">
-          <Checkbox
-            label={t("settings.workspace.enable-user-signup.self")}
-            checked={workspaceSetting.enableSignup}
-            onChange={(event) => handleEnableSignUpChange(event.target.checked)}
-          />
-          <p className="mt-2 text-gray-500">{t("settings.workspace.enable-user-signup.description")}</p>
+        <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="font-medium">{t("settings.workspace.enable-user-signup.self")}</p>
+            <p className="text-gray-500">{t("settings.workspace.enable-user-signup.description")}</p>
+          </div>
+          <div>
+            <Switch
+              size="lg"
+              checked={workspaceSetting.enableSignup}
+              onChange={(event) => handleEnableSignUpChange(event.target.checked)}
+            />
+          </div>
         </div>
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center gap-x-1">
-            <span className="dark:text-gray-400">{t("settings.workspace.default-visibility")}</span>
+            <span className="font-medium dark:text-gray-400">{t("settings.workspace.default-visibility")}</span>
           </div>
           <Select
             defaultValue={workspaceSetting.defaultVisibility || Visibility.PRIVATE}
