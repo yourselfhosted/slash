@@ -1500,6 +1500,7 @@
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
 | custom_style | [string](#string) |  | The custom style. |
 | custom_script | [string](#string) |  | The custom script. |
+| favicon_provider | [string](#string) |  | The url of custom favicon provider. |
 
 
 
@@ -1521,6 +1522,7 @@
 | custom_script | [string](#string) |  | The custom script. |
 | auto_backup | [AutoBackupWorkspaceSetting](#slash-api-v1-AutoBackupWorkspaceSetting) |  | The auto backup setting. (Unimplemented) |
 | default_visibility | [Visibility](#slash-api-v1-Visibility) |  | The default visibility of shortcuts and collections. |
+| favicon_provider | [string](#string) |  | The url of custom favicon provider. |
 
 
 

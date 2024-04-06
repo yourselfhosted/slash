@@ -39,6 +39,8 @@ message WorkspaceProfile {
   string custom_style = 5;
   // The custom script.
   string custom_script = 6;
+  // The url of custom favicon provider.
+  string favicon_provider = 7;
 }
 
 message WorkspaceSetting {
@@ -55,6 +57,8 @@ message WorkspaceSetting {
   AutoBackupWorkspaceSetting auto_backup = 6;
   // The default visibility of shortcuts and collections.
   Visibility default_visibility = 7;
+  // The url of custom favicon provider.
+  string favicon_provider = 8;
 }
 
 message AutoBackupWorkspaceSetting {

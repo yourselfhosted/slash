@@ -375,6 +375,7 @@
 | auto_backup | [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting) |  | The auto backup setting. (Unimplemented) |
 | instance_url | [string](#string) |  | The instance URL of workspace. |
 | default_visibility | [Visibility](#slash-store-Visibility) |  | The default visibility of shortcuts and collections. |
+| favicon_provider | [string](#string) |  | The url of custom favicon provider. e.g. https://github.com/yourselfhosted/favicons |
 
 
 
@@ -399,6 +400,7 @@
 | WORKSPACE_SETTING_AUTO_BACKUP | 6 | The auto backup setting. |
 | WORKSPACE_SETTING_INSTANCE_URL | 7 | The instance URL. |
 | WORKSPACE_SETTING_DEFAULT_VISIBILITY | 8 | The default visibility of shortcuts and collections. |
+| WORKSPACE_SETTING_FAVICON_PROVIDER | 9 | The url of custom favicon provider. |
 
 
  

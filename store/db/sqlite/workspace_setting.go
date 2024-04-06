@@ -43,6 +43,8 @@ func (d *DB) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.Workspa
 		valueString = upsert.GetInstanceUrl()
 	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY {
 		valueString = upsert.GetDefaultVisibility().String()
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_FAVICON_PROVIDER {
+		valueString = upsert.GetFaviconProvider()
 	} else {
 		return nil, errors.New("invalid workspace setting key")
 	}
@@ -110,6 +112,8 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 			workspaceSetting.Value = &storepb.WorkspaceSetting_InstanceUrl{InstanceUrl: valueString}
 		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY {
 			workspaceSetting.Value = &storepb.WorkspaceSetting_DefaultVisibility{DefaultVisibility: storepb.Visibility(storepb.Visibility_value[valueString])}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_FAVICON_PROVIDER {
+			workspaceSetting.Value = &storepb.WorkspaceSetting_FaviconProvider{FaviconProvider: valueString}
 		} else {
 			continue
 		}

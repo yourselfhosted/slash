@@ -26,6 +26,8 @@ message WorkspaceSetting {
     string instance_url = 8;
     // The default visibility of shortcuts and collections.
     Visibility default_visibility = 9;
+    // The url of custom favicon provider. e.g. https://github.com/yourselfhosted/favicons
+    string favicon_provider = 10;
   }
 }
 
@@ -47,6 +49,8 @@ enum WorkspaceSettingKey {
   WORKSPACE_SETTING_INSTANCE_URL = 7;
   // The default visibility of shortcuts and collections.
   WORKSPACE_SETTING_DEFAULT_VISIBILITY = 8;
+  // The url of custom favicon provider.
+  WORKSPACE_SETTING_FAVICON_PROVIDER = 9;
 }
 
 message AutoBackupWorkspaceSetting {

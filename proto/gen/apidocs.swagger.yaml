@@ -879,6 +879,9 @@ definitions:
       defaultVisibility:
         $ref: '#/definitions/apiv1Visibility'
         description: The default visibility of shortcuts and collections.
+      faviconProvider:
+        type: string
+        description: The url of custom favicon provider.
   protobufAny:
     type: object
     properties:
@@ -1162,3 +1165,6 @@ definitions:
       customScript:
         type: string
         description: The custom script.
+      faviconProvider:
+        type: string
+        description: The url of custom favicon provider.
