@@ -1,4 +1,4 @@
-import { Button, Input, Select, Textarea, Option, Switch } from "@mui/joy";
+import { Button, Input, Select, Textarea, Option, Switch, Link } from "@mui/joy";
 import { isEqual } from "lodash-es";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -103,6 +103,12 @@ const WorkspaceSection = () => {
         </div>
         <div className="w-full flex flex-col justify-start items-start">
           <p className="font-medium dark:text-gray-400">Favicon Provider</p>
+          <p className="text-sm text-gray-500">
+            e.g.{" "}
+            <Link className="!text-sm" href="https://github.com/yourselfhosted/favicons" target="_blank">
+              yourselfhosted/favicons
+            </Link>
+          </p>
           <Input
             className="w-full mt-2"
             placeholder="The provider of favicon. Empty for default Google S2."
