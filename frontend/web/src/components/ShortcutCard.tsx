@@ -8,8 +8,9 @@ import { Link } from "react-router-dom";
 import { useUserStore, useViewStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
-import { absolutifyLink, getFaviconWithGoogleS2 } from "../helpers/utils";
+import { absolutifyLink } from "../helpers/utils";
 import Icon from "./Icon";
+import LinkFavicon from "./LinkFavicon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";
 import VisibilityIcon from "./VisibilityIcon";
 
@@ -24,7 +25,6 @@ const ShortcutCard = (props: Props) => {
   const viewStore = useViewStore();
   const creator = userStore.getUserById(shortcut.creatorId);
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
-  const favicon = getFaviconWithGoogleS2(shortcut.link);
 
   useEffect(() => {
     userStore.getOrFetchUserById(shortcut.creatorId);
@@ -48,11 +48,7 @@ const ShortcutCard = (props: Props) => {
             to={`/shortcut/${shortcut.id}`}
             unstable_viewTransition
           >
-            {favicon ? (
-              <img className="w-full h-auto rounded" src={favicon} decoding="async" loading="lazy" />
-            ) : (
-              <Icon.CircleSlash className="w-full h-auto text-gray-400" />
-            )}
+            <LinkFavicon url={shortcut.link} />
           </Link>
           <div className="ml-1 w-[calc(100%-24px)] flex flex-col justify-start items-start">
             <div className="w-full flex flex-row justify-start items-center">

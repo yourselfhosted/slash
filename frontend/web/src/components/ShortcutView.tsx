@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
-import { getFaviconWithGoogleS2 } from "../helpers/utils";
 import Icon from "./Icon";
+import LinkFavicon from "./LinkFavicon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 
 const ShortcutView = (props: Props) => {
   const { shortcut, className, showActions, alwaysShowLink, onClick } = props;
-  const favicon = getFaviconWithGoogleS2(shortcut.link);
 
   return (
     <div
@@ -26,11 +25,7 @@ const ShortcutView = (props: Props) => {
       onClick={onClick}
     >
       <div className={classNames("w-5 h-5 flex justify-center items-center overflow-clip shrink-0")}>
-        {favicon ? (
-          <img className="w-full h-auto rounded" src={favicon} decoding="async" loading="lazy" />
-        ) : (
-          <Icon.CircleSlash className="w-full h-auto text-gray-400" />
-        )}
+        <LinkFavicon url={shortcut.link} />
       </div>
       <div className="ml-2 w-full truncate">
         {shortcut.title ? (

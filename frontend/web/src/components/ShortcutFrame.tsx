@@ -1,17 +1,15 @@
 import { Divider } from "@mui/joy";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
-import { getFaviconWithGoogleS2 } from "@/helpers/utils";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
+import LinkFavicon from "./LinkFavicon";
 
 interface Props {
   shortcut: Shortcut;
 }
 
 const ShortcutFrame = ({ shortcut }: Props) => {
-  const favicon = getFaviconWithGoogleS2(shortcut.link);
-
   return (
     <div className="w-full h-full flex flex-col justify-center items-center p-8">
       <Link
@@ -20,11 +18,7 @@ const ShortcutFrame = ({ shortcut }: Props) => {
         target="_blank"
       >
         <div className={classNames("w-12 h-12 flex justify-center items-center overflow-clip rounded-lg shrink-0")}>
-          {favicon ? (
-            <img className="w-full h-auto" src={favicon} decoding="async" loading="lazy" />
-          ) : (
-            <Icon.Globe2Icon className="w-full h-auto opacity-70" strokeWidth={1} />
-          )}
+          <LinkFavicon url={shortcut.link} />
         </div>
         <p className="text-lg font-medium leading-8 mt-2 truncate">{shortcut.title || shortcut.name}</p>
         <p className="text-gray-500 truncate">{shortcut.description}</p>

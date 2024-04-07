@@ -5,20 +5,21 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { showCommonDialog } from "@/components/Alert";
+import AnalyticsView from "@/components/AnalyticsView";
+import CreateShortcutDrawer from "@/components/CreateShortcutDrawer";
+import GenerateQRCodeDialog from "@/components/GenerateQRCodeDialog";
+import Icon from "@/components/Icon";
+import LinkFavicon from "@/components/LinkFavicon";
+import VisibilityIcon from "@/components/VisibilityIcon";
+import Dropdown from "@/components/common/Dropdown";
+import { absolutifyLink } from "@/helpers/utils";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useUserStore, useShortcutStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { Role } from "@/types/proto/api/v1/user_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
-import { showCommonDialog } from "../components/Alert";
-import AnalyticsView from "../components/AnalyticsView";
-import CreateShortcutDrawer from "../components/CreateShortcutDrawer";
-import GenerateQRCodeDialog from "../components/GenerateQRCodeDialog";
-import Icon from "../components/Icon";
-import VisibilityIcon from "../components/VisibilityIcon";
-import Dropdown from "../components/common/Dropdown";
-import { absolutifyLink, getFaviconWithGoogleS2 } from "../helpers/utils";
 
 interface State {
   showEditDrawer: boolean;
@@ -41,7 +42,6 @@ const ShortcutDetail = () => {
   const creator = userStore.getUserById(shortcut.creatorId);
   const havePermission = currentUser.role === Role.ADMIN || shortcut.creatorId === currentUser.id;
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
-  const favicon = getFaviconWithGoogleS2(shortcut.link);
 
   useEffect(() => {
     (async () => {
@@ -78,11 +78,7 @@ const ShortcutDetail = () => {
     <>
       <div className="mx-auto max-w-8xl w-full px-4 sm:px-6 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
         <div className="mt-4 sm:mt-8 w-12 h-12 flex justify-center items-center overflow-clip">
-          {favicon ? (
-            <img className="w-full h-auto rounded-lg" src={favicon} decoding="async" loading="lazy" />
-          ) : (
-            <Icon.CircleSlash className="w-full h-auto text-gray-400" strokeWidth={1} />
-          )}
+          <LinkFavicon url={shortcut.link} />
         </div>
         <a
           className={classNames(
