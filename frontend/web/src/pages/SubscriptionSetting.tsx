@@ -4,11 +4,10 @@ import toast from "react-hot-toast";
 import Icon from "@/components/Icon";
 import SubscriptionFAQ from "@/components/SubscriptionFAQ";
 import { subscriptionServiceClient } from "@/grpcweb";
-import { stringifyPlanType } from "@/stores/v1/subscription";
-import useWorkspaceStore from "@/stores/v1/workspace";
+import { useUserStore, useWorkspaceStore } from "@/stores";
+import { stringifyPlanType } from "@/stores/subscription";
 import { PlanType } from "@/types/proto/api/v1/subscription_service";
 import { Role } from "@/types/proto/api/v1/user_service";
-import useUserStore from "../stores/v1/user";
 
 const SubscriptionSetting: React.FC = () => {
   const workspaceStore = useWorkspaceStore();

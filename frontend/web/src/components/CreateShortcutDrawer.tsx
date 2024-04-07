@@ -16,12 +16,12 @@ import { isUndefined, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import useShortcutStore, { getShortcutUpdateMask } from "@/stores/v1/shortcut";
-import useWorkspaceStore from "@/stores/v1/workspace";
+import useLoading from "@/hooks/useLoading";
+import { useWorkspaceStore, useShortcutStore } from "@/stores";
+import { getShortcutUpdateMask } from "@/stores/shortcut";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
-import useLoading from "../hooks/useLoading";
 import Icon from "./Icon";
 
 interface Props {

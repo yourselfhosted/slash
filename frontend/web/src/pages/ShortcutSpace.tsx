@@ -5,8 +5,7 @@ import { useParams } from "react-router-dom";
 import CreateShortcutDrawer from "@/components/CreateShortcutDrawer";
 import { isURL } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
-import useShortcutStore from "@/stores/v1/shortcut";
-import useUserStore from "@/stores/v1/user";
+import { useShortcutStore, useUserStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 
 const ShortcutSpace = () => {

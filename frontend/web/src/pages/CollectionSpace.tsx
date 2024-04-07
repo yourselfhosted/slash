@@ -7,9 +7,7 @@ import Icon from "@/components/Icon";
 import ShortcutFrame from "@/components/ShortcutFrame";
 import ShortcutView from "@/components/ShortcutView";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
-import useCollectionStore from "@/stores/v1/collection";
-import useShortcutStore from "@/stores/v1/shortcut";
-import useUserStore from "@/stores/v1/user";
+import { useUserStore, useCollectionStore, useShortcutStore } from "@/stores";
 import { Collection } from "@/types/proto/api/v1/collection_service";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 

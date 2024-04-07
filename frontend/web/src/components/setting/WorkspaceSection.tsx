@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
-import useWorkspaceStore from "@/stores/v1/workspace";
+import { useWorkspaceStore } from "@/stores";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 

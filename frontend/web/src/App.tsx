@@ -1,9 +1,8 @@
 import { useColorScheme } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import DemoBanner from "./components/DemoBanner";
-import useUserStore from "./stores/v1/user";
-import useWorkspaceStore from "./stores/v1/workspace";
+import DemoBanner from "@/components/DemoBanner";
+import { useUserStore, useWorkspaceStore } from "@/stores";
 
 function App() {
   const { mode: colorScheme } = useColorScheme();

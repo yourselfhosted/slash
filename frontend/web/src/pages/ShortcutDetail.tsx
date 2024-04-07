@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
-import useShortcutStore from "@/stores/v1/shortcut";
+import { useUserStore, useShortcutStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { Role } from "@/types/proto/api/v1/user_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
@@ -19,7 +19,6 @@ import Icon from "../components/Icon";
 import VisibilityIcon from "../components/VisibilityIcon";
 import Dropdown from "../components/common/Dropdown";
 import { absolutifyLink, getFaviconWithGoogleS2 } from "../helpers/utils";
-import useUserStore from "../stores/v1/user";
 
 interface State {
   showEditDrawer: boolean;

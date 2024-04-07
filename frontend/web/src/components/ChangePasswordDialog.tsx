@@ -2,8 +2,8 @@ import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import useLoading from "../hooks/useLoading";
-import useUserStore from "../stores/v1/user";
+import useLoading from "@/hooks/useLoading";
+import { useUserStore } from "@/stores";
 import Icon from "./Icon";
 
 interface Props {

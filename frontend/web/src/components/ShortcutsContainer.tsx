@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import useNavigateTo from "@/hooks/useNavigateTo";
+import { useViewStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
-import useViewStore from "../stores/v1/view";
 import ShortcutCard from "./ShortcutCard";
 import ShortcutView from "./ShortcutView";
 

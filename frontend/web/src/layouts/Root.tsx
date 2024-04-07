@@ -3,11 +3,11 @@ import { isEqual } from "lodash-es";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
+import Header from "@/components/Header";
 import Navigator from "@/components/Navigator";
 import useNavigateTo from "@/hooks/useNavigateTo";
+import { useUserStore } from "@/stores";
 import { UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v1/user_setting_service";
-import Header from "../components/Header";
-import useUserStore from "../stores/v1/user";
 
 const Root: React.FC = () => {
   const navigateTo = useNavigateTo();

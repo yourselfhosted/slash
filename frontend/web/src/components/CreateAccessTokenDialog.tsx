@@ -3,8 +3,8 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { userServiceClient } from "@/grpcweb";
+import { useUserStore } from "@/stores";
 import useLoading from "../hooks/useLoading";
-import useUserStore from "../stores/v1/user";
 import Icon from "./Icon";
 
 interface Props {

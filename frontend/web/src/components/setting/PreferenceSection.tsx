@@ -1,7 +1,7 @@
 import { Option, Select } from "@mui/joy";
 import { useTranslation } from "react-i18next";
+import { useUserStore } from "@/stores";
 import { UserSetting, UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v1/user_setting_service";
-import useUserStore from "../../stores/v1/user";
 import BetaBadge from "../BetaBadge";
 
 const PreferenceSection: React.FC = () => {

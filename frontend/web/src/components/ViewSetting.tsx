@@ -1,6 +1,6 @@
 import { Divider, Option, Select, Switch } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import useViewStore from "../stores/v1/view";
+import { useViewStore } from "@/stores";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
 

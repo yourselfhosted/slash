@@ -1,4 +1,4 @@
-import useWorkspaceStore from "@/stores/v1/workspace";
+import { useWorkspaceStore } from "@/stores";
 import Icon from "./Icon";
 
 const DemoBanner: React.FC = () => {

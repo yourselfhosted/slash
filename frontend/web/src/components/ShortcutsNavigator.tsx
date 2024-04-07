@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import useShortcutStore from "@/stores/v1/shortcut";
-import useViewStore from "../stores/v1/view";
+import { useShortcutStore, useViewStore } from "@/stores";
 import Icon from "./Icon";
 
 const ShortcutsNavigator = () => {

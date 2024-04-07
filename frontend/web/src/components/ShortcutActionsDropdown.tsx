@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useNavigateTo from "@/hooks/useNavigateTo";
-import useShortcutStore from "@/stores/v1/shortcut";
+import { useShortcutStore, useUserStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { Role } from "@/types/proto/api/v1/user_service";
-import useUserStore from "../stores/v1/user";
 import { showCommonDialog } from "./Alert";
 import CreateShortcutDrawer from "./CreateShortcutDrawer";
 import GenerateQRCodeDialog from "./GenerateQRCodeDialog";

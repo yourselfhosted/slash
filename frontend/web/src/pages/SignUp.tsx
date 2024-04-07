@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/Icon";
 import { authServiceClient } from "@/grpcweb";
 import useNavigateTo from "@/hooks/useNavigateTo";
-import useUserStore from "@/stores/v1/user";
-import useWorkspaceStore from "@/stores/v1/workspace";
+import { useUserStore, useWorkspaceStore } from "@/stores";
 import useLoading from "../hooks/useLoading";
 
 const SignUp: React.FC = () => {

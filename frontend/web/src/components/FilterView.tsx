@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { useViewStore } from "@/stores";
 import { convertVisibilityFromPb } from "@/utils/visibility";
-import useViewStore from "../stores/v1/view";
 import Icon from "./Icon";
 import VisibilityIcon from "./VisibilityIcon";
 
