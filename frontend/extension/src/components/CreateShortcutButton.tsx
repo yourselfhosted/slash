@@ -2,7 +2,7 @@ import { Button, IconButton, Input, Modal, ModalDialog } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useStorageContext } from "@/context";
-import useShortcutStore from "@/store/shortcut";
+import { useShortcutStore } from "@/stores";
 import type { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";

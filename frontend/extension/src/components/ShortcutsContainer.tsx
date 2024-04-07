@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import useShortcutStore from "@/store/shortcut";
+import { useShortcutStore } from "@/stores";
 import Icon from "./Icon";
 import ShortcutView from "./ShortcutView";
 

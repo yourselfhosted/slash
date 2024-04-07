@@ -2,7 +2,7 @@ import { IconButton } from "@mui/joy";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useStorageContext } from "@/context";
-import useShortcutStore from "@/store/shortcut";
+import { useShortcutStore } from "@/stores";
 import Icon from "./Icon";
 
 const PullShortcutsButton = () => {

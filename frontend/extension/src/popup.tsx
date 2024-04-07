@@ -6,9 +6,9 @@ import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
 import PullShortcutsButton from "@/components/PullShortcutsButton";
 import ShortcutsContainer from "@/components/ShortcutsContainer";
+import { useShortcutStore } from "@/stores";
 import { StorageContextProvider, useStorageContext } from "./context";
 import useColorTheme from "./hooks/useColorTheme";
-import useShortcutStore from "./store/shortcut";
 import "./style.css";
 
 const IndexPopup = () => {

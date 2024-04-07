@@ -1,13 +1,13 @@
 import { Button, CssVarsProvider, Divider, Input, Select, Option } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { useShortcutStore } from "@/stores";
 import Icon from "./components/Icon";
 import Logo from "./components/Logo";
 import PullShortcutsButton from "./components/PullShortcutsButton";
 import ShortcutsContainer from "./components/ShortcutsContainer";
 import { StorageContextProvider, useStorageContext } from "./context";
 import useColorTheme from "./hooks/useColorTheme";
-import useShortcutStore from "./store/shortcut";
 import "./style.css";
 import { Visibility } from "./types/proto/api/v1/common";
 

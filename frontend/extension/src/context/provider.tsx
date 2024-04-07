@@ -16,18 +16,26 @@ const StorageContextProvider = ({ children }: Props) => {
 
   useEffect(() => {
     (async () => {
-      const domain = await storage.get("domain");
+      let instanceUrl = await storage.get("instance_url");
       const accessToken = await storage.get("access_token");
       const defaultVisibility = (await storage.get("default_visibility")) as Visibility;
 
-      setInstanceUrl(domain);
+      // Migrate domain to instance_url.
+      const domain = await storage.get("domain");
+      if (domain) {
+        instanceUrl = domain;
+        await storage.remove("domain");
+        await storage.set("instance_url", instanceUrl);
+      }
+
+      setInstanceUrl(instanceUrl);
       setAccessToken(accessToken);
       setDefaultVisibility(defaultVisibility);
       setIsInitialized(true);
     })();
 
     storage.watch({
-      domain: (c) => {
+      instance_url: (c) => {
         setInstanceUrl(c.newValue);
       },
       access_token: (c) => {
@@ -45,7 +53,7 @@ const StorageContextProvider = ({ children }: Props) => {
         instanceUrl,
         accessToken,
         defaultVisibility,
-        setInstanceUrl: (instanceUrl: string) => storage.set("domain", instanceUrl),
+        setInstanceUrl: (instanceUrl: string) => storage.set("instance_url", instanceUrl),
         setAccessToken: (accessToken: string) => storage.set("access_token", accessToken),
         setDefaultVisibility: (visibility: Visibility) => storage.set("default_visibility", visibility),
       }}
