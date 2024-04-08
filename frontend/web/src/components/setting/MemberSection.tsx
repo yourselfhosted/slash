@@ -2,12 +2,12 @@ import { Button, IconButton } from "@mui/joy";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { showCommonDialog } from "@/components/Alert";
+import CreateUserDialog from "@/components/CreateUserDialog";
+import Icon from "@/components/Icon";
 import { useUserStore } from "@/stores";
 import { User } from "@/types/proto/api/v1/user_service";
 import { convertRoleFromPb } from "@/utils/user";
-import { showCommonDialog } from "../Alert";
-import CreateUserDialog from "../CreateUserDialog";
-import Icon from "../Icon";
 
 const MemberSection = () => {
   const { t } = useTranslation();

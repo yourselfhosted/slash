@@ -2,11 +2,11 @@ import { Alert, Button } from "@mui/joy";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/Icon";
+import MemberSection from "@/components/setting/MemberSection";
+import WorkspaceSection from "@/components/setting/WorkspaceSection";
 import { useUserStore, useWorkspaceStore } from "@/stores";
 import { stringifyPlanType } from "@/stores/subscription";
 import { Role } from "@/types/proto/api/v1/user_service";
-import MemberSection from "../components/setting/MemberSection";
-import WorkspaceSection from "../components/setting/WorkspaceSection";
 
 const WorkspaceSetting: React.FC = () => {
   const workspaceStore = useWorkspaceStore();

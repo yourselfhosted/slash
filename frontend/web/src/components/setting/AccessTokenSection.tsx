@@ -3,12 +3,12 @@ import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { showCommonDialog } from "@/components/Alert";
+import CreateAccessTokenDialog from "@/components/CreateAccessTokenDialog";
+import Icon from "@/components/Icon";
 import { userServiceClient } from "@/grpcweb";
 import { useUserStore } from "@/stores";
 import { UserAccessToken } from "@/types/proto/api/v1/user_service";
-import { showCommonDialog } from "../Alert";
-import CreateAccessTokenDialog from "../CreateAccessTokenDialog";
-import Icon from "../Icon";
 
 const listAccessTokens = async (userId: number) => {
   const { accessTokens } = await userServiceClient.listUserAccessTokens({

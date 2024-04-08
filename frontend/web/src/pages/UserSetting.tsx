@@ -1,6 +1,6 @@
+import AccessTokenSection from "@/components/setting/AccessTokenSection";
+import AccountSection from "@/components/setting/AccountSection";
 import PreferenceSection from "@/components/setting/PreferenceSection";
-import AccessTokenSection from "../components/setting/AccessTokenSection";
-import AccountSection from "../components/setting/AccountSection";
 
 const Setting: React.FC = () => {
   return (

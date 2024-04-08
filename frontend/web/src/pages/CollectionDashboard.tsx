@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CollectionView from "@/components/CollectionView";
 import CreateCollectionDrawer from "@/components/CreateCollectionDrawer";
+import FilterView from "@/components/FilterView";
+import Icon from "@/components/Icon";
+import useLoading from "@/hooks/useLoading";
 import { useShortcutStore, useCollectionStore } from "@/stores";
-import FilterView from "../components/FilterView";
-import Icon from "../components/Icon";
-import useLoading from "../hooks/useLoading";
 
 interface State {
   showCreateCollectionDrawer: boolean;

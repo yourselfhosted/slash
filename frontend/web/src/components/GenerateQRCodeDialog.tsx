@@ -3,8 +3,8 @@ import { QRCodeCanvas } from "qrcode.react";
 import { useRef } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { absolutifyLink } from "@/helpers/utils";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
-import { absolutifyLink } from "../helpers/utils";
 import Icon from "./Icon";
 
 interface Props {
@@ -25,12 +25,12 @@ const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
   const handleDownloadQRCodeClick = () => {
     const canvas = containerRef.current?.querySelector("canvas");
     if (!canvas) {
-      toast.error("Failed to get qr code canvas");
+      toast.error("Failed to get QR code canvas");
       return;
     }
 
     const link = document.createElement("a");
-    link.download = "filename.png";
+    link.download = `${shortcut.title || shortcut.name}-qrcode.png`;
     link.href = canvas.toDataURL();
     link.click();
     handleCloseBtnClick();
@@ -47,7 +47,7 @@ const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
         </div>
         <div>
           <div ref={containerRef} className="w-full flex flex-row justify-center items-center mt-2 mb-6">
-            <QRCodeCanvas value={shortcutLink} size={128} bgColor={"#ffffff"} fgColor={"#000000"} includeMargin={false} level={"L"} />
+            <QRCodeCanvas value={shortcutLink} size={180} bgColor={"#ffffff"} fgColor={"#000000"} includeMargin={false} level={"L"} />
           </div>
           <div className="w-full flex flex-row justify-center items-center px-4">
             <Button className="w-full" color="neutral" onClick={handleDownloadQRCodeClick}>

@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Icon from "@/components/Icon";
 import { authServiceClient } from "@/grpcweb";
+import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useUserStore, useWorkspaceStore } from "@/stores";
-import useLoading from "../hooks/useLoading";
 
 const SignUp: React.FC = () => {
   const { t } = useTranslation();

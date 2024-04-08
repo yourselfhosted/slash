@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import Icon from "../Icon";
+import Icon from "@/components/Icon";
 
 interface Props {
   trigger?: ReactNode;

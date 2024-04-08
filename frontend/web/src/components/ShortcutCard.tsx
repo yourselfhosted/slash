@@ -5,10 +5,10 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { absolutifyLink } from "@/helpers/utils";
 import { useUserStore, useViewStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { convertVisibilityFromPb } from "@/utils/visibility";
-import { absolutifyLink } from "../helpers/utils";
 import Icon from "./Icon";
 import LinkFavicon from "./LinkFavicon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";
@@ -50,11 +50,11 @@ const ShortcutCard = (props: Props) => {
           >
             <LinkFavicon url={shortcut.link} />
           </Link>
-          <div className="ml-1 w-[calc(100%-24px)] flex flex-col justify-start items-start">
-            <div className="w-full flex flex-row justify-start items-center">
+          <div className="ml-2 w-[calc(100%-24px)] flex flex-col justify-start items-start">
+            <div className="w-full flex flex-row justify-start items-center leading-tight">
               <a
                 className={classNames(
-                  "max-w-[calc(100%-36px)] flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:bg-gray-100 hover:shadow dark:hover:bg-zinc-800"
+                  "max-w-[calc(100%-36px)] flex flex-row justify-start items-center mr-1 cursor-pointer hover:opacity-80 hover:underline"
                 )}
                 target="_blank"
                 href={shortcutLink}
@@ -64,9 +64,7 @@ const ShortcutCard = (props: Props) => {
                   {shortcut.title ? (
                     <span className="text-gray-500">({shortcut.name})</span>
                   ) : (
-                    <>
-                      <span className="truncate dark:text-gray-400">{shortcut.name}</span>
-                    </>
+                    <span className="truncate dark:text-gray-400">{shortcut.name}</span>
                   )}
                 </div>
                 <span className="hidden group-hover:block ml-1 cursor-pointer shrink-0">
@@ -75,7 +73,7 @@ const ShortcutCard = (props: Props) => {
               </a>
               <Tooltip title="Copy" variant="solid" placement="top" arrow>
                 <button
-                  className="hidden group-hover:block w-6 h-6 cursor-pointer rounded-md text-gray-500 hover:bg-gray-100 hover:shadow dark:hover:bg-zinc-800"
+                  className="hidden group-hover:block cursor-pointer text-gray-500 hover:opacity-80"
                   onClick={() => handleCopyButtonClick()}
                 >
                   <Icon.Clipboard className="w-4 h-auto mx-auto" />
@@ -83,7 +81,7 @@ const ShortcutCard = (props: Props) => {
               </Tooltip>
             </div>
             <a
-              className="pl-1 pr-4 w-full text-sm truncate text-gray-400 dark:text-gray-500 hover:underline"
+              className="pr-4 leading-tight w-full text-sm truncate text-gray-400 dark:text-gray-500 hover:underline"
               href={shortcut.link}
               target="_blank"
             >

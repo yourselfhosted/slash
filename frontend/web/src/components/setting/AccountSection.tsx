@@ -1,10 +1,10 @@
 import { Button } from "@mui/joy";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ChangePasswordDialog from "@/components/ChangePasswordDialog";
+import EditUserinfoDialog from "@/components/EditUserinfoDialog";
 import { useUserStore } from "@/stores";
 import { Role } from "@/types/proto/api/v1/user_service";
-import ChangePasswordDialog from "../ChangePasswordDialog";
-import EditUserinfoDialog from "../EditUserinfoDialog";
 
 const AccountSection: React.FC = () => {
   const { t } = useTranslation();
