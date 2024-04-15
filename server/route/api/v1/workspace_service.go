@@ -11,7 +11,7 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV2Service) GetWorkspaceProfile(ctx context.Context, _ *apiv1pb.GetWorkspaceProfileRequest) (*apiv1pb.GetWorkspaceProfileResponse, error) {
+func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *apiv1pb.GetWorkspaceProfileRequest) (*apiv1pb.GetWorkspaceProfileResponse, error) {
 	profile := &apiv1pb.WorkspaceProfile{
 		Mode:    s.Profile.Mode,
 		Version: s.Profile.Version,
@@ -41,7 +41,7 @@ func (s *APIV2Service) GetWorkspaceProfile(ctx context.Context, _ *apiv1pb.GetWo
 	}, nil
 }
 
-func (s *APIV2Service) GetWorkspaceSetting(ctx context.Context, _ *apiv1pb.GetWorkspaceSettingRequest) (*apiv1pb.GetWorkspaceSettingResponse, error) {
+func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *apiv1pb.GetWorkspaceSettingRequest) (*apiv1pb.GetWorkspaceSettingResponse, error) {
 	isAdmin := false
 	userID, ok := ctx.Value(userIDContextKey).(int32)
 	if ok {
@@ -85,7 +85,7 @@ func (s *APIV2Service) GetWorkspaceSetting(ctx context.Context, _ *apiv1pb.GetWo
 	}, nil
 }
 
-func (s *APIV2Service) UpdateWorkspaceSetting(ctx context.Context, request *apiv1pb.UpdateWorkspaceSettingRequest) (*apiv1pb.UpdateWorkspaceSettingResponse, error) {
+func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *apiv1pb.UpdateWorkspaceSettingRequest) (*apiv1pb.UpdateWorkspaceSettingResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}

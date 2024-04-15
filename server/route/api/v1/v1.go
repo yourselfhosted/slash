@@ -17,7 +17,7 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-type APIV2Service struct {
+type APIV1Service struct {
 	apiv1pb.UnimplementedWorkspaceServiceServer
 	apiv1pb.UnimplementedSubscriptionServiceServer
 	apiv1pb.UnimplementedAuthServiceServer
@@ -35,7 +35,7 @@ type APIV2Service struct {
 	grpcServerPort int
 }
 
-func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store, licenseService *license.LicenseService, grpcServerPort int) *APIV2Service {
+func NewAPIV1Service(secret string, profile *profile.Profile, store *store.Store, licenseService *license.LicenseService, grpcServerPort int) *APIV1Service {
 	authProvider := NewGRPCAuthInterceptor(store, secret)
 	grpcServer := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
@@ -43,7 +43,7 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 			authProvider.AuthenticationInterceptor,
 		),
 	)
-	apiV2Service := &APIV2Service{
+	apiV1Service := &APIV1Service{
 		Secret:         secret,
 		Profile:        profile,
 		Store:          store,
@@ -52,24 +52,24 @@ func NewAPIV2Service(secret string, profile *profile.Profile, store *store.Store
 		grpcServerPort: grpcServerPort,
 	}
 
-	apiv1pb.RegisterSubscriptionServiceServer(grpcServer, apiV2Service)
-	apiv1pb.RegisterWorkspaceServiceServer(grpcServer, apiV2Service)
-	apiv1pb.RegisterAuthServiceServer(grpcServer, apiV2Service)
-	apiv1pb.RegisterUserServiceServer(grpcServer, apiV2Service)
-	apiv1pb.RegisterUserSettingServiceServer(grpcServer, apiV2Service)
-	apiv1pb.RegisterShortcutServiceServer(grpcServer, apiV2Service)
-	apiv1pb.RegisterCollectionServiceServer(grpcServer, apiV2Service)
+	apiv1pb.RegisterSubscriptionServiceServer(grpcServer, apiV1Service)
+	apiv1pb.RegisterWorkspaceServiceServer(grpcServer, apiV1Service)
+	apiv1pb.RegisterAuthServiceServer(grpcServer, apiV1Service)
+	apiv1pb.RegisterUserServiceServer(grpcServer, apiV1Service)
+	apiv1pb.RegisterUserSettingServiceServer(grpcServer, apiV1Service)
+	apiv1pb.RegisterShortcutServiceServer(grpcServer, apiV1Service)
+	apiv1pb.RegisterCollectionServiceServer(grpcServer, apiV1Service)
 	reflection.Register(grpcServer)
 
-	return apiV2Service
+	return apiV1Service
 }
 
-func (s *APIV2Service) GetGRPCServer() *grpc.Server {
+func (s *APIV1Service) GetGRPCServer() *grpc.Server {
 	return s.grpcServer
 }
 
 // RegisterGateway registers the gRPC-Gateway with the given Echo instance.
-func (s *APIV2Service) RegisterGateway(ctx context.Context, e *echo.Echo) error {
+func (s *APIV1Service) RegisterGateway(ctx context.Context, e *echo.Echo) error {
 	// Create a client connection to the gRPC Server we just started.
 	// This is where the gRPC-Gateway proxies the requests.
 	conn, err := grpc.DialContext(

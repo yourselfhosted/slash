@@ -22,7 +22,7 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV2Service) ListShortcuts(ctx context.Context, _ *apiv1pb.ListShortcutsRequest) (*apiv1pb.ListShortcutsResponse, error) {
+func (s *APIV1Service) ListShortcuts(ctx context.Context, _ *apiv1pb.ListShortcutsRequest) (*apiv1pb.ListShortcutsResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -57,7 +57,7 @@ func (s *APIV2Service) ListShortcuts(ctx context.Context, _ *apiv1pb.ListShortcu
 	return response, nil
 }
 
-func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv1pb.GetShortcutRequest) (*apiv1pb.GetShortcutResponse, error) {
+func (s *APIV1Service) GetShortcut(ctx context.Context, request *apiv1pb.GetShortcutRequest) (*apiv1pb.GetShortcutResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		ID: &request.Id,
 	})
@@ -89,7 +89,7 @@ func (s *APIV2Service) GetShortcut(ctx context.Context, request *apiv1pb.GetShor
 	return response, nil
 }
 
-func (s *APIV2Service) GetShortcutByName(ctx context.Context, request *apiv1pb.GetShortcutByNameRequest) (*apiv1pb.GetShortcutByNameResponse, error) {
+func (s *APIV1Service) GetShortcutByName(ctx context.Context, request *apiv1pb.GetShortcutByNameRequest) (*apiv1pb.GetShortcutByNameResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		Name: &request.Name,
 	})
@@ -126,7 +126,7 @@ func (s *APIV2Service) GetShortcutByName(ctx context.Context, request *apiv1pb.G
 	return response, nil
 }
 
-func (s *APIV2Service) CreateShortcut(ctx context.Context, request *apiv1pb.CreateShortcutRequest) (*apiv1pb.CreateShortcutResponse, error) {
+func (s *APIV1Service) CreateShortcut(ctx context.Context, request *apiv1pb.CreateShortcutRequest) (*apiv1pb.CreateShortcutResponse, error) {
 	if request.Shortcut.Name == "" || request.Shortcut.Link == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "name and link are required")
 	}
@@ -182,7 +182,7 @@ func (s *APIV2Service) CreateShortcut(ctx context.Context, request *apiv1pb.Crea
 	return response, nil
 }
 
-func (s *APIV2Service) UpdateShortcut(ctx context.Context, request *apiv1pb.UpdateShortcutRequest) (*apiv1pb.UpdateShortcutResponse, error) {
+func (s *APIV1Service) UpdateShortcut(ctx context.Context, request *apiv1pb.UpdateShortcutRequest) (*apiv1pb.UpdateShortcutResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "updateMask is required")
 	}
@@ -248,7 +248,7 @@ func (s *APIV2Service) UpdateShortcut(ctx context.Context, request *apiv1pb.Upda
 	return response, nil
 }
 
-func (s *APIV2Service) DeleteShortcut(ctx context.Context, request *apiv1pb.DeleteShortcutRequest) (*apiv1pb.DeleteShortcutResponse, error) {
+func (s *APIV1Service) DeleteShortcut(ctx context.Context, request *apiv1pb.DeleteShortcutRequest) (*apiv1pb.DeleteShortcutResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -276,7 +276,7 @@ func (s *APIV2Service) DeleteShortcut(ctx context.Context, request *apiv1pb.Dele
 	return response, nil
 }
 
-func (s *APIV2Service) GetShortcutAnalytics(ctx context.Context, request *apiv1pb.GetShortcutAnalyticsRequest) (*apiv1pb.GetShortcutAnalyticsResponse, error) {
+func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *apiv1pb.GetShortcutAnalyticsRequest) (*apiv1pb.GetShortcutAnalyticsResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		ID: &request.Id,
 	})
@@ -347,7 +347,7 @@ func mapToAnalyticsSlice(m map[string]int32) []*apiv1pb.GetShortcutAnalyticsResp
 	return analyticsSlice
 }
 
-func (s *APIV2Service) createShortcutViewActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
+func (s *APIV1Service) createShortcutViewActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
 	p, _ := peer.FromContext(ctx)
 	headers, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
@@ -376,7 +376,7 @@ func (s *APIV2Service) createShortcutViewActivity(ctx context.Context, shortcut 
 	return nil
 }
 
-func (s *APIV2Service) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
+func (s *APIV1Service) createShortcutCreateActivity(ctx context.Context, shortcut *storepb.Shortcut) error {
 	payload := &storepb.ActivityShorcutCreatePayload{
 		ShortcutId: shortcut.Id,
 	}
@@ -397,7 +397,7 @@ func (s *APIV2Service) createShortcutCreateActivity(ctx context.Context, shortcu
 	return nil
 }
 
-func (s *APIV2Service) convertShortcutFromStorepb(ctx context.Context, shortcut *storepb.Shortcut) (*apiv1pb.Shortcut, error) {
+func (s *APIV1Service) convertShortcutFromStorepb(ctx context.Context, shortcut *storepb.Shortcut) (*apiv1pb.Shortcut, error) {
 	composedShortcut := &apiv1pb.Shortcut{
 		Id:          shortcut.Id,
 		CreatorId:   shortcut.CreatorId,

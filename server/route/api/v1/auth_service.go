@@ -19,7 +19,7 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV2Service) GetAuthStatus(ctx context.Context, _ *apiv1pb.GetAuthStatusRequest) (*apiv1pb.GetAuthStatusResponse, error) {
+func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *apiv1pb.GetAuthStatusRequest) (*apiv1pb.GetAuthStatusResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -32,7 +32,7 @@ func (s *APIV2Service) GetAuthStatus(ctx context.Context, _ *apiv1pb.GetAuthStat
 	}, nil
 }
 
-func (s *APIV2Service) SignIn(ctx context.Context, request *apiv1pb.SignInRequest) (*apiv1pb.SignInResponse, error) {
+func (s *APIV1Service) SignIn(ctx context.Context, request *apiv1pb.SignInRequest) (*apiv1pb.SignInResponse, error) {
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
 		Email: &request.Email,
 	})
@@ -70,7 +70,7 @@ func (s *APIV2Service) SignIn(ctx context.Context, request *apiv1pb.SignInReques
 	}, nil
 }
 
-func (s *APIV2Service) SignUp(ctx context.Context, request *apiv1pb.SignUpRequest) (*apiv1pb.SignUpResponse, error) {
+func (s *APIV1Service) SignUp(ctx context.Context, request *apiv1pb.SignUpRequest) (*apiv1pb.SignUpResponse, error) {
 	enableSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP,
 	})
@@ -137,7 +137,7 @@ func (s *APIV2Service) SignUp(ctx context.Context, request *apiv1pb.SignUpReques
 	}, nil
 }
 
-func (*APIV2Service) SignOut(ctx context.Context, _ *apiv1pb.SignOutRequest) (*apiv1pb.SignOutResponse, error) {
+func (*APIV1Service) SignOut(ctx context.Context, _ *apiv1pb.SignOutRequest) (*apiv1pb.SignOutResponse, error) {
 	// Set the cookie header to expire access token.
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
 		"Set-Cookie": fmt.Sprintf("%s=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict", auth.AccessTokenCookieName),

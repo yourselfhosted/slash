@@ -15,7 +15,7 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV2Service) ListCollections(ctx context.Context, _ *apiv1pb.ListCollectionsRequest) (*apiv1pb.ListCollectionsResponse, error) {
+func (s *APIV1Service) ListCollections(ctx context.Context, _ *apiv1pb.ListCollectionsRequest) (*apiv1pb.ListCollectionsResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -52,7 +52,7 @@ func (s *APIV2Service) ListCollections(ctx context.Context, _ *apiv1pb.ListColle
 	return response, nil
 }
 
-func (s *APIV2Service) GetCollection(ctx context.Context, request *apiv1pb.GetCollectionRequest) (*apiv1pb.GetCollectionResponse, error) {
+func (s *APIV1Service) GetCollection(ctx context.Context, request *apiv1pb.GetCollectionRequest) (*apiv1pb.GetCollectionResponse, error) {
 	collection, err := s.Store.GetCollection(ctx, &store.FindCollection{
 		ID: &request.Id,
 	})
@@ -76,7 +76,7 @@ func (s *APIV2Service) GetCollection(ctx context.Context, request *apiv1pb.GetCo
 	return response, nil
 }
 
-func (s *APIV2Service) GetCollectionByName(ctx context.Context, request *apiv1pb.GetCollectionByNameRequest) (*apiv1pb.GetCollectionByNameResponse, error) {
+func (s *APIV1Service) GetCollectionByName(ctx context.Context, request *apiv1pb.GetCollectionByNameRequest) (*apiv1pb.GetCollectionByNameResponse, error) {
 	collection, err := s.Store.GetCollection(ctx, &store.FindCollection{
 		Name: &request.Name,
 	})
@@ -103,7 +103,7 @@ func (s *APIV2Service) GetCollectionByName(ctx context.Context, request *apiv1pb
 	return response, nil
 }
 
-func (s *APIV2Service) CreateCollection(ctx context.Context, request *apiv1pb.CreateCollectionRequest) (*apiv1pb.CreateCollectionResponse, error) {
+func (s *APIV1Service) CreateCollection(ctx context.Context, request *apiv1pb.CreateCollectionRequest) (*apiv1pb.CreateCollectionResponse, error) {
 	if request.Collection.Name == "" || request.Collection.Title == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "name and title are required")
 	}
@@ -144,7 +144,7 @@ func (s *APIV2Service) CreateCollection(ctx context.Context, request *apiv1pb.Cr
 	return response, nil
 }
 
-func (s *APIV2Service) UpdateCollection(ctx context.Context, request *apiv1pb.UpdateCollectionRequest) (*apiv1pb.UpdateCollectionResponse, error) {
+func (s *APIV1Service) UpdateCollection(ctx context.Context, request *apiv1pb.UpdateCollectionRequest) (*apiv1pb.UpdateCollectionResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "updateMask is required")
 	}
@@ -195,7 +195,7 @@ func (s *APIV2Service) UpdateCollection(ctx context.Context, request *apiv1pb.Up
 	return response, nil
 }
 
-func (s *APIV2Service) DeleteCollection(ctx context.Context, request *apiv1pb.DeleteCollectionRequest) (*apiv1pb.DeleteCollectionResponse, error) {
+func (s *APIV1Service) DeleteCollection(ctx context.Context, request *apiv1pb.DeleteCollectionRequest) (*apiv1pb.DeleteCollectionResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)

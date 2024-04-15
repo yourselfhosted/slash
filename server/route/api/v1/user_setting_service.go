@@ -12,7 +12,7 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV2Service) GetUserSetting(ctx context.Context, request *apiv1pb.GetUserSettingRequest) (*apiv1pb.GetUserSettingResponse, error) {
+func (s *APIV1Service) GetUserSetting(ctx context.Context, request *apiv1pb.GetUserSettingRequest) (*apiv1pb.GetUserSettingResponse, error) {
 	userSetting, err := getUserSetting(ctx, s.Store, request.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user setting: %v", err)
@@ -22,7 +22,7 @@ func (s *APIV2Service) GetUserSetting(ctx context.Context, request *apiv1pb.GetU
 	}, nil
 }
 
-func (s *APIV2Service) UpdateUserSetting(ctx context.Context, request *apiv1pb.UpdateUserSettingRequest) (*apiv1pb.UpdateUserSettingResponse, error) {
+func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *apiv1pb.UpdateUserSettingRequest) (*apiv1pb.UpdateUserSettingResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}

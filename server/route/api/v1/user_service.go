@@ -24,7 +24,7 @@ const (
 	BotID = 0
 )
 
-func (s *APIV2Service) ListUsers(ctx context.Context, _ *apiv1pb.ListUsersRequest) (*apiv1pb.ListUsersResponse, error) {
+func (s *APIV1Service) ListUsers(ctx context.Context, _ *apiv1pb.ListUsersRequest) (*apiv1pb.ListUsersResponse, error) {
 	users, err := s.Store.ListUsers(ctx, &store.FindUser{})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
@@ -40,7 +40,7 @@ func (s *APIV2Service) ListUsers(ctx context.Context, _ *apiv1pb.ListUsersReques
 	return response, nil
 }
 
-func (s *APIV2Service) GetUser(ctx context.Context, request *apiv1pb.GetUserRequest) (*apiv1pb.GetUserResponse, error) {
+func (s *APIV1Service) GetUser(ctx context.Context, request *apiv1pb.GetUserRequest) (*apiv1pb.GetUserResponse, error) {
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
 		ID: &request.Id,
 	})
@@ -58,7 +58,7 @@ func (s *APIV2Service) GetUser(ctx context.Context, request *apiv1pb.GetUserRequ
 	return response, nil
 }
 
-func (s *APIV2Service) CreateUser(ctx context.Context, request *apiv1pb.CreateUserRequest) (*apiv1pb.CreateUserResponse, error) {
+func (s *APIV1Service) CreateUser(ctx context.Context, request *apiv1pb.CreateUserRequest) (*apiv1pb.CreateUserResponse, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
@@ -89,7 +89,7 @@ func (s *APIV2Service) CreateUser(ctx context.Context, request *apiv1pb.CreateUs
 	return response, nil
 }
 
-func (s *APIV2Service) UpdateUser(ctx context.Context, request *apiv1pb.UpdateUserRequest) (*apiv1pb.UpdateUserResponse, error) {
+func (s *APIV1Service) UpdateUser(ctx context.Context, request *apiv1pb.UpdateUserRequest) (*apiv1pb.UpdateUserResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -120,7 +120,7 @@ func (s *APIV2Service) UpdateUser(ctx context.Context, request *apiv1pb.UpdateUs
 	}, nil
 }
 
-func (s *APIV2Service) DeleteUser(ctx context.Context, request *apiv1pb.DeleteUserRequest) (*apiv1pb.DeleteUserResponse, error) {
+func (s *APIV1Service) DeleteUser(ctx context.Context, request *apiv1pb.DeleteUserRequest) (*apiv1pb.DeleteUserResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -136,7 +136,7 @@ func (s *APIV2Service) DeleteUser(ctx context.Context, request *apiv1pb.DeleteUs
 	return response, nil
 }
 
-func (s *APIV2Service) ListUserAccessTokens(ctx context.Context, request *apiv1pb.ListUserAccessTokensRequest) (*apiv1pb.ListUserAccessTokensResponse, error) {
+func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *apiv1pb.ListUserAccessTokensRequest) (*apiv1pb.ListUserAccessTokensResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -190,7 +190,7 @@ func (s *APIV2Service) ListUserAccessTokens(ctx context.Context, request *apiv1p
 	return response, nil
 }
 
-func (s *APIV2Service) CreateUserAccessToken(ctx context.Context, request *apiv1pb.CreateUserAccessTokenRequest) (*apiv1pb.CreateUserAccessTokenResponse, error) {
+func (s *APIV1Service) CreateUserAccessToken(ctx context.Context, request *apiv1pb.CreateUserAccessTokenRequest) (*apiv1pb.CreateUserAccessTokenResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -243,7 +243,7 @@ func (s *APIV2Service) CreateUserAccessToken(ctx context.Context, request *apiv1
 	return response, nil
 }
 
-func (s *APIV2Service) DeleteUserAccessToken(ctx context.Context, request *apiv1pb.DeleteUserAccessTokenRequest) (*apiv1pb.DeleteUserAccessTokenResponse, error) {
+func (s *APIV1Service) DeleteUserAccessToken(ctx context.Context, request *apiv1pb.DeleteUserAccessTokenRequest) (*apiv1pb.DeleteUserAccessTokenResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -274,7 +274,7 @@ func (s *APIV2Service) DeleteUserAccessToken(ctx context.Context, request *apiv1
 	return &apiv1pb.DeleteUserAccessTokenResponse{}, nil
 }
 
-func (s *APIV2Service) UpsertAccessTokenToStore(ctx context.Context, user *store.User, accessToken, description string) error {
+func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store.User, accessToken, description string) error {
 	userAccessTokens, err := s.Store.GetUserAccessTokens(ctx, user.ID)
 	if err != nil {
 		return errors.Wrap(err, "failed to get user access tokens")

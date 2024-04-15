@@ -32,7 +32,7 @@ type Server struct {
 	licenseService *license.LicenseService
 
 	// API services.
-	apiV1Service *apiv1.APIV2Service
+	apiV1Service *apiv1.APIV1Service
 }
 
 func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store) (*Server, error) {
@@ -71,7 +71,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	})
 
 	rootGroup := e.Group("")
-	s.apiV1Service = apiv1.NewAPIV2Service(secret, profile, store, licenseService, s.Profile.Port+1)
+	s.apiV1Service = apiv1.NewAPIV1Service(secret, profile, store, licenseService, s.Profile.Port+1)
 	// Register gRPC gateway as api v1.
 	if err := s.apiV1Service.RegisterGateway(ctx, e); err != nil {
 		return nil, errors.Wrap(err, "failed to register gRPC gateway")
