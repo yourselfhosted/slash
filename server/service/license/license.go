@@ -2,16 +2,22 @@ package license
 
 import (
 	"context"
+	_ "embed"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/service/license/lemonsqueezy"
 	"github.com/yourselfhosted/slash/store"
 )
+
+//go:embed slash.public.pem
+var slashPublicRSAKey string
 
 type LicenseService struct {
 	Profile *profile.Profile
@@ -49,25 +55,15 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv1pb.Subscri
 		return subscription, nil
 	}
 
-	validateResponse, err := validateLicenseKey(licenseKey, "")
+	result, err := validateLicenseKey(licenseKey)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to validate license key")
 	}
-	if validateResponse.Valid {
-		subscription.Plan = apiv1pb.PlanType_PRO
-		if validateResponse.LicenseKey.ExpiresAt != nil && *validateResponse.LicenseKey.ExpiresAt != "" {
-			expiresTime, err := time.Parse(time.RFC3339Nano, *validateResponse.LicenseKey.ExpiresAt)
-			if err != nil {
-				return nil, errors.Wrap(err, "failed to parse license key expires time")
-			}
-			subscription.ExpiresTime = timestamppb.New(expiresTime)
-		}
-		startedTime, err := time.Parse(time.RFC3339Nano, validateResponse.LicenseKey.CreatedAt)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to parse license key created time")
-		}
-		subscription.StartedTime = timestamppb.New(startedTime)
+	if result == nil {
+		return subscription, nil
 	}
+	subscription.Plan = result.Plan
+	subscription.ExpiresTime = timestamppb.New(result.ExpiresTime)
 	s.cachedSubscription = subscription
 	return subscription, nil
 }
@@ -76,11 +72,11 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 	if licenseKey == "" {
 		return nil, errors.New("license key is required")
 	}
-	validateResponse, err := validateLicenseKey(licenseKey, "")
+	result, err := validateLicenseKey(licenseKey)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to validate license key")
 	}
-	if !validateResponse.Valid {
+	if result == nil {
 		return nil, errors.New("invalid license key")
 	}
 	_, err = s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
@@ -96,7 +92,14 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 }
 
 func (s *LicenseService) GetSubscription(ctx context.Context) (*apiv1pb.Subscription, error) {
-	return s.LoadSubscription(ctx)
+	subscription, err := s.LoadSubscription(ctx)
+	if err != nil || subscription.Plan == apiv1pb.PlanType_PLAN_TYPE_UNSPECIFIED {
+		// nolint
+		return &apiv1pb.Subscription{
+			Plan: apiv1pb.PlanType_FREE,
+		}, nil
+	}
+	return subscription, nil
 }
 
 func (s *LicenseService) IsFeatureEnabled(feature FeatureType) bool {
@@ -105,4 +108,81 @@ func (s *LicenseService) IsFeatureEnabled(feature FeatureType) bool {
 		return false
 	}
 	return matrix[s.cachedSubscription.Plan-1]
+}
+
+type ValidateResult struct {
+	Plan        apiv1pb.PlanType
+	ExpiresTime time.Time
+}
+
+type Claims struct {
+	jwt.RegisteredClaims
+
+	Owner string `json:"owner"`
+	Plan  string `json:"plan"`
+	Trial bool   `json:"trial"`
+}
+
+func validateLicenseKey(licenseKey string) (*ValidateResult, error) {
+	// Try to parse the license key as a JWT token.
+	claims, _ := parseLicenseKey(licenseKey)
+	if claims != nil {
+		plan := apiv1pb.PlanType(apiv1pb.PlanType_value[claims.Plan])
+		if plan == apiv1pb.PlanType_PLAN_TYPE_UNSPECIFIED {
+			return nil, errors.New("invalid plan")
+		}
+		return &ValidateResult{
+			Plan:        apiv1pb.PlanType(apiv1pb.PlanType_value[claims.Plan]),
+			ExpiresTime: claims.ExpiresAt.Time,
+		}, nil
+	}
+
+	// Try to validate the license key with the license server.
+	validateResponse, err := lemonsqueezy.ValidateLicenseKey(licenseKey, "")
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to validate license key")
+	}
+	if validateResponse.Valid {
+		result := &ValidateResult{
+			Plan: apiv1pb.PlanType_PRO,
+		}
+		if validateResponse.LicenseKey.ExpiresAt != nil && *validateResponse.LicenseKey.ExpiresAt != "" {
+			expiresTime, err := time.Parse(time.RFC3339Nano, *validateResponse.LicenseKey.ExpiresAt)
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to parse license key expires time")
+			}
+			result.ExpiresTime = expiresTime
+		}
+		return result, nil
+	}
+
+	// Otherwise, return an error.
+	return nil, errors.New("invalid license key")
+}
+
+func parseLicenseKey(licenseKey string) (*Claims, error) {
+	token, err := jwt.ParseWithClaims(licenseKey, &Claims{}, func(token *jwt.Token) (any, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+			return nil, errors.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+
+		key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(slashPublicRSAKey))
+		if err != nil {
+			return nil, err
+		}
+
+		return key, nil
+	})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to parse token")
+	}
+	if token == nil || !token.Valid {
+		return nil, errors.New("invalid token")
+	}
+
+	claims, ok := token.Claims.(*Claims)
+	if !ok {
+		return nil, errors.New("invalid claims")
+	}
+	return claims, nil
 }

@@ -1,4 +1,4 @@
-package license
+package lemonsqueezy
 
 import (
 	"bytes"
@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"time"
 
 	"github.com/pkg/errors"
 )
@@ -57,7 +56,7 @@ type ActiveLicenseKeyResponse struct {
 	Meta       *LicenseKeyMeta `json:"meta"`
 }
 
-func validateLicenseKey(licenseKey string, instanceName string) (*ValidateLicenseKeyResponse, error) {
+func ValidateLicenseKey(licenseKey string, instanceName string) (*ValidateLicenseKeyResponse, error) {
 	data := map[string]string{"license_key": licenseKey}
 	if instanceName != "" {
 		data["instance_name"] = instanceName
@@ -98,11 +97,10 @@ func validateLicenseKey(licenseKey string, instanceName string) (*ValidateLicens
 			return nil, errors.New("invalid store or product id")
 		}
 	}
-	licenseCache.Set("key", "value", 24*time.Hour)
 	return &response, nil
 }
 
-func activeLicenseKey(licenseKey string, instanceName string) (*ActiveLicenseKeyResponse, error) {
+func ActiveLicenseKey(licenseKey string, instanceName string) (*ActiveLicenseKeyResponse, error) {
 	data := map[string]string{"license_key": licenseKey, "instance_name": instanceName}
 	payload, err := json.Marshal(data)
 	if err != nil {
