@@ -1,6 +1,7 @@
 import { Button, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import useLocalStorage from "react-use/lib/useLocalStorage";
 import CollectionView from "@/components/CollectionView";
 import CreateCollectionDrawer from "@/components/CreateCollectionDrawer";
 import FilterView from "@/components/FilterView";
@@ -14,6 +15,7 @@ interface State {
 
 const CollectionDashboard: React.FC = () => {
   const { t } = useTranslation();
+  const [, setLastVisited] = useLocalStorage<string>("lastVisited", "/shortcuts");
   const loadingState = useLoading();
   const shortcutStore = useShortcutStore();
   const collectionStore = useCollectionStore();
@@ -30,6 +32,7 @@ const CollectionDashboard: React.FC = () => {
   });
 
   useEffect(() => {
+    setLastVisited("/collections");
     Promise.all([shortcutStore.fetchShortcutList(), collectionStore.fetchCollectionList()]).finally(() => {
       loadingState.setFinish();
     });

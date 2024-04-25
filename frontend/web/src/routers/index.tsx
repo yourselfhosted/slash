@@ -5,6 +5,7 @@ import CollectionDashboard from "@/pages/CollectionDashboard";
 import CollectionSpace from "@/pages/CollectionSpace";
 import Home from "@/pages/Home";
 import NotFound from "@/pages/NotFound";
+import ShortcutDashboard from "@/pages/ShortcutDashboard";
 import ShortcutDetail from "@/pages/ShortcutDetail";
 import ShortcutSpace from "@/pages/ShortcutSpace";
 import SignIn from "@/pages/SignIn";
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: <Home />,
+          },
+          {
+            path: "/shortcuts",
+            element: <ShortcutDashboard />,
           },
           {
             path: "/collections",

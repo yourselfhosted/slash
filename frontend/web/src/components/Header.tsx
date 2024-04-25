@@ -18,8 +18,8 @@ const Header: React.FC = () => {
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
   const profile = workspaceStore.profile;
   const isAdmin = currentUser.role === Role.ADMIN;
-  const shouldShowRouterSwitch = location.pathname === "/" || location.pathname === "/collections";
-  const selectedSection = location.pathname === "/" ? "Shortcuts" : location.pathname === "/collections" ? "Collections" : "Memos";
+  const shouldShowRouterSwitch = location.pathname === "/shortcuts" || location.pathname === "/collections";
+  const selectedSection = location.pathname === "/shortcuts" ? "Shortcuts" : location.pathname === "/collections" ? "Collections" : "";
 
   const handleSignOutButtonClick = async () => {
     await authServiceClient.signOut({});
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
                     <>
                       <Link
                         className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
-                        to="/"
+                        to="/shortcuts"
                         unstable_viewTransition
                       >
                         <Icon.SquareSlash className="w-5 h-auto mr-2 opacity-70" /> Shortcuts
