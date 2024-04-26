@@ -31,8 +31,3 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload assets
-        uses: actions/upload-artifact@v4
-        with:
-          name: slash
-          path: dist/*

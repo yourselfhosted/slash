@@ -39,3 +39,10 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+
+release:
+  draft: true
+  replace_existing_draft: true
+  make_latest: true
+  mode: replace
+  skip_upload: false
