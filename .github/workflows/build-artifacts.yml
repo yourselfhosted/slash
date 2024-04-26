@@ -1,4 +1,4 @@
-name: Build artifacts and draft release
+name: Build artifacts
 
 on:
   push:
