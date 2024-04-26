@@ -68,7 +68,7 @@ func local_request_WorkspaceService_GetWorkspaceSetting_0(ctx context.Context, m
 }
 
 var (
-	filter_WorkspaceService_UpdateWorkspaceSetting_0 = &utilities.DoubleArray{Encoding: map[string]int{"setting": 0}, Base: []int{1, 2, 0, 0}, Check: []int{0, 1, 2, 2}}
+	filter_WorkspaceService_UpdateWorkspaceSetting_0 = &utilities.DoubleArray{Encoding: map[string]int{"setting": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
 func request_WorkspaceService_UpdateWorkspaceSetting_0(ctx context.Context, marshaler runtime.Marshaler, client WorkspaceServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {

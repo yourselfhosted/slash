@@ -2,9 +2,10 @@ package frontend
 
 import (
 	"context"
+	"embed"
 	"fmt"
+	"io/fs"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -16,6 +17,9 @@ import (
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
 )
+
+//go:embed dist
+var embeddedFiles embed.FS
 
 const (
 	headerMetadataPlaceholder = "<!-- slash.metadata -->"
@@ -37,10 +41,10 @@ func (s *FrontendService) Serve(ctx context.Context, e *echo.Echo) {
 	// Use echo static middleware to serve the built dist folder.
 	// refer: https://github.com/labstack/echo/blob/master/middleware/static.go
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		HTML5: true,
-		Root:  "dist",
+		HTML5:      true,
+		Filesystem: getFileSystem("dist"),
 		Skipper: func(c echo.Context) bool {
-			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/robots.txt", "/sitemap.xml", "/s/:shortcutName")
+			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/robots.txt", "/sitemap.xml", "/s/:shortcutName", "/c/:collectionName")
 		},
 	}))
 
@@ -138,6 +142,15 @@ Sitemap: %s/sitemap.xml`, instanceURL, instanceURL)
 	})
 }
 
+func getFileSystem(path string) http.FileSystem {
+	fs, err := fs.Sub(embeddedFiles, path)
+	if err != nil {
+		panic(err)
+	}
+
+	return http.FS(fs)
+}
+
 func generateShortcutMetadata(shortcut *storepb.Shortcut) *Metadata {
 	metadata := getDefaultMetadata()
 	title, description := shortcut.Title, shortcut.Description
@@ -163,7 +176,7 @@ func generateCollectionMetadata(collection *storepb.Collection) *Metadata {
 }
 
 func getRawIndexHTML() string {
-	bytes, _ := os.ReadFile("dist/index.html")
+	bytes, _ := embeddedFiles.ReadFile("dist/index.html")
 	return string(bytes)
 }
 

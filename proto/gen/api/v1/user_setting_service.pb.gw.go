@@ -84,7 +84,7 @@ func local_request_UserSettingService_GetUserSetting_0(ctx context.Context, mars
 }
 
 var (
-	filter_UserSettingService_UpdateUserSetting_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_setting": 0, "userSetting": 1, "id": 2}, Base: []int{1, 1, 2, 4, 0, 0, 0, 0}, Check: []int{0, 1, 1, 1, 2, 3, 4, 4}}
+	filter_UserSettingService_UpdateUserSetting_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_setting": 0, "id": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
 func request_UserSettingService_UpdateUserSetting_0(ctx context.Context, marshaler runtime.Marshaler, client UserSettingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {

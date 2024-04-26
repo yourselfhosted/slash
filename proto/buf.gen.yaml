@@ -6,20 +6,20 @@ managed:
     except:
       - buf.build/googleapis/googleapis
 plugins:
-  - plugin: buf.build/protocolbuffers/go:v1.31.0
+  - plugin: buf.build/protocolbuffers/go
     out: gen
     opt:
       - paths=source_relative
-  - plugin: buf.build/grpc/go:v1.3.0
+  - plugin: buf.build/grpc/go
     out: gen
     opt:
       - paths=source_relative
-  - plugin: buf.build/grpc-ecosystem/gateway:v2.16.1
+  - plugin: buf.build/grpc-ecosystem/gateway
     out: gen
     opt:
       - paths=source_relative
   # Generate types for the web client.
-  - plugin: buf.build/community/stephenh-ts-proto:v1.152.1
+  - plugin: buf.build/community/stephenh-ts-proto
     out: ../frontend/web/src/types/proto
     # reference: https://github.com/deeplay-io/nice-grpc/blob/master/packages/nice-grpc-web/README.md#using-ts-proto
     opt:
@@ -31,7 +31,7 @@ plugins:
       - esModuleInterop=true
       - stringEnums=true
   # Generate types for the extension client.
-  - plugin: buf.build/community/stephenh-ts-proto:v1.152.1
+  - plugin: buf.build/community/stephenh-ts-proto
     out: ../frontend/extension/src/types/proto
     # reference: https://github.com/deeplay-io/nice-grpc/blob/master/packages/nice-grpc-web/README.md#using-ts-proto
     opt:
@@ -42,10 +42,10 @@ plugins:
       - useExactTypes=false
       - esModuleInterop=true
       - stringEnums=true
-  - plugin: buf.build/community/pseudomuto-doc:v1.5.1
+  - plugin: buf.build/community/pseudomuto-doc
     out: gen
     opt:
       - markdown,README.md,source_relative
-  - plugin: buf.build/grpc-ecosystem/openapiv2:v2.19.0
+  - plugin: buf.build/grpc-ecosystem/openapiv2
     out: gen
     opt: output_format=yaml,allow_merge=true
