@@ -179,6 +179,7 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *apiv1pb.Crea
 	response := &apiv1pb.CreateShortcutResponse{
 		Shortcut: composedShortcut,
 	}
+	metric.Enqueue("Shortcut create")
 	return response, nil
 }
 
