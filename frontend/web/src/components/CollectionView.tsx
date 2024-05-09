@@ -55,6 +55,10 @@ const CollectionView = (props: Props) => {
     navigateTo(`/shortcut/${shortcut.id}`);
   };
 
+  const handleOpenAllShortcutsButtonClick = () => {
+    shortcuts.forEach((shortcut: Shortcut) => window.open(`/s/${shortcut.name}`));
+  };
+
   return (
     <>
       <div className={classNames("w-full flex flex-col justify-start items-start border rounded-lg hover:shadow dark:border-zinc-800")}>
@@ -74,6 +78,9 @@ const CollectionView = (props: Props) => {
             <Link className="w-full text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`} target="_blank">
               <Icon.Share className="w-4 h-auto" />
             </Link>
+            <button className="w-full text-gray-400 cursor-pointer hover:text-gray-500" onClick={() => handleOpenAllShortcutsButtonClick()}>
+              <Icon.ArrowUpRight className="w-4 h-auto" />
+            </button>
             {showAdminActions && (
               <Dropdown
                 trigger={
