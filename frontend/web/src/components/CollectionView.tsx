@@ -1,3 +1,4 @@
+import { Tooltip } from "@mui/joy";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
 import { useState } from "react";
@@ -75,12 +76,19 @@ const CollectionView = (props: Props) => {
             <p className="text-sm text-gray-500">{collection.description}</p>
           </div>
           <div className="flex flex-row justify-end items-center shrink-0 gap-2">
-            <Link className="w-full text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`} target="_blank">
-              <Icon.Share className="w-4 h-auto" />
-            </Link>
-            <button className="w-full text-gray-400 cursor-pointer hover:text-gray-500" onClick={() => handleOpenAllShortcutsButtonClick()}>
-              <Icon.ArrowUpRight className="w-4 h-auto" />
-            </button>
+            <Tooltip title="Share" placement="top" arrow>
+              <Link className="w-auto text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`} target="_blank">
+                <Icon.Share className="w-4 h-auto" />
+              </Link>
+            </Tooltip>
+            <Tooltip title="Open all" placement="top" arrow>
+              <button
+                className="w-auto text-gray-400 cursor-pointer hover:text-gray-500"
+                onClick={() => handleOpenAllShortcutsButtonClick()}
+              >
+                <Icon.ArrowUpRight className="w-5 h-auto" />
+              </button>
+            </Tooltip>
             {showAdminActions && (
               <Dropdown
                 trigger={
