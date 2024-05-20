@@ -12,7 +12,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/joy": "5.0.0-beta.36",
-    "@reduxjs/toolkit": "^1.9.7",
+    "@reduxjs/toolkit": "^2.2.5",
     "classnames": "^2.5.1",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.10",
