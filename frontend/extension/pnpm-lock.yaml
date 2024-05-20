@@ -30,8 +30,8 @@ dependencies:
     specifier: ^0.312.0
     version: 0.312.0(react@18.3.1)
   plasmo:
-    specifier: ^0.86.2
-    version: 0.86.2(postcss@8.4.38)(react-dom@18.3.1)(react@18.3.1)
+    specifier: ^0.86.3
+    version: 0.86.3(postcss@8.4.38)(react-dom@18.3.1)(react@18.3.1)
   react:
     specifier: ^18.2.0
     version: 18.3.1
@@ -2402,8 +2402,8 @@ packages:
       - '@parcel/core'
     dev: false
 
-  /@plasmohq/parcel-config@0.40.7(postcss@8.4.38)(react-dom@18.3.1)(react@18.3.1)(typescript@5.2.2):
-    resolution: {integrity: sha512-M1nOXLI8lPcI/ZS1G+UCfuXe0MWb4+sCnG5xTakm8eDRjH0Paq4pWYKXqi1Bl5V76quK9I3gjezgqEihUTAynQ==}
+  /@plasmohq/parcel-config@0.40.8(postcss@8.4.38)(react-dom@18.3.1)(react@18.3.1)(typescript@5.2.2):
+    resolution: {integrity: sha512-xsHPTVr5oQgAlLiEUOsFy52q2lsjo6QsjKANPHKV0OflykOi7QdRwFQbenC6MBpMb833C/5C6VO1sodhseCkgg==}
     dependencies:
       '@parcel/compressor-raw': 2.9.3(@parcel/core@2.9.3)
       '@parcel/config-default': 2.9.3(@parcel/core@2.9.3)(postcss@8.4.38)(typescript@5.2.2)
@@ -2437,7 +2437,7 @@ packages:
       '@plasmohq/parcel-runtime': 0.23.1
       '@plasmohq/parcel-transformer-inject-env': 0.2.11
       '@plasmohq/parcel-transformer-inline-css': 0.3.11
-      '@plasmohq/parcel-transformer-manifest': 0.18.0
+      '@plasmohq/parcel-transformer-manifest': 0.19.0
       '@plasmohq/parcel-transformer-svelte': 0.6.0
       '@plasmohq/parcel-transformer-vue': 0.5.0(react-dom@18.3.1)(react@18.3.1)
     transitivePeerDependencies:
@@ -2629,8 +2629,8 @@ packages:
       lightningcss: 1.21.8
     dev: false
 
-  /@plasmohq/parcel-transformer-manifest@0.18.0:
-    resolution: {integrity: sha512-6X6ubo37Ic7u1y3MjY+vt23Gb3ULtOsH1MbKw3jZMiG8nLGXqXRfiHSyNxJWAdpk7N7ASE8dHnZ+5g3E57bldA==}
+  /@plasmohq/parcel-transformer-manifest@0.19.0:
+    resolution: {integrity: sha512-cDmca0jPVFVnRQPqCWcsPPwre27/yAGxSF1+JmPVUeXZYMCrg5wdNepRDSw+/dDBO2VmNHh/Tv+Hgj1fLIM8CQ==}
     engines: {parcel: '>= 2.7.0'}
     dependencies:
       '@mischnic/json-sourcemap': 0.1.0
@@ -6523,8 +6523,8 @@ packages:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
 
-  /plasmo@0.86.2(postcss@8.4.38)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-oFC8nQmhiule876jyehfZVUBPZV9YWUyfiRBHERBOlW+ezGtyZx/wvWWKE9MHmgE2Cm48H5+U9KcN+pYZNzB5g==}
+  /plasmo@0.86.3(postcss@8.4.38)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-Vja9TWYthEkUK7sM1HwPyj+vBDst4qtfIzTn1Z/UGWS4wFzAddKjGGzVzj731Qxrv5m3R7fCzlA5izz/ID36Hw==}
     hasBin: true
     dependencies:
       '@expo/spawn-async': 1.7.2
@@ -6533,7 +6533,7 @@ packages:
       '@parcel/package-manager': 2.9.3(@parcel/core@2.9.3)
       '@parcel/watcher': 2.2.0
       '@plasmohq/init': 0.7.0
-      '@plasmohq/parcel-config': 0.40.7(postcss@8.4.38)(react-dom@18.3.1)(react@18.3.1)(typescript@5.2.2)
+      '@plasmohq/parcel-config': 0.40.8(postcss@8.4.38)(react-dom@18.3.1)(react@18.3.1)(typescript@5.2.2)
       '@plasmohq/parcel-core': 0.1.8
       buffer: 6.0.3
       chalk: 5.3.0
