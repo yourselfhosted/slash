@@ -22,7 +22,7 @@ const ShortcutView = (props: Props) => {
     <>
       <div
         className={classNames(
-          "group w-auto px-3 py-2 flex flex-col justify-start items-start border rounded-lg hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
+          "group w-auto px-3 py-2 flex flex-col justify-start items-start border rounded-lg hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800",
         )}
       >
         <div className="w-full flex flex-row justify-start items-center">
@@ -37,7 +37,7 @@ const ShortcutView = (props: Props) => {
             <div className="w-full flex flex-row justify-start items-center">
               <button
                 className={classNames(
-                  "max-w-full flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:underline"
+                  "max-w-full flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:underline",
                 )}
                 onClick={handleShortcutLinkClick}
               >

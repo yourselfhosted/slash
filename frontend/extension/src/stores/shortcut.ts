@@ -49,7 +49,7 @@ const useShortcutStore = create(
       set({ shortcutMapById: shortcutMap });
       return shortcut;
     },
-  }))
+  })),
 );
 
 export default useShortcutStore;

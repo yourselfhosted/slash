@@ -69,11 +69,10 @@ func (s *APIV1Service) GetGRPCServer() *grpc.Server {
 }
 
 // RegisterGateway registers the gRPC-Gateway with the given Echo instance.
-func (s *APIV1Service) RegisterGateway(ctx context.Context, e *echo.Echo) error {
+func (s *APIV1Service) RegisterGateway(_ context.Context, e *echo.Echo) error {
 	// Create a client connection to the gRPC Server we just started.
 	// This is where the gRPC-Gateway proxies the requests.
-	conn, err := grpc.DialContext(
-		ctx,
+	conn, err := grpc.NewClient(
 		fmt.Sprintf(":%d", s.grpcServerPort),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)

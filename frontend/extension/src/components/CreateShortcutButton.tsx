@@ -109,7 +109,7 @@ const CreateShortcutButton = () => {
           link: state.link,
           tags,
           visibility: context.defaultVisibility as Visibility,
-        })
+        }),
       );
       toast.success("Shortcut created successfully");
       setShowModal(false);
