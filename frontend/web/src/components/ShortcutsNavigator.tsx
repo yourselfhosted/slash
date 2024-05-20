@@ -18,7 +18,7 @@ const ShortcutsNavigator = () => {
           "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md",
           currentTab === "tab:all"
             ? "bg-blue-700 dark:bg-blue-800 text-white dark:text-gray-400 shadow"
-            : "hover:bg-gray-200 dark:hover:bg-zinc-700"
+            : "hover:bg-gray-200 dark:hover:bg-zinc-700",
         )}
         onClick={() => viewStore.setFilter({ tab: "tab:all" })}
       >
@@ -30,7 +30,7 @@ const ShortcutsNavigator = () => {
           "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md",
           currentTab === "tab:mine"
             ? "bg-blue-700 dark:bg-blue-800 text-white dark:text-gray-400 shadow"
-            : "hover:bg-gray-200 dark:hover:bg-zinc-700"
+            : "hover:bg-gray-200 dark:hover:bg-zinc-700",
         )}
         onClick={() => viewStore.setFilter({ tab: "tab:mine" })}
       >
@@ -44,7 +44,7 @@ const ShortcutsNavigator = () => {
             "flex flex-row justify-center items-center px-2 leading-7 text-sm dark:text-gray-400 rounded-md",
             currentTab === `tag:${tag}`
               ? "bg-blue-700 dark:bg-blue-800 text-white dark:text-gray-400 shadow"
-              : "hover:bg-gray-200 dark:hover:bg-zinc-700"
+              : "hover:bg-gray-200 dark:hover:bg-zinc-700",
           )}
           onClick={() => viewStore.setFilter({ tab: `tag:${tag}`, tag: undefined })}
         >

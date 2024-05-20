@@ -38,7 +38,7 @@ const ShortcutCard = (props: Props) => {
   return (
     <div
       className={classNames(
-        "group px-4 py-3 w-full flex flex-col justify-start items-start border rounded-lg hover:shadow dark:border-zinc-700"
+        "group px-4 py-3 w-full flex flex-col justify-start items-start border rounded-lg hover:shadow dark:border-zinc-700",
       )}
     >
       <div className="w-full flex flex-row justify-between items-center">
@@ -54,7 +54,7 @@ const ShortcutCard = (props: Props) => {
             <div className="w-full flex flex-row justify-start items-center leading-tight">
               <a
                 className={classNames(
-                  "max-w-[calc(100%-36px)] flex flex-row justify-start items-center mr-1 cursor-pointer hover:opacity-80 hover:underline"
+                  "max-w-[calc(100%-36px)] flex flex-row justify-start items-center mr-1 cursor-pointer hover:opacity-80 hover:underline",
                 )}
                 target="_blank"
                 href={shortcutLink}

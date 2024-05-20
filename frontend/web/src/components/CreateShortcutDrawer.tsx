@@ -309,7 +309,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             <div
               className={classnames(
                 "w-full flex flex-row justify-between items-center px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800",
-                showOpenGraphMetadata ? "bg-gray-100 border-b dark:bg-zinc-800 dark:border-b-zinc-700" : ""
+                showOpenGraphMetadata ? "bg-gray-100 border-b dark:bg-zinc-800 dark:border-b-zinc-700" : "",
               )}
               onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
             >

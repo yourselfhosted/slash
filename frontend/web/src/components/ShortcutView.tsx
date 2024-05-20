@@ -20,7 +20,7 @@ const ShortcutView = (props: Props) => {
     <div
       className={classNames(
         "group w-full px-3 py-2 flex flex-row justify-start items-center border rounded-lg hover:bg-gray-100 dark:border-zinc-800 dark:hover:bg-zinc-800",
-        className
+        className,
       )}
       onClick={onClick}
     >
@@ -42,7 +42,7 @@ const ShortcutView = (props: Props) => {
       <Link
         className={classNames(
           "hidden group-hover:block ml-1 w-6 h-6 p-1 shrink-0 rounded-lg bg-gray-200 dark:bg-zinc-900 hover:opacity-80",
-          alwaysShowLink && "!block"
+          alwaysShowLink && "!block",
         )}
         to={`/s/${shortcut.name}`}
         target="_blank"

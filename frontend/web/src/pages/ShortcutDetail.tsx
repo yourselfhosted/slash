@@ -82,7 +82,7 @@ const ShortcutDetail = () => {
         </div>
         <a
           className={classNames(
-            "group max-w-full flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:underline"
+            "group max-w-full flex flex-row px-1 mr-1 justify-start items-center cursor-pointer rounded-md hover:underline",
           )}
           href={shortcutLink}
           target="_blank"

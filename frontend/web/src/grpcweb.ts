@@ -13,7 +13,7 @@ const channel = createChannel(
   address,
   FetchTransport({
     credentials: "include",
-  })
+  }),
 );
 
 const clientFactory = createClientFactory();

@@ -55,8 +55,8 @@ const useViewStore = create<ViewState>()(
     }),
     {
       name: "view",
-    }
-  )
+    },
+  ),
 );
 
 export const getFilteredShortcutList = (shortcutList: Shortcut[], filter: Filter, currentUser: User) => {

@@ -80,7 +80,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
           setSelectedShortcuts(
             collection.shortcutIds
               .map((shortcutId) => shortcutList.find((shortcut) => shortcut.id === shortcutId))
-              .filter(Boolean) as Shortcut[]
+              .filter(Boolean) as Shortcut[],
           );
           loadingState.setFinish();
         }
@@ -145,7 +145,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
             visibility: state.collectionCreate.visibility,
             shortcutIds: selectedShortcuts.map((shortcut) => shortcut.id),
           },
-          ["name", "title", "description", "visibility", "shortcut_ids"]
+          ["name", "title", "description", "visibility", "shortcut_ids"],
         );
       } else {
         await collectionStore.createCollection({

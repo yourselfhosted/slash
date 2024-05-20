@@ -84,7 +84,7 @@ const CollectionSpace = () => {
                     "w-full py-2 cursor-pointer sm:!px-2",
                     selectedShortcut?.id === shortcut.id
                       ? "bg-gray-100 dark:bg-zinc-800"
-                      : "sm:border-transparent dark:sm:border-transparent"
+                      : "sm:border-transparent dark:sm:border-transparent",
                   )}
                   key={shortcut.name}
                   shortcut={shortcut}

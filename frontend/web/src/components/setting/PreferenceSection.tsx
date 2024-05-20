@@ -43,7 +43,7 @@ const PreferenceSection: React.FC = () => {
         ...userSetting,
         locale: locale,
       } as UserSetting,
-      ["locale"]
+      ["locale"],
     );
   };
 
@@ -53,7 +53,7 @@ const PreferenceSection: React.FC = () => {
         ...userSetting,
         colorTheme: colorTheme,
       } as UserSetting,
-      ["color_theme"]
+      ["color_theme"],
     );
   };
 

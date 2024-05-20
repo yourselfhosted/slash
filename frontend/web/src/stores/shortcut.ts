@@ -91,7 +91,7 @@ const useShortcutStore = create(
       delete shortcutMap[id];
       set({ shortcutMapById: shortcutMap });
     },
-  }))
+  })),
 );
 
 const unknownShortcut: Shortcut = Shortcut.fromPartial({
