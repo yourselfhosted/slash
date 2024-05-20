@@ -29,7 +29,7 @@
   "devDependencies": {
     "@bufbuild/buf": "^1.30.1",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "@types/chrome": "^0.0.267",
+    "@types/chrome": "^0.0.268",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.12.11",
     "@types/react": "^18.3.2",
