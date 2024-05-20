@@ -53,8 +53,8 @@ devDependencies:
     specifier: ^4.3.0
     version: 4.3.0(prettier@2.8.8)
   '@types/chrome':
-    specifier: ^0.0.267
-    version: 0.0.267
+    specifier: ^0.0.268
+    version: 0.0.268
   '@types/lodash-es':
     specifier: ^4.17.12
     version: 4.17.12
@@ -3220,8 +3220,8 @@ packages:
     engines: {node: '>=10.13.0'}
     dev: false
 
-  /@types/chrome@0.0.267:
-    resolution: {integrity: sha512-vnCWPpYjazSPRMNmybRH+0q4f738F+Pbbls4ZPFsPr9/4TTNJyK1OLZDpSnghnEWb4stfmIUtq/GegnlfD4sPA==}
+  /@types/chrome@0.0.268:
+    resolution: {integrity: sha512-7N1QH9buudSJ7sI8Pe4mBHJr5oZ48s0hcanI9w3wgijAlv1OZNUZve9JR4x42dn5lJ5Sm87V1JNfnoh10EnQlA==}
     dependencies:
       '@types/filesystem': 0.0.36
       '@types/har-format': 1.2.15
