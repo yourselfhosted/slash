@@ -14,7 +14,6 @@ import (
 
 	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/route/auth"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -152,7 +151,7 @@ func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *apiv1p
 
 	accessTokens := []*apiv1pb.UserAccessToken{}
 	for _, userAccessToken := range userAccessTokens {
-		claims := &auth.ClaimsMessage{}
+		claims := &ClaimsMessage{}
 		_, err := jwt.ParseWithClaims(userAccessToken.AccessToken, claims, func(t *jwt.Token) (any, error) {
 			if t.Method.Alg() != jwt.SigningMethodHS256.Name {
 				return nil, errors.Errorf("unexpected access token signing method=%v, expect %v", t.Header["alg"], jwt.SigningMethodHS256)
@@ -203,12 +202,12 @@ func (s *APIV1Service) CreateUserAccessToken(ctx context.Context, request *apiv1
 	if request.ExpiresAt != nil {
 		expiresAt = request.ExpiresAt.AsTime()
 	}
-	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, expiresAt, []byte(s.Secret))
+	accessToken, err := GenerateAccessToken(user.Email, user.ID, expiresAt, []byte(s.Secret))
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to generate access token: %v", err)
 	}
 
-	claims := &auth.ClaimsMessage{}
+	claims := &ClaimsMessage{}
 	_, err = jwt.ParseWithClaims(accessToken, claims, func(t *jwt.Token) (any, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS256.Name {
 			return nil, errors.Errorf("unexpected access token signing method=%v, expect %v", t.Header["alg"], jwt.SigningMethodHS256)

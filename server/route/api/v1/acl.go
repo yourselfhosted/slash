@@ -14,7 +14,6 @@ import (
 
 	"github.com/yourselfhosted/slash/internal/util"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/route/auth"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -81,7 +80,7 @@ func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessToken str
 	if accessToken == "" {
 		return 0, status.Errorf(codes.Unauthenticated, "access token not found")
 	}
-	claims := &auth.ClaimsMessage{}
+	claims := &ClaimsMessage{}
 	_, err := jwt.ParseWithClaims(accessToken, claims, func(t *jwt.Token) (any, error) {
 		if t.Method.Alg() != jwt.SigningMethodHS256.Name {
 			return nil, status.Errorf(codes.Unauthenticated, "unexpected access token signing method=%v, expect %v", t.Header["alg"], jwt.SigningMethodHS256)
@@ -96,11 +95,11 @@ func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessToken str
 	if err != nil {
 		return 0, status.Errorf(codes.Unauthenticated, "Invalid or expired access token")
 	}
-	if !audienceContains(claims.Audience, auth.AccessTokenAudienceName) {
+	if !audienceContains(claims.Audience, AccessTokenAudienceName) {
 		return 0, status.Errorf(codes.Unauthenticated,
 			"invalid access token, audience mismatch, got %q, expected %q. you may send request to the wrong environment",
 			claims.Audience,
-			auth.AccessTokenAudienceName,
+			AccessTokenAudienceName,
 		)
 	}
 
@@ -148,7 +147,7 @@ func getTokenFromMetadata(md metadata.MD) (string, error) {
 		header := http.Header{}
 		header.Add("Cookie", t)
 		request := http.Request{Header: header}
-		if v, _ := request.Cookie(auth.AccessTokenCookieName); v != nil {
+		if v, _ := request.Cookie(AccessTokenCookieName); v != nil {
 			accessToken = v.Value
 		}
 	}

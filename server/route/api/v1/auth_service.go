@@ -14,7 +14,6 @@ import (
 	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/metric"
-	"github.com/yourselfhosted/slash/server/route/auth"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -50,7 +49,7 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *apiv1pb.SignInReques
 		return nil, status.Errorf(codes.InvalidArgument, "unmatched email and password")
 	}
 
-	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, time.Now().Add(auth.AccessTokenDuration), []byte(s.Secret))
+	accessToken, err := GenerateAccessToken(user.Email, user.ID, time.Now().Add(AccessTokenDuration), []byte(s.Secret))
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate tokens, err: %s", err))
 	}
@@ -59,7 +58,7 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *apiv1pb.SignInReques
 	}
 
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
-		"Set-Cookie": fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", auth.AccessTokenCookieName, accessToken, time.Now().Add(auth.AccessTokenDuration).Format(time.RFC1123)),
+		"Set-Cookie": fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", AccessTokenCookieName, accessToken, time.Now().Add(AccessTokenDuration).Format(time.RFC1123)),
 	})); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
@@ -117,7 +116,7 @@ func (s *APIV1Service) SignUp(ctx context.Context, request *apiv1pb.SignUpReques
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to create user, err: %s", err))
 	}
 
-	accessToken, err := auth.GenerateAccessToken(user.Email, user.ID, time.Now().Add(auth.AccessTokenDuration), []byte(s.Secret))
+	accessToken, err := GenerateAccessToken(user.Email, user.ID, time.Now().Add(AccessTokenDuration), []byte(s.Secret))
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate tokens, err: %s", err))
 	}
@@ -126,7 +125,7 @@ func (s *APIV1Service) SignUp(ctx context.Context, request *apiv1pb.SignUpReques
 	}
 
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
-		"Set-Cookie": fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", auth.AccessTokenCookieName, accessToken, time.Now().Add(auth.AccessTokenDuration).Format(time.RFC1123)),
+		"Set-Cookie": fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", AccessTokenCookieName, accessToken, time.Now().Add(AccessTokenDuration).Format(time.RFC1123)),
 	})); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
@@ -140,7 +139,7 @@ func (s *APIV1Service) SignUp(ctx context.Context, request *apiv1pb.SignUpReques
 func (*APIV1Service) SignOut(ctx context.Context, _ *apiv1pb.SignOutRequest) (*apiv1pb.SignOutResponse, error) {
 	// Set the cookie header to expire access token.
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
-		"Set-Cookie": fmt.Sprintf("%s=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict", auth.AccessTokenCookieName),
+		"Set-Cookie": fmt.Sprintf("%s=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict", AccessTokenCookieName),
 	})); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
