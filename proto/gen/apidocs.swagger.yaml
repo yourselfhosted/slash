@@ -738,6 +738,7 @@ definitions:
       - LOCALE_UNSPECIFIED
       - LOCALE_EN
       - LOCALE_ZH
+      - LOCALE_FR
     default: LOCALE_UNSPECIFIED
   apiv1AutoBackupWorkspaceSetting:
     type: object

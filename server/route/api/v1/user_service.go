@@ -260,7 +260,7 @@ func (s *APIV1Service) DeleteUserAccessToken(ctx context.Context, request *apiv1
 	}
 	if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
 		UserId: user.ID,
-		Key:    storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS,
+		Key:    storepb.UserSettingKey_ACCESS_TOKENS,
 		Value: &storepb.UserSetting_AccessTokens{
 			AccessTokens: &storepb.AccessTokensUserSetting{
 				AccessTokens: updatedUserAccessTokens,
@@ -285,7 +285,7 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 	userAccessTokens = append(userAccessTokens, &userAccessToken)
 	if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
 		UserId: user.ID,
-		Key:    storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS,
+		Key:    storepb.UserSettingKey_ACCESS_TOKENS,
 		Value: &storepb.UserSetting_AccessTokens{
 			AccessTokens: &storepb.AccessTokensUserSetting{
 				AccessTokens: userAccessTokens,

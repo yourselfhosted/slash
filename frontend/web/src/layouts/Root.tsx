@@ -37,6 +37,8 @@ const Root: React.FC = () => {
 
     if (isEqual(currentUserSetting.locale, UserSetting_Locale.LOCALE_ZH)) {
       i18n.changeLanguage("zh");
+    } else if (isEqual(currentUserSetting.locale, UserSetting_Locale.LOCALE_FR)) {
+      i18n.changeLanguage("fr");
     } else {
       i18n.changeLanguage("en");
     }

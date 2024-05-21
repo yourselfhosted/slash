@@ -1360,6 +1360,7 @@
 | LOCALE_UNSPECIFIED | 0 |  |
 | LOCALE_EN | 1 |  |
 | LOCALE_ZH | 2 |  |
+| LOCALE_FR | 3 |  |
 
 
  

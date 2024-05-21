@@ -57,7 +57,7 @@ func (s *Store) GetUserSetting(ctx context.Context, find *FindUserSetting) (*sto
 func (s *Store) GetUserAccessTokens(ctx context.Context, userID int32) ([]*storepb.AccessTokensUserSetting_AccessToken, error) {
 	userSetting, err := s.GetUserSetting(ctx, &FindUserSetting{
 		UserID: &userID,
-		Key:    storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS,
+		Key:    storepb.UserSettingKey_ACCESS_TOKENS,
 	})
 	if err != nil {
 		return nil, err

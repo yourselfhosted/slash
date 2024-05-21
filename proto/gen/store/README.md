@@ -294,9 +294,9 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | COLOR_THEME_USER_SETTING_UNSPECIFIED | 0 |  |
-| COLOR_THEME_USER_SETTING_SYSTEM | 1 |  |
-| COLOR_THEME_USER_SETTING_LIGHT | 2 |  |
-| COLOR_THEME_USER_SETTING_DARK | 3 |  |
+| SYSTEM | 1 |  |
+| LIGHT | 2 |  |
+| DARK | 3 |  |
 
 
 
@@ -308,8 +308,9 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | LOCALE_USER_SETTING_UNSPECIFIED | 0 |  |
-| LOCALE_USER_SETTING_EN | 1 |  |
-| LOCALE_USER_SETTING_ZH | 2 |  |
+| EN | 1 |  |
+| ZH | 2 |  |
+| FR | 3 |  |
 
 
 
@@ -321,9 +322,9 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | USER_SETTING_KEY_UNSPECIFIED | 0 |  |
-| USER_SETTING_ACCESS_TOKENS | 1 | Access tokens for the user. |
-| USER_SETTING_LOCALE | 2 | Locale for the user. |
-| USER_SETTING_COLOR_THEME | 3 | Color theme for the user. |
+| ACCESS_TOKENS | 1 | Access tokens for the user. |
+| LOCALE | 2 | Locale for the user. |
+| COLOR_THEME | 3 | Color theme for the user. |
 
 
  

@@ -23,15 +23,15 @@ func (d *DB) UpsertUserSetting(ctx context.Context, upsert *storepb.UserSetting)
 	`
 
 	var valueString string
-	if upsert.Key == storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS {
+	if upsert.Key == storepb.UserSettingKey_ACCESS_TOKENS {
 		valueBytes, err := protojson.Marshal(upsert.GetAccessTokens())
 		if err != nil {
 			return nil, err
 		}
 		valueString = string(valueBytes)
-	} else if upsert.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
+	} else if upsert.Key == storepb.UserSettingKey_LOCALE {
 		valueString = upsert.GetLocale().String()
-	} else if upsert.Key == storepb.UserSettingKey_USER_SETTING_COLOR_THEME {
+	} else if upsert.Key == storepb.UserSettingKey_COLOR_THEME {
 		valueString = upsert.GetColorTheme().String()
 	} else {
 		return nil, errors.New("invalid user setting key")
@@ -80,7 +80,7 @@ func (d *DB) ListUserSettings(ctx context.Context, find *store.FindUserSetting) 
 			return nil, err
 		}
 		userSetting.Key = storepb.UserSettingKey(storepb.UserSettingKey_value[keyString])
-		if userSetting.Key == storepb.UserSettingKey_USER_SETTING_ACCESS_TOKENS {
+		if userSetting.Key == storepb.UserSettingKey_ACCESS_TOKENS {
 			accessTokensUserSetting := &storepb.AccessTokensUserSetting{}
 			if err := protojson.Unmarshal([]byte(valueString), accessTokensUserSetting); err != nil {
 				return nil, err
@@ -88,16 +88,17 @@ func (d *DB) ListUserSettings(ctx context.Context, find *store.FindUserSetting) 
 			userSetting.Value = &storepb.UserSetting_AccessTokens{
 				AccessTokens: accessTokensUserSetting,
 			}
-		} else if userSetting.Key == storepb.UserSettingKey_USER_SETTING_LOCALE {
+		} else if userSetting.Key == storepb.UserSettingKey_LOCALE {
 			userSetting.Value = &storepb.UserSetting_Locale{
 				Locale: storepb.LocaleUserSetting(storepb.LocaleUserSetting_value[valueString]),
 			}
-		} else if userSetting.Key == storepb.UserSettingKey_USER_SETTING_COLOR_THEME {
+		} else if userSetting.Key == storepb.UserSettingKey_COLOR_THEME {
 			userSetting.Value = &storepb.UserSetting_ColorTheme{
 				ColorTheme: storepb.ColorThemeUserSetting(storepb.ColorThemeUserSetting_value[valueString]),
 			}
 		} else {
-			return nil, errors.New("invalid user setting key")
+			// Skip unknown key.
+			continue
 		}
 		userSettingList = append(userSettingList, userSetting)
 	}
