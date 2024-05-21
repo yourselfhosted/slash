@@ -1,0 +1,83 @@
+{
+  "common": {
+    "about": "À propos",
+    "loading": "Chargement",
+    "cancel": "Annuler",
+    "save": "Sauver",
+    "create": "Créer",
+    "download": "Télécharger",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "language": "Langue",
+    "search": "Recherche",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "account": "Compte"
+  },
+  "auth": {
+    "sign-in": "Se connecter",
+    "sign-up": "S'inscrire",
+    "sign-out": "Se déconnecter",
+    "create-your-account": "Créez votre compte"
+  },
+  "analytics": {
+    "self": "Analyse",
+    "top-sources": "Principales sources",
+    "source": "Source",
+    "visitors": "Visiteurs",
+    "devices": "Dispositifs",
+    "browser": "Navigateur",
+    "browsers": "Navigateurs",
+    "operating-system": "Systèmes d'exploitation"
+  },
+  "shortcut": {
+    "visits": "{{count}} visites",
+    "visibility": {
+      "private": {
+        "self": "Privé",
+        "description": "Vous seul pouvez accéder"
+      },
+      "workspace": {
+        "self": "Espace de travail",
+        "description": "Les membres de l'espace de travail ont accès"
+      },
+      "public": {
+        "self": "Public",
+        "description": "Visible par tous sur Internet"
+      }
+    }
+  },
+  "filter": {
+    "all": "Tout",
+    "mine": "Le mien",
+    "compact-mode": "Mode compact",
+    "order-by": "Commandé par",
+    "direction": "Direction"
+  },
+  "user": {
+    "self": "Utilisateur",
+    "nickname": "Surnom",
+    "email": "E-mail",
+    "role": "Rôle",
+    "profile": "Profil",
+    "action": {
+      "add-user": "Ajouter utilisateur"
+    }
+  },
+  "settings": {
+    "self": "Paramètres",
+    "preference": {
+      "self": "Préférence",
+      "color-theme": "Thème de couleur"
+    },
+    "workspace": {
+      "self": "Paramètres de l'espace de travail",
+      "custom-style": "Style personnalisé",
+      "enable-user-signup": {
+        "self": "Activer l'inscription des utilisateurs",
+        "description": "Une fois activé, d'autres utilisateurs peuvent s'inscrire."
+      },
+      "default-visibility": "Visibilité par défaut"
+    }
+  }
+}
