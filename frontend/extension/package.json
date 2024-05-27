@@ -19,7 +19,7 @@
     "axios": "^1.6.8",
     "classnames": "^2.5.1",
     "lodash-es": "^4.17.21",
-    "lucide-react": "^0.378.0",
+    "lucide-react": "^0.379.0",
     "plasmo": "^0.86.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
