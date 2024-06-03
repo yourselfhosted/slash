@@ -13,7 +13,9 @@ function App() {
   // Redirect to sign up page if no instance owner.
   useEffect(() => {
     if (!workspaceStore.profile.owner) {
-      navigateTo("/auth/signup");
+      navigateTo("/auth/signup", {
+        replace: true,
+      });
     }
   }, [workspaceStore.profile]);
 

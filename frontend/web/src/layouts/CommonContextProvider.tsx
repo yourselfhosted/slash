@@ -14,7 +14,9 @@ const CommonContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     (async () => {
       try {
-        await Promise.all([workspaceStore.fetchWorkspaceProfile(), workspaceStore.fetchWorkspaceSetting(), userStore.fetchCurrentUser()]);
+        await workspaceStore.fetchWorkspaceProfile();
+        await workspaceStore.fetchWorkspaceSetting();
+        await userStore.fetchCurrentUser();
       } catch (error) {
         // Do nothing.
       }

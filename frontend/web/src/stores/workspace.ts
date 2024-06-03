@@ -11,17 +11,17 @@ interface WorkspaceState {
   fetchWorkspaceSetting: () => Promise<WorkspaceSetting>;
 }
 
-const useWorkspaceStore = create<WorkspaceState>()((set) => ({
+const useWorkspaceStore = create<WorkspaceState>()((set, get) => ({
   profile: WorkspaceProfile.fromPartial({}),
   setting: WorkspaceSetting.fromPartial({}),
   fetchWorkspaceProfile: async () => {
     const workspaceProfile = (await workspaceServiceClient.getWorkspaceProfile({})).profile as WorkspaceProfile;
-    set({ profile: workspaceProfile });
+    set({ ...get(), profile: workspaceProfile });
     return workspaceProfile;
   },
   fetchWorkspaceSetting: async () => {
     const workspaceSetting = (await workspaceServiceClient.getWorkspaceSetting({})).setting as WorkspaceSetting;
-    set({ setting: workspaceSetting });
+    set({ ...get(), setting: workspaceSetting });
     return workspaceSetting;
   },
 }));
