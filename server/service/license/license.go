@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/server/service/license/lemonsqueezy"
@@ -23,7 +23,7 @@ type LicenseService struct {
 	Profile *profile.Profile
 	Store   *store.Store
 
-	cachedSubscription *apiv1pb.Subscription
+	cachedSubscription *v1pb.Subscription
 }
 
 // NewLicenseService creates a new LicenseService.
@@ -31,21 +31,21 @@ func NewLicenseService(profile *profile.Profile, store *store.Store) *LicenseSer
 	return &LicenseService{
 		Profile: profile,
 		Store:   store,
-		cachedSubscription: &apiv1pb.Subscription{
-			Plan: apiv1pb.PlanType_FREE,
+		cachedSubscription: &v1pb.Subscription{
+			Plan: v1pb.PlanType_FREE,
 		},
 	}
 }
 
-func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv1pb.Subscription, error) {
+func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscription, error) {
 	workspaceSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get workspace setting")
 	}
-	subscription := &apiv1pb.Subscription{
-		Plan: apiv1pb.PlanType_FREE,
+	subscription := &v1pb.Subscription{
+		Plan: v1pb.PlanType_FREE,
 	}
 	licenseKey := ""
 	if workspaceSetting != nil {
@@ -68,7 +68,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*apiv1pb.Subscri
 	return subscription, nil
 }
 
-func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey string) (*apiv1pb.Subscription, error) {
+func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey string) (*v1pb.Subscription, error) {
 	if licenseKey == "" {
 		return nil, errors.New("license key is required")
 	}
@@ -91,12 +91,12 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 	return s.LoadSubscription(ctx)
 }
 
-func (s *LicenseService) GetSubscription(ctx context.Context) (*apiv1pb.Subscription, error) {
+func (s *LicenseService) GetSubscription(ctx context.Context) (*v1pb.Subscription, error) {
 	subscription, err := s.LoadSubscription(ctx)
-	if err != nil || subscription.Plan == apiv1pb.PlanType_PLAN_TYPE_UNSPECIFIED {
+	if err != nil || subscription.Plan == v1pb.PlanType_PLAN_TYPE_UNSPECIFIED {
 		// nolint
-		return &apiv1pb.Subscription{
-			Plan: apiv1pb.PlanType_FREE,
+		return &v1pb.Subscription{
+			Plan: v1pb.PlanType_FREE,
 		}, nil
 	}
 	return subscription, nil
@@ -111,7 +111,7 @@ func (s *LicenseService) IsFeatureEnabled(feature FeatureType) bool {
 }
 
 type ValidateResult struct {
-	Plan        apiv1pb.PlanType
+	Plan        v1pb.PlanType
 	ExpiresTime time.Time
 }
 
@@ -127,12 +127,12 @@ func validateLicenseKey(licenseKey string) (*ValidateResult, error) {
 	// Try to parse the license key as a JWT token.
 	claims, _ := parseLicenseKey(licenseKey)
 	if claims != nil {
-		plan := apiv1pb.PlanType(apiv1pb.PlanType_value[claims.Plan])
-		if plan == apiv1pb.PlanType_PLAN_TYPE_UNSPECIFIED {
+		plan := v1pb.PlanType(v1pb.PlanType_value[claims.Plan])
+		if plan == v1pb.PlanType_PLAN_TYPE_UNSPECIFIED {
 			return nil, errors.New("invalid plan")
 		}
 		return &ValidateResult{
-			Plan:        apiv1pb.PlanType(apiv1pb.PlanType_value[claims.Plan]),
+			Plan:        v1pb.PlanType(v1pb.PlanType_value[claims.Plan]),
 			ExpiresTime: claims.ExpiresAt.Time,
 		}, nil
 	}
@@ -144,7 +144,7 @@ func validateLicenseKey(licenseKey string) (*ValidateResult, error) {
 	}
 	if validateResponse.Valid {
 		result := &ValidateResult{
-			Plan: apiv1pb.PlanType_PRO,
+			Plan: v1pb.PlanType_PRO,
 		}
 		if validateResponse.LicenseKey.ExpiresAt != nil && *validateResponse.LicenseKey.ExpiresAt != "" {
 			expiresTime, err := time.Parse(time.RFC3339Nano, *validateResponse.LicenseKey.ExpiresAt)

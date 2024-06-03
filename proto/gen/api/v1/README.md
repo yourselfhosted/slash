@@ -1502,6 +1502,7 @@
 | custom_style | [string](#string) |  | The custom style. |
 | custom_script | [string](#string) |  | The custom script. |
 | favicon_provider | [string](#string) |  | The url of custom favicon provider. |
+| owner | [string](#string) |  | The owner name. Format: &#34;users/{id}&#34; |
 
 
 

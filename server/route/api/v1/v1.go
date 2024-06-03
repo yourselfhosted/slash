@@ -11,20 +11,20 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
 
 type APIV1Service struct {
-	apiv1pb.UnimplementedWorkspaceServiceServer
-	apiv1pb.UnimplementedSubscriptionServiceServer
-	apiv1pb.UnimplementedAuthServiceServer
-	apiv1pb.UnimplementedUserServiceServer
-	apiv1pb.UnimplementedUserSettingServiceServer
-	apiv1pb.UnimplementedShortcutServiceServer
-	apiv1pb.UnimplementedCollectionServiceServer
+	v1pb.UnimplementedWorkspaceServiceServer
+	v1pb.UnimplementedSubscriptionServiceServer
+	v1pb.UnimplementedAuthServiceServer
+	v1pb.UnimplementedUserServiceServer
+	v1pb.UnimplementedUserSettingServiceServer
+	v1pb.UnimplementedShortcutServiceServer
+	v1pb.UnimplementedCollectionServiceServer
 
 	Secret         string
 	Profile        *profile.Profile
@@ -52,13 +52,13 @@ func NewAPIV1Service(secret string, profile *profile.Profile, store *store.Store
 		grpcServerPort: grpcServerPort,
 	}
 
-	apiv1pb.RegisterSubscriptionServiceServer(grpcServer, apiV1Service)
-	apiv1pb.RegisterWorkspaceServiceServer(grpcServer, apiV1Service)
-	apiv1pb.RegisterAuthServiceServer(grpcServer, apiV1Service)
-	apiv1pb.RegisterUserServiceServer(grpcServer, apiV1Service)
-	apiv1pb.RegisterUserSettingServiceServer(grpcServer, apiV1Service)
-	apiv1pb.RegisterShortcutServiceServer(grpcServer, apiV1Service)
-	apiv1pb.RegisterCollectionServiceServer(grpcServer, apiV1Service)
+	v1pb.RegisterSubscriptionServiceServer(grpcServer, apiV1Service)
+	v1pb.RegisterWorkspaceServiceServer(grpcServer, apiV1Service)
+	v1pb.RegisterAuthServiceServer(grpcServer, apiV1Service)
+	v1pb.RegisterUserServiceServer(grpcServer, apiV1Service)
+	v1pb.RegisterUserSettingServiceServer(grpcServer, apiV1Service)
+	v1pb.RegisterShortcutServiceServer(grpcServer, apiV1Service)
+	v1pb.RegisterCollectionServiceServer(grpcServer, apiV1Service)
 	reflection.Register(grpcServer)
 
 	return apiV1Service
@@ -81,25 +81,25 @@ func (s *APIV1Service) RegisterGateway(_ context.Context, e *echo.Echo) error {
 	}
 
 	gwMux := runtime.NewServeMux()
-	if err := apiv1pb.RegisterSubscriptionServiceHandler(context.Background(), gwMux, conn); err != nil {
+	if err := v1pb.RegisterSubscriptionServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
-	if err := apiv1pb.RegisterWorkspaceServiceHandler(context.Background(), gwMux, conn); err != nil {
+	if err := v1pb.RegisterWorkspaceServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
-	if err := apiv1pb.RegisterAuthServiceHandler(context.Background(), gwMux, conn); err != nil {
+	if err := v1pb.RegisterAuthServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
-	if err := apiv1pb.RegisterUserServiceHandler(context.Background(), gwMux, conn); err != nil {
+	if err := v1pb.RegisterUserServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
-	if err := apiv1pb.RegisterUserSettingServiceHandler(context.Background(), gwMux, conn); err != nil {
+	if err := v1pb.RegisterUserSettingServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
-	if err := apiv1pb.RegisterShortcutServiceHandler(context.Background(), gwMux, conn); err != nil {
+	if err := v1pb.RegisterShortcutServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
-	if err := apiv1pb.RegisterCollectionServiceHandler(context.Background(), gwMux, conn); err != nil {
+	if err := v1pb.RegisterCollectionServiceHandler(context.Background(), gwMux, conn); err != nil {
 		return err
 	}
 	e.Any("/api/v1/*", echo.WrapHandler(gwMux))

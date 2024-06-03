@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
@@ -23,23 +23,23 @@ const (
 	BotID = 0
 )
 
-func (s *APIV1Service) ListUsers(ctx context.Context, _ *apiv1pb.ListUsersRequest) (*apiv1pb.ListUsersResponse, error) {
+func (s *APIV1Service) ListUsers(ctx context.Context, _ *v1pb.ListUsersRequest) (*v1pb.ListUsersResponse, error) {
 	users, err := s.Store.ListUsers(ctx, &store.FindUser{})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
 	}
 
-	userMessages := []*apiv1pb.User{}
+	userMessages := []*v1pb.User{}
 	for _, user := range users {
 		userMessages = append(userMessages, convertUserFromStore(user))
 	}
-	response := &apiv1pb.ListUsersResponse{
+	response := &v1pb.ListUsersResponse{
 		Users: userMessages,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) GetUser(ctx context.Context, request *apiv1pb.GetUserRequest) (*apiv1pb.GetUserResponse, error) {
+func (s *APIV1Service) GetUser(ctx context.Context, request *v1pb.GetUserRequest) (*v1pb.GetUserResponse, error) {
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
 		ID: &request.Id,
 	})
@@ -51,13 +51,13 @@ func (s *APIV1Service) GetUser(ctx context.Context, request *apiv1pb.GetUserRequ
 	}
 
 	userMessage := convertUserFromStore(user)
-	response := &apiv1pb.GetUserResponse{
+	response := &v1pb.GetUserResponse{
 		User: userMessage,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) CreateUser(ctx context.Context, request *apiv1pb.CreateUserRequest) (*apiv1pb.CreateUserResponse, error) {
+func (s *APIV1Service) CreateUser(ctx context.Context, request *v1pb.CreateUserRequest) (*v1pb.CreateUserResponse, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.User.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
@@ -82,13 +82,13 @@ func (s *APIV1Service) CreateUser(ctx context.Context, request *apiv1pb.CreateUs
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create user: %v", err)
 	}
-	response := &apiv1pb.CreateUserResponse{
+	response := &v1pb.CreateUserResponse{
 		User: convertUserFromStore(user),
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) UpdateUser(ctx context.Context, request *apiv1pb.UpdateUserRequest) (*apiv1pb.UpdateUserResponse, error) {
+func (s *APIV1Service) UpdateUser(ctx context.Context, request *v1pb.UpdateUserRequest) (*v1pb.UpdateUserResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -114,12 +114,12 @@ func (s *APIV1Service) UpdateUser(ctx context.Context, request *apiv1pb.UpdateUs
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to update user: %v", err)
 	}
-	return &apiv1pb.UpdateUserResponse{
+	return &v1pb.UpdateUserResponse{
 		User: convertUserFromStore(user),
 	}, nil
 }
 
-func (s *APIV1Service) DeleteUser(ctx context.Context, request *apiv1pb.DeleteUserRequest) (*apiv1pb.DeleteUserResponse, error) {
+func (s *APIV1Service) DeleteUser(ctx context.Context, request *v1pb.DeleteUserRequest) (*v1pb.DeleteUserResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -131,11 +131,11 @@ func (s *APIV1Service) DeleteUser(ctx context.Context, request *apiv1pb.DeleteUs
 	if err := s.Store.DeleteUser(ctx, &store.DeleteUser{ID: request.Id}); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete user: %v", err)
 	}
-	response := &apiv1pb.DeleteUserResponse{}
+	response := &v1pb.DeleteUserResponse{}
 	return response, nil
 }
 
-func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *apiv1pb.ListUserAccessTokensRequest) (*apiv1pb.ListUserAccessTokensResponse, error) {
+func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *v1pb.ListUserAccessTokensRequest) (*v1pb.ListUserAccessTokensResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -149,7 +149,7 @@ func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *apiv1p
 		return nil, status.Errorf(codes.Internal, "failed to list access tokens: %v", err)
 	}
 
-	accessTokens := []*apiv1pb.UserAccessToken{}
+	accessTokens := []*v1pb.UserAccessToken{}
 	for _, userAccessToken := range userAccessTokens {
 		claims := &ClaimsMessage{}
 		_, err := jwt.ParseWithClaims(userAccessToken.AccessToken, claims, func(t *jwt.Token) (any, error) {
@@ -168,7 +168,7 @@ func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *apiv1p
 			continue
 		}
 
-		userAccessToken := &apiv1pb.UserAccessToken{
+		userAccessToken := &v1pb.UserAccessToken{
 			AccessToken: userAccessToken.AccessToken,
 			Description: userAccessToken.Description,
 			IssuedAt:    timestamppb.New(claims.IssuedAt.Time),
@@ -180,16 +180,16 @@ func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *apiv1p
 	}
 
 	// Sort by issued time in descending order.
-	slices.SortFunc(accessTokens, func(i, j *apiv1pb.UserAccessToken) int {
+	slices.SortFunc(accessTokens, func(i, j *v1pb.UserAccessToken) int {
 		return int(i.IssuedAt.Seconds - j.IssuedAt.Seconds)
 	})
-	response := &apiv1pb.ListUserAccessTokensResponse{
+	response := &v1pb.ListUserAccessTokensResponse{
 		AccessTokens: accessTokens,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) CreateUserAccessToken(ctx context.Context, request *apiv1pb.CreateUserAccessTokenRequest) (*apiv1pb.CreateUserAccessTokenResponse, error) {
+func (s *APIV1Service) CreateUserAccessToken(ctx context.Context, request *v1pb.CreateUserAccessTokenRequest) (*v1pb.CreateUserAccessTokenResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -228,7 +228,7 @@ func (s *APIV1Service) CreateUserAccessToken(ctx context.Context, request *apiv1
 		return nil, status.Errorf(codes.Internal, "failed to upsert access token to store: %v", err)
 	}
 
-	userAccessToken := &apiv1pb.UserAccessToken{
+	userAccessToken := &v1pb.UserAccessToken{
 		AccessToken: accessToken,
 		Description: request.Description,
 		IssuedAt:    timestamppb.New(claims.IssuedAt.Time),
@@ -236,13 +236,13 @@ func (s *APIV1Service) CreateUserAccessToken(ctx context.Context, request *apiv1
 	if claims.ExpiresAt != nil {
 		userAccessToken.ExpiresAt = timestamppb.New(claims.ExpiresAt.Time)
 	}
-	response := &apiv1pb.CreateUserAccessTokenResponse{
+	response := &v1pb.CreateUserAccessTokenResponse{
 		AccessToken: userAccessToken,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) DeleteUserAccessToken(ctx context.Context, request *apiv1pb.DeleteUserAccessTokenRequest) (*apiv1pb.DeleteUserAccessTokenResponse, error) {
+func (s *APIV1Service) DeleteUserAccessToken(ctx context.Context, request *v1pb.DeleteUserAccessTokenRequest) (*v1pb.DeleteUserAccessTokenResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -270,7 +270,7 @@ func (s *APIV1Service) DeleteUserAccessToken(ctx context.Context, request *apiv1
 		return nil, status.Errorf(codes.Internal, "failed to upsert user setting: %v", err)
 	}
 
-	return &apiv1pb.DeleteUserAccessTokenResponse{}, nil
+	return &v1pb.DeleteUserAccessTokenResponse{}, nil
 }
 
 func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store.User, accessToken, description string) error {
@@ -297,8 +297,8 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 	return nil
 }
 
-func convertUserFromStore(user *store.User) *apiv1pb.User {
-	return &apiv1pb.User{
+func convertUserFromStore(user *store.User) *v1pb.User {
+	return &v1pb.User{
 		Id:          int32(user.ID),
 		RowStatus:   convertRowStatusFromStore(user.RowStatus),
 		CreatedTime: timestamppb.New(time.Unix(user.CreatedTs, 0)),
@@ -309,13 +309,13 @@ func convertUserFromStore(user *store.User) *apiv1pb.User {
 	}
 }
 
-func convertUserRoleFromStore(role store.Role) apiv1pb.Role {
+func convertUserRoleFromStore(role store.Role) v1pb.Role {
 	switch role {
 	case store.RoleAdmin:
-		return apiv1pb.Role_ADMIN
+		return v1pb.Role_ADMIN
 	case store.RoleUser:
-		return apiv1pb.Role_USER
+		return v1pb.Role_USER
 	default:
-		return apiv1pb.Role_ROLE_UNSPECIFIED
+		return v1pb.Role_ROLE_UNSPECIFIED
 	}
 }

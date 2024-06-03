@@ -3,18 +3,18 @@ package v1
 import (
 	"context"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	"github.com/yourselfhosted/slash/store"
 )
 
-func convertRowStatusFromStore(rowStatus store.RowStatus) apiv1pb.RowStatus {
+func convertRowStatusFromStore(rowStatus store.RowStatus) v1pb.RowStatus {
 	switch rowStatus {
 	case store.Normal:
-		return apiv1pb.RowStatus_NORMAL
+		return v1pb.RowStatus_NORMAL
 	case store.Archived:
-		return apiv1pb.RowStatus_ARCHIVED
+		return v1pb.RowStatus_ARCHIVED
 	default:
-		return apiv1pb.RowStatus_ROW_STATUS_UNSPECIFIED
+		return v1pb.RowStatus_ROW_STATUS_UNSPECIFIED
 	}
 }
 

@@ -30,9 +30,7 @@ message Subscription {
 
 enum PlanType {
   PLAN_TYPE_UNSPECIFIED = 0;
-
   FREE = 1;
-
   PRO = 2;
 }
 

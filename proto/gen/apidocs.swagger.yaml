@@ -1169,3 +1169,8 @@ definitions:
       faviconProvider:
         type: string
         description: The url of custom favicon provider.
+      owner:
+        type: string
+        title: |-
+          The owner name.
+          Format: "users/{id}"

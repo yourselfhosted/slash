@@ -41,6 +41,9 @@ message WorkspaceProfile {
   string custom_script = 6;
   // The url of custom favicon provider.
   string favicon_provider = 7;
+  // The owner name.
+  // Format: "users/{id}"
+  string owner = 8;
 }
 
 message WorkspaceSetting {

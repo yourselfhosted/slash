@@ -11,14 +11,14 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *apiv1pb.GetAuthStatusRequest) (*apiv1pb.GetAuthStatusResponse, error) {
+func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRequest) (*v1pb.GetAuthStatusResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -26,12 +26,12 @@ func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *apiv1pb.GetAuthStat
 	if user == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "user not found")
 	}
-	return &apiv1pb.GetAuthStatusResponse{
+	return &v1pb.GetAuthStatusResponse{
 		User: convertUserFromStore(user),
 	}, nil
 }
 
-func (s *APIV1Service) SignIn(ctx context.Context, request *apiv1pb.SignInRequest) (*apiv1pb.SignInResponse, error) {
+func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) (*v1pb.SignInResponse, error) {
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
 		Email: &request.Email,
 	})
@@ -64,12 +64,12 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *apiv1pb.SignInReques
 	}
 
 	metric.Enqueue("user sign in")
-	return &apiv1pb.SignInResponse{
+	return &v1pb.SignInResponse{
 		User: convertUserFromStore(user),
 	}, nil
 }
 
-func (s *APIV1Service) SignUp(ctx context.Context, request *apiv1pb.SignUpRequest) (*apiv1pb.SignUpResponse, error) {
+func (s *APIV1Service) SignUp(ctx context.Context, request *v1pb.SignUpRequest) (*v1pb.SignUpResponse, error) {
 	enableSignUpSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP,
 	})
@@ -131,12 +131,12 @@ func (s *APIV1Service) SignUp(ctx context.Context, request *apiv1pb.SignUpReques
 	}
 
 	metric.Enqueue("user sign up")
-	return &apiv1pb.SignUpResponse{
+	return &v1pb.SignUpResponse{
 		User: convertUserFromStore(user),
 	}, nil
 }
 
-func (*APIV1Service) SignOut(ctx context.Context, _ *apiv1pb.SignOutRequest) (*apiv1pb.SignOutResponse, error) {
+func (*APIV1Service) SignOut(ctx context.Context, _ *v1pb.SignOutRequest) (*v1pb.SignOutResponse, error) {
 	// Set the cookie header to expire access token.
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
 		"Set-Cookie": fmt.Sprintf("%s=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict", AccessTokenCookieName),
@@ -144,5 +144,5 @@ func (*APIV1Service) SignOut(ctx context.Context, _ *apiv1pb.SignOutRequest) (*a
 		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
 
-	return &apiv1pb.SignOutResponse{}, nil
+	return &v1pb.SignOutResponse{}, nil
 }

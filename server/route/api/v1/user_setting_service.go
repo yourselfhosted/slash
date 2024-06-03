@@ -7,22 +7,22 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV1Service) GetUserSetting(ctx context.Context, request *apiv1pb.GetUserSettingRequest) (*apiv1pb.GetUserSettingResponse, error) {
+func (s *APIV1Service) GetUserSetting(ctx context.Context, request *v1pb.GetUserSettingRequest) (*v1pb.GetUserSettingResponse, error) {
 	userSetting, err := getUserSetting(ctx, s.Store, request.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user setting: %v", err)
 	}
-	return &apiv1pb.GetUserSettingResponse{
+	return &v1pb.GetUserSettingResponse{
 		UserSetting: userSetting,
 	}, nil
 }
 
-func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *apiv1pb.UpdateUserSettingRequest) (*apiv1pb.UpdateUserSettingResponse, error) {
+func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *v1pb.UpdateUserSettingRequest) (*v1pb.UpdateUserSettingResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}
@@ -61,12 +61,12 @@ func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *apiv1pb.U
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user setting: %v", err)
 	}
-	return &apiv1pb.UpdateUserSettingResponse{
+	return &v1pb.UpdateUserSettingResponse{
 		UserSetting: userSetting,
 	}, nil
 }
 
-func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*apiv1pb.UserSetting, error) {
+func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*v1pb.UserSetting, error) {
 	userSettings, err := s.ListUserSettings(ctx, &store.FindUserSetting{
 		UserID: &userID,
 	})
@@ -74,10 +74,10 @@ func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*apiv1pb
 		return nil, errors.Wrap(err, "failed to find user setting")
 	}
 
-	userSetting := &apiv1pb.UserSetting{
+	userSetting := &v1pb.UserSetting{
 		Id:         userID,
-		Locale:     apiv1pb.UserSetting_LOCALE_EN,
-		ColorTheme: apiv1pb.UserSetting_COLOR_THEME_SYSTEM,
+		Locale:     v1pb.UserSetting_LOCALE_EN,
+		ColorTheme: v1pb.UserSetting_COLOR_THEME_SYSTEM,
 	}
 	for _, setting := range userSettings {
 		if setting.Key == storepb.UserSettingKey_LOCALE {
@@ -89,54 +89,54 @@ func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*apiv1pb
 	return userSetting, nil
 }
 
-func convertUserSettingLocaleToStore(locale apiv1pb.UserSetting_Locale) storepb.LocaleUserSetting {
+func convertUserSettingLocaleToStore(locale v1pb.UserSetting_Locale) storepb.LocaleUserSetting {
 	switch locale {
-	case apiv1pb.UserSetting_LOCALE_EN:
+	case v1pb.UserSetting_LOCALE_EN:
 		return storepb.LocaleUserSetting_EN
-	case apiv1pb.UserSetting_LOCALE_ZH:
+	case v1pb.UserSetting_LOCALE_ZH:
 		return storepb.LocaleUserSetting_ZH
-	case apiv1pb.UserSetting_LOCALE_FR:
+	case v1pb.UserSetting_LOCALE_FR:
 		return storepb.LocaleUserSetting_FR
 	default:
 		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_UNSPECIFIED
 	}
 }
 
-func convertUserSettingLocaleFromStore(locale storepb.LocaleUserSetting) apiv1pb.UserSetting_Locale {
+func convertUserSettingLocaleFromStore(locale storepb.LocaleUserSetting) v1pb.UserSetting_Locale {
 	switch locale {
 	case storepb.LocaleUserSetting_EN:
-		return apiv1pb.UserSetting_LOCALE_EN
+		return v1pb.UserSetting_LOCALE_EN
 	case storepb.LocaleUserSetting_ZH:
-		return apiv1pb.UserSetting_LOCALE_ZH
+		return v1pb.UserSetting_LOCALE_ZH
 	case storepb.LocaleUserSetting_FR:
-		return apiv1pb.UserSetting_LOCALE_FR
+		return v1pb.UserSetting_LOCALE_FR
 	default:
-		return apiv1pb.UserSetting_LOCALE_UNSPECIFIED
+		return v1pb.UserSetting_LOCALE_UNSPECIFIED
 	}
 }
 
-func convertUserSettingColorThemeToStore(colorTheme apiv1pb.UserSetting_ColorTheme) storepb.ColorThemeUserSetting {
+func convertUserSettingColorThemeToStore(colorTheme v1pb.UserSetting_ColorTheme) storepb.ColorThemeUserSetting {
 	switch colorTheme {
-	case apiv1pb.UserSetting_COLOR_THEME_SYSTEM:
+	case v1pb.UserSetting_COLOR_THEME_SYSTEM:
 		return storepb.ColorThemeUserSetting_SYSTEM
-	case apiv1pb.UserSetting_COLOR_THEME_LIGHT:
+	case v1pb.UserSetting_COLOR_THEME_LIGHT:
 		return storepb.ColorThemeUserSetting_LIGHT
-	case apiv1pb.UserSetting_COLOR_THEME_DARK:
+	case v1pb.UserSetting_COLOR_THEME_DARK:
 		return storepb.ColorThemeUserSetting_DARK
 	default:
 		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_UNSPECIFIED
 	}
 }
 
-func convertUserSettingColorThemeFromStore(colorTheme storepb.ColorThemeUserSetting) apiv1pb.UserSetting_ColorTheme {
+func convertUserSettingColorThemeFromStore(colorTheme storepb.ColorThemeUserSetting) v1pb.UserSetting_ColorTheme {
 	switch colorTheme {
 	case storepb.ColorThemeUserSetting_SYSTEM:
-		return apiv1pb.UserSetting_COLOR_THEME_SYSTEM
+		return v1pb.UserSetting_COLOR_THEME_SYSTEM
 	case storepb.ColorThemeUserSetting_LIGHT:
-		return apiv1pb.UserSetting_COLOR_THEME_LIGHT
+		return v1pb.UserSetting_COLOR_THEME_LIGHT
 	case storepb.ColorThemeUserSetting_DARK:
-		return apiv1pb.UserSetting_COLOR_THEME_DARK
+		return v1pb.UserSetting_COLOR_THEME_DARK
 	default:
-		return apiv1pb.UserSetting_COLOR_THEME_UNSPECIFIED
+		return v1pb.UserSetting_COLOR_THEME_UNSPECIFIED
 	}
 }

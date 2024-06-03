@@ -8,14 +8,14 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV1Service) ListCollections(ctx context.Context, _ *apiv1pb.ListCollectionsRequest) (*apiv1pb.ListCollectionsResponse, error) {
+func (s *APIV1Service) ListCollections(ctx context.Context, _ *v1pb.ListCollectionsRequest) (*v1pb.ListCollectionsResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -41,18 +41,18 @@ func (s *APIV1Service) ListCollections(ctx context.Context, _ *apiv1pb.ListColle
 	}
 	collections = append(collections, sharedCollections...)
 
-	convertedCollections := []*apiv1pb.Collection{}
+	convertedCollections := []*v1pb.Collection{}
 	for _, collection := range collections {
 		convertedCollections = append(convertedCollections, convertCollectionFromStore(collection))
 	}
 
-	response := &apiv1pb.ListCollectionsResponse{
+	response := &v1pb.ListCollectionsResponse{
 		Collections: convertedCollections,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) GetCollection(ctx context.Context, request *apiv1pb.GetCollectionRequest) (*apiv1pb.GetCollectionResponse, error) {
+func (s *APIV1Service) GetCollection(ctx context.Context, request *v1pb.GetCollectionRequest) (*v1pb.GetCollectionResponse, error) {
 	collection, err := s.Store.GetCollection(ctx, &store.FindCollection{
 		ID: &request.Id,
 	})
@@ -70,13 +70,13 @@ func (s *APIV1Service) GetCollection(ctx context.Context, request *apiv1pb.GetCo
 	if collection.Visibility == storepb.Visibility_PRIVATE && collection.CreatorId != user.ID {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
-	response := &apiv1pb.GetCollectionResponse{
+	response := &v1pb.GetCollectionResponse{
 		Collection: convertCollectionFromStore(collection),
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) GetCollectionByName(ctx context.Context, request *apiv1pb.GetCollectionByNameRequest) (*apiv1pb.GetCollectionByNameResponse, error) {
+func (s *APIV1Service) GetCollectionByName(ctx context.Context, request *v1pb.GetCollectionByNameRequest) (*v1pb.GetCollectionByNameResponse, error) {
 	collection, err := s.Store.GetCollection(ctx, &store.FindCollection{
 		Name: &request.Name,
 	})
@@ -97,13 +97,13 @@ func (s *APIV1Service) GetCollectionByName(ctx context.Context, request *apiv1pb
 			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 		}
 	}
-	response := &apiv1pb.GetCollectionByNameResponse{
+	response := &v1pb.GetCollectionByNameResponse{
 		Collection: convertCollectionFromStore(collection),
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) CreateCollection(ctx context.Context, request *apiv1pb.CreateCollectionRequest) (*apiv1pb.CreateCollectionResponse, error) {
+func (s *APIV1Service) CreateCollection(ctx context.Context, request *v1pb.CreateCollectionRequest) (*v1pb.CreateCollectionResponse, error) {
 	if request.Collection.Name == "" || request.Collection.Title == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "name and title are required")
 	}
@@ -137,14 +137,14 @@ func (s *APIV1Service) CreateCollection(ctx context.Context, request *apiv1pb.Cr
 		return nil, status.Errorf(codes.Internal, "failed to create collection, err: %v", err)
 	}
 
-	response := &apiv1pb.CreateCollectionResponse{
+	response := &v1pb.CreateCollectionResponse{
 		Collection: convertCollectionFromStore(collection),
 	}
 	metric.Enqueue("collection create")
 	return response, nil
 }
 
-func (s *APIV1Service) UpdateCollection(ctx context.Context, request *apiv1pb.UpdateCollectionRequest) (*apiv1pb.UpdateCollectionResponse, error) {
+func (s *APIV1Service) UpdateCollection(ctx context.Context, request *v1pb.UpdateCollectionRequest) (*v1pb.UpdateCollectionResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "updateMask is required")
 	}
@@ -189,13 +189,13 @@ func (s *APIV1Service) UpdateCollection(ctx context.Context, request *apiv1pb.Up
 		return nil, status.Errorf(codes.Internal, "failed to update collection, err: %v", err)
 	}
 
-	response := &apiv1pb.UpdateCollectionResponse{
+	response := &v1pb.UpdateCollectionResponse{
 		Collection: convertCollectionFromStore(collection),
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) DeleteCollection(ctx context.Context, request *apiv1pb.DeleteCollectionRequest) (*apiv1pb.DeleteCollectionResponse, error) {
+func (s *APIV1Service) DeleteCollection(ctx context.Context, request *v1pb.DeleteCollectionRequest) (*v1pb.DeleteCollectionResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -219,12 +219,12 @@ func (s *APIV1Service) DeleteCollection(ctx context.Context, request *apiv1pb.De
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete collection, err: %v", err)
 	}
-	response := &apiv1pb.DeleteCollectionResponse{}
+	response := &v1pb.DeleteCollectionResponse{}
 	return response, nil
 }
 
-func convertCollectionFromStore(collection *storepb.Collection) *apiv1pb.Collection {
-	return &apiv1pb.Collection{
+func convertCollectionFromStore(collection *storepb.Collection) *v1pb.Collection {
+	return &v1pb.Collection{
 		Id:          collection.Id,
 		CreatorId:   collection.CreatorId,
 		CreatedTime: timestamppb.New(time.Unix(collection.CreatedTs, 0)),
@@ -233,6 +233,6 @@ func convertCollectionFromStore(collection *storepb.Collection) *apiv1pb.Collect
 		Title:       collection.Title,
 		Description: collection.Description,
 		ShortcutIds: collection.ShortcutIds,
-		Visibility:  apiv1pb.Visibility(collection.Visibility),
+		Visibility:  v1pb.Visibility(collection.Visibility),
 	}
 }

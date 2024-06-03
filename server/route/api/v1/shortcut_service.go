@@ -16,13 +16,13 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV1Service) ListShortcuts(ctx context.Context, _ *apiv1pb.ListShortcutsRequest) (*apiv1pb.ListShortcutsResponse, error) {
+func (s *APIV1Service) ListShortcuts(ctx context.Context, _ *v1pb.ListShortcutsRequest) (*v1pb.ListShortcutsResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -42,7 +42,7 @@ func (s *APIV1Service) ListShortcuts(ctx context.Context, _ *apiv1pb.ListShortcu
 	}
 
 	shortcutList = append(shortcutList, visibleShortcutList...)
-	shortcuts := []*apiv1pb.Shortcut{}
+	shortcuts := []*v1pb.Shortcut{}
 	for _, shortcut := range shortcutList {
 		composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
 		if err != nil {
@@ -51,13 +51,13 @@ func (s *APIV1Service) ListShortcuts(ctx context.Context, _ *apiv1pb.ListShortcu
 		shortcuts = append(shortcuts, composedShortcut)
 	}
 
-	response := &apiv1pb.ListShortcutsResponse{
+	response := &v1pb.ListShortcutsResponse{
 		Shortcuts: shortcuts,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) GetShortcut(ctx context.Context, request *apiv1pb.GetShortcutRequest) (*apiv1pb.GetShortcutResponse, error) {
+func (s *APIV1Service) GetShortcut(ctx context.Context, request *v1pb.GetShortcutRequest) (*v1pb.GetShortcutResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		ID: &request.Id,
 	})
@@ -83,13 +83,13 @@ func (s *APIV1Service) GetShortcut(ctx context.Context, request *apiv1pb.GetShor
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
 	}
-	response := &apiv1pb.GetShortcutResponse{
+	response := &v1pb.GetShortcutResponse{
 		Shortcut: composedShortcut,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) GetShortcutByName(ctx context.Context, request *apiv1pb.GetShortcutByNameRequest) (*apiv1pb.GetShortcutByNameResponse, error) {
+func (s *APIV1Service) GetShortcutByName(ctx context.Context, request *v1pb.GetShortcutByNameRequest) (*v1pb.GetShortcutByNameResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		Name: &request.Name,
 	})
@@ -120,13 +120,13 @@ func (s *APIV1Service) GetShortcutByName(ctx context.Context, request *apiv1pb.G
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
 	}
-	response := &apiv1pb.GetShortcutByNameResponse{
+	response := &v1pb.GetShortcutByNameResponse{
 		Shortcut: composedShortcut,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) CreateShortcut(ctx context.Context, request *apiv1pb.CreateShortcutRequest) (*apiv1pb.CreateShortcutResponse, error) {
+func (s *APIV1Service) CreateShortcut(ctx context.Context, request *v1pb.CreateShortcutRequest) (*v1pb.CreateShortcutResponse, error) {
 	if request.Shortcut.Name == "" || request.Shortcut.Link == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "name and link are required")
 	}
@@ -151,8 +151,8 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *apiv1pb.Crea
 			return nil, status.Errorf(codes.Internal, "failed to get workspace setting, err: %v", err)
 		}
 		workspaceSetting := getWorkspaceSettingResponse.Setting
-		visibility := apiv1pb.Visibility_PRIVATE
-		if workspaceSetting.DefaultVisibility != apiv1pb.Visibility_VISIBILITY_UNSPECIFIED {
+		visibility := v1pb.Visibility_PRIVATE
+		if workspaceSetting.DefaultVisibility != v1pb.Visibility_VISIBILITY_UNSPECIFIED {
 			visibility = workspaceSetting.DefaultVisibility
 		}
 		shortcutCreate.Visibility = storepb.Visibility(visibility)
@@ -176,14 +176,14 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *apiv1pb.Crea
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
 	}
-	response := &apiv1pb.CreateShortcutResponse{
+	response := &v1pb.CreateShortcutResponse{
 		Shortcut: composedShortcut,
 	}
 	metric.Enqueue("shortcut create")
 	return response, nil
 }
 
-func (s *APIV1Service) UpdateShortcut(ctx context.Context, request *apiv1pb.UpdateShortcutRequest) (*apiv1pb.UpdateShortcutResponse, error) {
+func (s *APIV1Service) UpdateShortcut(ctx context.Context, request *v1pb.UpdateShortcutRequest) (*v1pb.UpdateShortcutResponse, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "updateMask is required")
 	}
@@ -243,13 +243,13 @@ func (s *APIV1Service) UpdateShortcut(ctx context.Context, request *apiv1pb.Upda
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
 	}
-	response := &apiv1pb.UpdateShortcutResponse{
+	response := &v1pb.UpdateShortcutResponse{
 		Shortcut: composedShortcut,
 	}
 	return response, nil
 }
 
-func (s *APIV1Service) DeleteShortcut(ctx context.Context, request *apiv1pb.DeleteShortcutRequest) (*apiv1pb.DeleteShortcutResponse, error) {
+func (s *APIV1Service) DeleteShortcut(ctx context.Context, request *v1pb.DeleteShortcutRequest) (*v1pb.DeleteShortcutResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -273,11 +273,11 @@ func (s *APIV1Service) DeleteShortcut(ctx context.Context, request *apiv1pb.Dele
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete shortcut, err: %v", err)
 	}
-	response := &apiv1pb.DeleteShortcutResponse{}
+	response := &v1pb.DeleteShortcutResponse{}
 	return response, nil
 }
 
-func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *apiv1pb.GetShortcutAnalyticsRequest) (*apiv1pb.GetShortcutAnalyticsResponse, error) {
+func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *v1pb.GetShortcutAnalyticsRequest) (*v1pb.GetShortcutAnalyticsResponse, error) {
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		ID: &request.Id,
 	})
@@ -326,7 +326,7 @@ func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *apiv1p
 	}
 
 	metric.Enqueue("shortcut analytics")
-	response := &apiv1pb.GetShortcutAnalyticsResponse{
+	response := &v1pb.GetShortcutAnalyticsResponse{
 		References: mapToAnalyticsSlice(referenceMap),
 		Devices:    mapToAnalyticsSlice(deviceMap),
 		Browsers:   mapToAnalyticsSlice(browserMap),
@@ -334,15 +334,15 @@ func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *apiv1p
 	return response, nil
 }
 
-func mapToAnalyticsSlice(m map[string]int32) []*apiv1pb.GetShortcutAnalyticsResponse_AnalyticsItem {
-	analyticsSlice := make([]*apiv1pb.GetShortcutAnalyticsResponse_AnalyticsItem, 0)
+func mapToAnalyticsSlice(m map[string]int32) []*v1pb.GetShortcutAnalyticsResponse_AnalyticsItem {
+	analyticsSlice := make([]*v1pb.GetShortcutAnalyticsResponse_AnalyticsItem, 0)
 	for key, value := range m {
-		analyticsSlice = append(analyticsSlice, &apiv1pb.GetShortcutAnalyticsResponse_AnalyticsItem{
+		analyticsSlice = append(analyticsSlice, &v1pb.GetShortcutAnalyticsResponse_AnalyticsItem{
 			Name:  key,
 			Count: value,
 		})
 	}
-	slices.SortFunc(analyticsSlice, func(i, j *apiv1pb.GetShortcutAnalyticsResponse_AnalyticsItem) int {
+	slices.SortFunc(analyticsSlice, func(i, j *v1pb.GetShortcutAnalyticsResponse_AnalyticsItem) int {
 		return int(i.Count - j.Count)
 	})
 	return analyticsSlice
@@ -398,20 +398,20 @@ func (s *APIV1Service) createShortcutCreateActivity(ctx context.Context, shortcu
 	return nil
 }
 
-func (s *APIV1Service) convertShortcutFromStorepb(ctx context.Context, shortcut *storepb.Shortcut) (*apiv1pb.Shortcut, error) {
-	composedShortcut := &apiv1pb.Shortcut{
+func (s *APIV1Service) convertShortcutFromStorepb(ctx context.Context, shortcut *storepb.Shortcut) (*v1pb.Shortcut, error) {
+	composedShortcut := &v1pb.Shortcut{
 		Id:          shortcut.Id,
 		CreatorId:   shortcut.CreatorId,
 		CreatedTime: timestamppb.New(time.Unix(shortcut.CreatedTs, 0)),
 		UpdatedTime: timestamppb.New(time.Unix(shortcut.UpdatedTs, 0)),
-		RowStatus:   apiv1pb.RowStatus(shortcut.RowStatus),
+		RowStatus:   v1pb.RowStatus(shortcut.RowStatus),
 		Name:        shortcut.Name,
 		Link:        shortcut.Link,
 		Title:       shortcut.Title,
 		Tags:        shortcut.Tags,
 		Description: shortcut.Description,
-		Visibility:  apiv1pb.Visibility(shortcut.Visibility),
-		OgMetadata: &apiv1pb.OpenGraphMetadata{
+		Visibility:  v1pb.Visibility(shortcut.Visibility),
+		OgMetadata: &v1pb.OpenGraphMetadata{
 			Title:       shortcut.OgMetadata.Title,
 			Description: shortcut.OgMetadata.Description,
 			Image:       shortcut.OgMetadata.Image,

@@ -6,25 +6,25 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	apiv1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 )
 
-func (s *APIV1Service) GetSubscription(ctx context.Context, _ *apiv1pb.GetSubscriptionRequest) (*apiv1pb.GetSubscriptionResponse, error) {
+func (s *APIV1Service) GetSubscription(ctx context.Context, _ *v1pb.GetSubscriptionRequest) (*v1pb.GetSubscriptionResponse, error) {
 	subscription, err := s.LicenseService.LoadSubscription(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to load subscription: %v", err)
 	}
-	return &apiv1pb.GetSubscriptionResponse{
+	return &v1pb.GetSubscriptionResponse{
 		Subscription: subscription,
 	}, nil
 }
 
-func (s *APIV1Service) UpdateSubscription(ctx context.Context, request *apiv1pb.UpdateSubscriptionRequest) (*apiv1pb.UpdateSubscriptionResponse, error) {
+func (s *APIV1Service) UpdateSubscription(ctx context.Context, request *v1pb.UpdateSubscriptionRequest) (*v1pb.UpdateSubscriptionResponse, error) {
 	subscription, err := s.LicenseService.UpdateSubscription(ctx, request.LicenseKey)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to load subscription: %v", err)
 	}
-	return &apiv1pb.UpdateSubscriptionResponse{
+	return &v1pb.UpdateSubscriptionResponse{
 		Subscription: subscription,
 	}, nil
 }
