@@ -113,12 +113,16 @@ const SignUp: React.FC = () => {
               </Button>
             </div>
           </form>
-          <p className="w-full mt-4 text-sm">
-            <span className="dark:text-gray-500">{"Already has an account?"}</span>
-            <Link className="cursor-pointer ml-2 text-blue-600 hover:underline" to="/auth" unstable_viewTransition>
-              {t("auth.sign-in")}
-            </Link>
-          </p>
+          {!workspaceStore.profile.owner ? (
+            <p className="w-full mt-4 text-sm font-medium dark:text-gray-500">{t("auth.host-tip")}</p>
+          ) : (
+            <p className="w-full mt-4 text-sm">
+              <span className="dark:text-gray-500">{"Already has an account?"}</span>
+              <Link className="cursor-pointer ml-2 text-blue-600 hover:underline" to="/auth" unstable_viewTransition>
+                {t("auth.sign-in")}
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </div>

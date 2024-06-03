@@ -18,7 +18,8 @@
     "sign-in": "Sign in",
     "sign-up": "Sign up",
     "sign-out": "Sign out",
-    "create-your-account": "Create your account"
+    "create-your-account": "Create your account",
+    "host-tip": "You are registering as Admin."
   },
   "analytics": {
     "self": "Analytics",

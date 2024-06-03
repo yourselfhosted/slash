@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import "./css/index.css";
 import "./css/joy-ui.css";
 import "./i18n";
+import CommonContextProvider from "./layouts/CommonContextProvider";
 import router from "./routers";
 
 const container = document.getElementById("root");
@@ -12,7 +13,9 @@ const root = createRoot(container as HTMLElement);
 
 root.render(
   <CssVarsProvider>
-    <RouterProvider router={router} />
+    <CommonContextProvider>
+      <RouterProvider router={router} />
+    </CommonContextProvider>
     <Toaster position="top-center" />
   </CssVarsProvider>,
 );

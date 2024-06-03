@@ -1,25 +1,21 @@
 import { useColorScheme } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import DemoBanner from "@/components/DemoBanner";
-import { useUserStore, useWorkspaceStore } from "@/stores";
+import { useWorkspaceStore } from "@/stores";
+import useNavigateTo from "./hooks/useNavigateTo";
 
 function App() {
+  const navigateTo = useNavigateTo();
   const { mode: colorScheme } = useColorScheme();
-  const userStore = useUserStore();
   const workspaceStore = useWorkspaceStore();
-  const [loading, setLoading] = useState(true);
 
+  // Redirect to sign up page if no instance owner.
   useEffect(() => {
-    (async () => {
-      try {
-        await Promise.all([workspaceStore.fetchWorkspaceProfile(), workspaceStore.fetchWorkspaceSetting(), userStore.fetchCurrentUser()]);
-      } catch (error) {
-        // Do nothing.
-      }
-      setLoading(false);
-    })();
-  }, []);
+    if (!workspaceStore.profile.owner) {
+      navigateTo("/auth/signup");
+    }
+  }, [workspaceStore.profile]);
 
   useEffect(() => {
     const styleEl = document.createElement("style");
@@ -61,13 +57,11 @@ function App() {
     }
   }, [colorScheme]);
 
-  return !loading ? (
+  return (
     <>
       <DemoBanner />
       <Outlet />
     </>
-  ) : (
-    <></>
   );
 }
 
