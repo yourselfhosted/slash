@@ -20,7 +20,7 @@
     "classnames": "^2.5.1",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.383.0",
-    "plasmo": "^0.86.3",
+    "plasmo": "^0.87.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
