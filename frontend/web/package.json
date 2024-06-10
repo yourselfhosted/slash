@@ -46,7 +46,7 @@
     "eslint-plugin-react": "^7.34.1",
     "long": "^5.2.3",
     "postcss": "^8.4.38",
-    "prettier": "^3.3.0",
+    "prettier": "^3.3.1",
     "protobufjs": "^7.2.6",
     "typescript": "^5.4.5",
     "vite": "^5.2.12"
