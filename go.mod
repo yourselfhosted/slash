@@ -78,6 +78,6 @@ require (
 	golang.org/x/mod v0.18.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20240513163218-0867130af1f8
 	google.golang.org/grpc v1.64.0
-	google.golang.org/protobuf v1.34.1
+	google.golang.org/protobuf v1.34.2
 	modernc.org/sqlite v1.30.0
 )
