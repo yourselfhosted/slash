@@ -119,8 +119,8 @@ devDependencies:
     specifier: ^3.3.0
     version: 3.3.1
   protobufjs:
-    specifier: ^7.2.6
-    version: 7.3.0
+    specifier: ^7.3.2
+    version: 7.3.2
   typescript:
     specifier: ^5.4.5
     version: 5.4.5
@@ -3413,8 +3413,8 @@ packages:
       object-assign: 4.1.1
       react-is: 16.13.1
 
-  /protobufjs@7.3.0:
-    resolution: {integrity: sha512-YWD03n3shzV9ImZRX3ccbjqLxj7NokGN0V/ESiBV5xWqrommYHYiihuIyavq03pWSGqlyvYUFmfoMKd+1rPA/g==}
+  /protobufjs@7.3.2:
+    resolution: {integrity: sha512-RXyHaACeqXeqAKGLDl68rQKbmObRsTIn4TYVUUug1KfS47YWCo5MacGITEryugIgZqORCvJWEk4l449POg5Txg==}
     engines: {node: '>=12.0.0'}
     requiresBuild: true
     dependencies:

@@ -47,7 +47,7 @@
     "long": "^5.2.3",
     "postcss": "^8.4.38",
     "prettier": "^3.3.0",
-    "protobufjs": "^7.2.6",
+    "protobufjs": "^7.3.2",
     "typescript": "^5.4.5",
     "vite": "^5.3.1"
   },
