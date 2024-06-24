@@ -15,8 +15,8 @@ dependencies:
     specifier: 5.0.0-beta.36
     version: 5.0.0-beta.36(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
   '@plasmohq/storage':
-    specifier: ^1.10.0
-    version: 1.10.0(react@18.3.1)
+    specifier: ^1.11.0
+    version: 1.11.0(react@18.3.1)
   axios:
     specifier: ^1.6.8
     version: 1.7.2
@@ -2724,8 +2724,8 @@ packages:
       - whiskers
     dev: false
 
-  /@plasmohq/storage@1.10.0(react@18.3.1):
-    resolution: {integrity: sha512-qvxD7M/k5BNcluyFHyabm21500tRJs1itUkO4bFad0SeaSFtSmAFtNzYCpQ9ormqJAk2j9xkd5DfWHcuCSQmog==}
+  /@plasmohq/storage@1.11.0(react@18.3.1):
+    resolution: {integrity: sha512-JLu8cCjn+yzbaIK2Gw+NDuDJgiTle3nj1HbMC/irnnUTc7lnJSiCEN/EsUcWcwNtv9BJM2r8DAk1stsQ8dCKug==}
     peerDependencies:
       react: ^16.8.6 || ^17 || ^18
     peerDependenciesMeta:
