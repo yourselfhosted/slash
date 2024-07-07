@@ -1,4 +1,4 @@
-import { Button, Input, Select, Textarea, Option, Switch, Link } from "@mui/joy";
+import { Button, Input, Link, Option, Select, Switch, Textarea } from "@mui/joy";
 import { isEqual } from "lodash-es";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -7,6 +7,13 @@ import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
+
+const getDefaultVisibility = (visibility?: Visibility) => {
+  if (!visibility || [Visibility.VISIBILITY_UNSPECIFIED, Visibility.UNRECOGNIZED].includes(visibility)) {
+    return Visibility.PRIVATE;
+  }
+  return visibility;
+};
 
 const WorkspaceSection = () => {
   const { t } = useTranslation();
@@ -101,8 +108,36 @@ const WorkspaceSection = () => {
             onChange={(event) => handleInstanceUrlChange(event.target.value)}
           />
         </div>
+        <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="font-medium dark:text-gray-400">{t("settings.workspace.enable-user-signup.self")}</p>
+            <p className="text-sm text-gray-500">{t("settings.workspace.enable-user-signup.description")}</p>
+          </div>
+          <div>
+            <Switch
+              size="lg"
+              checked={workspaceSetting.enableSignup}
+              onChange={(event) => handleEnableSignUpChange(event.target.checked)}
+            />
+          </div>
+        </div>
+        <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="font-medium dark:text-gray-400">{t("settings.workspace.default-visibility")}</p>
+            <p className="text-sm text-gray-500 leading-tight">The default visibility of new shortcuts/collections.</p>
+          </div>
+          <Select
+            className="w-36"
+            defaultValue={getDefaultVisibility(workspaceSetting.defaultVisibility)}
+            onChange={(_, value) => handleDefaultVisibilityChange(value as Visibility)}
+          >
+            <Option value={Visibility.PRIVATE}>{t(`shortcut.visibility.private.self`)}</Option>
+            <Option value={Visibility.WORKSPACE}>{t(`shortcut.visibility.workspace.self`)}</Option>
+            <Option value={Visibility.PUBLIC}>{t(`shortcut.visibility.public.self`)}</Option>
+          </Select>
+        </div>
         <div className="w-full flex flex-col justify-start items-start">
-          <p className="font-medium dark:text-gray-400">Favicon Provider</p>
+          <p className="font-medium dark:text-gray-400">Favicon provider</p>
           <p className="text-sm text-gray-500">
             e.g.{" "}
             <Link className="!text-sm" href="https://github.com/yourselfhosted/favicons" target="_blank">
@@ -127,34 +162,8 @@ const WorkspaceSection = () => {
             onChange={(event) => handleCustomStyleChange(event.target.value)}
           />
         </div>
-        <div className="w-full flex flex-row justify-between items-center">
-          <div className="w-full flex flex-col justify-start items-start">
-            <p className="font-medium">{t("settings.workspace.enable-user-signup.self")}</p>
-            <p className="text-gray-500">{t("settings.workspace.enable-user-signup.description")}</p>
-          </div>
-          <div>
-            <Switch
-              size="lg"
-              checked={workspaceSetting.enableSignup}
-              onChange={(event) => handleEnableSignUpChange(event.target.checked)}
-            />
-          </div>
-        </div>
-        <div className="w-full flex flex-row justify-between items-center">
-          <div className="flex flex-row justify-start items-center gap-x-1">
-            <span className="font-medium dark:text-gray-400">{t("settings.workspace.default-visibility")}</span>
-          </div>
-          <Select
-            defaultValue={workspaceSetting.defaultVisibility || Visibility.PRIVATE}
-            onChange={(_, value) => handleDefaultVisibilityChange(value as Visibility)}
-          >
-            <Option value={Visibility.PRIVATE}>{t(`shortcut.visibility.private.self`)}</Option>
-            <Option value={Visibility.WORKSPACE}>{t(`shortcut.visibility.workspace.self`)}</Option>
-            <Option value={Visibility.PUBLIC}>{t(`shortcut.visibility.public.self`)}</Option>
-          </Select>
-        </div>
         <div>
-          <Button variant="outlined" color="neutral" disabled={!allowSave} onClick={handleSaveWorkspaceSetting}>
+          <Button color="primary" disabled={!allowSave} onClick={handleSaveWorkspaceSetting}>
             {t("common.save")}
           </Button>
         </div>

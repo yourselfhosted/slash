@@ -8,7 +8,7 @@ import { useUserStore, useWorkspaceStore } from "@/stores";
 import { stringifyPlanType } from "@/stores/subscription";
 import { Role } from "@/types/proto/api/v1/user_service";
 
-const WorkspaceSetting: React.FC = () => {
+const WorkspaceSetting = () => {
   const workspaceStore = useWorkspaceStore();
   const currentUser = useUserStore().getCurrentUser();
   const isAdmin = currentUser.role === Role.ADMIN;
