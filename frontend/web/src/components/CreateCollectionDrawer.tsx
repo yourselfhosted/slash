@@ -30,7 +30,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   const shortcutList = useShortcutStore().getShortcutList();
   const [state, setState] = useState<State>({
     collectionCreate: Collection.fromPartial({
-      visibility: Visibility.PRIVATE,
+      visibility: Visibility.WORKSPACE,
     }),
   });
   const [selectedShortcuts, setSelectedShortcuts] = useState<Shortcut[]>([]);

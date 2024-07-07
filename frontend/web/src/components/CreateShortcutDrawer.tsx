@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import useLoading from "@/hooks/useLoading";
-import { useWorkspaceStore, useShortcutStore } from "@/stores";
+import { useShortcutStore, useWorkspaceStore } from "@/stores";
 import { getShortcutUpdateMask } from "@/stores/shortcut";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
@@ -40,7 +40,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
   const { t } = useTranslation();
   const [state, setState] = useState<State>({
     shortcutCreate: Shortcut.fromPartial({
-      visibility: Visibility.PUBLIC,
+      visibility: Visibility.WORKSPACE,
       ogMetadata: {
         title: "",
         description: "",

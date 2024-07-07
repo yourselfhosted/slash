@@ -10,7 +10,8 @@ import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 
 const getDefaultVisibility = (visibility?: Visibility) => {
   if (!visibility || [Visibility.VISIBILITY_UNSPECIFIED, Visibility.UNRECOGNIZED].includes(visibility)) {
-    return Visibility.PRIVATE;
+    // Default to workspace visibility.
+    return Visibility.WORKSPACE;
   }
   return visibility;
 };
