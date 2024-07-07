@@ -7,6 +7,7 @@ import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
+import BetaBadge from "../BetaBadge";
 
 const getDefaultVisibility = (visibility?: Visibility) => {
   if (!visibility || [Visibility.VISIBILITY_UNSPECIFIED, Visibility.UNRECOGNIZED].includes(visibility)) {
@@ -101,10 +102,15 @@ const WorkspaceSection = () => {
       <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("settings.workspace.self")}</p>
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <div className="w-full flex flex-col justify-start items-start">
-          <p className="font-medium dark:text-gray-400">Instance URL</p>
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="font-medium dark:text-gray-400">Instance URL</p>
+            <p className="text-sm text-gray-500 leading-tight">
+              {"Mainly used for SEO and social sharing. Leave empty to disallow crawlers."}
+            </p>
+          </div>
           <Input
             className="w-full mt-2"
-            placeholder="Your instance URL. Using for website SEO. Leave it empty if you don't want cawler to index your website."
+            placeholder="Your instance URL. e.g. https://slash.example.com"
             value={workspaceSetting.instanceUrl}
             onChange={(event) => handleInstanceUrlChange(event.target.value)}
           />
@@ -138,7 +144,10 @@ const WorkspaceSection = () => {
           </Select>
         </div>
         <div className="w-full flex flex-col justify-start items-start">
-          <p className="font-medium dark:text-gray-400">Favicon provider</p>
+          <div className="w-full flex flex-row justify-start items-center gap-2">
+            <p className="font-medium dark:text-gray-400">Favicon provider</p>
+            <BetaBadge />
+          </div>
           <p className="text-sm text-gray-500">
             e.g.{" "}
             <Link className="!text-sm" href="https://github.com/yourselfhosted/favicons" target="_blank">
