@@ -21,7 +21,7 @@ const SignIn: React.FC = () => {
 
   useEffect(() => {
     if (workspaceStore.profile.mode === "demo") {
-      setEmail("steven@yourselfhosted.com");
+      setEmail("slash@yourselfhosted.com");
       setPassword("secret");
     }
   }, []);
@@ -60,11 +60,11 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center items-center w-full h-auto mt-12 sm:mt-24 bg-white dark:bg-zinc-900">
+    <div className="flex flex-row justify-center items-center w-full h-auto pt-12 sm:pt-24 bg-white dark:bg-zinc-900">
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
-            <Icon.CircleSlash className="w-12 h-auto dark:text-gray-500 mr-2" strokeWidth={1.5} />
+            <Icon.CircleSlash className="w-10 h-auto dark:text-gray-500 mr-2" strokeWidth={1.5} />
             <span className="text-3xl opacity-80 dark:text-gray-500">Slash</span>
           </div>
           <form className="w-full mt-6" onSubmit={handleSigninBtnClick}>
@@ -75,7 +75,7 @@ const SignIn: React.FC = () => {
                   className="w-full py-3"
                   type="email"
                   value={email}
-                  placeholder="steven@slash.com"
+                  placeholder="slash@yourselfhosted.com"
                   onChange={handleEmailInputChanged}
                 />
               </div>
