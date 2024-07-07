@@ -2,8 +2,8 @@ root = "."
 tmp_dir = ".air"
 
 [build]
-bin = "./.air/slash --mode dev"
-cmd = "go build -o ./.air/slash ./bin/slash/main.go"
+bin = "./.air/slash.exe --mode dev"
+cmd = "go build -o ./.air/slash.exe ./bin/slash/main.go"
 delay = 1000
 exclude_dir = [".air", "frontend", "build"]
 exclude_file = []
