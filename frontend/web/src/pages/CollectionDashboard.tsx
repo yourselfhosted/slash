@@ -76,7 +76,15 @@ const CollectionDashboard: React.FC = () => {
         ) : filteredCollections.length === 0 ? (
           <div className="py-16 w-full flex flex-col justify-center items-center text-gray-400">
             <Icon.PackageOpen className="w-16 h-auto" strokeWidth="1" />
-            <p className="mt-4">No collections found.</p>
+            <p className="mt-2">No collections found.</p>
+            <a
+              className="text-blue-600 border-t text-sm hover:underline flex flex-row justify-center items-center mt-4 pt-2"
+              href="https://github.com/yourselfhosted/slash/blob/main/docs/getting-started/collections.md"
+              target="_blank"
+            >
+              <span>Learn more about collections.</span>
+              <Icon.ExternalLink className="ml-1 w-4 h-auto inline" />
+            </a>
           </div>
         ) : (
           <div className="w-full flex flex-col justify-start items-start gap-3">
