@@ -1,0 +1,84 @@
+{
+  "common": {
+    "about": "About",
+    "loading": "読込中",
+    "cancel": "取消",
+    "save": "保存",
+    "create": "作成",
+    "download": "ダウンロード",
+    "edit": "編集",
+    "delete": "削除",
+    "language": "言語",
+    "search": "検索",
+    "email": "Eメール",
+    "password": "パスワード",
+    "account": "アカウント"
+  },
+  "auth": {
+    "sign-in": "サインイン",
+    "sign-up": "登録",
+    "sign-out": "サインアウト",
+    "create-your-account": "アカウントを作成してください",
+    "host-tip": "管理者として登録されています。"
+  },
+  "analytics": {
+    "self": "分析",
+    "top-sources": "トップソース",
+    "source": "ソース",
+    "visitors": "訪問者",
+    "devices": "デバイス",
+    "browser": "ブラウザ",
+    "browsers": "ブラウザ",
+    "operating-system": "オペレーティングシステム"
+  },
+  "shortcut": {
+    "visits": "{{count}} 回訪問",
+    "visibility": {
+      "private": {
+        "self": "非公開",
+        "description": "あなただけがアクセスできます"
+      },
+      "workspace": {
+        "self": "ワークスペース",
+        "description": "ワークスペースメンバーがアクセスできます"
+      },
+      "public": {
+        "self": "公開",
+        "description": "誰でもアクセスできます"
+      }
+    }
+  },
+  "filter": {
+    "all": "全て",
+    "mine": "自分",
+    "compact-mode": "コンパクトモード",
+    "order-by": "順序",
+    "direction": "方向"
+  },
+  "user": {
+    "self": "ユーザー",
+    "nickname": "ニックネーム",
+    "email": "Eメール",
+    "role": "役割",
+    "profile": "プロフィール",
+    "action": {
+      "add-user": "ユーザーの追加"
+    }
+  },
+  "settings": {
+    "self": "設定",
+    "preference": {
+      "self": "プリファレンス",
+      "color-theme": "カラーテーマ"
+    },
+    "workspace": {
+      "self": "ワークスペースの設定",
+      "custom-style": "カスタムスタイル",
+      "enable-user-signup": {
+        "self": "ユーザーの登録を有効にする",
+        "description": "有効にすると他のユーザーが登録できるようになります。"
+      },
+      "default-visibility": "デフォルトの表示"
+    }
+  }
+}
