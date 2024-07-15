@@ -97,6 +97,8 @@ func convertUserSettingLocaleToStore(locale v1pb.UserSetting_Locale) storepb.Loc
 		return storepb.LocaleUserSetting_ZH
 	case v1pb.UserSetting_LOCALE_FR:
 		return storepb.LocaleUserSetting_FR
+	case v1pb.UserSetting_LOCALE_JA:
+		return storepb.LocaleUserSetting_JA
 	default:
 		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_UNSPECIFIED
 	}
@@ -110,6 +112,8 @@ func convertUserSettingLocaleFromStore(locale storepb.LocaleUserSetting) v1pb.Us
 		return v1pb.UserSetting_LOCALE_ZH
 	case storepb.LocaleUserSetting_FR:
 		return v1pb.UserSetting_LOCALE_FR
+	case storepb.LocaleUserSetting_JA:
+		return v1pb.UserSetting_LOCALE_JA
 	default:
 		return v1pb.UserSetting_LOCALE_UNSPECIFIED
 	}

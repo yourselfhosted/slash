@@ -24,6 +24,10 @@ const PreferenceSection: React.FC = () => {
       value: UserSetting_Locale.LOCALE_FR,
       label: "Français",
     },
+    {
+      value: UserSetting_Locale.LOCALE_JA,
+      label: "日本語",
+    },
   ];
 
   const colorThemeOptions = [

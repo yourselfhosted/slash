@@ -1361,6 +1361,7 @@
 | LOCALE_EN | 1 |  |
 | LOCALE_ZH | 2 |  |
 | LOCALE_FR | 3 |  |
+| LOCALE_JA | 4 |  |
 
 
  
