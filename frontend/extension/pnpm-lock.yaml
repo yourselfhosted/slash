@@ -30,8 +30,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: ^0.399.0
-        version: 0.399.0(react@18.3.1)
+        specifier: ^0.408.0
+        version: 0.408.0(react@18.3.1)
       plasmo:
         specifier: ^0.88.0
         version: 0.88.0(@swc/core@1.5.7(@swc/helpers@0.5.11))(@swc/helpers@0.5.11)(lodash@4.17.21)(postcss@8.4.39)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3174,8 +3174,8 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  lucide-react@0.399.0:
-    resolution: {integrity: sha512-UyTNa3djBISdzL2UktgCrESXexQXaDQWi/WsDkbw6fBFfHlapajR58WoR+gxQ4laxfEyiHmoFrEIM3V+5XOVQg==}
+  lucide-react@0.408.0:
+    resolution: {integrity: sha512-8kETAAeWmOvtGIr7HPHm51DXoxlfkNncQ5FZWXR+abX8saQwMYXANWIkUstaYtcKSo/imOe/q+tVFA8ANzdSVA==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -7738,7 +7738,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  lucide-react@0.399.0(react@18.3.1):
+  lucide-react@0.408.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
