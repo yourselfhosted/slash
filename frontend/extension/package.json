@@ -12,7 +12,7 @@
     "postinstall": "cd ../../proto && buf generate"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
+    "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.11.5",
     "@mui/joy": "5.0.0-beta.48",
     "@plasmohq/storage": "^1.11.0",
