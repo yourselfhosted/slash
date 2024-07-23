@@ -2,7 +2,7 @@ import { Option, Select } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import BetaBadge from "@/components/BetaBadge";
 import { useUserStore } from "@/stores";
-import { UserSetting, UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v1/user_setting_service";
+import { UserSetting } from "@/types/proto/api/v1/user_setting_service";
 
 const PreferenceSection: React.FC = () => {
   const { t } = useTranslation();
@@ -13,39 +13,39 @@ const PreferenceSection: React.FC = () => {
 
   const languageOptions = [
     {
-      value: UserSetting_Locale.LOCALE_EN,
+      value: "EN",
       label: "English",
     },
     {
-      value: UserSetting_Locale.LOCALE_ZH,
+      value: "ZH",
       label: "中文",
     },
     {
-      value: UserSetting_Locale.LOCALE_FR,
+      value: "FR",
       label: "Français",
     },
     {
-      value: UserSetting_Locale.LOCALE_JA,
+      value: "JA",
       label: "日本語",
     },
   ];
 
   const colorThemeOptions = [
     {
-      value: UserSetting_ColorTheme.COLOR_THEME_SYSTEM,
+      value: "SYSTEM",
       label: "System",
     },
     {
-      value: UserSetting_ColorTheme.COLOR_THEME_LIGHT,
+      value: "LIGHT",
       label: "Light",
     },
     {
-      value: UserSetting_ColorTheme.COLOR_THEME_DARK,
+      value: "DARK",
       label: "Dark",
     },
   ];
 
-  const handleSelectLanguage = async (locale: UserSetting_Locale) => {
+  const handleSelectLanguage = async (locale: string) => {
     await userStore.updateUserSetting(
       {
         ...userSetting,
@@ -55,7 +55,7 @@ const PreferenceSection: React.FC = () => {
     );
   };
 
-  const handleSelectColorTheme = async (colorTheme: UserSetting_ColorTheme) => {
+  const handleSelectColorTheme = async (colorTheme: string) => {
     await userStore.updateUserSetting(
       {
         ...userSetting,
@@ -73,7 +73,7 @@ const PreferenceSection: React.FC = () => {
           <div className="flex flex-row justify-start items-center gap-x-1">
             <span className="dark:text-gray-400">{t("settings.preference.color-theme")}</span>
           </div>
-          <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value as UserSetting_ColorTheme)}>
+          <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value as string)}>
             {colorThemeOptions.map((option) => {
               return (
                 <Option key={option.value} value={option.value}>
@@ -88,7 +88,7 @@ const PreferenceSection: React.FC = () => {
             <span className="dark:text-gray-400">{t("common.language")}</span>
             <BetaBadge />
           </div>
-          <Select defaultValue={language} onChange={(_, value) => handleSelectLanguage(value as UserSetting_Locale)}>
+          <Select defaultValue={language} onChange={(_, value) => handleSelectLanguage(value as string)}>
             {languageOptions.map((option) => {
               return (
                 <Option key={option.value} value={option.value}>

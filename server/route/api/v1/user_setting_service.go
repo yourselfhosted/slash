@@ -37,7 +37,7 @@ func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *v1pb.Upda
 				UserId: user.ID,
 				Key:    storepb.UserSettingKey_LOCALE,
 				Value: &storepb.UserSetting_Locale{
-					Locale: convertUserSettingLocaleToStore(request.UserSetting.Locale),
+					Locale: request.UserSetting.Locale,
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update user setting: %v", err)
@@ -47,7 +47,7 @@ func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *v1pb.Upda
 				UserId: user.ID,
 				Key:    storepb.UserSettingKey_COLOR_THEME,
 				Value: &storepb.UserSetting_ColorTheme{
-					ColorTheme: convertUserSettingColorThemeToStore(request.UserSetting.ColorTheme),
+					ColorTheme: request.UserSetting.ColorTheme,
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update user setting: %v", err)
@@ -76,71 +76,15 @@ func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*v1pb.Us
 
 	userSetting := &v1pb.UserSetting{
 		Id:         userID,
-		Locale:     v1pb.UserSetting_LOCALE_EN,
-		ColorTheme: v1pb.UserSetting_COLOR_THEME_SYSTEM,
+		Locale:     "EN",
+		ColorTheme: "SYSTEM",
 	}
 	for _, setting := range userSettings {
 		if setting.Key == storepb.UserSettingKey_LOCALE {
-			userSetting.Locale = convertUserSettingLocaleFromStore(setting.GetLocale())
+			userSetting.Locale = setting.GetLocale()
 		} else if setting.Key == storepb.UserSettingKey_COLOR_THEME {
-			userSetting.ColorTheme = convertUserSettingColorThemeFromStore(setting.GetColorTheme())
+			userSetting.ColorTheme = setting.GetColorTheme()
 		}
 	}
 	return userSetting, nil
-}
-
-func convertUserSettingLocaleToStore(locale v1pb.UserSetting_Locale) storepb.LocaleUserSetting {
-	switch locale {
-	case v1pb.UserSetting_LOCALE_EN:
-		return storepb.LocaleUserSetting_EN
-	case v1pb.UserSetting_LOCALE_ZH:
-		return storepb.LocaleUserSetting_ZH
-	case v1pb.UserSetting_LOCALE_FR:
-		return storepb.LocaleUserSetting_FR
-	case v1pb.UserSetting_LOCALE_JA:
-		return storepb.LocaleUserSetting_JA
-	default:
-		return storepb.LocaleUserSetting_LOCALE_USER_SETTING_UNSPECIFIED
-	}
-}
-
-func convertUserSettingLocaleFromStore(locale storepb.LocaleUserSetting) v1pb.UserSetting_Locale {
-	switch locale {
-	case storepb.LocaleUserSetting_EN:
-		return v1pb.UserSetting_LOCALE_EN
-	case storepb.LocaleUserSetting_ZH:
-		return v1pb.UserSetting_LOCALE_ZH
-	case storepb.LocaleUserSetting_FR:
-		return v1pb.UserSetting_LOCALE_FR
-	case storepb.LocaleUserSetting_JA:
-		return v1pb.UserSetting_LOCALE_JA
-	default:
-		return v1pb.UserSetting_LOCALE_UNSPECIFIED
-	}
-}
-
-func convertUserSettingColorThemeToStore(colorTheme v1pb.UserSetting_ColorTheme) storepb.ColorThemeUserSetting {
-	switch colorTheme {
-	case v1pb.UserSetting_COLOR_THEME_SYSTEM:
-		return storepb.ColorThemeUserSetting_SYSTEM
-	case v1pb.UserSetting_COLOR_THEME_LIGHT:
-		return storepb.ColorThemeUserSetting_LIGHT
-	case v1pb.UserSetting_COLOR_THEME_DARK:
-		return storepb.ColorThemeUserSetting_DARK
-	default:
-		return storepb.ColorThemeUserSetting_COLOR_THEME_USER_SETTING_UNSPECIFIED
-	}
-}
-
-func convertUserSettingColorThemeFromStore(colorTheme storepb.ColorThemeUserSetting) v1pb.UserSetting_ColorTheme {
-	switch colorTheme {
-	case storepb.ColorThemeUserSetting_SYSTEM:
-		return v1pb.UserSetting_COLOR_THEME_SYSTEM
-	case storepb.ColorThemeUserSetting_LIGHT:
-		return v1pb.UserSetting_COLOR_THEME_LIGHT
-	case storepb.ColorThemeUserSetting_DARK:
-		return v1pb.UserSetting_COLOR_THEME_DARK
-	default:
-		return v1pb.UserSetting_COLOR_THEME_UNSPECIFIED
-	}
 }

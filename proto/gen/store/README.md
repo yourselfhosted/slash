@@ -23,8 +23,6 @@
     - [AccessTokensUserSetting.AccessToken](#slash-store-AccessTokensUserSetting-AccessToken)
     - [UserSetting](#slash-store-UserSetting)
   
-    - [ColorThemeUserSetting](#slash-store-ColorThemeUserSetting)
-    - [LocaleUserSetting](#slash-store-LocaleUserSetting)
     - [UserSettingKey](#slash-store-UserSettingKey)
   
 - [store/workspace_setting.proto](#store_workspace_setting-proto)
@@ -276,43 +274,14 @@
 | user_id | [int32](#int32) |  |  |
 | key | [UserSettingKey](#slash-store-UserSettingKey) |  |  |
 | access_tokens | [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting) |  |  |
-| locale | [LocaleUserSetting](#slash-store-LocaleUserSetting) |  |  |
-| color_theme | [ColorThemeUserSetting](#slash-store-ColorThemeUserSetting) |  |  |
+| locale | [string](#string) |  |  |
+| color_theme | [string](#string) |  |  |
 
 
 
 
 
  
-
-
-<a name="slash-store-ColorThemeUserSetting"></a>
-
-### ColorThemeUserSetting
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| COLOR_THEME_USER_SETTING_UNSPECIFIED | 0 |  |
-| SYSTEM | 1 |  |
-| LIGHT | 2 |  |
-| DARK | 3 |  |
-
-
-
-<a name="slash-store-LocaleUserSetting"></a>
-
-### LocaleUserSetting
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| LOCALE_USER_SETTING_UNSPECIFIED | 0 |  |
-| EN | 1 |  |
-| ZH | 2 |  |
-| FR | 3 |  |
-| JA | 4 |  |
-
 
 
 <a name="slash-store-UserSettingKey"></a>

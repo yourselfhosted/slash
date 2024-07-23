@@ -99,9 +99,6 @@
     - [UpdateUserSettingResponse](#slash-api-v1-UpdateUserSettingResponse)
     - [UserSetting](#slash-api-v1-UserSetting)
   
-    - [UserSetting.ColorTheme](#slash-api-v1-UserSetting-ColorTheme)
-    - [UserSetting.Locale](#slash-api-v1-UserSetting-Locale)
-  
     - [UserSettingService](#slash-api-v1-UserSettingService)
   
 - [api/v1/workspace_service.proto](#api_v1_workspace_service-proto)
@@ -1326,43 +1323,14 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
-| locale | [UserSetting.Locale](#slash-api-v1-UserSetting-Locale) |  | locale is the user locale. |
-| color_theme | [UserSetting.ColorTheme](#slash-api-v1-UserSetting-ColorTheme) |  | color_theme is the user color theme. |
+| locale | [string](#string) |  | locale is the user locale. |
+| color_theme | [string](#string) |  | color_theme is the user color theme. |
 
 
 
 
 
  
-
-
-<a name="slash-api-v1-UserSetting-ColorTheme"></a>
-
-### UserSetting.ColorTheme
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| COLOR_THEME_UNSPECIFIED | 0 |  |
-| COLOR_THEME_SYSTEM | 1 |  |
-| COLOR_THEME_LIGHT | 2 |  |
-| COLOR_THEME_DARK | 3 |  |
-
-
-
-<a name="slash-api-v1-UserSetting-Locale"></a>
-
-### UserSetting.Locale
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| LOCALE_UNSPECIFIED | 0 |  |
-| LOCALE_EN | 1 |  |
-| LOCALE_ZH | 2 |  |
-| LOCALE_FR | 3 |  |
-| LOCALE_JA | 4 |  |
-
 
  
 

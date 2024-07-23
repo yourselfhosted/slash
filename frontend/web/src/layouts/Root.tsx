@@ -7,7 +7,6 @@ import Header from "@/components/Header";
 import Navigator from "@/components/Navigator";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useUserStore } from "@/stores";
-import { UserSetting_ColorTheme, UserSetting_Locale } from "@/types/proto/api/v1/user_setting_service";
 
 const Root: React.FC = () => {
   const navigateTo = useNavigateTo();
@@ -35,19 +34,19 @@ const Root: React.FC = () => {
       return;
     }
 
-    if (isEqual(currentUserSetting.locale, UserSetting_Locale.LOCALE_ZH)) {
+    if (isEqual(currentUserSetting.locale, "ZH")) {
       i18n.changeLanguage("zh");
-    } else if (isEqual(currentUserSetting.locale, UserSetting_Locale.LOCALE_FR)) {
+    } else if (isEqual(currentUserSetting.locale, "FR")) {
       i18n.changeLanguage("fr");
-    } else if (isEqual(currentUserSetting.locale, UserSetting_Locale.LOCALE_JA)) {
+    } else if (isEqual(currentUserSetting.locale, "JA")) {
       i18n.changeLanguage("ja");
     } else {
       i18n.changeLanguage("en");
     }
 
-    if (currentUserSetting.colorTheme === UserSetting_ColorTheme.COLOR_THEME_LIGHT) {
+    if (currentUserSetting.colorTheme === "LIGHT") {
       setMode("light");
-    } else if (currentUserSetting.colorTheme === UserSetting_ColorTheme.COLOR_THEME_DARK) {
+    } else if (currentUserSetting.colorTheme === "DARK") {
       setMode("dark");
     } else {
       setMode("system");

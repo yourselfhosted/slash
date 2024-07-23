@@ -12,9 +12,9 @@ message UserSetting {
   oneof value {
     AccessTokensUserSetting access_tokens = 3;
 
-    LocaleUserSetting locale = 4;
+    string locale = 4;
 
-    ColorThemeUserSetting color_theme = 5;
+    string color_theme = 5;
   }
 }
 
@@ -37,19 +37,4 @@ message AccessTokensUserSetting {
     string description = 2;
   }
   repeated AccessToken access_tokens = 1;
-}
-
-enum LocaleUserSetting {
-  LOCALE_USER_SETTING_UNSPECIFIED = 0;
-  EN = 1;
-  ZH = 2;
-  FR = 3;
-  JA = 4;
-}
-
-enum ColorThemeUserSetting {
-  COLOR_THEME_USER_SETTING_UNSPECIFIED = 0;
-  SYSTEM = 1;
-  LIGHT = 2;
-  DARK = 3;
 }

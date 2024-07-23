@@ -28,24 +28,11 @@ message UserSetting {
   // id is the user id.
   int32 id = 1;
 
-  enum Locale {
-    LOCALE_UNSPECIFIED = 0;
-    LOCALE_EN = 1;
-    LOCALE_ZH = 2;
-    LOCALE_FR = 3;
-    LOCALE_JA = 4;
-  }
   // locale is the user locale.
-  Locale locale = 2;
+  string locale = 2;
 
-  enum ColorTheme {
-    COLOR_THEME_UNSPECIFIED = 0;
-    COLOR_THEME_SYSTEM = 1;
-    COLOR_THEME_LIGHT = 2;
-    COLOR_THEME_DARK = 3;
-  }
   // color_theme is the user color theme.
-  ColorTheme color_theme = 3;
+  string color_theme = 3;
 }
 
 message GetUserSettingRequest {

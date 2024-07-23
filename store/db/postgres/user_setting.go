@@ -30,9 +30,9 @@ func (d *DB) UpsertUserSetting(ctx context.Context, upsert *storepb.UserSetting)
 		}
 		valueString = string(valueBytes)
 	} else if upsert.Key == storepb.UserSettingKey_LOCALE {
-		valueString = upsert.GetLocale().String()
+		valueString = upsert.GetLocale()
 	} else if upsert.Key == storepb.UserSettingKey_COLOR_THEME {
-		valueString = upsert.GetColorTheme().String()
+		valueString = upsert.GetColorTheme()
 	} else {
 		return nil, errors.New("invalid user setting key")
 	}
@@ -90,11 +90,11 @@ func (d *DB) ListUserSettings(ctx context.Context, find *store.FindUserSetting) 
 			}
 		} else if userSetting.Key == storepb.UserSettingKey_LOCALE {
 			userSetting.Value = &storepb.UserSetting_Locale{
-				Locale: storepb.LocaleUserSetting(storepb.LocaleUserSetting_value[valueString]),
+				Locale: valueString,
 			}
 		} else if userSetting.Key == storepb.UserSettingKey_COLOR_THEME {
 			userSetting.Value = &storepb.UserSetting_ColorTheme{
-				ColorTheme: storepb.ColorThemeUserSetting(storepb.ColorThemeUserSetting_value[valueString]),
+				ColorTheme: valueString,
 			}
 		} else {
 			// Skip unknown key.
