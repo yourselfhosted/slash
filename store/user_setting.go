@@ -54,7 +54,7 @@ func (s *Store) GetUserSetting(ctx context.Context, find *FindUserSetting) (*sto
 }
 
 // GetUserAccessTokens returns the access tokens of the user.
-func (s *Store) GetUserAccessTokens(ctx context.Context, userID int32) ([]*storepb.AccessTokensUserSetting_AccessToken, error) {
+func (s *Store) GetUserAccessTokens(ctx context.Context, userID int32) ([]*storepb.UserSettingAccessTokens_AccessToken, error) {
 	userSetting, err := s.GetUserSetting(ctx, &FindUserSetting{
 		UserID: &userID,
 		Key:    storepb.UserSettingKey_ACCESS_TOKENS,
@@ -63,7 +63,7 @@ func (s *Store) GetUserAccessTokens(ctx context.Context, userID int32) ([]*store
 		return nil, err
 	}
 	if userSetting == nil {
-		return []*storepb.AccessTokensUserSetting_AccessToken{}, nil
+		return []*storepb.UserSettingAccessTokens_AccessToken{}, nil
 	}
 
 	accessTokensUserSetting := userSetting.GetAccessTokens()

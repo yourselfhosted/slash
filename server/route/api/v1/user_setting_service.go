@@ -32,22 +32,15 @@ func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *v1pb.Upda
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
 	}
 	for _, path := range request.UpdateMask.Paths {
-		if path == "locale" {
+		if path == "general" {
 			if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
 				UserId: user.ID,
-				Key:    storepb.UserSettingKey_LOCALE,
-				Value: &storepb.UserSetting_Locale{
-					Locale: request.UserSetting.Locale,
-				},
-			}); err != nil {
-				return nil, status.Errorf(codes.Internal, "failed to update user setting: %v", err)
-			}
-		} else if path == "color_theme" {
-			if _, err := s.Store.UpsertUserSetting(ctx, &storepb.UserSetting{
-				UserId: user.ID,
-				Key:    storepb.UserSettingKey_COLOR_THEME,
-				Value: &storepb.UserSetting_ColorTheme{
-					ColorTheme: request.UserSetting.ColorTheme,
+				Key:    storepb.UserSettingKey_GENERAL,
+				Value: &storepb.UserSetting_General{
+					General: &storepb.UserSettingGeneral{
+						Locale:     request.UserSetting.General.Locale,
+						ColorTheme: request.UserSetting.General.ColorTheme,
+					},
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update user setting: %v", err)
@@ -75,15 +68,18 @@ func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*v1pb.Us
 	}
 
 	userSetting := &v1pb.UserSetting{
-		Id:         userID,
-		Locale:     "EN",
-		ColorTheme: "SYSTEM",
+		Id: userID,
+		General: &v1pb.UserSettingGeneral{
+			Locale:     "EN",
+			ColorTheme: "SYSTEM",
+		},
 	}
 	for _, setting := range userSettings {
-		if setting.Key == storepb.UserSettingKey_LOCALE {
-			userSetting.Locale = setting.GetLocale()
-		} else if setting.Key == storepb.UserSettingKey_COLOR_THEME {
-			userSetting.ColorTheme = setting.GetColorTheme()
+		if setting.Key == storepb.UserSettingKey_GENERAL {
+			userSetting.General = &v1pb.UserSettingGeneral{
+				Locale:     setting.GetGeneral().Locale,
+				ColorTheme: setting.GetGeneral().ColorTheme,
+			}
 		}
 	}
 	return userSetting, nil

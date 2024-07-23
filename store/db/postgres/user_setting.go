@@ -29,10 +29,12 @@ func (d *DB) UpsertUserSetting(ctx context.Context, upsert *storepb.UserSetting)
 			return nil, err
 		}
 		valueString = string(valueBytes)
-	} else if upsert.Key == storepb.UserSettingKey_LOCALE {
-		valueString = upsert.GetLocale()
-	} else if upsert.Key == storepb.UserSettingKey_COLOR_THEME {
-		valueString = upsert.GetColorTheme()
+	} else if upsert.Key == storepb.UserSettingKey_GENERAL {
+		valueBytes, err := protojson.Marshal(upsert.GetGeneral())
+		if err != nil {
+			return nil, err
+		}
+		valueString = string(valueBytes)
 	} else {
 		return nil, errors.New("invalid user setting key")
 	}
@@ -81,20 +83,20 @@ func (d *DB) ListUserSettings(ctx context.Context, find *store.FindUserSetting) 
 		}
 		userSetting.Key = storepb.UserSettingKey(storepb.UserSettingKey_value[keyString])
 		if userSetting.Key == storepb.UserSettingKey_ACCESS_TOKENS {
-			accessTokensUserSetting := &storepb.AccessTokensUserSetting{}
-			if err := protojson.Unmarshal([]byte(valueString), accessTokensUserSetting); err != nil {
+			userSettingAccessTokens := &storepb.UserSettingAccessTokens{}
+			if err := protojson.Unmarshal([]byte(valueString), userSettingAccessTokens); err != nil {
 				return nil, err
 			}
 			userSetting.Value = &storepb.UserSetting_AccessTokens{
-				AccessTokens: accessTokensUserSetting,
+				AccessTokens: userSettingAccessTokens,
 			}
-		} else if userSetting.Key == storepb.UserSettingKey_LOCALE {
-			userSetting.Value = &storepb.UserSetting_Locale{
-				Locale: valueString,
+		} else if userSetting.Key == storepb.UserSettingKey_GENERAL {
+			userSettingGeneral := &storepb.UserSettingGeneral{}
+			if err := protojson.Unmarshal([]byte(valueString), userSettingGeneral); err != nil {
+				return nil, err
 			}
-		} else if userSetting.Key == storepb.UserSettingKey_COLOR_THEME {
-			userSetting.Value = &storepb.UserSetting_ColorTheme{
-				ColorTheme: valueString,
+			userSetting.Value = &storepb.UserSetting_General{
+				General: userSettingGeneral,
 			}
 		} else {
 			// Skip unknown key.

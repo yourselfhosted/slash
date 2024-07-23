@@ -163,7 +163,7 @@ func audienceContains(audience jwt.ClaimStrings, token string) bool {
 	return false
 }
 
-func validateAccessToken(accessTokenString string, userAccessTokens []*storepb.AccessTokensUserSetting_AccessToken) bool {
+func validateAccessToken(accessTokenString string, userAccessTokens []*storepb.UserSettingAccessTokens_AccessToken) bool {
 	for _, userAccessToken := range userAccessTokens {
 		if accessTokenString == userAccessToken.AccessToken {
 			return true

@@ -8,8 +8,8 @@ const PreferenceSection: React.FC = () => {
   const { t } = useTranslation();
   const userStore = useUserStore();
   const userSetting = userStore.getCurrentUserSetting();
-  const language = userSetting.locale;
-  const colorTheme = userSetting.colorTheme;
+  const language = userSetting.general?.locale || "EN";
+  const colorTheme = userSetting.general?.colorTheme || "SYSTEM";
 
   const languageOptions = [
     {
@@ -49,9 +49,12 @@ const PreferenceSection: React.FC = () => {
     await userStore.updateUserSetting(
       {
         ...userSetting,
-        locale: locale,
+        general: {
+          ...userSetting.general,
+          locale: locale,
+        },
       } as UserSetting,
-      ["locale"],
+      ["general"],
     );
   };
 
@@ -59,9 +62,12 @@ const PreferenceSection: React.FC = () => {
     await userStore.updateUserSetting(
       {
         ...userSetting,
-        colorTheme: colorTheme,
+        general: {
+          ...userSetting.general,
+          colorTheme: colorTheme,
+        },
       } as UserSetting,
-      ["color_theme"],
+      ["general"],
     );
   };
 

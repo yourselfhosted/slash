@@ -10,25 +10,26 @@ message UserSetting {
   UserSettingKey key = 2;
 
   oneof value {
-    AccessTokensUserSetting access_tokens = 3;
+    UserSettingGeneral general = 3;
 
-    string locale = 4;
-
-    string color_theme = 5;
+    UserSettingAccessTokens access_tokens = 4;
   }
 }
 
 enum UserSettingKey {
   USER_SETTING_KEY_UNSPECIFIED = 0;
+  // General settings for the user.
+  GENERAL = 1;
   // Access tokens for the user.
-  ACCESS_TOKENS = 1;
-  // Locale for the user.
-  LOCALE = 2;
-  // Color theme for the user.
-  COLOR_THEME = 3;
+  ACCESS_TOKENS = 2;
 }
 
-message AccessTokensUserSetting {
+message UserSettingGeneral {
+  string locale = 1;
+  string color_theme = 2;
+}
+
+message UserSettingAccessTokens {
   message AccessToken {
     // The access token is a JWT token.
     // Including expiration time, issuer, etc.

@@ -7,21 +7,21 @@ import zh from "../../locales/zh.json";
 
 i18n.use(initReactI18next).init({
   resources: {
-    en: {
+    EN: {
       translation: en,
     },
-    zh: {
+    ZH: {
       translation: zh,
     },
-    fr: {
+    FR: {
       translation: fr,
     },
-    ja: {
+    JA: {
       translation: ja,
     },
   },
-  lng: "en",
-  fallbackLng: "en",
+  lng: "EN",
+  fallbackLng: "EN",
 });
 
 export default i18n;

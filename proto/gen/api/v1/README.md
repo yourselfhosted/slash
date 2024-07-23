@@ -98,6 +98,7 @@
     - [UpdateUserSettingRequest](#slash-api-v1-UpdateUserSettingRequest)
     - [UpdateUserSettingResponse](#slash-api-v1-UpdateUserSettingResponse)
     - [UserSetting](#slash-api-v1-UserSetting)
+    - [UserSettingGeneral](#slash-api-v1-UserSettingGeneral)
   
     - [UserSettingService](#slash-api-v1-UserSettingService)
   
@@ -1323,8 +1324,23 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  | id is the user id. |
-| locale | [string](#string) |  | locale is the user locale. |
-| color_theme | [string](#string) |  | color_theme is the user color theme. |
+| general | [UserSettingGeneral](#slash-api-v1-UserSettingGeneral) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v1-UserSettingGeneral"></a>
+
+### UserSettingGeneral
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| locale | [string](#string) |  |  |
+| color_theme | [string](#string) |  |  |
 
 
 

@@ -19,9 +19,10 @@
     - [Shortcut](#slash-store-Shortcut)
   
 - [store/user_setting.proto](#store_user_setting-proto)
-    - [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting)
-    - [AccessTokensUserSetting.AccessToken](#slash-store-AccessTokensUserSetting-AccessToken)
     - [UserSetting](#slash-store-UserSetting)
+    - [UserSettingAccessTokens](#slash-store-UserSettingAccessTokens)
+    - [UserSettingAccessTokens.AccessToken](#slash-store-UserSettingAccessTokens-AccessToken)
+    - [UserSettingGeneral](#slash-store-UserSettingGeneral)
   
     - [UserSettingKey](#slash-store-UserSettingKey)
   
@@ -232,24 +233,42 @@
 
 
 
-<a name="slash-store-AccessTokensUserSetting"></a>
+<a name="slash-store-UserSetting"></a>
 
-### AccessTokensUserSetting
+### UserSetting
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| access_tokens | [AccessTokensUserSetting.AccessToken](#slash-store-AccessTokensUserSetting-AccessToken) | repeated |  |
+| user_id | [int32](#int32) |  |  |
+| key | [UserSettingKey](#slash-store-UserSettingKey) |  |  |
+| general | [UserSettingGeneral](#slash-store-UserSettingGeneral) |  |  |
+| access_tokens | [UserSettingAccessTokens](#slash-store-UserSettingAccessTokens) |  |  |
 
 
 
 
 
 
-<a name="slash-store-AccessTokensUserSetting-AccessToken"></a>
+<a name="slash-store-UserSettingAccessTokens"></a>
 
-### AccessTokensUserSetting.AccessToken
+### UserSettingAccessTokens
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_tokens | [UserSettingAccessTokens.AccessToken](#slash-store-UserSettingAccessTokens-AccessToken) | repeated |  |
+
+
+
+
+
+
+<a name="slash-store-UserSettingAccessTokens-AccessToken"></a>
+
+### UserSettingAccessTokens.AccessToken
 
 
 
@@ -263,17 +282,14 @@
 
 
 
-<a name="slash-store-UserSetting"></a>
+<a name="slash-store-UserSettingGeneral"></a>
 
-### UserSetting
+### UserSettingGeneral
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| user_id | [int32](#int32) |  |  |
-| key | [UserSettingKey](#slash-store-UserSettingKey) |  |  |
-| access_tokens | [AccessTokensUserSetting](#slash-store-AccessTokensUserSetting) |  |  |
 | locale | [string](#string) |  |  |
 | color_theme | [string](#string) |  |  |
 
@@ -292,9 +308,8 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | USER_SETTING_KEY_UNSPECIFIED | 0 |  |
-| ACCESS_TOKENS | 1 | Access tokens for the user. |
-| LOCALE | 2 | Locale for the user. |
-| COLOR_THEME | 3 | Color theme for the user. |
+| GENERAL | 1 | General settings for the user. |
+| ACCESS_TOKENS | 2 | Access tokens for the user. |
 
 
  

@@ -251,7 +251,7 @@ func (s *APIV1Service) DeleteUserAccessToken(ctx context.Context, request *v1pb.
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list access tokens: %v", err)
 	}
-	updatedUserAccessTokens := []*storepb.AccessTokensUserSetting_AccessToken{}
+	updatedUserAccessTokens := []*storepb.UserSettingAccessTokens_AccessToken{}
 	for _, userAccessToken := range userAccessTokens {
 		if userAccessToken.AccessToken == request.AccessToken {
 			continue
@@ -262,7 +262,7 @@ func (s *APIV1Service) DeleteUserAccessToken(ctx context.Context, request *v1pb.
 		UserId: user.ID,
 		Key:    storepb.UserSettingKey_ACCESS_TOKENS,
 		Value: &storepb.UserSetting_AccessTokens{
-			AccessTokens: &storepb.AccessTokensUserSetting{
+			AccessTokens: &storepb.UserSettingAccessTokens{
 				AccessTokens: updatedUserAccessTokens,
 			},
 		},
@@ -278,7 +278,7 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 	if err != nil {
 		return errors.Wrap(err, "failed to get user access tokens")
 	}
-	userAccessToken := storepb.AccessTokensUserSetting_AccessToken{
+	userAccessToken := storepb.UserSettingAccessTokens_AccessToken{
 		AccessToken: accessToken,
 		Description: description,
 	}
@@ -287,7 +287,7 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 		UserId: user.ID,
 		Key:    storepb.UserSettingKey_ACCESS_TOKENS,
 		Value: &storepb.UserSetting_AccessTokens{
-			AccessTokens: &storepb.AccessTokensUserSetting{
+			AccessTokens: &storepb.UserSettingAccessTokens{
 				AccessTokens: userAccessTokens,
 			},
 		},

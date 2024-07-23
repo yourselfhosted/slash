@@ -1,5 +1,4 @@
 import { useColorScheme } from "@mui/joy";
-import { isEqual } from "lodash-es";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
@@ -34,19 +33,11 @@ const Root: React.FC = () => {
       return;
     }
 
-    if (isEqual(currentUserSetting.locale, "ZH")) {
-      i18n.changeLanguage("zh");
-    } else if (isEqual(currentUserSetting.locale, "FR")) {
-      i18n.changeLanguage("fr");
-    } else if (isEqual(currentUserSetting.locale, "JA")) {
-      i18n.changeLanguage("ja");
-    } else {
-      i18n.changeLanguage("en");
-    }
+    i18n.changeLanguage(currentUserSetting.general?.locale || "en");
 
-    if (currentUserSetting.colorTheme === "LIGHT") {
+    if (currentUserSetting.general?.colorTheme === "LIGHT") {
       setMode("light");
-    } else if (currentUserSetting.colorTheme === "DARK") {
+    } else if (currentUserSetting.general?.colorTheme === "DARK") {
       setMode("dark");
     } else {
       setMode("system");

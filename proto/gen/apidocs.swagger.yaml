@@ -827,12 +827,15 @@ definitions:
         type: integer
         format: int32
         description: id is the user id.
+      general:
+        $ref: '#/definitions/apiv1UserSettingGeneral'
+  apiv1UserSettingGeneral:
+    type: object
+    properties:
       locale:
         type: string
-        description: locale is the user locale.
       colorTheme:
         type: string
-        description: color_theme is the user color theme.
   apiv1Visibility:
     type: string
     enum:

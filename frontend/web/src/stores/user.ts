@@ -129,6 +129,11 @@ const useUserStore = create<UserState>()((set, get) => ({
         updateMask,
       })
     ).userSetting as UserSetting;
+    console.log("1", {
+      id: userId,
+      userSetting,
+      updateMask,
+    });
     const userSettingMap = get().userSettingMapById;
     userSettingMap[userId] = updatedUserSetting;
     set(userSettingMap);
