@@ -16,7 +16,7 @@ interface UserState {
   getCurrentUser: () => User;
   setCurrentUserId: (id: number) => void;
   createUser: (create: Partial<User>) => Promise<User>;
-  patchUser: (userPatch: Partial<User>) => Promise<void>;
+  patchUser: (userPatch: Partial<User>, updateMask: string[]) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
 
   // User setting related actions.
@@ -75,10 +75,10 @@ const useUserStore = create<UserState>()((set, get) => ({
     set(userMap);
     return user;
   },
-  patchUser: async (userPatch: Partial<User>) => {
+  patchUser: async (userPatch: Partial<User>, updateMask: string[]) => {
     const { user } = await userServiceClient.updateUser({
       user: userPatch,
-      updateMask: ["email", "nickname"],
+      updateMask: updateMask,
     });
     if (!user) {
       throw new Error("User not found");

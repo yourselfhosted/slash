@@ -97,16 +97,20 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
         const userPatch: Partial<User> = {
           id: user.id,
         };
+        const updateMask: string[] = [];
         if (user.email !== state.userCreate.email) {
           userPatch.email = state.userCreate.email;
+          updateMask.push("email");
         }
         if (user.nickname !== state.userCreate.nickname) {
           userPatch.nickname = state.userCreate.nickname;
+          updateMask.push("nickname");
         }
         if (user.role !== state.userCreate.role) {
           userPatch.role = state.userCreate.role;
+          updateMask.push("role");
         }
-        await userStore.patchUser(userPatch);
+        await userStore.patchUser(userPatch, updateMask);
       } else {
         await userStore.createUser(state.userCreate);
       }

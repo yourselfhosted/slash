@@ -46,10 +46,13 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
 
     requestState.setLoading();
     try {
-      userStore.patchUser({
-        id: userStore.getCurrentUser().id,
-        password: newPassword,
-      });
+      userStore.patchUser(
+        {
+          id: userStore.getCurrentUser().id,
+          password: newPassword,
+        },
+        ["password"],
+      );
       onClose();
       toast("Password changed");
     } catch (error: any) {

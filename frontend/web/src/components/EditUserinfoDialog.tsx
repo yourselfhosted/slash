@@ -41,11 +41,14 @@ const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
 
     requestState.setLoading();
     try {
-      await userStore.patchUser({
-        id: currentUser.id,
-        email,
-        nickname,
-      });
+      await userStore.patchUser(
+        {
+          id: currentUser.id,
+          email,
+          nickname,
+        },
+        ["email", "nickname"],
+      );
       onClose();
       toast("User information updated");
     } catch (error: any) {
