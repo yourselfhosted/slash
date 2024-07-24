@@ -1,0 +1,84 @@
+{
+  "common": {
+    "about": "Информация",
+    "loading": "Загружается",
+    "cancel": "Отменить",
+    "save": "Сохранить",
+    "create": "Создать",
+    "download": "Загрузить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "language": "Язык",
+    "search": "Поиск",
+    "email": "Email",
+    "password": "Пароль",
+    "account": "Аккаунт"
+  },
+  "auth": {
+    "sign-in": "Войти",
+    "sign-up": "Регистрация",
+    "sign-out": "Выйти",
+    "create-your-account": "Создать аккаунт",
+    "host-tip": "Вы зарегистрированы как Admin."
+  },
+  "analytics": {
+    "self": "Аналитика",
+    "top-sources": "Лучшие источники",
+    "source": "Источник",
+    "visitors": "Посетители",
+    "devices": "Устройства",
+    "browser": "Браузер",
+    "browsers": "Браузеры",
+    "operating-system": "Операционная система"
+  },
+  "shortcut": {
+    "visits": "{{count}} перехода",
+    "visibility": {
+      "private": {
+        "self": "Частная",
+        "description": "Только Вы иммете доступ"
+      },
+      "workspace": {
+        "self": "Команда",
+        "description": "Члены команды имеют доступ"
+      },
+      "public": {
+        "self": "Публичная",
+        "description": "Видимая для всех из интернета"
+      }
+    }
+  },
+  "filter": {
+    "all": "Все",
+    "mine": "Мои",
+    "compact-mode": "Компактный режим",
+    "order-by": "Создана",
+    "direction": "Путь"
+  },
+  "user": {
+    "self": "Пользователь",
+    "nickname": "Имя пользователя",
+    "email": "Email",
+    "role": "Роль",
+    "profile": "Профиль",
+    "action": {
+      "add-user": "Добавить пользователя"
+    }
+  },
+  "settings": {
+    "self": "Настройки",
+    "preference": {
+      "self": "Внешний вид",
+      "color-theme": "Цветовая схема"
+    },
+    "workspace": {
+      "self": "Настройки команды",
+      "custom-style": "Пользовательский стиль",
+      "enable-user-signup": {
+        "self": "Разрешить регистрацию пользователей",
+        "description": "После включения, другие пользователи смогут зарегистрироваться."
+      },
+      "default-visibility": "Отображение по умолчанию"
+    }
+  }
+}
