@@ -57,3 +57,11 @@ cd /opt/slash
 docker compose pull
 docker compose up -d
 ```
+
+## Administration Account Initialization
+
+No user accounts are created by default.
+
+Once you navigate to the app in your browser, you'll get automatically redirected to the registration URL in order to create an account.
+
+Note that the first account created will always be an administrator account.
