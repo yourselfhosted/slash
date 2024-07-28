@@ -6,6 +6,7 @@ import ja from "../../locales/ja.json";
 import ru from "../../locales/ru.json";
 import tr from "../../locales/tr.json";
 import zh from "../../locales/zh.json";
+import hu from "../../locales/hu.json";
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -26,6 +27,9 @@ i18n.use(initReactI18next).init({
     },
     TR: {
       translation: tr,
+    },
+    HU: {
+      translation: hu,
     },
   },
   lng: "EN",
