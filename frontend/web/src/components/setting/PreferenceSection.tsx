@@ -28,6 +28,14 @@ const PreferenceSection: React.FC = () => {
       value: "JA",
       label: "日本語",
     },
+    {
+      value: "TR",
+      label: "Türkçe",
+    },
+    {
+      value: "RU",
+      label: "русский",
+    },
   ];
 
   const colorThemeOptions = [
