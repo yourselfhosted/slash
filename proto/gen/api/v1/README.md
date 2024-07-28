@@ -103,7 +103,6 @@
     - [UserSettingService](#slash-api-v1-UserSettingService)
   
 - [api/v1/workspace_service.proto](#api_v1_workspace_service-proto)
-    - [AutoBackupWorkspaceSetting](#slash-api-v1-AutoBackupWorkspaceSetting)
     - [GetWorkspaceProfileRequest](#slash-api-v1-GetWorkspaceProfileRequest)
     - [GetWorkspaceProfileResponse](#slash-api-v1-GetWorkspaceProfileResponse)
     - [GetWorkspaceSettingRequest](#slash-api-v1-GetWorkspaceSettingRequest)
@@ -1374,23 +1373,6 @@
 
 
 
-<a name="slash-api-v1-AutoBackupWorkspaceSetting"></a>
-
-### AutoBackupWorkspaceSetting
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| enabled | [bool](#bool) |  | Whether auto backup is enabled. |
-| cron_expression | [string](#string) |  | The cron expression for auto backup. For example, &#34;0 0 0 * * *&#34; means backup at 00:00:00 every day. See https://en.wikipedia.org/wiki/Cron for more details. |
-| max_keep | [int32](#int32) |  | The maximum number of backups to keep. |
-
-
-
-
-
-
 <a name="slash-api-v1-GetWorkspaceProfileRequest"></a>
 
 ### GetWorkspaceProfileRequest
@@ -1485,7 +1467,6 @@
 | plan | [PlanType](#slash-api-v1-PlanType) |  | The workspace plan. |
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
 | custom_style | [string](#string) |  | The custom style. |
-| custom_script | [string](#string) |  | The custom script. |
 | favicon_provider | [string](#string) |  | The url of custom favicon provider. |
 | owner | [string](#string) |  | The owner name. Format: &#34;users/{id}&#34; |
 
@@ -1506,8 +1487,6 @@
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
 | instance_url | [string](#string) |  | The instance URL. |
 | custom_style | [string](#string) |  | The custom style. |
-| custom_script | [string](#string) |  | The custom script. |
-| auto_backup | [AutoBackupWorkspaceSetting](#slash-api-v1-AutoBackupWorkspaceSetting) |  | The auto backup setting. (Unimplemented) |
 | default_visibility | [Visibility](#slash-api-v1-Visibility) |  | The default visibility of shortcuts and collections. |
 | favicon_provider | [string](#string) |  | The url of custom favicon provider. |
 

@@ -35,7 +35,6 @@ func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorks
 		setting := workspaceSetting.GetSetting()
 		profile.EnableSignup = setting.GetEnableSignup()
 		profile.CustomStyle = setting.GetCustomStyle()
-		profile.CustomScript = setting.GetCustomScript()
 		profile.FaviconProvider = setting.GetFaviconProvider()
 	}
 	owner, err := s.GetInstanceOwner(ctx)
@@ -77,8 +76,6 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 			workspaceSetting.InstanceUrl = v.GetInstanceUrl()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE {
 			workspaceSetting.CustomStyle = v.GetCustomStyle()
-		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT {
-			workspaceSetting.CustomScript = v.GetCustomScript()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY {
 			workspaceSetting.DefaultVisibility = v1pb.Visibility(v.GetDefaultVisibility())
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_FAVICON_PROVIDER {
@@ -133,15 +130,6 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE,
 				Value: &storepb.WorkspaceSetting_CustomStyle{
 					CustomStyle: request.Setting.CustomStyle,
-				},
-			}); err != nil {
-				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
-			}
-		} else if path == "custom_script" {
-			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
-				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_SCRIPT,
-				Value: &storepb.WorkspaceSetting_CustomScript{
-					CustomScript: request.Setting.CustomScript,
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)

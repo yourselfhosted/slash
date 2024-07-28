@@ -724,22 +724,6 @@ definitions:
         description: |-
           expires_at is the expiration time of the access token.
           If expires_at is not set, the access token will never expire.
-  apiv1AutoBackupWorkspaceSetting:
-    type: object
-    properties:
-      enabled:
-        type: boolean
-        description: Whether auto backup is enabled.
-      cronExpression:
-        type: string
-        description: |-
-          The cron expression for auto backup.
-          For example, "0 0 0 * * *" means backup at 00:00:00 every day.
-          See https://en.wikipedia.org/wiki/Cron for more details.
-      maxKeep:
-        type: integer
-        format: int32
-        description: The maximum number of backups to keep.
   apiv1Collection:
     type: object
     properties:
@@ -858,12 +842,6 @@ definitions:
       customStyle:
         type: string
         description: The custom style.
-      customScript:
-        type: string
-        description: The custom script.
-      autoBackup:
-        $ref: '#/definitions/apiv1AutoBackupWorkspaceSetting'
-        title: The auto backup setting. (Unimplemented)
       defaultVisibility:
         $ref: '#/definitions/apiv1Visibility'
         description: The default visibility of shortcuts and collections.
@@ -1150,9 +1128,6 @@ definitions:
       customStyle:
         type: string
         description: The custom style.
-      customScript:
-        type: string
-        description: The custom script.
       faviconProvider:
         type: string
         description: The url of custom favicon provider.

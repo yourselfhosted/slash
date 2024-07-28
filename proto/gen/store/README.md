@@ -27,7 +27,6 @@
     - [UserSettingKey](#slash-store-UserSettingKey)
   
 - [store/workspace_setting.proto](#store_workspace_setting-proto)
-    - [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting)
     - [WorkspaceSetting](#slash-store-WorkspaceSetting)
   
     - [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey)
@@ -327,23 +326,6 @@
 
 
 
-<a name="slash-store-AutoBackupWorkspaceSetting"></a>
-
-### AutoBackupWorkspaceSetting
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| enabled | [bool](#bool) |  | Whether auto backup is enabled. |
-| cron_expression | [string](#string) |  | The cron expression for auto backup. For example, &#34;0 0 0 * * *&#34; means backup at 00:00:00 every day. See https://en.wikipedia.org/wiki/Cron for more details. |
-| max_keep | [int32](#int32) |  | The maximum number of backups to keep. |
-
-
-
-
-
-
 <a name="slash-store-WorkspaceSetting"></a>
 
 ### WorkspaceSetting
@@ -357,8 +339,6 @@
 | secret_session | [string](#string) |  | The secret session key used to encrypt session data. |
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
 | custom_style | [string](#string) |  | The custom style. |
-| custom_script | [string](#string) |  | The custom script. |
-| auto_backup | [AutoBackupWorkspaceSetting](#slash-store-AutoBackupWorkspaceSetting) |  | The auto backup setting. (Unimplemented) |
 | instance_url | [string](#string) |  | The instance URL of workspace. |
 | default_visibility | [Visibility](#slash-store-Visibility) |  | The default visibility of shortcuts and collections. |
 | favicon_provider | [string](#string) |  | The url of custom favicon provider. e.g. https://github.com/yourselfhosted/favicons |
@@ -382,8 +362,6 @@
 | WORKSPACE_SETTING_SECRET_SESSION | 2 | The secret session key used to encrypt session data. |
 | WORKSAPCE_SETTING_ENABLE_SIGNUP | 3 | Whether to enable other users to sign up. |
 | WORKSPACE_SETTING_CUSTOM_STYLE | 4 | The custom style. |
-| WORKSPACE_SETTING_CUSTOM_SCRIPT | 5 | The custom script. |
-| WORKSPACE_SETTING_AUTO_BACKUP | 6 | The auto backup setting. |
 | WORKSPACE_SETTING_INSTANCE_URL | 7 | The instance URL. |
 | WORKSPACE_SETTING_DEFAULT_VISIBILITY | 8 | The default visibility of shortcuts and collections. |
 | WORKSPACE_SETTING_FAVICON_PROVIDER | 9 | The url of custom favicon provider. |
