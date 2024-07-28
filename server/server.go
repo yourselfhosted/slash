@@ -18,7 +18,6 @@ import (
 	apiv1 "github.com/yourselfhosted/slash/server/route/api/v1"
 	"github.com/yourselfhosted/slash/server/route/frontend"
 	"github.com/yourselfhosted/slash/server/service/license"
-	"github.com/yourselfhosted/slash/server/service/resource"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -70,16 +69,11 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 		return c.String(http.StatusOK, "Service ready.")
 	})
 
-	rootGroup := e.Group("")
 	s.apiV1Service = apiv1.NewAPIV1Service(secret, profile, store, licenseService, s.Profile.Port+1)
 	// Register gRPC gateway as api v1.
 	if err := s.apiV1Service.RegisterGateway(ctx, e); err != nil {
 		return nil, errors.Wrap(err, "failed to register gRPC gateway")
 	}
-
-	// Register resource service.
-	resourceService := resource.NewResourceService(profile, store)
-	resourceService.Register(rootGroup)
 
 	return s, nil
 }
