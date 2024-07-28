@@ -1,0 +1,83 @@
+{
+  "common": {
+    "about": "Hakkında",
+    "loading": "Yükleniyor",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "create": "Oluştur",
+    "download": "İndir",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "language": "Dil",
+    "search": "Ara",
+    "email": "E-posta",
+    "password": "Şifre",
+    "account": "Hesap"
+  },
+  "auth": {
+    "sign-in": "Giriş yap",
+    "sign-up": "Kaydol",
+    "sign-out": "Çıkış yap",
+    "create-your-account": "Hesabınızı oluşturun"
+  },
+  "analytics": {
+    "self": "Analizler",
+    "top-sources": "En İyi Kaynaklar",
+    "source": "Kaynak",
+    "visitors": "Ziyâretçiler",
+    "devices": "Cihazlar",
+    "browser": "Tarayıcı",
+    "browsers": "Tarayıcılar",
+    "operating-system": "İşletim Sistemi"
+  },
+  "shortcut": {
+    "visits": "{{count}} ziyaret",
+    "visibility": {
+      "private": {
+        "self": "Özel",
+        "description": "Yalnızca siz erişebilirsiniz"
+      },
+      "workspace": {
+        "self": "Çalışma Alanı",
+        "description": "Çalışma alanı üyeleri erişebilir"
+      },
+      "public": {
+        "self": "Herkese açık",
+        "description": "İnternette herkese görünür"
+      }
+    }
+  },
+  "filter": {
+    "all": "Hepsi",
+    "mine": "Benim",
+    "compact-mode": "Kompakt mod",
+    "order-by": "Sırala",
+    "direction": "Yön"
+  },
+  "user": {
+    "self": "Kullanıcı",
+    "nickname": "Takma ad",
+    "email": "E-posta",
+    "role": "Rol",
+    "profile": "Profil",
+    "action": {
+      "add-user": "Kullanıcı ekle"
+    }
+  },
+  "settings": {
+    "self": "Ayarlar",
+    "preference": {
+      "self": "Tercihler",
+      "color-theme": "Renk teması"
+    },
+    "workspace": {
+      "self": "Çalışma alanı ayarları",
+      "custom-style": "Özel stil",
+      "enable-user-signup": {
+        "self": "Kullanıcı kaydını etkinleştir",
+        "description": "Etkinleştirildiğinde, diğer kullanıcılar kaydolabilir."
+      },
+      "default-visibility": "Varsayılan görünürlük"
+    }
+  }
+}
