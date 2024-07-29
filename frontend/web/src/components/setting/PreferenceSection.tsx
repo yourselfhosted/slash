@@ -36,6 +36,10 @@ const PreferenceSection: React.FC = () => {
       value: "RU",
       label: "русский",
     },
+    {
+      value: "HU",
+      label: "Magyar",
+    },
   ];
 
   const colorThemeOptions = [

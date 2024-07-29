@@ -1,0 +1,84 @@
+{
+  "common": {
+    "about": "Névjegy",
+    "loading": "Betöltés",
+    "cancel": "Mégse",
+    "save": "Mentés",
+    "create": "Létrehozás",
+    "download": "Letöltés",
+    "edit": "Szerkesztés",
+    "delete": "Törlés",
+    "language": "Nyelv",
+    "search": "Keresés",
+    "email": "Email",
+    "password": "Jelszó",
+    "account": "Fiók"
+  },
+  "auth": {
+    "sign-in": "Bejelentkezés",
+    "sign-up": "Regisztráció",
+    "sign-out": "Kijelentkezés",
+    "create-your-account": "Fiók létrehozás",
+    "host-tip": "Adminisztrátorként regisztrál."
+  },
+  "analytics": {
+    "self": "Analitika",
+    "top-sources": "Legfontosabb források",
+    "source": "Forrás",
+    "visitors": "Látogatók",
+    "devices": "Eszközök",
+    "browser": "Böngésző",
+    "browsers": "Böngészők",
+    "operating-system": "Operációs rendszer"
+  },
+  "shortcut": {
+    "visits": "{{count}} látogatás",
+    "visibility": {
+      "private": {
+        "self": "Privát",
+        "description": "Csak Ön férhet hozzá"
+      },
+      "workspace": {
+        "self": "Munkaterület",
+        "description": "A munkaterület tagjai hozzáférhetnek"
+      },
+      "public": {
+        "self": "Nyilvános",
+        "description": "Mindenki számára látható az interneten"
+      }
+    }
+  },
+  "filter": {
+    "all": "Összes",
+    "mine": "Saját",
+    "compact-mode": "Kompakt mód",
+    "order-by": "Rendezés",
+    "direction": "Irány"
+  },
+  "user": {
+    "self": "Felhasználó",
+    "nickname": "Becenév",
+    "email": "Email",
+    "role": "Szerep",
+    "profile": "Profil",
+    "action": {
+      "add-user": "Felhasználó hozzáadása"
+    }
+  },
+  "settings": {
+    "self": "Beállítás",
+    "preference": {
+      "self": "Preferencia",
+      "color-theme": "Színtéma"
+    },
+    "workspace": {
+      "self": "Munkaterület beállítások",
+      "custom-style": "Egyéni stílus",
+      "enable-user-signup": {
+        "self": "Felhasználói regisztráció engedélyezése",
+        "description": "Ha engedélyezve van, más felhasználók is regisztrálhatnak."
+      },
+      "default-visibility": "Alapértelmezett láthatóság"
+    }
+  }
+}
