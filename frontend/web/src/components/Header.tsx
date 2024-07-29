@@ -8,6 +8,7 @@ import { PlanType } from "@/types/proto/api/v1/subscription_service";
 import { Role } from "@/types/proto/api/v1/user_service";
 import AboutDialog from "./AboutDialog";
 import Icon from "./Icon";
+import Logo from "./Logo";
 import Dropdown from "./common/Dropdown";
 
 const Header: React.FC = () => {
@@ -32,7 +33,7 @@ const Header: React.FC = () => {
         <div className="w-full max-w-8xl mx-auto px-4 sm:px-6 md:px-12 py-3 flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center shrink mr-2">
             <Link to="/" className="cursor-pointer flex flex-row justify-start items-center dark:text-gray-400" unstable_viewTransition>
-              <Icon.CircleSlash className="w-7 h-auto dark:text-gray-500 mr-2" strokeWidth={1.5} />
+              <Logo className="mr-2" />
               Slash
             </Link>
             {profile.plan === PlanType.PRO && (

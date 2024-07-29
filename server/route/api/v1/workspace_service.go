@@ -61,6 +61,7 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 	for _, v := range workspaceSettings {
 		if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL {
 			generalSetting := v.GetGeneral()
+			workspaceSetting.Branding = generalSetting.GetBranding()
 			workspaceSetting.CustomStyle = generalSetting.GetCustomStyle()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
 			shortcutRelatedSetting := v.GetShortcutRelated()

@@ -1,5 +1,5 @@
 import { Button, Option, Select, Textarea } from "@mui/joy";
-import { isEqual } from "lodash-es";
+import { head, isEqual } from "lodash-es";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,7 @@ import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
+import Icon from "../Icon";
 
 const getDefaultVisibility = (visibility?: Visibility) => {
   if (!visibility || [Visibility.VISIBILITY_UNSPECIFIED, Visibility.UNRECOGNIZED].includes(visibility)) {
@@ -16,12 +17,32 @@ const getDefaultVisibility = (visibility?: Visibility) => {
   return visibility;
 };
 
+const convertFileToBase64 = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
 const WorkspaceSection = () => {
   const { t } = useTranslation();
   const workspaceStore = useWorkspaceStore();
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(workspaceStore.setting);
   const originalWorkspaceSetting = useRef<WorkspaceSetting>(workspaceStore.setting);
   const allowSave = !isEqual(originalWorkspaceSetting.current, workspaceSetting);
+  const branding = workspaceSetting.branding ? new TextDecoder().decode(workspaceSetting.branding) : "";
+
+  const onBrandingChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files: File[] = Array.from(event.target.files || []);
+    const file = head(files);
+    if (!file) {
+      return;
+    }
+
+    const base64 = await convertFileToBase64(file);
+    setWorkspaceSetting({ ...workspaceSetting, branding: new TextEncoder().encode(base64) });
+  };
 
   const handleCustomStyleChange = async (value: string) => {
     setWorkspaceSetting({
@@ -39,6 +60,9 @@ const WorkspaceSection = () => {
 
   const handleSaveWorkspaceSetting = async () => {
     const updateMask: string[] = [];
+    if (!isEqual(originalWorkspaceSetting.current.branding, workspaceSetting.branding)) {
+      updateMask.push("branding");
+    }
     if (!isEqual(originalWorkspaceSetting.current.customStyle, workspaceSetting.customStyle)) {
       updateMask.push("custom_style");
     }
@@ -70,6 +94,26 @@ const WorkspaceSection = () => {
     <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
       <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("settings.workspace.self")}</p>
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
+        <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="font-medium dark:text-gray-400">Custom branding</p>
+            <p className="text-sm text-gray-500 leading-tight">Recommand logo ratio: 1:1</p>
+          </div>
+          <div className="relative shrink-0 hover:opacity-80">
+            {branding ? (
+              <div className="relative w-16 h-16">
+                <img src={branding} alt="branding" className="max-w-full max-h-full" />
+                <Icon.X
+                  className="w-4 h-auto -top-2 -right-2 absolute z-1 border rounded-full bg-white opacity-80"
+                  onClick={() => setWorkspaceSetting({ ...workspaceSetting, branding: new TextEncoder().encode("") })}
+                />
+              </div>
+            ) : (
+              <Icon.CircleSlash className="w-7 h-auto dark:text-gray-500 mr-2" strokeWidth={1.5} />
+            )}
+            <input className="absolute inset-0 z-1 opacity-0" type="file" accept=".jpg,.jpeg,.png,.svg,.webp" onChange={onBrandingChange} />
+          </div>
+        </div>
         <div className="w-full flex flex-row justify-between items-center">
           <div className="w-full flex flex-col justify-start items-start">
             <p className="font-medium dark:text-gray-400">{t("settings.workspace.default-visibility")}</p>
