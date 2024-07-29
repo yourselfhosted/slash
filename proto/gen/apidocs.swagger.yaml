@@ -850,6 +850,10 @@ definitions:
   apiv1WorkspaceSetting:
     type: object
     properties:
+      branding:
+        type: string
+        format: byte
+        description: The workspace custome branding.
       customStyle:
         type: string
         description: The custom style.
@@ -1141,3 +1145,7 @@ definitions:
         title: |-
           The owner name.
           Format: "users/{id}"
+      branding:
+        type: string
+        format: byte
+        description: The workspace branding.

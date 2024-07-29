@@ -36,6 +36,17 @@ func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorks
 		workspaceProfile.Owner = fmt.Sprintf("%s%d", UserNamePrefix, owner.Id)
 	}
 
+	workspaceSettingGeneral, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
+	})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get workspace setting")
+	}
+	generalSetting := workspaceSettingGeneral.GetGeneral()
+	if generalSetting != nil {
+		workspaceProfile.Branding = generalSetting.GetBranding()
+	}
+
 	return &v1pb.GetWorkspaceProfileResponse{
 		Profile: workspaceProfile,
 	}, nil
@@ -67,7 +78,31 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 	}
 
 	for _, path := range request.UpdateMask.Paths {
-		if path == "custom_style" {
+		if path == "branding" {
+			generalSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
+			})
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
+			}
+			if generalSetting == nil {
+				generalSetting = &storepb.WorkspaceSetting{
+					Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
+					Value: &storepb.WorkspaceSetting_General{
+						General: &storepb.WorkspaceSetting_GeneralSetting{},
+					},
+				}
+			}
+			generalSetting.GetGeneral().Branding = request.Setting.Branding
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
+				Value: &storepb.WorkspaceSetting_General{
+					General: generalSetting.GetGeneral(),
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "custom_style" {
 			generalSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
 			})

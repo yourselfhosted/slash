@@ -40,13 +40,17 @@ message WorkspaceProfile {
   // The owner name.
   // Format: "users/{id}"
   string owner = 6;
+  // The workspace branding.
+  bytes branding = 7;
 }
 
 message WorkspaceSetting {
+  // The workspace custome branding.
+  bytes branding = 1;
   // The custom style.
-  string custom_style = 1;
+  string custom_style = 2;
   // The default visibility of shortcuts and collections.
-  Visibility default_visibility = 2;
+  Visibility default_visibility = 3;
 }
 
 message GetWorkspaceProfileRequest {}

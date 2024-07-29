@@ -356,6 +356,7 @@
 | ----- | ---- | ----- | ----------- |
 | secret_session | [string](#string) |  |  |
 | license_key | [string](#string) |  |  |
+| branding | [bytes](#bytes) |  |  |
 | custom_style | [string](#string) |  |  |
 
 

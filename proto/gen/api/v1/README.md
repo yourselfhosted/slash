@@ -1502,6 +1502,7 @@
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
 | custom_style | [string](#string) |  | The custom style. |
 | owner | [string](#string) |  | The owner name. Format: &#34;users/{id}&#34; |
+| branding | [bytes](#bytes) |  | The workspace branding. |
 
 
 
@@ -1516,6 +1517,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
+| branding | [bytes](#bytes) |  | The workspace custome branding. |
 | custom_style | [string](#string) |  | The custom style. |
 | default_visibility | [Visibility](#slash-api-v1-Visibility) |  | The default visibility of shortcuts and collections. |
 

@@ -18,7 +18,8 @@ message WorkspaceSetting {
   message GeneralSetting {
     string secret_session = 1;
     string license_key = 2;
-    string custom_style = 3;
+    bytes branding = 3;
+    string custom_style = 4;
   }
 
   message ShortcutRelatedSetting {
