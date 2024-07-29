@@ -807,13 +807,32 @@ definitions:
   apiv1UserSetting:
     type: object
     properties:
-      id:
+      userId:
         type: integer
         format: int32
-        description: id is the user id.
       general:
-        $ref: '#/definitions/apiv1UserSettingGeneral'
-  apiv1UserSettingGeneral:
+        $ref: '#/definitions/apiv1UserSettingGeneralSetting'
+      accessTokens:
+        $ref: '#/definitions/apiv1UserSettingAccessTokensSetting'
+  apiv1UserSettingAccessTokensSetting:
+    type: object
+    properties:
+      accessTokens:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/apiv1UserSettingAccessTokensSettingAccessToken'
+        title: Nested repeated field
+  apiv1UserSettingAccessTokensSettingAccessToken:
+    type: object
+    properties:
+      accessToken:
+        type: string
+        description: The access token is a JWT token, including expiration time, issuer, etc.
+      description:
+        type: string
+        description: A description for the access token.
+  apiv1UserSettingGeneralSetting:
     type: object
     properties:
       locale:
@@ -831,23 +850,12 @@ definitions:
   apiv1WorkspaceSetting:
     type: object
     properties:
-      licenseKey:
-        type: string
-      enableSignup:
-        type: boolean
-        description: Whether to enable other users to sign up.
-      instanceUrl:
-        type: string
-        description: The instance URL.
       customStyle:
         type: string
         description: The custom style.
       defaultVisibility:
         $ref: '#/definitions/apiv1Visibility'
         description: The default visibility of shortcuts and collections.
-      faviconProvider:
-        type: string
-        description: The url of custom favicon provider.
   protobufAny:
     type: object
     properties:
@@ -1128,9 +1136,6 @@ definitions:
       customStyle:
         type: string
         description: The custom style.
-      faviconProvider:
-        type: string
-        description: The url of custom favicon provider.
       owner:
         type: string
         title: |-

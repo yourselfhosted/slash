@@ -38,8 +38,8 @@ func NewLicenseService(profile *profile.Profile, store *store.Store) *LicenseSer
 }
 
 func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscription, error) {
-	workspaceSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,
+	workspaceSettingGeneral, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get workspace setting")
@@ -48,8 +48,8 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 		Plan: v1pb.PlanType_FREE,
 	}
 	licenseKey := ""
-	if workspaceSetting != nil {
-		licenseKey = workspaceSetting.GetLicenseKey()
+	if workspaceSettingGeneral != nil {
+		licenseKey = workspaceSettingGeneral.GetGeneral().LicenseKey
 	}
 	if licenseKey == "" {
 		return subscription, nil
@@ -79,12 +79,25 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 	if result == nil {
 		return nil, errors.New("invalid license key")
 	}
-	_, err = s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
-		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,
-		Value: &storepb.WorkspaceSetting_LicenseKey{
-			LicenseKey: licenseKey,
-		},
+	workspaceSettingGeneral, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
 	})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get workspace setting")
+	}
+	if workspaceSettingGeneral == nil || workspaceSettingGeneral.GetGeneral() == nil {
+		workspaceSettingGeneral = &storepb.WorkspaceSetting{
+			Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
+			Value: &storepb.WorkspaceSetting_General{
+				General: &storepb.WorkspaceSetting_GeneralSetting{
+					LicenseKey: licenseKey,
+				},
+			},
+		}
+	} else {
+		workspaceSettingGeneral.GetGeneral().LicenseKey = licenseKey
+	}
+	_, err = s.Store.UpsertWorkspaceSetting(ctx, workspaceSettingGeneral)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to upsert workspace setting")
 	}

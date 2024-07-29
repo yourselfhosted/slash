@@ -121,7 +121,7 @@ const useUserStore = create<UserState>()((set, get) => ({
     return userSetting;
   },
   updateUserSetting: async (userSetting: UserSetting, updateMask: string[]) => {
-    const userId = userSetting.id;
+    const userId = userSetting.userId;
     const updatedUserSetting = (
       await userSettingServiceClient.updateUserSetting({
         id: userId,
@@ -129,11 +129,6 @@ const useUserStore = create<UserState>()((set, get) => ({
         updateMask,
       })
     ).userSetting as UserSetting;
-    console.log("1", {
-      id: userId,
-      userSetting,
-      updateMask,
-    });
     const userSettingMap = get().userSettingMapById;
     userSettingMap[userId] = updatedUserSetting;
     set(userSettingMap);

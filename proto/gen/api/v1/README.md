@@ -98,7 +98,9 @@
     - [UpdateUserSettingRequest](#slash-api-v1-UpdateUserSettingRequest)
     - [UpdateUserSettingResponse](#slash-api-v1-UpdateUserSettingResponse)
     - [UserSetting](#slash-api-v1-UserSetting)
-    - [UserSettingGeneral](#slash-api-v1-UserSettingGeneral)
+    - [UserSetting.AccessTokensSetting](#slash-api-v1-UserSetting-AccessTokensSetting)
+    - [UserSetting.AccessTokensSetting.AccessToken](#slash-api-v1-UserSetting-AccessTokensSetting-AccessToken)
+    - [UserSetting.GeneralSetting](#slash-api-v1-UserSetting-GeneralSetting)
   
     - [UserSettingService](#slash-api-v1-UserSettingService)
   
@@ -1322,17 +1324,49 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [int32](#int32) |  | id is the user id. |
-| general | [UserSettingGeneral](#slash-api-v1-UserSettingGeneral) |  |  |
+| user_id | [int32](#int32) |  |  |
+| general | [UserSetting.GeneralSetting](#slash-api-v1-UserSetting-GeneralSetting) |  |  |
+| access_tokens | [UserSetting.AccessTokensSetting](#slash-api-v1-UserSetting-AccessTokensSetting) |  |  |
 
 
 
 
 
 
-<a name="slash-api-v1-UserSettingGeneral"></a>
+<a name="slash-api-v1-UserSetting-AccessTokensSetting"></a>
 
-### UserSettingGeneral
+### UserSetting.AccessTokensSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_tokens | [UserSetting.AccessTokensSetting.AccessToken](#slash-api-v1-UserSetting-AccessTokensSetting-AccessToken) | repeated | Nested repeated field |
+
+
+
+
+
+
+<a name="slash-api-v1-UserSetting-AccessTokensSetting-AccessToken"></a>
+
+### UserSetting.AccessTokensSetting.AccessToken
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_token | [string](#string) |  | The access token is a JWT token, including expiration time, issuer, etc. |
+| description | [string](#string) |  | A description for the access token. |
+
+
+
+
+
+
+<a name="slash-api-v1-UserSetting-GeneralSetting"></a>
+
+### UserSetting.GeneralSetting
 
 
 
@@ -1467,7 +1501,6 @@
 | plan | [PlanType](#slash-api-v1-PlanType) |  | The workspace plan. |
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
 | custom_style | [string](#string) |  | The custom style. |
-| favicon_provider | [string](#string) |  | The url of custom favicon provider. |
 | owner | [string](#string) |  | The owner name. Format: &#34;users/{id}&#34; |
 
 
@@ -1483,12 +1516,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| license_key | [string](#string) |  |  |
-| enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
-| instance_url | [string](#string) |  | The instance URL. |
 | custom_style | [string](#string) |  | The custom style. |
 | default_visibility | [Visibility](#slash-api-v1-Visibility) |  | The default visibility of shortcuts and collections. |
-| favicon_provider | [string](#string) |  | The url of custom favicon provider. |
 
 
 

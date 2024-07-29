@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useWorkspaceStore } from "@/stores";
 import Icon from "./Icon";
 
 interface Props {
@@ -18,8 +17,7 @@ const getFaviconUrlWithProvider = (url: string, provider: string) => {
 
 const LinkFavicon = (props: Props) => {
   const { url } = props;
-  const workspaceStore = useWorkspaceStore();
-  const faviconProvider = workspaceStore.profile.faviconProvider || "https://www.google.com/s2/favicons";
+  const faviconProvider = "https://www.google.com/s2/favicons";
   const [faviconUrl, setFaviconUrl] = useState<string>(getFaviconUrlWithProvider(url, faviconProvider));
 
   const handleImgError = () => {

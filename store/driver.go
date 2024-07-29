@@ -48,4 +48,5 @@ type Driver interface {
 	// WorkspaceSetting model related methods.
 	UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.WorkspaceSetting) (*storepb.WorkspaceSetting, error)
 	ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSetting) ([]*storepb.WorkspaceSetting, error)
+	DeleteWorkspaceSetting(ctx context.Context, key storepb.WorkspaceSettingKey) error
 }

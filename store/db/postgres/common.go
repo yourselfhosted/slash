@@ -3,6 +3,14 @@ package postgres
 import (
 	"fmt"
 	"strings"
+
+	"google.golang.org/protobuf/encoding/protojson"
+)
+
+var (
+	protojsonUnmarshaler = protojson.UnmarshalOptions{
+		DiscardUnknown: true,
+	}
 )
 
 func placeholder(n int) string {

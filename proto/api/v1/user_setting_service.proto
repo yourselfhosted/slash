@@ -25,15 +25,26 @@ service UserSettingService {
 }
 
 message UserSetting {
-  // id is the user id.
-  int32 id = 1;
+  int32 user_id = 1;
 
-  UserSettingGeneral general = 2;
-}
+  GeneralSetting general = 2;
 
-message UserSettingGeneral {
-  string locale = 1;
-  string color_theme = 2;
+  AccessTokensSetting access_tokens = 3;
+
+  message GeneralSetting {
+    string locale = 1;
+    string color_theme = 2;
+  }
+
+  message AccessTokensSetting {
+    message AccessToken {
+      // The access token is a JWT token, including expiration time, issuer, etc.
+      string access_token = 1;
+      // A description for the access token.
+      string description = 2;
+    }
+    repeated AccessToken access_tokens = 1; // Nested repeated field
+  }
 }
 
 message GetUserSettingRequest {

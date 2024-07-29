@@ -118,13 +118,7 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 }
 
 func (s *FrontendService) registerFileRoutes(ctx context.Context, e *echo.Echo) {
-	instanceURLSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL,
-	})
-	if err != nil || instanceURLSetting == nil {
-		return
-	}
-	instanceURL := instanceURLSetting.GetInstanceUrl()
+	instanceURL := s.Profile.InstanceURL
 	if instanceURL == "" {
 		return
 	}

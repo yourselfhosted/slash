@@ -120,23 +120,25 @@ func (s *Server) GetEcho() *echo.Echo {
 }
 
 func (s *Server) getSecretSessionName(ctx context.Context) (string, error) {
-	secretSessionSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
+	workspaceSettingGeneral, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
 	})
 	if err != nil {
 		return "", err
 	}
-	if secretSessionSetting == nil {
+	if workspaceSettingGeneral == nil || workspaceSettingGeneral.GetGeneral() == nil {
 		tempSecret := uuid.New().String()
-		secretSessionSetting, err = s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
-			Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
-			Value: &storepb.WorkspaceSetting_SecretSession{
-				SecretSession: tempSecret,
+		workspaceSettingGeneral, err = s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+			Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
+			Value: &storepb.WorkspaceSetting_General{
+				General: &storepb.WorkspaceSetting_GeneralSetting{
+					SecretSession: tempSecret,
+				},
 			},
 		})
 		if err != nil {
 			return "", err
 		}
 	}
-	return secretSessionSetting.GetSecretSession(), nil
+	return workspaceSettingGeneral.GetGeneral().SecretSession, nil
 }

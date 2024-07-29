@@ -15,6 +15,7 @@ import (
 	"github.com/yourselfhosted/slash/server"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/version"
 	"github.com/yourselfhosted/slash/store"
 	"github.com/yourselfhosted/slash/store/db"
 )
@@ -24,36 +25,47 @@ const (
 )
 
 var (
-	serverProfile *profile.Profile
-	mode          string
-	port          int
-	data          string
-	driver        string
-	dsn           string
-	enableMetric  bool
-
 	rootCmd = &cobra.Command{
 		Use:   "slash",
 		Short: `An open source, self-hosted links shortener and sharing platform.`,
 		Run: func(_ *cobra.Command, _ []string) {
+			serverProfile := &profile.Profile{
+				Mode:        viper.GetString("mode"),
+				Port:        viper.GetInt("port"),
+				Data:        viper.GetString("data"),
+				DSN:         viper.GetString("dsn"),
+				Driver:      viper.GetString("driver"),
+				Public:      viper.GetBool("public"),
+				InstanceURL: viper.GetString("instance-url"),
+				Version:     version.GetCurrentVersion(viper.GetString("mode")),
+			}
+			if err := serverProfile.Validate(); err != nil {
+				panic(err)
+			}
+
 			ctx, cancel := context.WithCancel(context.Background())
 			dbDriver, err := db.NewDBDriver(serverProfile)
 			if err != nil {
 				cancel()
-				slog.Error("failed to create db driver", err)
+				slog.Error("failed to create db driver", "error", err)
 				return
 			}
 			if err := dbDriver.Migrate(ctx); err != nil {
 				cancel()
-				slog.Error("failed to migrate db", err)
+				slog.Error("failed to migrate db", "error", err)
 				return
 			}
 
 			storeInstance := store.New(dbDriver, serverProfile)
+			if err := storeInstance.MigrateWorkspaceSettings(ctx); err != nil {
+				cancel()
+				slog.Error("failed to migrate workspace settings", "error", err)
+				return
+			}
 			s, err := server.NewServer(ctx, serverProfile, storeInstance)
 			if err != nil {
 				cancel()
-				slog.Error("failed to create server", err)
+				slog.Error("failed to create server", "error", err)
 				return
 			}
 
@@ -74,11 +86,11 @@ var (
 				cancel()
 			}()
 
-			printGreetings()
+			printGreetings(serverProfile)
 
 			if err := s.Start(ctx); err != nil {
 				if err != http.ErrServerClosed {
-					slog.Error("failed to start server", err)
+					slog.Error("failed to start server", "error", err)
 					cancel()
 				}
 			}
@@ -89,71 +101,60 @@ var (
 	}
 )
 
-func Execute() error {
-	return rootCmd.Execute()
-}
-
 func init() {
-	cobra.OnInitialize(initConfig)
-
-	rootCmd.PersistentFlags().StringVarP(&mode, "mode", "m", "demo", `mode of server, can be "prod" or "dev" or "demo"`)
-	rootCmd.PersistentFlags().IntVarP(&port, "port", "p", 8082, "port of server")
-	rootCmd.PersistentFlags().StringVarP(&data, "data", "d", "", "data directory")
-	rootCmd.PersistentFlags().StringVarP(&driver, "driver", "", "", "database driver")
-	rootCmd.PersistentFlags().StringVarP(&dsn, "dsn", "", "", "database source name(aka. DSN)")
-	rootCmd.PersistentFlags().BoolVarP(&enableMetric, "metric", "", true, "allow metric collection")
-
-	err := viper.BindPFlag("mode", rootCmd.PersistentFlags().Lookup("mode"))
-	if err != nil {
-		panic(err)
-	}
-	err = viper.BindPFlag("port", rootCmd.PersistentFlags().Lookup("port"))
-	if err != nil {
-		panic(err)
-	}
-	err = viper.BindPFlag("data", rootCmd.PersistentFlags().Lookup("data"))
-	if err != nil {
-		panic(err)
-	}
-	err = viper.BindPFlag("driver", rootCmd.PersistentFlags().Lookup("driver"))
-	if err != nil {
-		panic(err)
-	}
-	err = viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
-	if err != nil {
-		panic(err)
-	}
-	err = viper.BindPFlag("metric", rootCmd.PersistentFlags().Lookup("metric"))
-	if err != nil {
-		panic(err)
-	}
-
 	viper.SetDefault("mode", "demo")
-	viper.SetDefault("port", 8082)
 	viper.SetDefault("driver", "sqlite")
-	viper.SetDefault("metric", true)
+	viper.SetDefault("port", 8082)
+	viper.SetDefault("public", true)
+
+	rootCmd.PersistentFlags().String("mode", "demo", `mode of server, can be "prod" or "dev" or "demo"`)
+	rootCmd.PersistentFlags().String("addr", "", "address of server")
+	rootCmd.PersistentFlags().Int("port", 8082, "port of server")
+	rootCmd.PersistentFlags().String("data", "", "data directory")
+	rootCmd.PersistentFlags().String("driver", "sqlite", "database driver")
+	rootCmd.PersistentFlags().String("dsn", "", "database source name(aka. DSN)")
+	rootCmd.PersistentFlags().Bool("public", true, "")
+	rootCmd.PersistentFlags().String("instance-url", "", "URL of the instance")
+
+	if err := viper.BindPFlag("mode", rootCmd.PersistentFlags().Lookup("mode")); err != nil {
+		panic(err)
+	}
+	if err := viper.BindPFlag("port", rootCmd.PersistentFlags().Lookup("port")); err != nil {
+		panic(err)
+	}
+	if err := viper.BindPFlag("data", rootCmd.PersistentFlags().Lookup("data")); err != nil {
+		panic(err)
+	}
+	if err := viper.BindPFlag("driver", rootCmd.PersistentFlags().Lookup("driver")); err != nil {
+		panic(err)
+	}
+	if err := viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn")); err != nil {
+		panic(err)
+	}
+	if err := viper.BindPFlag("public", rootCmd.PersistentFlags().Lookup("public")); err != nil {
+		panic(err)
+	}
+	if err := viper.BindPFlag("instance-url", rootCmd.PersistentFlags().Lookup("instance-url")); err != nil {
+		panic(err)
+	}
+
 	viper.SetEnvPrefix("slash")
+	viper.AutomaticEnv()
+	if err := viper.BindEnv("instance-url", "SLASH_INSTANCE_URL"); err != nil {
+		panic(err)
+	}
 }
 
-func initConfig() {
-	viper.AutomaticEnv()
-	var err error
-	serverProfile, err = profile.GetProfile()
-	if err != nil {
-		slog.Error("failed to get profile", err)
-		return
-	}
-
+func printGreetings(serverProfile *profile.Profile) {
 	println("---")
 	println("Server profile")
 	println("dsn:", serverProfile.DSN)
 	println("port:", serverProfile.Port)
 	println("mode:", serverProfile.Mode)
 	println("version:", serverProfile.Version)
+	println("public:", serverProfile.Public)
+	println("instance-url:", serverProfile.InstanceURL)
 	println("---")
-}
-
-func printGreetings() {
 	println(greetingBanner)
 	fmt.Printf("Version %s has been started on port %d\n", serverProfile.Version, serverProfile.Port)
 	println("---")
@@ -163,8 +164,7 @@ func printGreetings() {
 }
 
 func main() {
-	err := Execute()
-	if err != nil {
+	if err := rootCmd.Execute(); err != nil {
 		panic(err)
 	}
 }

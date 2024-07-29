@@ -3,11 +3,12 @@ package postgres
 import (
 	"context"
 	"errors"
-	"strconv"
+	"slices"
 	"strings"
 
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/store"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func (d *DB) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.WorkspaceSetting) (*storepb.WorkspaceSetting, error) {
@@ -21,18 +22,18 @@ func (d *DB) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.Workspa
 		SET value = EXCLUDED.value
 	`
 	var valueString string
-	if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY {
-		valueString = upsert.GetLicenseKey()
-	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION {
-		valueString = upsert.GetSecretSession()
-	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
-		valueString = strconv.FormatBool(upsert.GetEnableSignup())
-	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE {
-		valueString = upsert.GetCustomStyle()
-	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL {
-		valueString = upsert.GetInstanceUrl()
-	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY {
-		valueString = upsert.GetDefaultVisibility().String()
+	if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL {
+		valueBytes, err := protojson.Marshal(upsert.GetGeneral())
+		if err != nil {
+			return nil, err
+		}
+		valueString = string(valueBytes)
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
+		valueBytes, err := protojson.Marshal(upsert.GetShortcutRelated())
+		if err != nil {
+			return nil, err
+		}
+		valueString = string(valueBytes)
 	} else {
 		return nil, errors.New("invalid workspace setting key")
 	}
@@ -76,22 +77,29 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 			return nil, err
 		}
 		workspaceSetting.Key = storepb.WorkspaceSettingKey(storepb.WorkspaceSettingKey_value[keyString])
-		if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY {
-			workspaceSetting.Value = &storepb.WorkspaceSetting_LicenseKey{LicenseKey: valueString}
-		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION {
-			workspaceSetting.Value = &storepb.WorkspaceSetting_SecretSession{SecretSession: valueString}
-		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSAPCE_SETTING_ENABLE_SIGNUP {
-			enableSignup, err := strconv.ParseBool(valueString)
-			if err != nil {
+		if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL {
+			workspaceSettingGeneral := &storepb.WorkspaceSetting_GeneralSetting{}
+			if err := protojsonUnmarshaler.Unmarshal([]byte(valueString), workspaceSettingGeneral); err != nil {
 				return nil, err
 			}
-			workspaceSetting.Value = &storepb.WorkspaceSetting_EnableSignup{EnableSignup: enableSignup}
-		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE {
-			workspaceSetting.Value = &storepb.WorkspaceSetting_CustomStyle{CustomStyle: valueString}
-		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_INSTANCE_URL {
-			workspaceSetting.Value = &storepb.WorkspaceSetting_InstanceUrl{InstanceUrl: valueString}
-		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY {
-			workspaceSetting.Value = &storepb.WorkspaceSetting_DefaultVisibility{DefaultVisibility: storepb.Visibility(storepb.Visibility_value[valueString])}
+			workspaceSetting.Value = &storepb.WorkspaceSetting_General{
+				General: workspaceSettingGeneral,
+			}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
+			workspaceSettingShortcutRelated := &storepb.WorkspaceSetting_ShortcutRelatedSetting{}
+			if err := protojsonUnmarshaler.Unmarshal([]byte(valueString), workspaceSettingShortcutRelated); err != nil {
+				return nil, err
+			}
+			workspaceSetting.Value = &storepb.WorkspaceSetting_ShortcutRelated{
+				ShortcutRelated: workspaceSettingShortcutRelated,
+			}
+		} else if slices.Contains([]storepb.WorkspaceSettingKey{
+			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,
+			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
+			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE,
+			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY,
+		}, workspaceSetting.Key) {
+			workspaceSetting.Raw = valueString
 		} else {
 			continue
 		}
@@ -103,4 +111,15 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 	}
 
 	return list, nil
+}
+
+func (d *DB) DeleteWorkspaceSetting(ctx context.Context, key storepb.WorkspaceSettingKey) error {
+	stmt := `
+		DELETE FROM workspace_setting
+		WHERE key = $1
+	`
+	if _, err := d.db.ExecContext(ctx, stmt, key.String()); err != nil {
+		return err
+	}
+	return nil
 }

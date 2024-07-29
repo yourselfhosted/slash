@@ -8,28 +8,28 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/spf13/viper"
-
-	"github.com/yourselfhosted/slash/server/version"
 )
 
 // Profile is the configuration to start main server.
 type Profile struct {
-	// Mode can be "prod" or "dev"
-	Mode string `json:"mode"`
-	// Port is the binding port for server
-	Port int `json:"-"`
-	// Data is the data directory
-	Data string `json:"-"`
-	// DSN points to where slash stores its own data
-	DSN string `json:"-"`
-	// Driver is the database driver
-	// sqlite, mysql
-	Driver string `json:"-"`
-	// Version is the current version of server
-	Version string `json:"version"`
-	// Metric indicate the metric collection is enabled or not
-	Metric bool `json:"-"`
+	// Mode can be "prod" or "dev".
+	Mode string
+	// Port is the binding port for server.
+	Port int
+	// Data is the data directory.
+	Data string
+	// DSN points to where slash stores its own data.
+	DSN string
+	// Driver is the database driver. Supported drivers are sqlite, postgres.
+	Driver string
+	// Version is the current version of server.
+	Version string
+	// Metric indicate the metric collection is enabled or not.
+	Metric bool
+	// Pubic is the flag whether the instance is public for others.
+	Public bool
+	// InstanceURL is the URL of the instance.
+	InstanceURL string
 }
 
 func (p *Profile) IsDev() bool {
@@ -57,47 +57,36 @@ func checkDataDir(dataDir string) (string, error) {
 	return dataDir, nil
 }
 
-// GetProfile will return a profile for dev or prod.
-func GetProfile() (*Profile, error) {
-	profile := Profile{}
-	err := viper.Unmarshal(&profile)
-	if err != nil {
-		return nil, err
+func (p *Profile) Validate() error {
+	if p.Mode != "demo" && p.Mode != "dev" && p.Mode != "prod" {
+		p.Mode = "demo"
 	}
 
-	if profile.Mode != "demo" && profile.Mode != "dev" && profile.Mode != "prod" {
-		profile.Mode = "demo"
-	}
-
-	if profile.Mode == "prod" && profile.Data == "" {
+	if p.Mode == "prod" && p.Data == "" {
 		if runtime.GOOS == "windows" {
-			profile.Data = filepath.Join(os.Getenv("ProgramData"), "slash")
-
-			if _, err := os.Stat(profile.Data); os.IsNotExist(err) {
-				if err := os.MkdirAll(profile.Data, 0770); err != nil {
-					fmt.Printf("Failed to create data directory: %s, err: %+v\n", profile.Data, err)
-					return nil, err
+			p.Data = filepath.Join(os.Getenv("ProgramData"), "slash")
+			if _, err := os.Stat(p.Data); os.IsNotExist(err) {
+				if err := os.MkdirAll(p.Data, 0770); err != nil {
+					fmt.Printf("Failed to create data directory: %s, err: %+v\n", p.Data, err)
+					return err
 				}
 			}
 		} else {
-			profile.Data = "/var/opt/slash"
+			p.Data = "/var/opt/slash"
 		}
 	}
 
-	if profile.Driver == "sqlite" {
-		dataDir, err := checkDataDir(profile.Data)
-		if err != nil {
-			fmt.Printf("Failed to check dsn: %s, err: %+v\n", dataDir, err)
-			return nil, err
-		}
-
-		profile.Data = dataDir
-		if profile.DSN == "" {
-			dbFile := fmt.Sprintf("slash_%s.db", profile.Mode)
-			profile.DSN = filepath.Join(dataDir, dbFile)
-		}
+	dataDir, err := checkDataDir(p.Data)
+	if err != nil {
+		fmt.Printf("Failed to check dsn: %s, err: %+v\n", dataDir, err)
+		return err
 	}
-	profile.Version = version.GetCurrentVersion(profile.Mode)
 
-	return &profile, nil
+	p.Data = dataDir
+	if p.Driver == "sqlite" && p.DSN == "" {
+		dbFile := fmt.Sprintf("slash_%s.db", p.Mode)
+		p.DSN = filepath.Join(dataDir, dbFile)
+	}
+
+	return nil
 }

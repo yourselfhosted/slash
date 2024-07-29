@@ -20,14 +20,16 @@
   
 - [store/user_setting.proto](#store_user_setting-proto)
     - [UserSetting](#slash-store-UserSetting)
-    - [UserSettingAccessTokens](#slash-store-UserSettingAccessTokens)
-    - [UserSettingAccessTokens.AccessToken](#slash-store-UserSettingAccessTokens-AccessToken)
-    - [UserSettingGeneral](#slash-store-UserSettingGeneral)
+    - [UserSetting.AccessTokensSetting](#slash-store-UserSetting-AccessTokensSetting)
+    - [UserSetting.AccessTokensSetting.AccessToken](#slash-store-UserSetting-AccessTokensSetting-AccessToken)
+    - [UserSetting.GeneralSetting](#slash-store-UserSetting-GeneralSetting)
   
     - [UserSettingKey](#slash-store-UserSettingKey)
   
 - [store/workspace_setting.proto](#store_workspace_setting-proto)
     - [WorkspaceSetting](#slash-store-WorkspaceSetting)
+    - [WorkspaceSetting.GeneralSetting](#slash-store-WorkspaceSetting-GeneralSetting)
+    - [WorkspaceSetting.ShortcutRelatedSetting](#slash-store-WorkspaceSetting-ShortcutRelatedSetting)
   
     - [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey)
   
@@ -242,38 +244,38 @@
 | ----- | ---- | ----- | ----------- |
 | user_id | [int32](#int32) |  |  |
 | key | [UserSettingKey](#slash-store-UserSettingKey) |  |  |
-| general | [UserSettingGeneral](#slash-store-UserSettingGeneral) |  |  |
-| access_tokens | [UserSettingAccessTokens](#slash-store-UserSettingAccessTokens) |  |  |
+| general | [UserSetting.GeneralSetting](#slash-store-UserSetting-GeneralSetting) |  |  |
+| access_tokens | [UserSetting.AccessTokensSetting](#slash-store-UserSetting-AccessTokensSetting) |  |  |
 
 
 
 
 
 
-<a name="slash-store-UserSettingAccessTokens"></a>
+<a name="slash-store-UserSetting-AccessTokensSetting"></a>
 
-### UserSettingAccessTokens
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| access_tokens | [UserSettingAccessTokens.AccessToken](#slash-store-UserSettingAccessTokens-AccessToken) | repeated |  |
-
-
-
-
-
-
-<a name="slash-store-UserSettingAccessTokens-AccessToken"></a>
-
-### UserSettingAccessTokens.AccessToken
+### UserSetting.AccessTokensSetting
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| access_token | [string](#string) |  | The access token is a JWT token. Including expiration time, issuer, etc. |
+| access_tokens | [UserSetting.AccessTokensSetting.AccessToken](#slash-store-UserSetting-AccessTokensSetting-AccessToken) | repeated | Nested repeated field |
+
+
+
+
+
+
+<a name="slash-store-UserSetting-AccessTokensSetting-AccessToken"></a>
+
+### UserSetting.AccessTokensSetting.AccessToken
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| access_token | [string](#string) |  | The access token is a JWT token, including expiration time, issuer, etc. |
 | description | [string](#string) |  | A description for the access token. |
 
 
@@ -281,9 +283,9 @@
 
 
 
-<a name="slash-store-UserSettingGeneral"></a>
+<a name="slash-store-UserSetting-GeneralSetting"></a>
 
-### UserSettingGeneral
+### UserSetting.GeneralSetting
 
 
 
@@ -307,8 +309,8 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | USER_SETTING_KEY_UNSPECIFIED | 0 |  |
-| GENERAL | 1 | General settings for the user. |
-| ACCESS_TOKENS | 2 | Access tokens for the user. |
+| USER_SETTING_GENERAL | 1 | User general settings. |
+| USER_SETTING_ACCESS_TOKENS | 2 | User access tokens. |
 
 
  
@@ -335,13 +337,41 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | key | [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey) |  |  |
-| license_key | [string](#string) |  | The license key of workspace. |
-| secret_session | [string](#string) |  | The secret session key used to encrypt session data. |
-| enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
-| custom_style | [string](#string) |  | The custom style. |
-| instance_url | [string](#string) |  | The instance URL of workspace. |
-| default_visibility | [Visibility](#slash-store-Visibility) |  | The default visibility of shortcuts and collections. |
-| favicon_provider | [string](#string) |  | The url of custom favicon provider. e.g. https://github.com/yourselfhosted/favicons |
+| raw | [string](#string) |  |  |
+| general | [WorkspaceSetting.GeneralSetting](#slash-store-WorkspaceSetting-GeneralSetting) |  |  |
+| shortcut_related | [WorkspaceSetting.ShortcutRelatedSetting](#slash-store-WorkspaceSetting-ShortcutRelatedSetting) |  |  |
+
+
+
+
+
+
+<a name="slash-store-WorkspaceSetting-GeneralSetting"></a>
+
+### WorkspaceSetting.GeneralSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| secret_session | [string](#string) |  |  |
+| license_key | [string](#string) |  |  |
+| custom_style | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-store-WorkspaceSetting-ShortcutRelatedSetting"></a>
+
+### WorkspaceSetting.ShortcutRelatedSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| default_visibility | [Visibility](#slash-store-Visibility) |  |  |
 
 
 
@@ -358,13 +388,12 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | WORKSPACE_SETTING_KEY_UNSPECIFIED | 0 |  |
-| WORKSPACE_SETTING_LICENSE_KEY | 1 | The license key. |
-| WORKSPACE_SETTING_SECRET_SESSION | 2 | The secret session key used to encrypt session data. |
-| WORKSAPCE_SETTING_ENABLE_SIGNUP | 3 | Whether to enable other users to sign up. |
-| WORKSPACE_SETTING_CUSTOM_STYLE | 4 | The custom style. |
-| WORKSPACE_SETTING_INSTANCE_URL | 7 | The instance URL. |
-| WORKSPACE_SETTING_DEFAULT_VISIBILITY | 8 | The default visibility of shortcuts and collections. |
-| WORKSPACE_SETTING_FAVICON_PROVIDER | 9 | The url of custom favicon provider. |
+| WORKSPACE_SETTING_GENERAL | 1 | Workspace general settings. |
+| WORKSPACE_SETTING_SHORTCUT_RELATED | 2 | Workspace shortcut-related settings. |
+| WORKSPACE_SETTING_LICENSE_KEY | 3 | TODO: remove the following keys. The license key. |
+| WORKSPACE_SETTING_SECRET_SESSION | 4 | The secret session key used to encrypt session data. |
+| WORKSPACE_SETTING_CUSTOM_STYLE | 5 | The custom style. |
+| WORKSPACE_SETTING_DEFAULT_VISIBILITY | 6 | The default visibility of shortcuts and collections. |
 
 
  

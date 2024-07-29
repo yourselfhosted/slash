@@ -8,39 +8,38 @@ option go_package = "gen/store";
 
 message WorkspaceSetting {
   WorkspaceSettingKey key = 1;
+  string raw = 4;
 
   oneof value {
-    // The license key of workspace.
+    GeneralSetting general = 2;
+    ShortcutRelatedSetting shortcut_related = 3;
+  }
+
+  message GeneralSetting {
+    string secret_session = 1;
     string license_key = 2;
-    // The secret session key used to encrypt session data.
-    string secret_session = 3;
-    // Whether to enable other users to sign up.
-    bool enable_signup = 4;
-    // The custom style.
-    string custom_style = 5;
-    // The instance URL of workspace.
-    string instance_url = 8;
-    // The default visibility of shortcuts and collections.
-    Visibility default_visibility = 9;
-    // The url of custom favicon provider. e.g. https://github.com/yourselfhosted/favicons
-    string favicon_provider = 10;
+    string custom_style = 3;
+  }
+
+  message ShortcutRelatedSetting {
+    Visibility default_visibility = 1;
   }
 }
 
 enum WorkspaceSettingKey {
   WORKSPACE_SETTING_KEY_UNSPECIFIED = 0;
+  // Workspace general settings.
+  WORKSPACE_SETTING_GENERAL = 1;
+  // Workspace shortcut-related settings.
+  WORKSPACE_SETTING_SHORTCUT_RELATED = 2;
+
+  // TODO: remove the following keys.
   // The license key.
-  WORKSPACE_SETTING_LICENSE_KEY = 1;
+  WORKSPACE_SETTING_LICENSE_KEY = 3;
   // The secret session key used to encrypt session data.
-  WORKSPACE_SETTING_SECRET_SESSION = 2;
-  // Whether to enable other users to sign up.
-  WORKSAPCE_SETTING_ENABLE_SIGNUP = 3;
+  WORKSPACE_SETTING_SECRET_SESSION = 4;
   // The custom style.
-  WORKSPACE_SETTING_CUSTOM_STYLE = 4;
-  // The instance URL.
-  WORKSPACE_SETTING_INSTANCE_URL = 7;
+  WORKSPACE_SETTING_CUSTOM_STYLE = 5;
   // The default visibility of shortcuts and collections.
-  WORKSPACE_SETTING_DEFAULT_VISIBILITY = 8;
-  // The url of custom favicon provider.
-  WORKSPACE_SETTING_FAVICON_PROVIDER = 9;
+  WORKSPACE_SETTING_DEFAULT_VISIBILITY = 6;
 }

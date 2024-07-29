@@ -3,6 +3,8 @@ package store
 import (
 	"context"
 
+	"github.com/pkg/errors"
+
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 )
 
@@ -49,4 +51,12 @@ func (s *Store) GetWorkspaceSetting(ctx context.Context, find *FindWorkspaceSett
 	workspaceSetting := list[0]
 	s.workspaceSettingCache.Store(workspaceSetting.Key, workspaceSetting)
 	return workspaceSetting, nil
+}
+
+func (s *Store) DeleteWorkspaceSetting(ctx context.Context, key storepb.WorkspaceSettingKey) error {
+	if err := s.driver.DeleteWorkspaceSetting(ctx, key); err != nil {
+		return errors.Wrap(err, "failed to delete workspace setting")
+	}
+	s.workspaceSettingCache.Delete(key)
+	return nil
 }

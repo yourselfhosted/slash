@@ -37,25 +37,16 @@ message WorkspaceProfile {
   bool enable_signup = 4;
   // The custom style.
   string custom_style = 5;
-  // The url of custom favicon provider.
-  string favicon_provider = 7;
   // The owner name.
   // Format: "users/{id}"
-  string owner = 8;
+  string owner = 6;
 }
 
 message WorkspaceSetting {
-  string license_key = 1;
-  // Whether to enable other users to sign up.
-  bool enable_signup = 2;
-  // The instance URL.
-  string instance_url = 3;
   // The custom style.
-  string custom_style = 4;
+  string custom_style = 1;
   // The default visibility of shortcuts and collections.
-  Visibility default_visibility = 7;
-  // The url of custom favicon provider.
-  string favicon_provider = 8;
+  Visibility default_visibility = 2;
 }
 
 message GetWorkspaceProfileRequest {}
