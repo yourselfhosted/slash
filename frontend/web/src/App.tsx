@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import DemoBanner from "@/components/DemoBanner";
 import { useWorkspaceStore } from "@/stores";
 import useNavigateTo from "./hooks/useNavigateTo";
+import { PlanType } from "./types/proto/api/v1/subscription_service";
 
 function App() {
   const navigateTo = useNavigateTo();
@@ -25,6 +26,16 @@ function App() {
     styleEl.setAttribute("type", "text/css");
     document.body.insertAdjacentElement("beforeend", styleEl);
   }, [workspaceStore.setting.customStyle]);
+
+  useEffect(() => {
+    const hasCustomBranding = workspaceStore.profile.plan === PlanType.PRO;
+    if (!hasCustomBranding || !workspaceStore.setting.branding) {
+      return;
+    }
+
+    const favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement;
+    favicon.href = new TextDecoder().decode(workspaceStore.setting.branding);
+  }, [workspaceStore.setting.branding]);
 
   useEffect(() => {
     const root = document.documentElement;
