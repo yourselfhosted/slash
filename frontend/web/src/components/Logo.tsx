@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { useWorkspaceStore } from "@/stores";
+import { PlanType } from "@/types/proto/api/v1/subscription_service";
 import Icon from "./Icon";
 
 interface Props {
@@ -8,7 +9,8 @@ interface Props {
 
 const Logo = ({ className }: Props) => {
   const workspaceStore = useWorkspaceStore();
-  const branding = workspaceStore.setting.branding ? new TextDecoder().decode(workspaceStore.setting.branding) : "";
+  const hasCustomBranding = workspaceStore.profile.plan === PlanType.PRO;
+  const branding = hasCustomBranding && workspaceStore.setting.branding ? new TextDecoder().decode(workspaceStore.setting.branding) : "";
   return (
     <div className={classNames("w-8 h-auto dark:text-gray-500 rounded-lg overflow-hidden", className)}>
       {branding ? (

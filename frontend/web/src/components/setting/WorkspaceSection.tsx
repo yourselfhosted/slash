@@ -6,7 +6,9 @@ import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { Visibility } from "@/types/proto/api/v1/common";
+import { PlanType } from "@/types/proto/api/v1/subscription_service";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
+import FeatureBadge from "../FeatureBadge";
 import Icon from "../Icon";
 
 const getDefaultVisibility = (visibility?: Visibility) => {
@@ -31,7 +33,8 @@ const WorkspaceSection = () => {
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(workspaceStore.setting);
   const originalWorkspaceSetting = useRef<WorkspaceSetting>(workspaceStore.setting);
   const allowSave = !isEqual(originalWorkspaceSetting.current, workspaceSetting);
-  const branding = workspaceSetting.branding ? new TextDecoder().decode(workspaceSetting.branding) : "";
+  const hasCustomBranding = workspaceStore.profile.plan === PlanType.PRO;
+  const branding = hasCustomBranding && workspaceSetting.branding ? new TextDecoder().decode(workspaceSetting.branding) : "";
 
   const onBrandingChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files: File[] = Array.from(event.target.files || []);
@@ -96,22 +99,32 @@ const WorkspaceSection = () => {
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="w-full flex flex-col justify-start items-start">
-            <p className="font-medium dark:text-gray-400">Custom branding</p>
+            <p className="flex flex-row justify-start items-center">
+              <span className="font-medium dark:text-gray-400">Custom branding</span>
+              <FeatureBadge className="w-5 h-auto ml-1 text-blue-600" />
+            </p>
             <p className="text-sm text-gray-500 leading-tight">Recommand logo ratio: 1:1</p>
           </div>
-          <div className="relative shrink-0 hover:opacity-80">
+          <div className="relative shrink-0 hover:opacity-80 flex flex-col items-end justify-center">
             {branding ? (
-              <div className="relative w-16 h-16">
-                <img src={branding} alt="branding" className="max-w-full max-h-full" />
+              <div className="relative w-12 h-12 mr-2">
+                <img src={branding} alt="branding" className="max-w-full max-h-full rounded-lg" />
                 <Icon.X
                   className="w-4 h-auto -top-2 -right-2 absolute z-1 border rounded-full bg-white opacity-80"
                   onClick={() => setWorkspaceSetting({ ...workspaceSetting, branding: new TextEncoder().encode("") })}
                 />
               </div>
             ) : (
-              <Icon.CircleSlash className="w-7 h-auto dark:text-gray-500 mr-2" strokeWidth={1.5} />
+              <Icon.CircleSlash className="w-12 h-auto dark:text-gray-500 mr-2" strokeWidth={1} />
             )}
-            <input className="absolute inset-0 z-1 opacity-0" type="file" accept=".jpg,.jpeg,.png,.svg,.webp" onChange={onBrandingChange} />
+            <input
+              className="absolute inset-0 z-1 opacity-0"
+              type="file"
+              disabled={!hasCustomBranding}
+              accept=".jpg,.jpeg,.png,.svg,.webp"
+              onChange={onBrandingChange}
+            />
+            <p className="text-xs opacity-60">(Click to select file)</p>
           </div>
         </div>
         <div className="w-full flex flex-row justify-between items-center">
