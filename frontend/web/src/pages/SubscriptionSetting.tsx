@@ -126,11 +126,11 @@ const SubscriptionSetting: React.FC = () => {
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    Advanced analytics
+                    Custom branding
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    Custom styles
+                    Advanced analytics
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
@@ -157,10 +157,6 @@ const SubscriptionSetting: React.FC = () => {
                 </div>
                 <p className="mt-2 font-medium dark:text-gray-300">Everything in Pro, and</p>
                 <ul className="mt-4 space-y-3">
-                  <li className="flex items-center dark:text-gray-300">
-                    <Icon.Smile className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    Custom branding
-                  </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.Shield className="w-5 h-auto text-green-600 mr-1 shrink-0" />
                     Single Sign-On(SSO)
