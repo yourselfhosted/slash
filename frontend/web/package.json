@@ -48,7 +48,7 @@
     "postcss": "^8.4.40",
     "prettier": "^3.3.3",
     "protobufjs": "^7.3.2",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "vite": "^5.3.4"
   },
   "resolutions": {
