@@ -110,7 +110,7 @@ const WorkspaceSection = () => {
               <div className="relative w-12 h-12 mr-2">
                 <img src={branding} alt="branding" className="max-w-full max-h-full rounded-lg" />
                 <Icon.X
-                  className="w-4 h-auto -top-2 -right-2 absolute z-1 border rounded-full bg-white opacity-80"
+                  className="w-4 h-auto -top-2 -right-2 absolute z-10 border rounded-full bg-white opacity-80"
                   onClick={() => setWorkspaceSetting({ ...workspaceSetting, branding: new TextEncoder().encode("") })}
                 />
               </div>
