@@ -209,7 +209,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| oauth2_config | [IdentityProviderConfig.OAuth2Config](#slash-store-IdentityProviderConfig-OAuth2Config) |  |  |
+| oauth2 | [IdentityProviderConfig.OAuth2Config](#slash-store-IdentityProviderConfig-OAuth2Config) |  |  |
 
 
 
@@ -224,6 +224,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
+| identifier | [string](#string) |  |  |
 | email | [string](#string) |  |  |
 | display_name | [string](#string) |  |  |
 

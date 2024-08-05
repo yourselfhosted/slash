@@ -17,12 +17,13 @@ message IdentityProvider {
 
 message IdentityProviderConfig {
   oneof config {
-    OAuth2Config oauth2_config = 1;
+    OAuth2Config oauth2 = 1;
   }
 
   message FieldMapping {
-    string email = 1;
-    string display_name = 2;
+    string identifier = 1;
+    string email = 2;
+    string display_name = 3;
   }
 
   message OAuth2Config {

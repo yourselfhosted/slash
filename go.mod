@@ -75,6 +75,7 @@ require (
 	github.com/posthog/posthog-go v0.0.0-20240327112532-87b23fe11103
 	golang.org/x/exp v0.0.0-20240409090435-93d18d7e34b8
 	golang.org/x/mod v0.19.0
+	golang.org/x/oauth2 v0.22.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20240723171418-e6d459c13d2a
 	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.34.2
