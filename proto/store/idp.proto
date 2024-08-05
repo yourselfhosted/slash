@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package slash.store;
+
+option go_package = "gen/store";
+
+message IdentityProvider {
+  string name = 1;
+
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    OAUTH2 = 1;
+  }
+  Type type = 2;
+  IdentityProviderConfig config = 3;
+}
+
+message IdentityProviderConfig {
+  oneof config {
+    OAuth2Config oauth2_config = 1;
+  }
+
+  message FieldMapping {
+    string email = 1;
+    string display_name = 2;
+  }
+
+  message OAuth2Config {
+    string client_id = 1;
+    string client_secret = 2;
+    string auth_url = 3;
+    string token_url = 4;
+    string user_info_url = 5;
+    repeated string scopes = 6;
+    FieldMapping field_mapping = 7;
+  }
+}

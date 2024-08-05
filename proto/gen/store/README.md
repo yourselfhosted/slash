@@ -14,6 +14,14 @@
 - [store/collection.proto](#store_collection-proto)
     - [Collection](#slash-store-Collection)
   
+- [store/idp.proto](#store_idp-proto)
+    - [IdentityProvider](#slash-store-IdentityProvider)
+    - [IdentityProviderConfig](#slash-store-IdentityProviderConfig)
+    - [IdentityProviderConfig.FieldMapping](#slash-store-IdentityProviderConfig-FieldMapping)
+    - [IdentityProviderConfig.OAuth2Config](#slash-store-IdentityProviderConfig-OAuth2Config)
+  
+    - [IdentityProvider.Type](#slash-store-IdentityProvider-Type)
+  
 - [store/shortcut.proto](#store_shortcut-proto)
     - [OpenGraphMetadata](#slash-store-OpenGraphMetadata)
     - [Shortcut](#slash-store-Shortcut)
@@ -29,6 +37,7 @@
 - [store/workspace_setting.proto](#store_workspace_setting-proto)
     - [WorkspaceSetting](#slash-store-WorkspaceSetting)
     - [WorkspaceSetting.GeneralSetting](#slash-store-WorkspaceSetting-GeneralSetting)
+    - [WorkspaceSetting.IdentityProviderSetting](#slash-store-WorkspaceSetting-IdentityProviderSetting)
     - [WorkspaceSetting.ShortcutRelatedSetting](#slash-store-WorkspaceSetting-ShortcutRelatedSetting)
   
     - [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey)
@@ -159,6 +168,103 @@
 
 
  
+
+ 
+
+ 
+
+ 
+
+
+
+<a name="store_idp-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## store/idp.proto
+
+
+
+<a name="slash-store-IdentityProvider"></a>
+
+### IdentityProvider
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| type | [IdentityProvider.Type](#slash-store-IdentityProvider-Type) |  |  |
+| config | [IdentityProviderConfig](#slash-store-IdentityProviderConfig) |  |  |
+
+
+
+
+
+
+<a name="slash-store-IdentityProviderConfig"></a>
+
+### IdentityProviderConfig
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| oauth2_config | [IdentityProviderConfig.OAuth2Config](#slash-store-IdentityProviderConfig-OAuth2Config) |  |  |
+
+
+
+
+
+
+<a name="slash-store-IdentityProviderConfig-FieldMapping"></a>
+
+### IdentityProviderConfig.FieldMapping
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| email | [string](#string) |  |  |
+| display_name | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-store-IdentityProviderConfig-OAuth2Config"></a>
+
+### IdentityProviderConfig.OAuth2Config
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| client_id | [string](#string) |  |  |
+| client_secret | [string](#string) |  |  |
+| auth_url | [string](#string) |  |  |
+| token_url | [string](#string) |  |  |
+| user_info_url | [string](#string) |  |  |
+| scopes | [string](#string) | repeated |  |
+| field_mapping | [IdentityProviderConfig.FieldMapping](#slash-store-IdentityProviderConfig-FieldMapping) |  |  |
+
+
+
+
+
+ 
+
+
+<a name="slash-store-IdentityProvider-Type"></a>
+
+### IdentityProvider.Type
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| TYPE_UNSPECIFIED | 0 |  |
+| OAUTH2 | 1 |  |
+
 
  
 
@@ -340,6 +446,7 @@
 | raw | [string](#string) |  |  |
 | general | [WorkspaceSetting.GeneralSetting](#slash-store-WorkspaceSetting-GeneralSetting) |  |  |
 | shortcut_related | [WorkspaceSetting.ShortcutRelatedSetting](#slash-store-WorkspaceSetting-ShortcutRelatedSetting) |  |  |
+| identity_provider | [WorkspaceSetting.IdentityProviderSetting](#slash-store-WorkspaceSetting-IdentityProviderSetting) |  |  |
 
 
 
@@ -358,6 +465,21 @@
 | license_key | [string](#string) |  |  |
 | branding | [bytes](#bytes) |  |  |
 | custom_style | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-store-WorkspaceSetting-IdentityProviderSetting"></a>
+
+### WorkspaceSetting.IdentityProviderSetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| identity_providers | [IdentityProvider](#slash-store-IdentityProvider) | repeated |  |
 
 
 
@@ -391,10 +513,11 @@
 | WORKSPACE_SETTING_KEY_UNSPECIFIED | 0 |  |
 | WORKSPACE_SETTING_GENERAL | 1 | Workspace general settings. |
 | WORKSPACE_SETTING_SHORTCUT_RELATED | 2 | Workspace shortcut-related settings. |
-| WORKSPACE_SETTING_LICENSE_KEY | 3 | TODO: remove the following keys. The license key. |
-| WORKSPACE_SETTING_SECRET_SESSION | 4 | The secret session key used to encrypt session data. |
-| WORKSPACE_SETTING_CUSTOM_STYLE | 5 | The custom style. |
-| WORKSPACE_SETTING_DEFAULT_VISIBILITY | 6 | The default visibility of shortcuts and collections. |
+| WORKSPACE_SETTING_IDENTITY_PROVIDER | 3 | Workspace identity provider settings. |
+| WORKSPACE_SETTING_LICENSE_KEY | 10 | TODO: remove the following keys. The license key. |
+| WORKSPACE_SETTING_SECRET_SESSION | 11 | The secret session key used to encrypt session data. |
+| WORKSPACE_SETTING_CUSTOM_STYLE | 12 | The custom style. |
+| WORKSPACE_SETTING_DEFAULT_VISIBILITY | 13 | The default visibility of shortcuts and collections. |
 
 
  
