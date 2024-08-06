@@ -17,12 +17,13 @@ produces:
 paths:
   /api/v1/auth/signin:
     post:
+      summary: SignIn signs in the user with the given username and password.
       operationId: AuthService_SignIn
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1SignInResponse'
+            $ref: '#/definitions/v1User'
         default:
           description: An unexpected error response.
           schema:
@@ -38,14 +39,48 @@ paths:
           type: string
       tags:
         - AuthService
+  /api/v1/auth/signin/sso:
+    post:
+      summary: SignInWithSSO signs in the user with the given SSO code.
+      operationId: AuthService_SignInWithSSO
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1User'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: idpName
+          description: The name of the SSO provider.
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: code
+          description: The code to sign in with.
+          in: query
+          required: false
+          type: string
+        - name: redirectUri
+          description: The redirect URI.
+          in: query
+          required: false
+          type: string
+      tags:
+        - AuthService
   /api/v1/auth/signout:
     post:
+      summary: SignOut signs out the user.
       operationId: AuthService_SignOut
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1SignOutResponse'
+            type: object
+            properties: {}
         default:
           description: An unexpected error response.
           schema:
@@ -54,12 +89,13 @@ paths:
         - AuthService
   /api/v1/auth/signup:
     post:
+      summary: SignUp signs up the user with the given username and password.
       operationId: AuthService_SignUp
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1SignUpResponse'
+            $ref: '#/definitions/v1User'
         default:
           description: An unexpected error response.
           schema:
@@ -81,12 +117,13 @@ paths:
         - AuthService
   /api/v1/auth/status:
     post:
+      summary: GetAuthStatus returns the current auth status of the user.
       operationId: AuthService_GetAuthStatus
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GetAuthStatusResponse'
+            $ref: '#/definitions/v1User'
         default:
           description: An unexpected error response.
           schema:
@@ -961,11 +998,6 @@ definitions:
     type: object
   v1DeleteUserResponse:
     type: object
-  v1GetAuthStatusResponse:
-    type: object
-    properties:
-      user:
-        $ref: '#/definitions/v1User'
   v1GetCollectionByNameResponse:
     type: object
     properties:
@@ -1077,18 +1109,6 @@ definitions:
       - ADMIN
       - USER
     default: ROLE_UNSPECIFIED
-  v1SignInResponse:
-    type: object
-    properties:
-      user:
-        $ref: '#/definitions/v1User'
-  v1SignOutResponse:
-    type: object
-  v1SignUpResponse:
-    type: object
-    properties:
-      user:
-        $ref: '#/definitions/v1User'
   v1Subscription:
     type: object
     properties:

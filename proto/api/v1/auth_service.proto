@@ -4,37 +4,38 @@ package slash.api.v1;
 
 import "api/v1/user_service.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 option go_package = "gen/api/v1";
 
 service AuthService {
-  rpc GetAuthStatus(GetAuthStatusRequest) returns (GetAuthStatusResponse) {
+  // GetAuthStatus returns the current auth status of the user.
+  rpc GetAuthStatus(GetAuthStatusRequest) returns (User) {
     option (google.api.http) = {post: "/api/v1/auth/status"};
   }
-  rpc SignIn(SignInRequest) returns (SignInResponse) {
+  // SignIn signs in the user with the given username and password.
+  rpc SignIn(SignInRequest) returns (User) {
     option (google.api.http) = {post: "/api/v1/auth/signin"};
   }
-  rpc SignUp(SignUpRequest) returns (SignUpResponse) {
+  // SignInWithSSO signs in the user with the given SSO code.
+  rpc SignInWithSSO(SignInWithSSORequest) returns (User) {
+    option (google.api.http) = {post: "/api/v1/auth/signin/sso"};
+  }
+  // SignUp signs up the user with the given username and password.
+  rpc SignUp(SignUpRequest) returns (User) {
     option (google.api.http) = {post: "/api/v1/auth/signup"};
   }
-  rpc SignOut(SignOutRequest) returns (SignOutResponse) {
+  // SignOut signs out the user.
+  rpc SignOut(SignOutRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {post: "/api/v1/auth/signout"};
   }
 }
 
 message GetAuthStatusRequest {}
 
-message GetAuthStatusResponse {
-  User user = 1;
-}
-
 message SignInRequest {
   string email = 1;
   string password = 2;
-}
-
-message SignInResponse {
-  User user = 1;
 }
 
 message SignUpRequest {
@@ -43,10 +44,13 @@ message SignUpRequest {
   string password = 3;
 }
 
-message SignUpResponse {
-  User user = 1;
+message SignInWithSSORequest {
+  // The name of the SSO provider.
+  int32 idp_name = 1;
+  // The code to sign in with.
+  string code = 2;
+  // The redirect URI.
+  string redirect_uri = 3;
 }
 
 message SignOutRequest {}
-
-message SignOutResponse {}

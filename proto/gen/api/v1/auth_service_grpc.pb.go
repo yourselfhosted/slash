@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -21,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	AuthService_GetAuthStatus_FullMethodName = "/slash.api.v1.AuthService/GetAuthStatus"
 	AuthService_SignIn_FullMethodName        = "/slash.api.v1.AuthService/SignIn"
+	AuthService_SignInWithSSO_FullMethodName = "/slash.api.v1.AuthService/SignInWithSSO"
 	AuthService_SignUp_FullMethodName        = "/slash.api.v1.AuthService/SignUp"
 	AuthService_SignOut_FullMethodName       = "/slash.api.v1.AuthService/SignOut"
 )
@@ -29,10 +31,16 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
-	GetAuthStatus(ctx context.Context, in *GetAuthStatusRequest, opts ...grpc.CallOption) (*GetAuthStatusResponse, error)
-	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
-	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
-	SignOut(ctx context.Context, in *SignOutRequest, opts ...grpc.CallOption) (*SignOutResponse, error)
+	// GetAuthStatus returns the current auth status of the user.
+	GetAuthStatus(ctx context.Context, in *GetAuthStatusRequest, opts ...grpc.CallOption) (*User, error)
+	// SignIn signs in the user with the given username and password.
+	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*User, error)
+	// SignInWithSSO signs in the user with the given SSO code.
+	SignInWithSSO(ctx context.Context, in *SignInWithSSORequest, opts ...grpc.CallOption) (*User, error)
+	// SignUp signs up the user with the given username and password.
+	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*User, error)
+	// SignOut signs out the user.
+	SignOut(ctx context.Context, in *SignOutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type authServiceClient struct {
@@ -43,9 +51,9 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 	return &authServiceClient{cc}
 }
 
-func (c *authServiceClient) GetAuthStatus(ctx context.Context, in *GetAuthStatusRequest, opts ...grpc.CallOption) (*GetAuthStatusResponse, error) {
+func (c *authServiceClient) GetAuthStatus(ctx context.Context, in *GetAuthStatusRequest, opts ...grpc.CallOption) (*User, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetAuthStatusResponse)
+	out := new(User)
 	err := c.cc.Invoke(ctx, AuthService_GetAuthStatus_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -53,9 +61,9 @@ func (c *authServiceClient) GetAuthStatus(ctx context.Context, in *GetAuthStatus
 	return out, nil
 }
 
-func (c *authServiceClient) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error) {
+func (c *authServiceClient) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*User, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SignInResponse)
+	out := new(User)
 	err := c.cc.Invoke(ctx, AuthService_SignIn_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -63,9 +71,19 @@ func (c *authServiceClient) SignIn(ctx context.Context, in *SignInRequest, opts 
 	return out, nil
 }
 
-func (c *authServiceClient) SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error) {
+func (c *authServiceClient) SignInWithSSO(ctx context.Context, in *SignInWithSSORequest, opts ...grpc.CallOption) (*User, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SignUpResponse)
+	out := new(User)
+	err := c.cc.Invoke(ctx, AuthService_SignInWithSSO_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*User, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(User)
 	err := c.cc.Invoke(ctx, AuthService_SignUp_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -73,9 +91,9 @@ func (c *authServiceClient) SignUp(ctx context.Context, in *SignUpRequest, opts 
 	return out, nil
 }
 
-func (c *authServiceClient) SignOut(ctx context.Context, in *SignOutRequest, opts ...grpc.CallOption) (*SignOutResponse, error) {
+func (c *authServiceClient) SignOut(ctx context.Context, in *SignOutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SignOutResponse)
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, AuthService_SignOut_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -87,10 +105,16 @@ func (c *authServiceClient) SignOut(ctx context.Context, in *SignOutRequest, opt
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
 type AuthServiceServer interface {
-	GetAuthStatus(context.Context, *GetAuthStatusRequest) (*GetAuthStatusResponse, error)
-	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
-	SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error)
-	SignOut(context.Context, *SignOutRequest) (*SignOutResponse, error)
+	// GetAuthStatus returns the current auth status of the user.
+	GetAuthStatus(context.Context, *GetAuthStatusRequest) (*User, error)
+	// SignIn signs in the user with the given username and password.
+	SignIn(context.Context, *SignInRequest) (*User, error)
+	// SignInWithSSO signs in the user with the given SSO code.
+	SignInWithSSO(context.Context, *SignInWithSSORequest) (*User, error)
+	// SignUp signs up the user with the given username and password.
+	SignUp(context.Context, *SignUpRequest) (*User, error)
+	// SignOut signs out the user.
+	SignOut(context.Context, *SignOutRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -101,16 +125,19 @@ type AuthServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthServiceServer struct{}
 
-func (UnimplementedAuthServiceServer) GetAuthStatus(context.Context, *GetAuthStatusRequest) (*GetAuthStatusResponse, error) {
+func (UnimplementedAuthServiceServer) GetAuthStatus(context.Context, *GetAuthStatusRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAuthStatus not implemented")
 }
-func (UnimplementedAuthServiceServer) SignIn(context.Context, *SignInRequest) (*SignInResponse, error) {
+func (UnimplementedAuthServiceServer) SignIn(context.Context, *SignInRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
 }
-func (UnimplementedAuthServiceServer) SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error) {
+func (UnimplementedAuthServiceServer) SignInWithSSO(context.Context, *SignInWithSSORequest) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignInWithSSO not implemented")
+}
+func (UnimplementedAuthServiceServer) SignUp(context.Context, *SignUpRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignUp not implemented")
 }
-func (UnimplementedAuthServiceServer) SignOut(context.Context, *SignOutRequest) (*SignOutResponse, error) {
+func (UnimplementedAuthServiceServer) SignOut(context.Context, *SignOutRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignOut not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
@@ -170,6 +197,24 @@ func _AuthService_SignIn_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_SignInWithSSO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignInWithSSORequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).SignInWithSSO(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_SignInWithSSO_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).SignInWithSSO(ctx, req.(*SignInWithSSORequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AuthService_SignUp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SignUpRequest)
 	if err := dec(in); err != nil {
@@ -220,6 +265,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SignIn",
 			Handler:    _AuthService_SignIn_Handler,
+		},
+		{
+			MethodName: "SignInWithSSO",
+			Handler:    _AuthService_SignInWithSSO_Handler,
 		},
 		{
 			MethodName: "SignUp",

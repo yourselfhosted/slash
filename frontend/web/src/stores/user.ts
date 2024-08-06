@@ -38,7 +38,7 @@ const useUserStore = create<UserState>()((set, get) => ({
     return users;
   },
   fetchCurrentUser: async () => {
-    const { user } = await authServiceClient.getAuthStatus({});
+    const user = await authServiceClient.getAuthStatus({});
     if (!user) {
       throw new Error("User not found");
     }

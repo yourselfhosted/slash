@@ -51,7 +51,7 @@ const SignUp: React.FC = () => {
 
     try {
       actionBtnLoadingState.setLoading();
-      const { user } = await authServiceClient.signUp({
+      const user = await authServiceClient.signUp({
         email,
         nickname,
         password,

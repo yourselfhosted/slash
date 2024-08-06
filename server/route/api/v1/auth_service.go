@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	"github.com/yourselfhosted/slash/server/metric"
@@ -17,7 +18,7 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRequest) (*v1pb.GetAuthStatusResponse, error) {
+func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRequest) (*v1pb.User, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -25,12 +26,10 @@ func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusR
 	if user == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "user not found")
 	}
-	return &v1pb.GetAuthStatusResponse{
-		User: convertUserFromStore(user),
-	}, nil
+	return convertUserFromStore(user), nil
 }
 
-func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) (*v1pb.SignInResponse, error) {
+func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) (*v1pb.User, error) {
 	user, err := s.Store.GetUser(ctx, &store.FindUser{
 		Email: &request.Email,
 	})
@@ -63,12 +62,10 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) 
 	}
 
 	metric.Enqueue("user sign in")
-	return &v1pb.SignInResponse{
-		User: convertUserFromStore(user),
-	}, nil
+	return convertUserFromStore(user), nil
 }
 
-func (s *APIV1Service) SignUp(ctx context.Context, request *v1pb.SignUpRequest) (*v1pb.SignUpResponse, error) {
+func (s *APIV1Service) SignUp(ctx context.Context, request *v1pb.SignUpRequest) (*v1pb.User, error) {
 	if !s.Profile.Public {
 		return nil, status.Errorf(codes.PermissionDenied, "sign up is not allowed")
 	}
@@ -124,18 +121,15 @@ func (s *APIV1Service) SignUp(ctx context.Context, request *v1pb.SignUpRequest) 
 	}
 
 	metric.Enqueue("user sign up")
-	return &v1pb.SignUpResponse{
-		User: convertUserFromStore(user),
-	}, nil
+	return convertUserFromStore(user), nil
 }
 
-func (*APIV1Service) SignOut(ctx context.Context, _ *v1pb.SignOutRequest) (*v1pb.SignOutResponse, error) {
+func (*APIV1Service) SignOut(ctx context.Context, _ *v1pb.SignOutRequest) (*emptypb.Empty, error) {
 	// Set the cookie header to expire access token.
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
 		"Set-Cookie": fmt.Sprintf("%s=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict", AccessTokenCookieName),
 	})); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
-
-	return &v1pb.SignOutResponse{}, nil
+	return &emptypb.Empty{}, nil
 }

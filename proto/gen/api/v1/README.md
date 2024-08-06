@@ -33,13 +33,10 @@
   
 - [api/v1/auth_service.proto](#api_v1_auth_service-proto)
     - [GetAuthStatusRequest](#slash-api-v1-GetAuthStatusRequest)
-    - [GetAuthStatusResponse](#slash-api-v1-GetAuthStatusResponse)
     - [SignInRequest](#slash-api-v1-SignInRequest)
-    - [SignInResponse](#slash-api-v1-SignInResponse)
+    - [SignInWithSSORequest](#slash-api-v1-SignInWithSSORequest)
     - [SignOutRequest](#slash-api-v1-SignOutRequest)
-    - [SignOutResponse](#slash-api-v1-SignOutResponse)
     - [SignUpRequest](#slash-api-v1-SignUpRequest)
-    - [SignUpResponse](#slash-api-v1-SignUpResponse)
   
     - [AuthService](#slash-api-v1-AuthService)
   
@@ -501,21 +498,6 @@
 
 
 
-<a name="slash-api-v1-GetAuthStatusResponse"></a>
-
-### GetAuthStatusResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v1-User) |  |  |
-
-
-
-
-
-
 <a name="slash-api-v1-SignInRequest"></a>
 
 ### SignInRequest
@@ -532,15 +514,17 @@
 
 
 
-<a name="slash-api-v1-SignInResponse"></a>
+<a name="slash-api-v1-SignInWithSSORequest"></a>
 
-### SignInResponse
+### SignInWithSSORequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v1-User) |  |  |
+| idp_name | [int32](#int32) |  | The name of the SSO provider. |
+| code | [string](#string) |  | The code to sign in with. |
+| redirect_uri | [string](#string) |  | The redirect URI. |
 
 
 
@@ -550,16 +534,6 @@
 <a name="slash-api-v1-SignOutRequest"></a>
 
 ### SignOutRequest
-
-
-
-
-
-
-
-<a name="slash-api-v1-SignOutResponse"></a>
-
-### SignOutResponse
 
 
 
@@ -583,21 +557,6 @@
 
 
 
-
-<a name="slash-api-v1-SignUpResponse"></a>
-
-### SignUpResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v1-User) |  |  |
-
-
-
-
-
  
 
  
@@ -612,10 +571,11 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetAuthStatus | [GetAuthStatusRequest](#slash-api-v1-GetAuthStatusRequest) | [GetAuthStatusResponse](#slash-api-v1-GetAuthStatusResponse) |  |
-| SignIn | [SignInRequest](#slash-api-v1-SignInRequest) | [SignInResponse](#slash-api-v1-SignInResponse) |  |
-| SignUp | [SignUpRequest](#slash-api-v1-SignUpRequest) | [SignUpResponse](#slash-api-v1-SignUpResponse) |  |
-| SignOut | [SignOutRequest](#slash-api-v1-SignOutRequest) | [SignOutResponse](#slash-api-v1-SignOutResponse) |  |
+| GetAuthStatus | [GetAuthStatusRequest](#slash-api-v1-GetAuthStatusRequest) | [User](#slash-api-v1-User) | GetAuthStatus returns the current auth status of the user. |
+| SignIn | [SignInRequest](#slash-api-v1-SignInRequest) | [User](#slash-api-v1-User) | SignIn signs in the user with the given username and password. |
+| SignInWithSSO | [SignInWithSSORequest](#slash-api-v1-SignInWithSSORequest) | [User](#slash-api-v1-User) | SignInWithSSO signs in the user with the given SSO code. |
+| SignUp | [SignUpRequest](#slash-api-v1-SignUpRequest) | [User](#slash-api-v1-User) | SignUp signs up the user with the given username and password. |
+| SignOut | [SignOutRequest](#slash-api-v1-SignOutRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | SignOut signs out the user. |
 
  
 

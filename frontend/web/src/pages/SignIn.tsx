@@ -44,7 +44,7 @@ const SignIn: React.FC = () => {
 
     try {
       actionBtnLoadingState.setLoading();
-      const { user } = await authServiceClient.signIn({ email, password });
+      const user = await authServiceClient.signIn({ email, password });
       if (user) {
         userStore.setCurrentUserId(user.id);
         await userStore.fetchCurrentUser();
