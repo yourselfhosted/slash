@@ -752,6 +752,54 @@ definitions:
           format: int32
       visibility:
         $ref: '#/definitions/apiv1Visibility'
+  apiv1IdentityProvider:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        $ref: '#/definitions/apiv1IdentityProviderType'
+      config:
+        $ref: '#/definitions/apiv1IdentityProviderConfig'
+  apiv1IdentityProviderConfig:
+    type: object
+    properties:
+      oauth2:
+        $ref: '#/definitions/apiv1IdentityProviderConfigOAuth2Config'
+  apiv1IdentityProviderConfigFieldMapping:
+    type: object
+    properties:
+      identifier:
+        type: string
+      email:
+        type: string
+      displayName:
+        type: string
+  apiv1IdentityProviderConfigOAuth2Config:
+    type: object
+    properties:
+      clientId:
+        type: string
+      clientSecret:
+        type: string
+      authUrl:
+        type: string
+      tokenUrl:
+        type: string
+      userInfoUrl:
+        type: string
+      scopes:
+        type: array
+        items:
+          type: string
+      fieldMapping:
+        $ref: '#/definitions/apiv1IdentityProviderConfigFieldMapping'
+  apiv1IdentityProviderType:
+    type: string
+    enum:
+      - TYPE_UNSPECIFIED
+      - OAUTH2
+    default: TYPE_UNSPECIFIED
   apiv1OpenGraphMetadata:
     type: object
     properties:
@@ -860,6 +908,12 @@ definitions:
       defaultVisibility:
         $ref: '#/definitions/apiv1Visibility'
         description: The default visibility of shortcuts and collections.
+      identityProviders:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/apiv1IdentityProvider'
+        description: The identity providers.
   protobufAny:
     type: object
     properties:

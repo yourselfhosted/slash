@@ -66,6 +66,12 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
 			shortcutRelatedSetting := v.GetShortcutRelated()
 			workspaceSetting.DefaultVisibility = v1pb.Visibility(shortcutRelatedSetting.GetDefaultVisibility())
+		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER {
+			identityProviderSetting := v.GetIdentityProvider()
+			workspaceSetting.IdentityProviders = []*v1pb.IdentityProvider{}
+			for _, identityProvider := range identityProviderSetting.GetIdentityProviders() {
+				workspaceSetting.IdentityProviders = append(workspaceSetting.IdentityProviders, convertIdentityProviderFromStore(identityProvider))
+			}
 		}
 	}
 	return &v1pb.GetWorkspaceSettingResponse{
@@ -151,6 +157,19 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
 			}
+		} else if path == "identity_providers" {
+			identityProviderSetting := &storepb.WorkspaceSetting_IdentityProviderSetting{}
+			for _, identityProvider := range request.Setting.IdentityProviders {
+				identityProviderSetting.IdentityProviders = append(identityProviderSetting.IdentityProviders, convertIdentityProviderToStore(identityProvider))
+			}
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER,
+				Value: &storepb.WorkspaceSetting_IdentityProvider{
+					IdentityProvider: identityProviderSetting,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
 		} else {
 			return nil, status.Errorf(codes.InvalidArgument, "invalid path: %s", path)
 		}
@@ -185,4 +204,74 @@ func (s *APIV1Service) GetInstanceOwner(ctx context.Context) (*v1pb.User, error)
 
 	ownerCache = convertUserFromStore(user)
 	return ownerCache, nil
+}
+
+func convertIdentityProviderFromStore(identityProvider *storepb.IdentityProvider) *v1pb.IdentityProvider {
+	if identityProvider == nil {
+		return nil
+	}
+	return &v1pb.IdentityProvider{
+		Name:   identityProvider.Name,
+		Type:   v1pb.IdentityProvider_Type(identityProvider.Type),
+		Config: convertIdentityProviderConfigFromStore(identityProvider.Config),
+	}
+}
+
+func convertIdentityProviderConfigFromStore(identityProviderConfig *storepb.IdentityProviderConfig) *v1pb.IdentityProviderConfig {
+	oauth2Config := identityProviderConfig.GetOauth2()
+	if oauth2Config != nil {
+		return &v1pb.IdentityProviderConfig{
+			Config: &v1pb.IdentityProviderConfig_Oauth2{
+				Oauth2: &v1pb.IdentityProviderConfig_OAuth2Config{
+					ClientId:     oauth2Config.ClientId,
+					ClientSecret: oauth2Config.ClientSecret,
+					AuthUrl:      oauth2Config.AuthUrl,
+					TokenUrl:     oauth2Config.TokenUrl,
+					UserInfoUrl:  oauth2Config.UserInfoUrl,
+					Scopes:       oauth2Config.Scopes,
+					FieldMapping: &v1pb.IdentityProviderConfig_FieldMapping{
+						Identifier:  oauth2Config.FieldMapping.Identifier,
+						Email:       oauth2Config.FieldMapping.Email,
+						DisplayName: oauth2Config.FieldMapping.DisplayName,
+					},
+				},
+			},
+		}
+	}
+	return nil
+}
+
+func convertIdentityProviderToStore(identityProvider *v1pb.IdentityProvider) *storepb.IdentityProvider {
+	if identityProvider == nil {
+		return nil
+	}
+	return &storepb.IdentityProvider{
+		Name:   identityProvider.Name,
+		Type:   storepb.IdentityProvider_Type(identityProvider.Type),
+		Config: convertIdentityProviderConfigToStore(identityProvider.Config),
+	}
+}
+
+func convertIdentityProviderConfigToStore(identityProviderConfig *v1pb.IdentityProviderConfig) *storepb.IdentityProviderConfig {
+	oauth2Config := identityProviderConfig.GetOauth2()
+	if oauth2Config != nil {
+		return &storepb.IdentityProviderConfig{
+			Config: &storepb.IdentityProviderConfig_Oauth2{
+				Oauth2: &storepb.IdentityProviderConfig_OAuth2Config{
+					ClientId:     oauth2Config.ClientId,
+					ClientSecret: oauth2Config.ClientSecret,
+					AuthUrl:      oauth2Config.AuthUrl,
+					TokenUrl:     oauth2Config.TokenUrl,
+					UserInfoUrl:  oauth2Config.UserInfoUrl,
+					Scopes:       oauth2Config.Scopes,
+					FieldMapping: &storepb.IdentityProviderConfig_FieldMapping{
+						Identifier:  oauth2Config.FieldMapping.Identifier,
+						Email:       oauth2Config.FieldMapping.Email,
+						DisplayName: oauth2Config.FieldMapping.DisplayName,
+					},
+				},
+			},
+		}
+	}
+	return nil
 }

@@ -51,6 +51,41 @@ message WorkspaceSetting {
   string custom_style = 2;
   // The default visibility of shortcuts and collections.
   Visibility default_visibility = 3;
+  // The identity providers.
+  repeated IdentityProvider identity_providers = 4;
+}
+
+message IdentityProvider {
+  string name = 1;
+
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    OAUTH2 = 1;
+  }
+  Type type = 2;
+  IdentityProviderConfig config = 3;
+}
+
+message IdentityProviderConfig {
+  oneof config {
+    OAuth2Config oauth2 = 1;
+  }
+
+  message FieldMapping {
+    string identifier = 1;
+    string email = 2;
+    string display_name = 3;
+  }
+
+  message OAuth2Config {
+    string client_id = 1;
+    string client_secret = 2;
+    string auth_url = 3;
+    string token_url = 4;
+    string user_info_url = 5;
+    repeated string scopes = 6;
+    FieldMapping field_mapping = 7;
+  }
 }
 
 message GetWorkspaceProfileRequest {}

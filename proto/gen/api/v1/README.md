@@ -109,10 +109,16 @@
     - [GetWorkspaceProfileResponse](#slash-api-v1-GetWorkspaceProfileResponse)
     - [GetWorkspaceSettingRequest](#slash-api-v1-GetWorkspaceSettingRequest)
     - [GetWorkspaceSettingResponse](#slash-api-v1-GetWorkspaceSettingResponse)
+    - [IdentityProvider](#slash-api-v1-IdentityProvider)
+    - [IdentityProviderConfig](#slash-api-v1-IdentityProviderConfig)
+    - [IdentityProviderConfig.FieldMapping](#slash-api-v1-IdentityProviderConfig-FieldMapping)
+    - [IdentityProviderConfig.OAuth2Config](#slash-api-v1-IdentityProviderConfig-OAuth2Config)
     - [UpdateWorkspaceSettingRequest](#slash-api-v1-UpdateWorkspaceSettingRequest)
     - [UpdateWorkspaceSettingResponse](#slash-api-v1-UpdateWorkspaceSettingResponse)
     - [WorkspaceProfile](#slash-api-v1-WorkspaceProfile)
     - [WorkspaceSetting](#slash-api-v1-WorkspaceSetting)
+  
+    - [IdentityProvider.Type](#slash-api-v1-IdentityProvider-Type)
   
     - [WorkspaceService](#slash-api-v1-WorkspaceService)
   
@@ -1457,6 +1463,76 @@
 
 
 
+<a name="slash-api-v1-IdentityProvider"></a>
+
+### IdentityProvider
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| type | [IdentityProvider.Type](#slash-api-v1-IdentityProvider-Type) |  |  |
+| config | [IdentityProviderConfig](#slash-api-v1-IdentityProviderConfig) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v1-IdentityProviderConfig"></a>
+
+### IdentityProviderConfig
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| oauth2 | [IdentityProviderConfig.OAuth2Config](#slash-api-v1-IdentityProviderConfig-OAuth2Config) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v1-IdentityProviderConfig-FieldMapping"></a>
+
+### IdentityProviderConfig.FieldMapping
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| identifier | [string](#string) |  |  |
+| email | [string](#string) |  |  |
+| display_name | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="slash-api-v1-IdentityProviderConfig-OAuth2Config"></a>
+
+### IdentityProviderConfig.OAuth2Config
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| client_id | [string](#string) |  |  |
+| client_secret | [string](#string) |  |  |
+| auth_url | [string](#string) |  |  |
+| token_url | [string](#string) |  |  |
+| user_info_url | [string](#string) |  |  |
+| scopes | [string](#string) | repeated |  |
+| field_mapping | [IdentityProviderConfig.FieldMapping](#slash-api-v1-IdentityProviderConfig-FieldMapping) |  |  |
+
+
+
+
+
+
 <a name="slash-api-v1-UpdateWorkspaceSettingRequest"></a>
 
 ### UpdateWorkspaceSettingRequest
@@ -1520,12 +1596,25 @@
 | branding | [bytes](#bytes) |  | The workspace custome branding. |
 | custom_style | [string](#string) |  | The custom style. |
 | default_visibility | [Visibility](#slash-api-v1-Visibility) |  | The default visibility of shortcuts and collections. |
+| identity_providers | [IdentityProvider](#slash-api-v1-IdentityProvider) | repeated | The identity providers. |
 
 
 
 
 
  
+
+
+<a name="slash-api-v1-IdentityProvider-Type"></a>
+
+### IdentityProvider.Type
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| TYPE_UNSPECIFIED | 0 |  |
+| OAUTH2 | 1 |  |
+
 
  
 

@@ -35,6 +35,12 @@ func (d *DB) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.Workspa
 			return nil, err
 		}
 		valueString = string(valueBytes)
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER {
+		valueBytes, err := protojson.Marshal(upsert.GetIdentityProvider())
+		if err != nil {
+			return nil, err
+		}
+		valueString = string(valueBytes)
 	} else {
 		return nil, errors.New("invalid workspace setting key")
 	}
@@ -93,6 +99,14 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 			}
 			workspaceSetting.Value = &storepb.WorkspaceSetting_ShortcutRelated{
 				ShortcutRelated: workspaceSettingShortcutRelated,
+			}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER {
+			workspaceSettingIdentityProvider := &storepb.WorkspaceSetting_IdentityProviderSetting{}
+			if err := protojsonUnmarshaler.Unmarshal([]byte(valueString), workspaceSettingIdentityProvider); err != nil {
+				return nil, err
+			}
+			workspaceSetting.Value = &storepb.WorkspaceSetting_IdentityProvider{
+				IdentityProvider: workspaceSettingIdentityProvider,
 			}
 		} else if slices.Contains([]storepb.WorkspaceSettingKey{
 			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,
