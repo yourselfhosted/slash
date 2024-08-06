@@ -116,15 +116,13 @@ func TestIdentityProvider(t *testing.T) {
 		testClientID    = "test-client-id"
 		testCode        = "test-code"
 		testAccessToken = "test-access-token"
-		testSubject     = "123456789"
 		testName        = "John Doe"
 		testEmail       = "john.doe@example.com"
 	)
 	userInfo, err := json.Marshal(
 		map[string]any{
-			"sub":   testSubject,
-			"name":  testName,
 			"email": testEmail,
+			"name":  testName,
 		},
 	)
 	require.NoError(t, err)
@@ -138,7 +136,7 @@ func TestIdentityProvider(t *testing.T) {
 			TokenUrl:     fmt.Sprintf("%s/oauth2/token", s.URL),
 			UserInfoUrl:  fmt.Sprintf("%s/oauth2/userinfo", s.URL),
 			FieldMapping: &storepb.IdentityProviderConfig_FieldMapping{
-				Identifier:  "sub",
+				Identifier:  "email",
 				DisplayName: "name",
 			},
 		},
@@ -154,9 +152,8 @@ func TestIdentityProvider(t *testing.T) {
 	require.NoError(t, err)
 
 	wantUserInfo := &idp.IdentityProviderUserInfo{
-		Identifier:  testSubject,
+		Identifier:  testEmail,
 		DisplayName: testName,
-		Email:       testEmail,
 	}
 	assert.Equal(t, wantUserInfo, userInfoResult)
 }
