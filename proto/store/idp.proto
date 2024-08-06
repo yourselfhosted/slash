@@ -22,8 +22,7 @@ message IdentityProviderConfig {
 
   message FieldMapping {
     string identifier = 1;
-    string email = 2;
-    string display_name = 3;
+    string display_name = 2;
   }
 
   message OAuth2Config {

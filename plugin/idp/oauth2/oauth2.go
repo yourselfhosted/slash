@@ -99,7 +99,7 @@ func (p *IdentityProvider) UserInfo(token string) (*idp.IdentityProviderUserInfo
 		return nil, errors.Errorf("the field %q is not found in claims or has empty value", p.config.FieldMapping.Identifier)
 	}
 
-	// Best effort to map optional fields
+	// Best effort to map optional fields.
 	if p.config.FieldMapping.DisplayName != "" {
 		if v, ok := claims[p.config.FieldMapping.DisplayName].(string); ok {
 			userInfo.DisplayName = v
@@ -107,11 +107,6 @@ func (p *IdentityProvider) UserInfo(token string) (*idp.IdentityProviderUserInfo
 	}
 	if userInfo.DisplayName == "" {
 		userInfo.DisplayName = userInfo.Identifier
-	}
-	if p.config.FieldMapping.Email != "" {
-		if v, ok := claims[p.config.FieldMapping.Email].(string); ok {
-			userInfo.Email = v
-		}
 	}
 	return userInfo, nil
 }

@@ -225,7 +225,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | identifier | [string](#string) |  |  |
-| email | [string](#string) |  |  |
 | display_name | [string](#string) |  |  |
 
 

@@ -12,7 +12,11 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/yourselfhosted/slash/internal/util"
+	"github.com/yourselfhosted/slash/plugin/idp"
+	"github.com/yourselfhosted/slash/plugin/idp/oauth2"
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
@@ -46,22 +50,88 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(request.Password)); err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "unmatched email and password")
 	}
-
-	accessToken, err := GenerateAccessToken(user.Email, user.ID, time.Now().Add(AccessTokenDuration), []byte(s.Secret))
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate tokens, err: %s", err))
+	if err := s.doSignIn(ctx, user, time.Now().Add(AccessTokenDuration)); err != nil {
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to sign in, err: %s", err))
 	}
-	if err := s.UpsertAccessTokenToStore(ctx, user, accessToken, "user login"); err != nil {
-		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
-	}
-
-	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
-		"Set-Cookie": fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", AccessTokenCookieName, accessToken, time.Now().Add(AccessTokenDuration).Format(time.RFC1123)),
-	})); err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
-	}
-
 	metric.Enqueue("user sign in")
+	return convertUserFromStore(user), nil
+}
+
+func (s *APIV1Service) SignInWithSSO(ctx context.Context, request *v1pb.SignInWithSSORequest) (*v1pb.User, error) {
+	identityProviderSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to get workspace setting, err: %s", err))
+	}
+	if identityProviderSetting == nil || identityProviderSetting.GetIdentityProvider() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "identity provider not found")
+	}
+	var identityProvider *storepb.IdentityProvider
+	for _, idp := range identityProviderSetting.GetIdentityProvider().IdentityProviders {
+		if idp.Name == request.IdpName {
+			identityProvider = idp
+			break
+		}
+	}
+	if identityProvider == nil {
+		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("identity provider not found with name %s", request.IdpName))
+	}
+
+	var userInfo *idp.IdentityProviderUserInfo
+	if identityProvider.Type == storepb.IdentityProvider_OAUTH2 {
+		oauth2IdentityProvider, err := oauth2.NewIdentityProvider(identityProvider.Config.GetOauth2())
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to create oauth2 identity provider, err: %s", err))
+		}
+		token, err := oauth2IdentityProvider.ExchangeToken(ctx, request.RedirectUri, request.Code)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to exchange token, err: %s", err))
+		}
+		userInfo, err = oauth2IdentityProvider.UserInfo(token)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to get user info, err: %s", err))
+		}
+	}
+
+	email := userInfo.Identifier
+	if !util.ValidateEmail(email) {
+		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("invalid email %s", email))
+	}
+	user, err := s.Store.GetUser(ctx, &store.FindUser{
+		Email: &email,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to find user by email %s", email))
+	}
+	if user == nil {
+		userCreate := &store.User{
+			Email:    email,
+			Nickname: userInfo.DisplayName,
+			// The new signup user should be normal user by default.
+			Role: store.RoleUser,
+		}
+		password, err := util.RandomString(20)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate random password, err: %s", err))
+		}
+		passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate password hash, err: %s", err))
+		}
+		userCreate.PasswordHash = string(passwordHash)
+		user, err = s.Store.CreateUser(ctx, userCreate)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to create user, err: %s", err))
+		}
+	}
+	if user.RowStatus == store.Archived {
+		return nil, status.Errorf(codes.PermissionDenied, fmt.Sprintf("user has been archived with email %s", email))
+	}
+
+	if err := s.doSignIn(ctx, user, time.Now().Add(AccessTokenDuration)); err != nil {
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to sign in, err: %s", err))
+	}
 	return convertUserFromStore(user), nil
 }
 
@@ -105,23 +175,30 @@ func (s *APIV1Service) SignUp(ctx context.Context, request *v1pb.SignUpRequest) 
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to create user, err: %s", err))
 	}
+	metric.Enqueue("user sign up")
+	if err := s.doSignIn(ctx, user, time.Now().Add(AccessTokenDuration)); err != nil {
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to sign in, err: %s", err))
+	}
+	return convertUserFromStore(user), nil
+}
 
-	accessToken, err := GenerateAccessToken(user.Email, user.ID, time.Now().Add(AccessTokenDuration), []byte(s.Secret))
+func (s *APIV1Service) doSignIn(ctx context.Context, user *store.User, expireTime time.Time) error {
+	accessToken, err := GenerateAccessToken(user.Email, user.ID, expireTime, []byte(s.Secret))
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to generate tokens, err: %s", err))
+		return status.Errorf(codes.Internal, fmt.Sprintf("failed to generate tokens, err: %s", err))
 	}
 	if err := s.UpsertAccessTokenToStore(ctx, user, accessToken, "user login"); err != nil {
-		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
+		return status.Errorf(codes.Internal, fmt.Sprintf("failed to upsert access token to store, err: %s", err))
 	}
 
+	cookie := fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", AccessTokenCookieName, accessToken, time.Now().Add(AccessTokenDuration).Format(time.RFC1123))
 	if err := grpc.SetHeader(ctx, metadata.New(map[string]string{
-		"Set-Cookie": fmt.Sprintf("%s=%s; Path=/; Expires=%s; HttpOnly; SameSite=Strict", AccessTokenCookieName, accessToken, time.Now().Add(AccessTokenDuration).Format(time.RFC1123)),
+		"Set-Cookie": cookie,
 	})); err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
+		return status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
 
-	metric.Enqueue("user sign up")
-	return convertUserFromStore(user), nil
+	return nil
 }
 
 func (*APIV1Service) SignOut(ctx context.Context, _ *v1pb.SignOutRequest) (*emptypb.Empty, error) {

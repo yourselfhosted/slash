@@ -231,7 +231,6 @@ func convertIdentityProviderConfigFromStore(identityProviderConfig *storepb.Iden
 					Scopes:       oauth2Config.Scopes,
 					FieldMapping: &v1pb.IdentityProviderConfig_FieldMapping{
 						Identifier:  oauth2Config.FieldMapping.Identifier,
-						Email:       oauth2Config.FieldMapping.Email,
 						DisplayName: oauth2Config.FieldMapping.DisplayName,
 					},
 				},
@@ -266,7 +265,6 @@ func convertIdentityProviderConfigToStore(identityProviderConfig *v1pb.IdentityP
 					Scopes:       oauth2Config.Scopes,
 					FieldMapping: &storepb.IdentityProviderConfig_FieldMapping{
 						Identifier:  oauth2Config.FieldMapping.Identifier,
-						Email:       oauth2Config.FieldMapping.Email,
 						DisplayName: oauth2Config.FieldMapping.DisplayName,
 					},
 				},

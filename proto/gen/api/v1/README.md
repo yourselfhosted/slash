@@ -522,7 +522,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| idp_name | [int32](#int32) |  | The name of the SSO provider. |
+| idp_name | [string](#string) |  | The name of the SSO provider. |
 | code | [string](#string) |  | The code to sign in with. |
 | redirect_uri | [string](#string) |  | The redirect URI. |
 
@@ -1464,7 +1464,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | identifier | [string](#string) |  |  |
-| email | [string](#string) |  |  |
 | display_name | [string](#string) |  |  |
 
 

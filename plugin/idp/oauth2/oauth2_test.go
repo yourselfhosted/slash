@@ -140,7 +140,6 @@ func TestIdentityProvider(t *testing.T) {
 			FieldMapping: &storepb.IdentityProviderConfig_FieldMapping{
 				Identifier:  "sub",
 				DisplayName: "name",
-				Email:       "email",
 			},
 		},
 	)

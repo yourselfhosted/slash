@@ -57,8 +57,7 @@ paths:
           description: The name of the SSO provider.
           in: query
           required: false
-          type: integer
-          format: int32
+          type: string
         - name: code
           description: The code to sign in with.
           in: query
@@ -807,8 +806,6 @@ definitions:
     type: object
     properties:
       identifier:
-        type: string
-      email:
         type: string
       displayName:
         type: string
