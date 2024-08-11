@@ -1,4 +1,4 @@
-import { Button, Option, Select, Textarea } from "@mui/joy";
+import { Button, Divider, Option, Select, Textarea } from "@mui/joy";
 import { head, isEqual } from "lodash-es";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -10,6 +10,7 @@ import { PlanType } from "@/types/proto/api/v1/subscription_service";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 import FeatureBadge from "../FeatureBadge";
 import Icon from "../Icon";
+import SSOSection from "./SSOSection";
 
 const getDefaultVisibility = (visibility?: Visibility) => {
   if (!visibility || [Visibility.VISIBILITY_UNSPECIFIED, Visibility.UNRECOGNIZED].includes(visibility)) {
@@ -158,6 +159,10 @@ const WorkspaceSection = () => {
             {t("common.save")}
           </Button>
         </div>
+
+        <Divider />
+
+        <SSOSection />
       </div>
     </div>
   );

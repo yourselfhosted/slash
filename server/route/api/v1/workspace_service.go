@@ -212,6 +212,7 @@ func convertIdentityProviderFromStore(identityProvider *storepb.IdentityProvider
 	}
 	return &v1pb.IdentityProvider{
 		Name:   identityProvider.Name,
+		Title:  identityProvider.Title,
 		Type:   v1pb.IdentityProvider_Type(identityProvider.Type),
 		Config: convertIdentityProviderConfigFromStore(identityProvider.Config),
 	}
@@ -246,6 +247,7 @@ func convertIdentityProviderToStore(identityProvider *v1pb.IdentityProvider) *st
 	}
 	return &storepb.IdentityProvider{
 		Name:   identityProvider.Name,
+		Title:  identityProvider.Title,
 		Type:   storepb.IdentityProvider_Type(identityProvider.Type),
 		Config: convertIdentityProviderConfigToStore(identityProvider.Config),
 	}

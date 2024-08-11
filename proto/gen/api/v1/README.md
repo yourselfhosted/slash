@@ -1432,6 +1432,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | name | [string](#string) |  |  |
+| title | [string](#string) |  |  |
 | type | [IdentityProvider.Type](#slash-api-v1-IdentityProvider-Type) |  |  |
 | config | [IdentityProviderConfig](#slash-api-v1-IdentityProviderConfig) |  |  |
 

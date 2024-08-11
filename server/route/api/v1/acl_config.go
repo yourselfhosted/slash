@@ -6,6 +6,7 @@ var allowedMethodsWhenUnauthorized = map[string]bool{
 	"/slash.api.v1.WorkspaceService/GetWorkspaceProfile":  true,
 	"/slash.api.v1.WorkspaceService/GetWorkspaceSetting":  true,
 	"/slash.api.v1.AuthService/SignIn":                    true,
+	"/slash.api.v1.AuthService/SignInWithSSO":             true,
 	"/slash.api.v1.AuthService/SignUp":                    true,
 	"/slash.api.v1.AuthService/SignOut":                   true,
 	"/slash.api.v1.AuthService/GetAuthStatus":             true,

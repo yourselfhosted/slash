@@ -12,14 +12,16 @@
     "search": "Search",
     "email": "Email",
     "password": "Password",
-    "account": "Account"
+    "account": "Account",
+    "or": "Or"
   },
   "auth": {
     "sign-in": "Sign in",
     "sign-up": "Sign up",
     "sign-out": "Sign out",
     "create-your-account": "Create your account",
-    "host-tip": "You are registering as Admin."
+    "host-tip": "You are registering as Admin.",
+    "sign-in-with": "Sign in with {{provider}}"
   },
   "analytics": {
     "self": "Analytics",

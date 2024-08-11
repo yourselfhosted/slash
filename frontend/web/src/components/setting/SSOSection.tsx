@@ -1,0 +1,141 @@
+import { Button, IconButton } from "@mui/joy";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { workspaceServiceClient } from "@/grpcweb";
+import { useWorkspaceStore } from "@/stores";
+import { IdentityProvider } from "@/types/proto/api/v1/workspace_service";
+import CreateIdentityProviderDrawer from "../CreateIdentityProviderDrawer";
+import Icon from "../Icon";
+
+interface EditState {
+  open: boolean;
+  // Leave empty to create new identity provider.
+  identityProvider: IdentityProvider | undefined;
+}
+
+const SSOSection = () => {
+  const { t } = useTranslation();
+  const workspaceStore = useWorkspaceStore();
+  const [identityProviderList, setIdentityProviderList] = useState<IdentityProvider[]>([]);
+  const [editState, setEditState] = useState<EditState>({ open: false, identityProvider: undefined });
+
+  useEffect(() => {
+    fetchIdentityProviderList();
+  }, []);
+
+  const fetchIdentityProviderList = async () => {
+    const setting = workspaceStore.fetchWorkspaceSetting();
+    setIdentityProviderList((await setting).identityProviders);
+  };
+
+  const handleDeleteIdentityProvider = async (identityProvider: IdentityProvider) => {
+    const confirmed = window.confirm(`Are you sure you want to delete ${identityProvider.title}?`);
+    if (confirmed) {
+      try {
+        await workspaceServiceClient.updateWorkspaceSetting({
+          setting: {
+            identityProviders: identityProviderList.filter((idp) => idp.name !== identityProvider.name),
+          },
+          updateMask: ["identity_providers"],
+        });
+      } catch (error: any) {
+        console.error(error);
+        toast.error(error.details);
+      }
+      await fetchIdentityProviderList();
+    }
+  };
+
+  return (
+    <>
+      <div className="w-full flex flex-col gap-2 pt-2 pb-4">
+        <div className="w-full flex flex-row justify-between items-center gap-1">
+          <div className="flex flex-row items-center gap-1">
+            <span className="font-medium dark:text-gray-400">SSO</span>
+          </div>
+          <Button
+            variant="outlined"
+            color="neutral"
+            onClick={() =>
+              setEditState({
+                open: true,
+                identityProvider: undefined,
+              })
+            }
+          >
+            {t("common.create")}
+          </Button>
+        </div>
+        {identityProviderList.length > 0 && (
+          <div className="mt-2 flow-root">
+            <div className="overflow-x-auto">
+              <div className="inline-block min-w-full py-2 align-middle">
+                <table className="min-w-full divide-y divide-gray-300 dark:divide-zinc-700">
+                  <thead>
+                    <tr>
+                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                        ID
+                      </th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                        Title
+                      </th>
+                      <th scope="col" className="relative py-3.5 pl-3 pr-4">
+                        <span className="sr-only">{t("common.edit")}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
+                    {identityProviderList.map((identityProvider) => (
+                      <tr key={identityProvider.name}>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">
+                          {identityProvider.name}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{identityProvider.title}</td>
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
+                          <IconButton
+                            size="sm"
+                            variant="plain"
+                            onClick={() =>
+                              setEditState({
+                                open: true,
+                                identityProvider: identityProvider,
+                              })
+                            }
+                          >
+                            <Icon.PenBox className="w-4 h-auto" />
+                          </IconButton>
+                          <IconButton
+                            size="sm"
+                            color="danger"
+                            variant="plain"
+                            onClick={() => handleDeleteIdentityProvider(identityProvider)}
+                          >
+                            <Icon.Trash className="w-4 h-auto" />
+                          </IconButton>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {editState.open && (
+        <CreateIdentityProviderDrawer
+          identityProvider={editState.identityProvider}
+          onClose={() => setEditState({ open: false, identityProvider: undefined })}
+          onConfirm={() => {
+            setEditState({ open: false, identityProvider: undefined });
+            fetchIdentityProviderList();
+          }}
+        />
+      )}
+    </>
+  );
+};
+
+export default SSOSection;

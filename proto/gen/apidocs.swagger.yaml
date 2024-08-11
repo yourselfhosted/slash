@@ -793,6 +793,8 @@ definitions:
     properties:
       name:
         type: string
+      title:
+        type: string
       type:
         $ref: '#/definitions/apiv1IdentityProviderType'
       config:

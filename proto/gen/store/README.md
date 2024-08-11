@@ -193,6 +193,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | name | [string](#string) |  |  |
+| title | [string](#string) |  |  |
 | type | [IdentityProvider.Type](#slash-store-IdentityProvider-Type) |  |  |
 | config | [IdentityProviderConfig](#slash-store-IdentityProviderConfig) |  |  |
 

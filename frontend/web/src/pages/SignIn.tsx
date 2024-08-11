@@ -1,13 +1,15 @@
-import { Button, Input } from "@mui/joy";
+import { Button, Divider, Input } from "@mui/joy";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Logo from "@/components/Logo";
 import { authServiceClient } from "@/grpcweb";
+import { absolutifyLink } from "@/helpers/utils";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useUserStore, useWorkspaceStore } from "@/stores";
+import { IdentityProvider, IdentityProvider_Type } from "@/types/proto/api/v1/workspace_service";
 
 const SignIn: React.FC = () => {
   const { t } = useTranslation();
@@ -59,6 +61,24 @@ const SignIn: React.FC = () => {
     actionBtnLoadingState.setFinish();
   };
 
+  const handleSignInWithIdentityProvider = async (identityProvider: IdentityProvider) => {
+    const stateQueryParameter = `auth.signin.${identityProvider.title}-${identityProvider.name}`;
+    if (identityProvider.type === IdentityProvider_Type.OAUTH2) {
+      const redirectUri = absolutifyLink("/auth/callback");
+      const oauth2Config = identityProvider.config?.oauth2;
+      if (!oauth2Config) {
+        toast.error("Identity provider configuration is invalid.");
+        return;
+      }
+      const authUrl = `${oauth2Config.authUrl}?client_id=${
+        oauth2Config.clientId
+      }&redirect_uri=${redirectUri}&state=${stateQueryParameter}&response_type=code&scope=${encodeURIComponent(
+        oauth2Config.scopes.join(" "),
+      )}`;
+      window.location.href = authUrl;
+    }
+  };
+
   return (
     <div className="flex flex-row justify-center items-center w-full h-auto pt-12 sm:pt-24 bg-white dark:bg-zinc-900">
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
@@ -104,6 +124,25 @@ const SignIn: React.FC = () => {
                 {t("auth.sign-up")}
               </Link>
             </p>
+          )}
+          {workspaceStore.setting.identityProviders.length > 0 && (
+            <>
+              <Divider className="!my-4">{t("common.or")}</Divider>
+              <div className="w-full flex flex-col space-y-2">
+                {workspaceStore.setting.identityProviders.map((identityProvider) => (
+                  <Button
+                    key={identityProvider.name}
+                    variant="outlined"
+                    color="neutral"
+                    className="w-full"
+                    size="md"
+                    onClick={() => handleSignInWithIdentityProvider(identityProvider)}
+                  >
+                    {t("auth.sign-in-with", { provider: identityProvider.title })}
+                  </Button>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>

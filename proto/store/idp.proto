@@ -6,13 +6,14 @@ option go_package = "gen/store";
 
 message IdentityProvider {
   string name = 1;
+  string title = 2;
 
   enum Type {
     TYPE_UNSPECIFIED = 0;
     OAUTH2 = 1;
   }
-  Type type = 2;
-  IdentityProviderConfig config = 3;
+  Type type = 3;
+  IdentityProviderConfig config = 4;
 }
 
 message IdentityProviderConfig {
