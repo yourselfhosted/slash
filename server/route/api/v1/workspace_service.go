@@ -24,6 +24,7 @@ func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorks
 	// Load subscription plan from license service.
 	subscription := s.LicenseService.GetSubscription()
 	workspaceProfile.Plan = subscription.Plan
+	workspaceProfile.Features = subscription.Features
 
 	owner, err := s.GetInstanceOwner(ctx)
 	if err != nil {

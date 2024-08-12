@@ -1,6 +1,6 @@
 import { Tooltip } from "@mui/joy";
-import { FeatureType, checkFeatureAvailable } from "@/helpers/feature";
 import { useWorkspaceStore } from "@/stores";
+import { FeatureType } from "@/stores/workspace";
 import Icon from "./Icon";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 const FeatureBadge = ({ feature, className }: Props) => {
   const workspaceStore = useWorkspaceStore();
-  const isFeatureEnabled = checkFeatureAvailable(feature, workspaceStore.profile.plan);
+  const isFeatureEnabled = workspaceStore.checkFeatureAvailable(feature);
 
   if (isFeatureEnabled) {
     return null;

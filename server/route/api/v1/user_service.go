@@ -14,7 +14,6 @@ import (
 
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -63,14 +62,8 @@ func (s *APIV1Service) CreateUser(ctx context.Context, request *v1pb.CreateUserR
 		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
 	}
 
-	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
-		userList, err := s.Store.ListUsers(ctx, &store.FindUser{})
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to list users: %v", err)
-		}
-		if len(userList) >= 5 {
-			return nil, status.Errorf(codes.ResourceExhausted, "maximum number of users reached")
-		}
+	if err := s.checkSeatAvailability(ctx); err != nil {
+		return nil, err
 	}
 
 	user, err := s.Store.CreateUser(ctx, &store.User{

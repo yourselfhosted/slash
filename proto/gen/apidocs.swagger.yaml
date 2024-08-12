@@ -1232,3 +1232,8 @@ definitions:
         type: string
         format: byte
         description: The workspace branding.
+      features:
+        type: array
+        items:
+          type: string
+        description: The workspace available features.

@@ -33,7 +33,8 @@ func NewLicenseService(profile *profile.Profile, store *store.Store) *LicenseSer
 		Profile: profile,
 		Store:   store,
 		cachedSubscription: &v1pb.Subscription{
-			Plan: v1pb.PlanType_FREE,
+			Plan:  v1pb.PlanType_FREE,
+			Seats: 5,
 		},
 	}
 }
@@ -45,8 +46,10 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get workspace setting")
 	}
+
 	subscription := &v1pb.Subscription{
-		Plan: v1pb.PlanType_FREE,
+		Plan:  v1pb.PlanType_FREE,
+		Seats: 5,
 	}
 	licenseKey := ""
 	if workspaceSettingGeneral != nil {

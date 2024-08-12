@@ -218,7 +218,7 @@ func (s *APIV1Service) checkSeatAvailability(ctx context.Context) error {
 			return status.Errorf(codes.Internal, fmt.Sprintf("failed to list users, err: %s", err))
 		}
 		seats := s.LicenseService.GetSubscription().Seats
-		if len(userList) > int(seats) {
+		if len(userList) >= int(seats) {
 			return status.Errorf(codes.FailedPrecondition, "maximum number of users %d reached", seats)
 		}
 	}

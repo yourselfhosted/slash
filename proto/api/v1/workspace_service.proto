@@ -42,6 +42,8 @@ message WorkspaceProfile {
   string owner = 6;
   // The workspace branding.
   bytes branding = 7;
+  // The workspace available features.
+  repeated string features = 8;
 }
 
 message WorkspaceSetting {

@@ -1542,6 +1542,7 @@
 | custom_style | [string](#string) |  | The custom style. |
 | owner | [string](#string) |  | The owner name. Format: &#34;users/{id}&#34; |
 | branding | [bytes](#bytes) |  | The workspace branding. |
+| features | [string](#string) | repeated | The workspace available features. |
 
 
 
