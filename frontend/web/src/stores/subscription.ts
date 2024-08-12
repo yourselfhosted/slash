@@ -5,6 +5,8 @@ export const stringifyPlanType = (planType: PlanType) => {
     return "Free";
   } else if (planType === PlanType.PRO) {
     return "Pro";
+  } else if (planType === PlanType.ENTERPRISE) {
+    return "Enterprise";
   } else {
     return "Unknown";
   }

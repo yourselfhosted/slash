@@ -26,7 +26,6 @@ const useWorkspaceStore = create<WorkspaceState>()((set, get) => ({
   fetchWorkspaceProfile: async () => {
     const workspaceProfile = (await workspaceServiceClient.getWorkspaceProfile({})).profile as WorkspaceProfile;
     set({ ...get(), profile: workspaceProfile });
-    console.log("workspaceProfile", workspaceProfile);
     return workspaceProfile;
   },
   fetchWorkspaceSetting: async () => {
