@@ -62,7 +62,7 @@ const SignIn: React.FC = () => {
   };
 
   const handleSignInWithIdentityProvider = async (identityProvider: IdentityProvider) => {
-    const stateQueryParameter = `auth.signin.${identityProvider.title}-${identityProvider.name}`;
+    const stateQueryParameter = `auth.signin.${identityProvider.title}-${identityProvider.id}`;
     if (identityProvider.type === IdentityProvider_Type.OAUTH2) {
       const redirectUri = absolutifyLink("/auth/callback");
       const oauth2Config = identityProvider.config?.oauth2;
@@ -131,7 +131,7 @@ const SignIn: React.FC = () => {
               <div className="w-full flex flex-col space-y-2">
                 {workspaceStore.setting.identityProviders.map((identityProvider) => (
                   <Button
-                    key={identityProvider.name}
+                    key={identityProvider.id}
                     variant="outlined"
                     color="neutral"
                     className="w-full"

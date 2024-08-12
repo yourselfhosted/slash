@@ -34,11 +34,11 @@ const AuthCallback = () => {
       return;
     }
 
-    const idpName = last(state.split("-"));
-    if (!idpName) {
+    const idpId = last(state.split("-"));
+    if (!idpId) {
       setState({
         loading: false,
-        errorMessage: "No identity provider name found in the state parameter.",
+        errorMessage: "No identity provider found in the state parameter.",
       });
       return;
     }
@@ -47,7 +47,7 @@ const AuthCallback = () => {
     (async () => {
       try {
         await authServiceClient.signInWithSSO({
-          idpName,
+          idpId,
           code,
           redirectUri,
         });
