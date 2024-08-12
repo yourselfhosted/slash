@@ -3,6 +3,7 @@ package license
 import (
 	"context"
 	_ "embed"
+	"slices"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -64,6 +65,10 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 	}
 	subscription.Plan = result.Plan
 	subscription.ExpiresTime = timestamppb.New(result.ExpiresTime)
+	subscription.Seats = int32(result.Seats)
+	for _, feature := range result.Features {
+		subscription.Features = append(subscription.Features, feature.String())
+	}
 	s.cachedSubscription = subscription
 	return subscription, nil
 }
@@ -104,28 +109,20 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 	return s.LoadSubscription(ctx)
 }
 
-func (s *LicenseService) GetSubscription(ctx context.Context) (*v1pb.Subscription, error) {
-	subscription, err := s.LoadSubscription(ctx)
-	if err != nil || subscription.Plan == v1pb.PlanType_PLAN_TYPE_UNSPECIFIED {
-		// nolint
-		return &v1pb.Subscription{
-			Plan: v1pb.PlanType_FREE,
-		}, nil
-	}
-	return subscription, nil
+func (s *LicenseService) GetSubscription() *v1pb.Subscription {
+	return s.cachedSubscription
 }
 
 func (s *LicenseService) IsFeatureEnabled(feature FeatureType) bool {
-	matrix, ok := FeatureMatrix[feature]
-	if !ok {
-		return false
-	}
-	return matrix[s.cachedSubscription.Plan-1]
+	return slices.Contains(s.cachedSubscription.Features, feature.String())
 }
 
 type ValidateResult struct {
 	Plan        v1pb.PlanType
 	ExpiresTime time.Time
+	Trial       bool
+	Seats       int
+	Features    []FeatureType
 }
 
 type Claims struct {
@@ -134,20 +131,34 @@ type Claims struct {
 	Owner string `json:"owner"`
 	Plan  string `json:"plan"`
 	Trial bool   `json:"trial"`
+	// The number of seats in the license key. Leave it empty if the license key does not have a seat limit.
+	Seats int `json:"seats"`
+	// The available features in the license key.
+	Features []string `json:"features"`
 }
 
 func validateLicenseKey(licenseKey string) (*ValidateResult, error) {
 	// Try to parse the license key as a JWT token.
 	claims, _ := parseLicenseKey(licenseKey)
 	if claims != nil {
+		result := &ValidateResult{
+			Plan:        v1pb.PlanType(v1pb.PlanType_value[claims.Plan]),
+			ExpiresTime: claims.ExpiresAt.Time,
+			Trial:       claims.Trial,
+			Seats:       claims.Seats,
+		}
+		result.Features = getDefaultFeatures(result.Plan)
+		for _, feature := range claims.Features {
+			featureType, ok := validateFeatureString(feature)
+			if ok {
+				result.Features = append(result.Features, featureType)
+			}
+		}
 		plan := v1pb.PlanType(v1pb.PlanType_value[claims.Plan])
 		if plan == v1pb.PlanType_PLAN_TYPE_UNSPECIFIED {
 			return nil, errors.New("invalid plan")
 		}
-		return &ValidateResult{
-			Plan:        v1pb.PlanType(v1pb.PlanType_value[claims.Plan]),
-			ExpiresTime: claims.ExpiresAt.Time,
-		}, nil
+		return result, nil
 	}
 
 	// Try to validate the license key with the license server.
@@ -158,6 +169,11 @@ func validateLicenseKey(licenseKey string) (*ValidateResult, error) {
 	if validateResponse.Valid {
 		result := &ValidateResult{
 			Plan: v1pb.PlanType_PRO,
+			Features: []FeatureType{
+				FeatureTypeUnlimitedAccounts,
+				FeatureTypeUnlimitedCollections,
+				FeatureTypeCustomeBranding,
+			},
 		}
 		if validateResponse.LicenseKey.ExpiresAt != nil && *validateResponse.LicenseKey.ExpiresAt != "" {
 			expiresTime, err := time.Parse(time.RFC3339Nano, *validateResponse.LicenseKey.ExpiresAt)

@@ -58,6 +58,10 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) 
 }
 
 func (s *APIV1Service) SignInWithSSO(ctx context.Context, request *v1pb.SignInWithSSORequest) (*v1pb.User, error) {
+	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeSSO) {
+		return nil, status.Errorf(codes.PermissionDenied, "SSO is not available in the current plan")
+	}
+
 	identityProviderSetting, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER,
 	})
@@ -105,6 +109,9 @@ func (s *APIV1Service) SignInWithSSO(ctx context.Context, request *v1pb.SignInWi
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to find user by email %s", email))
 	}
 	if user == nil {
+		if err := s.checkSeatAvailability(ctx); err != nil {
+			return nil, err
+		}
 		userCreate := &store.User{
 			Email:    email,
 			Nickname: userInfo.DisplayName,
@@ -139,15 +146,8 @@ func (s *APIV1Service) SignUp(ctx context.Context, request *v1pb.SignUpRequest) 
 	if !s.Profile.Public {
 		return nil, status.Errorf(codes.PermissionDenied, "sign up is not allowed")
 	}
-
-	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
-		userList, err := s.Store.ListUsers(ctx, &store.FindUser{})
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to list users, err: %s", err))
-		}
-		if len(userList) >= 5 {
-			return nil, status.Errorf(codes.InvalidArgument, "maximum number of users reached")
-		}
+	if err := s.checkSeatAvailability(ctx); err != nil {
+		return nil, err
 	}
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
@@ -209,4 +209,18 @@ func (*APIV1Service) SignOut(ctx context.Context, _ *v1pb.SignOutRequest) (*empt
 		return nil, status.Errorf(codes.Internal, "failed to set grpc header, error: %v", err)
 	}
 	return &emptypb.Empty{}, nil
+}
+
+func (s *APIV1Service) checkSeatAvailability(ctx context.Context) error {
+	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
+		userList, err := s.Store.ListUsers(ctx, &store.FindUser{})
+		if err != nil {
+			return status.Errorf(codes.Internal, fmt.Sprintf("failed to list users, err: %s", err))
+		}
+		seats := s.LicenseService.GetSubscription().Seats
+		if len(userList) > int(seats) {
+			return status.Errorf(codes.FailedPrecondition, "maximum number of users %d reached", seats)
+		}
+	}
+	return nil
 }

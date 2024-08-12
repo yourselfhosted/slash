@@ -1144,6 +1144,8 @@
 | plan | [PlanType](#slash-api-v1-PlanType) |  |  |
 | started_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | expires_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| seats | [int32](#int32) |  |  |
+| features | [string](#string) | repeated |  |
 
 
 
@@ -1192,6 +1194,7 @@
 | PLAN_TYPE_UNSPECIFIED | 0 |  |
 | FREE | 1 |  |
 | PRO | 2 |  |
+| ENTERPRISE | 3 |  |
 
 
  

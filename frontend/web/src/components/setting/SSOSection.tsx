@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
+import { checkFeatureAvailable, FeatureType } from "@/helpers/feature";
 import { useWorkspaceStore } from "@/stores";
 import { IdentityProvider } from "@/types/proto/api/v1/workspace_service";
 import CreateIdentityProviderDrawer from "../CreateIdentityProviderDrawer";
+import FeatureBadge from "../FeatureBadge";
 import Icon from "../Icon";
 
 interface EditState {
@@ -19,6 +21,7 @@ const SSOSection = () => {
   const workspaceStore = useWorkspaceStore();
   const [identityProviderList, setIdentityProviderList] = useState<IdentityProvider[]>([]);
   const [editState, setEditState] = useState<EditState>({ open: false, identityProvider: undefined });
+  const isSSOFeatureEnabled = checkFeatureAvailable(FeatureType.SSO, workspaceStore.profile.plan);
 
   useEffect(() => {
     fetchIdentityProviderList();
@@ -53,10 +56,12 @@ const SSOSection = () => {
         <div className="w-full flex flex-row justify-between items-center gap-1">
           <div className="flex flex-row items-center gap-1">
             <span className="font-medium dark:text-gray-400">SSO</span>
+            <FeatureBadge className="w-5 h-auto ml-1 text-blue-600" feature={FeatureType.SSO} />
           </div>
           <Button
             variant="outlined"
             color="neutral"
+            disabled={!isSSOFeatureEnabled}
             onClick={() =>
               setEditState({
                 open: true,
@@ -70,17 +75,17 @@ const SSOSection = () => {
         {identityProviderList.length > 0 && (
           <div className="mt-2 flow-root">
             <div className="overflow-x-auto">
-              <div className="inline-block min-w-full py-2 align-middle">
+              <div className="inline-block border rounded-lg border-gray-300 dark:border-zinc-700 min-w-full align-middle">
                 <table className="min-w-full divide-y divide-gray-300 dark:divide-zinc-700">
                   <thead>
                     <tr>
-                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                      <th scope="col" className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         ID
                       </th>
-                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                      <th scope="col" className="px-3 py-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         Title
                       </th>
-                      <th scope="col" className="relative py-3.5 pl-3 pr-4">
+                      <th scope="col" className="relative py-2 pl-3 pr-4">
                         <span className="sr-only">{t("common.edit")}</span>
                       </th>
                     </tr>
@@ -88,11 +93,11 @@ const SSOSection = () => {
                   <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {identityProviderList.map((identityProvider) => (
                       <tr key={identityProvider.name}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">
+                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">
                           {identityProvider.name}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{identityProvider.title}</td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
+                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{identityProvider.title}</td>
+                        <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">
                           <IconButton
                             size="sm"
                             variant="plain"

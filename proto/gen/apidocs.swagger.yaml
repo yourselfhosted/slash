@@ -1100,6 +1100,7 @@ definitions:
       - PLAN_TYPE_UNSPECIFIED
       - FREE
       - PRO
+      - ENTERPRISE
     default: PLAN_TYPE_UNSPECIFIED
   v1Role:
     type: string
@@ -1121,6 +1122,15 @@ definitions:
       expiresTime:
         type: string
         format: date-time
+        readOnly: true
+      seats:
+        type: integer
+        format: int32
+        readOnly: true
+      features:
+        type: array
+        items:
+          type: string
         readOnly: true
   v1UpdateCollectionResponse:
     type: object

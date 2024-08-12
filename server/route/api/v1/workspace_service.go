@@ -22,10 +22,7 @@ func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorks
 	}
 
 	// Load subscription plan from license service.
-	subscription, err := s.LicenseService.GetSubscription(ctx)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get subscription: %v", err)
-	}
+	subscription := s.LicenseService.GetSubscription()
 	workspaceProfile.Plan = subscription.Plan
 
 	owner, err := s.GetInstanceOwner(ctx)
@@ -53,6 +50,10 @@ func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorks
 }
 
 func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorkspaceSettingRequest) (*v1pb.GetWorkspaceSettingResponse, error) {
+	currentUser, err := getCurrentUser(ctx, s.Store)
+	if err != nil {
+		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+	}
 	workspaceSettings, err := s.Store.ListWorkspaceSettings(ctx, &store.FindWorkspaceSetting{})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to list workspace settings: %v", err)
@@ -70,7 +71,14 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 			identityProviderSetting := v.GetIdentityProvider()
 			workspaceSetting.IdentityProviders = []*v1pb.IdentityProvider{}
 			for _, identityProvider := range identityProviderSetting.GetIdentityProviders() {
-				workspaceSetting.IdentityProviders = append(workspaceSetting.IdentityProviders, convertIdentityProviderFromStore(identityProvider))
+				identityProviderV1pb := convertIdentityProviderFromStore(identityProvider)
+				if currentUser == nil || currentUser.Role != store.RoleAdmin {
+					oauth2Config := identityProviderV1pb.Config.GetOauth2()
+					if oauth2Config != nil {
+						oauth2Config.ClientSecret = ""
+					}
+				}
+				workspaceSetting.IdentityProviders = append(workspaceSetting.IdentityProviders, identityProviderV1pb)
 			}
 		}
 	}

@@ -67,20 +67,20 @@ const MemberSection = () => {
           </div>
           <div className="mt-2 flow-root">
             <div className="overflow-x-auto">
-              <div className="inline-block min-w-full py-2 align-middle">
+              <div className="inline-block border rounded-lg border-gray-300 dark:border-zinc-700 min-w-full align-middle">
                 <table className="min-w-full divide-y divide-gray-300 dark:divide-zinc-700">
                   <thead>
                     <tr>
-                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                      <th scope="col" className="py-3 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         {t("user.nickname")}
                       </th>
-                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                      <th scope="col" className="px-3 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         {t("user.email")}
                       </th>
-                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                      <th scope="col" className="px-3 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
                         {t("user.role")}
                       </th>
-                      <th scope="col" className="relative py-3.5 pl-3 pr-4">
+                      <th scope="col" className="relative py-3 pl-3 pr-4">
                         <span className="sr-only">{t("common.edit")}</span>
                       </th>
                     </tr>
@@ -88,10 +88,10 @@ const MemberSection = () => {
                   <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {userList.map((user) => (
                       <tr key={user.email}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">{user.nickname}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.email}</td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{convertRoleFromPb(user.role)}</td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
+                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">{user.nickname}</td>
+                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{user.email}</td>
+                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{convertRoleFromPb(user.role)}</td>
+                        <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">
                           <IconButton
                             size="sm"
                             variant="plain"

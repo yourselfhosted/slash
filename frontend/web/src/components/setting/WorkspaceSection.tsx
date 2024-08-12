@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
+import { FeatureType } from "@/helpers/feature";
 import { useWorkspaceStore } from "@/stores";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { PlanType } from "@/types/proto/api/v1/subscription_service";
@@ -102,7 +103,7 @@ const WorkspaceSection = () => {
           <div className="w-full flex flex-col justify-start items-start">
             <p className="flex flex-row justify-start items-center">
               <span className="font-medium dark:text-gray-400">Custom branding</span>
-              <FeatureBadge className="w-5 h-auto ml-1 text-blue-600" />
+              <FeatureBadge className="w-5 h-auto ml-1 text-blue-600" feature={FeatureType.CustomeBranding} />
             </p>
             <p className="text-sm text-gray-500 leading-tight">Recommand logo ratio: 1:1</p>
           </div>

@@ -26,12 +26,17 @@ message Subscription {
   google.protobuf.Timestamp started_time = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   google.protobuf.Timestamp expires_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  int32 seats = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  repeated string features = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
 enum PlanType {
   PLAN_TYPE_UNSPECIFIED = 0;
   FREE = 1;
   PRO = 2;
+  ENTERPRISE = 3;
 }
 
 message GetSubscriptionRequest {}
