@@ -45,8 +45,8 @@ message SignUpRequest {
 }
 
 message SignInWithSSORequest {
-  // The name of the SSO provider.
-  string idp_name = 1;
+  // The id of the SSO provider.
+  string idp_id = 1;
   // The code to sign in with.
   string code = 2;
   // The redirect URI.

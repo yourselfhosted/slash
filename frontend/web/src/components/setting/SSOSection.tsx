@@ -38,7 +38,7 @@ const SSOSection = () => {
       try {
         await workspaceServiceClient.updateWorkspaceSetting({
           setting: {
-            identityProviders: identityProviderList.filter((idp) => idp.name !== identityProvider.name),
+            identityProviders: identityProviderList.filter((idp) => idp.id !== identityProvider.id),
           },
           updateMask: ["identity_providers"],
         });
@@ -92,10 +92,8 @@ const SSOSection = () => {
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {identityProviderList.map((identityProvider) => (
-                      <tr key={identityProvider.name}>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">
-                          {identityProvider.name}
-                        </td>
+                      <tr key={identityProvider.id}>
+                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">{identityProvider.id}</td>
                         <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{identityProvider.title}</td>
                         <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">
                           <IconButton

@@ -73,13 +73,13 @@ func (s *APIV1Service) SignInWithSSO(ctx context.Context, request *v1pb.SignInWi
 	}
 	var identityProvider *storepb.IdentityProvider
 	for _, idp := range identityProviderSetting.GetIdentityProvider().IdentityProviders {
-		if idp.Name == request.IdpName {
+		if idp.Id == request.IdpId {
 			identityProvider = idp
 			break
 		}
 	}
 	if identityProvider == nil {
-		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("identity provider not found with name %s", request.IdpName))
+		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("identity provider not found with name %s", request.IdpId))
 	}
 
 	var userInfo *idp.IdentityProviderUserInfo

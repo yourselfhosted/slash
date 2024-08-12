@@ -53,8 +53,8 @@ paths:
           schema:
             $ref: '#/definitions/rpcStatus'
       parameters:
-        - name: idpName
-          description: The name of the SSO provider.
+        - name: idpId
+          description: The id of the SSO provider.
           in: query
           required: false
           type: string
@@ -791,8 +791,9 @@ definitions:
   apiv1IdentityProvider:
     type: object
     properties:
-      name:
+      id:
         type: string
+        description: The unique identifier of the identity provider.
       title:
         type: string
       type:

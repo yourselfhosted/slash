@@ -3,6 +3,7 @@ import { isUndefined } from "lodash-es";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { v4 as uuidv4 } from "uuid";
 import { workspaceServiceClient } from "@/grpcweb";
 import { absolutifyLink } from "@/helpers/utils";
 import useLoading from "@/hooks/useLoading";
@@ -26,6 +27,7 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
   const [state, setState] = useState<State>({
     identityProviderCreate: IdentityProvider.fromPartial(
       identityProvider || {
+        id: uuidv4(),
         type: IdentityProvider_Type.OAUTH2,
         config: {
           oauth2: IdentityProviderConfig_OAuth2Config.fromPartial({
@@ -43,14 +45,6 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
     setState({
       ...state,
       ...partialState,
-    });
-  };
-
-  const handleNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPartialState({
-      identityProviderCreate: Object.assign(state.identityProviderCreate, {
-        name: e.target.value,
-      }),
     });
   };
 
@@ -102,7 +96,7 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
   };
 
   const onSave = async () => {
-    if (!state.identityProviderCreate.name || !state.identityProviderCreate.title) {
+    if (!state.identityProviderCreate.id || !state.identityProviderCreate.title) {
       toast.error("Please fill in required fields.");
       return;
     }
@@ -112,7 +106,7 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
         await workspaceServiceClient.updateWorkspaceSetting({
           setting: {
             identityProviders: workspaceStore.setting.identityProviders.map((idp) =>
-              idp.name === state.identityProviderCreate.name ? state.identityProviderCreate : idp,
+              idp.id === state.identityProviderCreate.id ? state.identityProviderCreate : idp,
             ),
           },
           updateMask: ["identity_providers"],
@@ -145,18 +139,6 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
         <div className="overflow-y-auto w-full mt-2 px-4 pb-4 sm:w-[24rem]">
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
-              Name <span className="text-red-600">*</span>
-            </span>
-            <Input
-              className="w-full"
-              type="text"
-              placeholder="The unique name of your identity provider"
-              value={state.identityProviderCreate.name}
-              onChange={handleNameInputChange}
-            />
-          </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
               Title <span className="text-red-600">*</span>
             </span>
             <div className="relative w-full">
@@ -169,8 +151,13 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
               />
             </div>
           </div>
+          <Divider className="!mb-3" />
           {isCreating && (
-            <p className="border rounded-md p-2 text-sm w-full mb-2 break-all">Redirect URL: {absolutifyLink("/auth/callback")}</p>
+            <p className="shadow-sm rounded-md py-1 px-2 bg-zinc-100 dark:bg-zinc-900 text-sm w-full mb-2 break-all">
+              <span className="opacity-60">Redirect URL</span>
+              <br />
+              <code>{absolutifyLink("/auth/callback")}</code>
+            </p>
           )}
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">

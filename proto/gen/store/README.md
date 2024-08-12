@@ -192,7 +192,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  |  |
+| id | [string](#string) |  | The unique identifier of the identity provider. |
 | title | [string](#string) |  |  |
 | type | [IdentityProvider.Type](#slash-store-IdentityProvider-Type) |  |  |
 | config | [IdentityProviderConfig](#slash-store-IdentityProviderConfig) |  |  |

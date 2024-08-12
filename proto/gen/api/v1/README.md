@@ -522,7 +522,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| idp_name | [string](#string) |  | The name of the SSO provider. |
+| idp_id | [string](#string) |  | The id of the SSO provider. |
 | code | [string](#string) |  | The code to sign in with. |
 | redirect_uri | [string](#string) |  | The redirect URI. |
 
@@ -1434,7 +1434,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  |  |
+| id | [string](#string) |  | The unique identifier of the identity provider. |
 | title | [string](#string) |  |  |
 | type | [IdentityProvider.Type](#slash-api-v1-IdentityProvider-Type) |  |  |
 | config | [IdentityProviderConfig](#slash-api-v1-IdentityProviderConfig) |  |  |

@@ -58,7 +58,8 @@ message WorkspaceSetting {
 }
 
 message IdentityProvider {
-  string name = 1;
+  // The unique identifier of the identity provider.
+  string id = 1;
 
   string title = 2;
 
