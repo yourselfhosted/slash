@@ -50,18 +50,32 @@ docker compose up -d
 
 This will start Slash in the background and expose it on port `5231`. Data is stored in Docker Volume `slash_slash`. You can customize the port and backup your volume.
 
-### Upgrade
+## Use PostgreSQL as Database
 
-```bash
-cd /opt/slash
-docker compose pull
-docker compose up -d
+Slash supports the following database types:
+
+- SQLite (default)
+- PostgreSQL
+
+### Using PostgreSQL
+
+To switch to PostgreSQL, you can use the following steps:
+
+- **--driver** _postgres_ : This argument specifies that Slash should use the `postgres` driver instead of the default `sqlite`.
+
+- **--dsn** _postgresql://postgres:PASSWORD@localhost:5432/slash_ : Provides the connection details for your PostgreSQL server.
+
+You can start Slash with Docker using the following command:
+
+```shell
+docker run -d --name slash --publish 5231:5231 --volume ~/.slash/:/var/opt/slash yourselfhosted/slash:latest --driver postgres --dsn 'postgresql://postgres:PASSWORD@localhost:5432/slash'
 ```
 
-## Administration Account Initialization
+Additionally, you can set these configurations via environment variables:
 
-No user accounts are created by default.
+```shell
+SLASH_DRIVER=postgres
+SLASH_DSN=postgresql://root:password@localhost:5432/slash
+```
 
-Once you navigate to the app in your browser, you'll get automatically redirected to the registration URL in order to create an account.
-
-Note that the first account created will always be an administrator account.
+Note that if the PostgreSQL server is not configured to support SSL connections you will need to add `?sslmode=disable` to the DSN.
