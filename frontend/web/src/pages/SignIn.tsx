@@ -62,7 +62,7 @@ const SignIn: React.FC = () => {
   };
 
   const handleSignInWithIdentityProvider = async (identityProvider: IdentityProvider) => {
-    const stateQueryParameter = `auth.signin.${identityProvider.title}-${identityProvider.id}`;
+    const stateQueryParameter = identityProvider.id;
     if (identityProvider.type === IdentityProvider_Type.OAUTH2) {
       const redirectUri = absolutifyLink("/auth/callback");
       const oauth2Config = identityProvider.config?.oauth2;

@@ -1,4 +1,3 @@
-import { last } from "lodash-es";
 import { ClientError } from "nice-grpc-web";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -34,7 +33,7 @@ const AuthCallback = () => {
       return;
     }
 
-    const idpId = last(state.split("-"));
+    const idpId = state;
     if (!idpId) {
       setState({
         loading: false,
