@@ -46,6 +46,9 @@ func (d *DB) ListActivities(ctx context.Context, find *store.FindActivity) ([]*s
 	if find.PayloadShortcutID != nil {
 		where, args = append(where, fmt.Sprintf("CAST(payload::JSON->>'shortcutId' AS INTEGER) = %s", placeholder(len(args)+1))), append(args, *find.PayloadShortcutID)
 	}
+	if find.CreatedTsAfter != nil {
+		where, args = append(where, "created_ts > "+placeholder(len(args)+1)), append(args, *find.CreatedTsAfter)
+	}
 
 	query := `
 		SELECT

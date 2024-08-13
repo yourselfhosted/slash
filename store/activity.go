@@ -59,6 +59,7 @@ type FindActivity struct {
 	Type              ActivityType
 	Level             ActivityLevel
 	PayloadShortcutID *int32
+	CreatedTsAfter    *int64
 }
 
 func (s *Store) CreateActivity(ctx context.Context, create *Activity) (*Activity, error) {

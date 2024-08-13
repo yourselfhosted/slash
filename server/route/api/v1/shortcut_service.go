@@ -19,6 +19,7 @@ import (
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/metric"
+	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -288,10 +289,15 @@ func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *v1pb.G
 		return nil, status.Errorf(codes.NotFound, "shortcut not found")
 	}
 
-	activities, err := s.Store.ListActivities(ctx, &store.FindActivity{
+	activityFind := &store.FindActivity{
 		Type:              store.ActivityShortcutView,
 		PayloadShortcutID: &shortcut.Id,
-	})
+	}
+	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeAdvancedAnalytics) {
+		createdTsAfter := time.Now().AddDate(0, 0, -14).Unix()
+		activityFind.CreatedTsAfter = &createdTsAfter
+	}
+	activities, err := s.Store.ListActivities(ctx, activityFind)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get activities, err: %v", err)
 	}
