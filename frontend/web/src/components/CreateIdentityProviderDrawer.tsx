@@ -152,6 +152,7 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           <Divider className="!mb-3" />
+          <p className="font-medium mb-2">Identity provider information</p>
           {isCreating && (
             <p className="shadow-sm rounded-md py-1 px-2 bg-zinc-100 dark:bg-zinc-900 text-sm w-full mb-2 break-all">
               <span className="opacity-60">Redirect URL</span>
@@ -244,6 +245,7 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           <Divider className="!mb-3" />
+          <p className="font-medium mb-2">Field mapping</p>
           <div className="w-full flex flex-col justify-start items-start mb-3">
             <span className="mb-2">
               Identifier <span className="text-red-600">*</span>

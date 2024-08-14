@@ -1,4 +1,3 @@
-import { Avatar } from "@mui/joy";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
@@ -38,7 +37,8 @@ const Header: React.FC = () => {
             </Link>
             {[PlanType.PRO, PlanType.ENTERPRISE].includes(profile.plan) && (
               <span className="ml-1 text-xs px-1.5 leading-5 border rounded-full bg-blue-600 border-blue-700 text-white shadow dark:opacity-70">
-                {profile.plan}
+                {/* PRO or ENT */}
+                {profile.plan.substring(0, 3)}
               </span>
             )}
             {shouldShowRouterSwitch && (
@@ -74,13 +74,12 @@ const Header: React.FC = () => {
               </>
             )}
           </div>
-          <div className="relative flex-shrink-0">
+          <div className="relative shrink-0">
             <Dropdown
               trigger={
                 <button className="flex flex-row justify-end items-center cursor-pointer">
-                  <Avatar size="sm" variant="plain" />
-                  <span className="dark:text-gray-400">{currentUser.nickname}</span>
-                  <Icon.ChevronDown className="ml-2 w-5 h-auto text-gray-600 dark:text-gray-400" />
+                  <span className="dark:text-gray-400 max-w-20 truncate">{currentUser.nickname}</span>
+                  <Icon.ChevronDown className="ml-1 w-5 h-auto text-gray-600 dark:text-gray-400" />
                 </button>
               }
               actionsClassName="!w-32"

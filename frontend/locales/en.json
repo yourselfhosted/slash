@@ -52,7 +52,7 @@
   },
   "filter": {
     "all": "All",
-    "mine": "Mine",
+    "personal": "Personal",
     "compact-mode": "Compact mode",
     "order-by": "Order by",
     "direction": "Direction"

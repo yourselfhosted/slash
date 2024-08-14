@@ -27,7 +27,7 @@ const SubscriptionSetting: React.FC = () => {
         licenseKey,
       });
       if (subscription) {
-        toast.success(`Welcome to Slash-${stringifyPlanType(subscription.plan)}🎉`);
+        toast.success(`Welcome to Slash ${stringifyPlanType(subscription.plan)}🎉`);
       }
     } catch (error: any) {
       toast.error(error.details);

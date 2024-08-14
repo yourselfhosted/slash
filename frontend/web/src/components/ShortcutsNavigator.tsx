@@ -35,7 +35,7 @@ const ShortcutsNavigator = () => {
         onClick={() => viewStore.setFilter({ tab: "tab:mine" })}
       >
         <Icon.User className="w-4 h-auto mr-1" />
-        <span className="font-normal">{t("filter.mine")}</span>
+        <span className="font-normal">{t("filter.personal")}</span>
       </button>
       {Array.from(sortedTagMap.keys()).map((tag) => (
         <button
