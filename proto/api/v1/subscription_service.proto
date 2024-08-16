@@ -9,14 +9,20 @@ import "google/protobuf/timestamp.proto";
 option go_package = "gen/api/v1";
 
 service SubscriptionService {
-  rpc GetSubscription(GetSubscriptionRequest) returns (GetSubscriptionResponse) {
+  // GetSubscription gets the current subscription of Slash instance.
+  rpc GetSubscription(GetSubscriptionRequest) returns (Subscription) {
     option (google.api.http) = {get: "/v1/subscription"};
   }
-  rpc UpdateSubscription(UpdateSubscriptionRequest) returns (UpdateSubscriptionResponse) {
+  // UpdateSubscription updates the subscription.
+  rpc UpdateSubscription(UpdateSubscriptionRequest) returns (Subscription) {
     option (google.api.http) = {
       patch: "/v1/subscription"
       body: "*"
     };
+  }
+  // DeleteSubscription deletes the subscription.
+  rpc DeleteSubscription(DeleteSubscriptionRequest) returns (Subscription) {
+    option (google.api.http) = {delete: "/v1/subscription"};
   }
 }
 
@@ -41,14 +47,8 @@ enum PlanType {
 
 message GetSubscriptionRequest {}
 
-message GetSubscriptionResponse {
-  Subscription subscription = 1;
-}
-
 message UpdateSubscriptionRequest {
   string license_key = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
-message UpdateSubscriptionResponse {
-  Subscription subscription = 1;
-}
+message DeleteSubscriptionRequest {}

@@ -16,6 +16,24 @@ const SubscriptionSetting: React.FC = () => {
   const isAdmin = currentUser.role === Role.ADMIN;
   const profile = workspaceStore.profile;
 
+  const handleDeleteLicenseKey = async () => {
+    if (!isAdmin) {
+      toast.error("Only admin can upload license key");
+      return;
+    }
+
+    const confirmed = window.confirm("Are you sure you want to reset the license key?");
+    if (confirmed) {
+      try {
+        await subscriptionServiceClient.deleteSubscription({});
+        toast.success("License key has been reset");
+      } catch (error: any) {
+        toast.error(error.details);
+      }
+      await workspaceStore.fetchWorkspaceProfile();
+    }
+  };
+
   const handleUpdateLicenseKey = async () => {
     if (!isAdmin) {
       toast.error("Only admin can upload license key");
@@ -23,12 +41,10 @@ const SubscriptionSetting: React.FC = () => {
     }
 
     try {
-      const { subscription } = await subscriptionServiceClient.updateSubscription({
+      const subscription = await subscriptionServiceClient.updateSubscription({
         licenseKey,
       });
-      if (subscription) {
-        toast.success(`Welcome to Slash ${stringifyPlanType(subscription.plan)}🎉`);
-      }
+      toast.success(`Welcome to Slash ${stringifyPlanType(subscription.plan)}🎉`);
     } catch (error: any) {
       toast.error(error.details);
     }
@@ -61,9 +77,16 @@ const SubscriptionSetting: React.FC = () => {
               </Link>
             )}
           </div>
-          <Button disabled={licenseKey === ""} onClick={handleUpdateLicenseKey}>
-            Upload license
-          </Button>
+          <div className="flex justify-end items-center gap-2">
+            {profile.plan !== PlanType.FREE && (
+              <Button color="neutral" variant="plain" onClick={handleDeleteLicenseKey}>
+                Reset
+              </Button>
+            )}
+            <Button disabled={licenseKey === ""} onClick={handleUpdateLicenseKey}>
+              Upload license
+            </Button>
+          </div>
         </div>
       </div>
       <Divider />

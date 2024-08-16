@@ -66,32 +66,44 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 	if result == nil {
 		return subscription, nil
 	}
+
 	subscription.Plan = result.Plan
 	subscription.ExpiresTime = timestamppb.New(result.ExpiresTime)
 	subscription.Seats = int32(result.Seats)
 	for _, feature := range result.Features {
 		subscription.Features = append(subscription.Features, feature.String())
 	}
-	s.cachedSubscription = subscription
 	return subscription, nil
 }
 
 func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey string) (*v1pb.Subscription, error) {
-	if licenseKey == "" {
-		return nil, errors.New("license key is required")
+	if licenseKey != "" {
+		result, err := validateLicenseKey(licenseKey)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to validate license key")
+		}
+		if result == nil {
+			return nil, errors.New("invalid license key")
+		}
 	}
-	result, err := validateLicenseKey(licenseKey)
+	if err := s.UpdateLicenseKey(ctx, licenseKey); err != nil {
+		return nil, errors.Wrap(err, "failed to update license key")
+	}
+
+	subscription, err := s.LoadSubscription(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to validate license key")
+		return nil, errors.Wrap(err, "failed to load subscription")
 	}
-	if result == nil {
-		return nil, errors.New("invalid license key")
-	}
+	s.cachedSubscription = subscription
+	return subscription, nil
+}
+
+func (s *LicenseService) UpdateLicenseKey(ctx context.Context, licenseKey string) error {
 	workspaceSettingGeneral, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
 		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
 	})
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get workspace setting")
+		return errors.Wrap(err, "failed to get workspace setting")
 	}
 	if workspaceSettingGeneral == nil || workspaceSettingGeneral.GetGeneral() == nil {
 		workspaceSettingGeneral = &storepb.WorkspaceSetting{
@@ -107,9 +119,9 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 	}
 	_, err = s.Store.UpsertWorkspaceSetting(ctx, workspaceSettingGeneral)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to upsert workspace setting")
+		return errors.Wrap(err, "failed to upsert workspace setting")
 	}
-	return s.LoadSubscription(ctx)
+	return nil
 }
 
 func (s *LicenseService) GetSubscription() *v1pb.Subscription {

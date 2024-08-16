@@ -79,11 +79,10 @@
     - [ShortcutService](#slash-api-v1-ShortcutService)
   
 - [api/v1/subscription_service.proto](#api_v1_subscription_service-proto)
+    - [DeleteSubscriptionRequest](#slash-api-v1-DeleteSubscriptionRequest)
     - [GetSubscriptionRequest](#slash-api-v1-GetSubscriptionRequest)
-    - [GetSubscriptionResponse](#slash-api-v1-GetSubscriptionResponse)
     - [Subscription](#slash-api-v1-Subscription)
     - [UpdateSubscriptionRequest](#slash-api-v1-UpdateSubscriptionRequest)
-    - [UpdateSubscriptionResponse](#slash-api-v1-UpdateSubscriptionResponse)
   
     - [PlanType](#slash-api-v1-PlanType)
   
@@ -1108,25 +1107,20 @@
 
 
 
+<a name="slash-api-v1-DeleteSubscriptionRequest"></a>
+
+### DeleteSubscriptionRequest
+
+
+
+
+
+
+
 <a name="slash-api-v1-GetSubscriptionRequest"></a>
 
 ### GetSubscriptionRequest
 
-
-
-
-
-
-
-<a name="slash-api-v1-GetSubscriptionResponse"></a>
-
-### GetSubscriptionResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| subscription | [Subscription](#slash-api-v1-Subscription) |  |  |
 
 
 
@@ -1166,21 +1160,6 @@
 
 
 
-
-<a name="slash-api-v1-UpdateSubscriptionResponse"></a>
-
-### UpdateSubscriptionResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| subscription | [Subscription](#slash-api-v1-Subscription) |  |  |
-
-
-
-
-
  
 
 
@@ -1209,8 +1188,9 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetSubscription | [GetSubscriptionRequest](#slash-api-v1-GetSubscriptionRequest) | [GetSubscriptionResponse](#slash-api-v1-GetSubscriptionResponse) |  |
-| UpdateSubscription | [UpdateSubscriptionRequest](#slash-api-v1-UpdateSubscriptionRequest) | [UpdateSubscriptionResponse](#slash-api-v1-UpdateSubscriptionResponse) |  |
+| GetSubscription | [GetSubscriptionRequest](#slash-api-v1-GetSubscriptionRequest) | [Subscription](#slash-api-v1-Subscription) | GetSubscription gets the current subscription of Slash instance. |
+| UpdateSubscription | [UpdateSubscriptionRequest](#slash-api-v1-UpdateSubscriptionRequest) | [Subscription](#slash-api-v1-Subscription) | UpdateSubscription updates the subscription. |
+| DeleteSubscription | [DeleteSubscriptionRequest](#slash-api-v1-DeleteSubscriptionRequest) | [Subscription](#slash-api-v1-Subscription) | DeleteSubscription deletes the subscription. |
 
  
 

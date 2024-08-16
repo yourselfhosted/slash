@@ -708,12 +708,27 @@ paths:
         - WorkspaceService
   /v1/subscription:
     get:
+      summary: GetSubscription gets the current subscription of Slash instance.
       operationId: SubscriptionService_GetSubscription
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GetSubscriptionResponse'
+            $ref: '#/definitions/v1Subscription'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      tags:
+        - SubscriptionService
+    delete:
+      summary: DeleteSubscription deletes the subscription.
+      operationId: SubscriptionService_DeleteSubscription
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1Subscription'
         default:
           description: An unexpected error response.
           schema:
@@ -721,12 +736,13 @@ paths:
       tags:
         - SubscriptionService
     patch:
+      summary: UpdateSubscription updates the subscription.
       operationId: SubscriptionService_UpdateSubscription
       responses:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1UpdateSubscriptionResponse'
+            $ref: '#/definitions/v1Subscription'
         default:
           description: An unexpected error response.
           schema:
@@ -1036,11 +1052,6 @@ definitions:
     properties:
       shortcut:
         $ref: '#/definitions/apiv1Shortcut'
-  v1GetSubscriptionResponse:
-    type: object
-    properties:
-      subscription:
-        $ref: '#/definitions/v1Subscription'
   v1GetUserResponse:
     type: object
     properties:
@@ -1150,11 +1161,6 @@ definitions:
         type: string
     required:
       - licenseKey
-  v1UpdateSubscriptionResponse:
-    type: object
-    properties:
-      subscription:
-        $ref: '#/definitions/v1Subscription'
   v1UpdateUserResponse:
     type: object
     properties:
