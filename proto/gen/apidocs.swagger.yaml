@@ -1135,14 +1135,22 @@ definitions:
         type: string
         format: date-time
         readOnly: true
-      seats:
-        type: integer
-        format: int32
-        readOnly: true
       features:
         type: array
         items:
           type: string
+        readOnly: true
+      seats:
+        type: integer
+        format: int32
+        readOnly: true
+      shortcutsLimit:
+        type: integer
+        format: int32
+        readOnly: true
+      collectionsLimit:
+        type: integer
+        format: int32
         readOnly: true
   v1UpdateCollectionResponse:
     type: object

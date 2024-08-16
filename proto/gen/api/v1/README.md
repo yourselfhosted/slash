@@ -1138,8 +1138,10 @@
 | plan | [PlanType](#slash-api-v1-PlanType) |  |  |
 | started_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | expires_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| seats | [int32](#int32) |  |  |
 | features | [string](#string) | repeated |  |
+| seats | [int32](#int32) |  |  |
+| shortcuts_limit | [int32](#int32) |  |  |
+| collections_limit | [int32](#int32) |  |  |
 
 
 

@@ -132,6 +132,17 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *v1pb.CreateS
 		return nil, status.Errorf(codes.InvalidArgument, "name and link are required")
 	}
 
+	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedShortcuts) {
+		shortcuts, err := s.Store.ListShortcuts(ctx, &store.FindShortcut{})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get shortcut list, err: %v", err)
+		}
+		shortcutsLimit := int(s.LicenseService.GetSubscription().ShortcutsLimit)
+		if len(shortcuts) >= shortcutsLimit {
+			return nil, status.Errorf(codes.PermissionDenied, "Maximum number of shortcuts %d reached", shortcutsLimit)
+		}
+	}
+
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)

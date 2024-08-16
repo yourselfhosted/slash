@@ -30,12 +30,9 @@ type LicenseService struct {
 // NewLicenseService creates a new LicenseService.
 func NewLicenseService(profile *profile.Profile, store *store.Store) *LicenseService {
 	return &LicenseService{
-		Profile: profile,
-		Store:   store,
-		cachedSubscription: &v1pb.Subscription{
-			Plan:  v1pb.PlanType_FREE,
-			Seats: 5,
-		},
+		Profile:            profile,
+		Store:              store,
+		cachedSubscription: getSubscriptionForFreePlan(),
 	}
 }
 
@@ -47,10 +44,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 		return nil, errors.Wrap(err, "failed to get workspace setting")
 	}
 
-	subscription := &v1pb.Subscription{
-		Plan:  v1pb.PlanType_FREE,
-		Seats: 5,
-	}
+	subscription := getSubscriptionForFreePlan()
 	licenseKey := ""
 	if workspaceSettingGeneral != nil {
 		licenseKey = workspaceSettingGeneral.GetGeneral().LicenseKey
@@ -183,12 +177,8 @@ func validateLicenseKey(licenseKey string) (*ValidateResult, error) {
 	}
 	if validateResponse.Valid {
 		result := &ValidateResult{
-			Plan: v1pb.PlanType_PRO,
-			Features: []FeatureType{
-				FeatureTypeUnlimitedAccounts,
-				FeatureTypeUnlimitedCollections,
-				FeatureTypeCustomeBranding,
-			},
+			Plan:     v1pb.PlanType_PRO,
+			Features: getDefaultFeatures(v1pb.PlanType_PRO),
 		}
 		if validateResponse.LicenseKey.ExpiresAt != nil && *validateResponse.LicenseKey.ExpiresAt != "" {
 			expiresTime, err := time.Parse(time.RFC3339Nano, *validateResponse.LicenseKey.ExpiresAt)
@@ -229,4 +219,14 @@ func parseLicenseKey(licenseKey string) (*Claims, error) {
 		return nil, errors.New("invalid claims")
 	}
 	return claims, nil
+}
+
+func getSubscriptionForFreePlan() *v1pb.Subscription {
+	return &v1pb.Subscription{
+		Plan:             v1pb.PlanType_FREE,
+		Seats:            5,
+		ShortcutsLimit:   100,
+		CollectionsLimit: 5,
+		Features:         []string{},
+	}
 }

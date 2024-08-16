@@ -33,9 +33,13 @@ message Subscription {
 
   google.protobuf.Timestamp expires_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  int32 seats = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+  repeated string features = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  repeated string features = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+  int32 seats = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  int32 shortcuts_limit = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  int32 collections_limit = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
 enum PlanType {

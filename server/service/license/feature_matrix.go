@@ -18,6 +18,8 @@ const (
 
 	// FeatureTypeUnlimitedAccounts allows the user to create unlimited accounts.
 	FeatureTypeUnlimitedAccounts FeatureType = "ysh.slash.unlimited-accounts"
+	// FeatureTypeUnlimitedShortcuts allows the user to create unlimited shortcuts.
+	FeatureTypeUnlimitedShortcuts FeatureType = "ysh.slash.unlimited-shortcuts"
 	// FeatureTypeUnlimitedAccounts allows the user to create unlimited collections.
 	FeatureTypeUnlimitedCollections FeatureType = "ysh.slash.unlimited-collections"
 
@@ -36,6 +38,7 @@ var FeatureMatrix = map[FeatureType][3]bool{
 	FeatureTypeSSO:                  {false, false, false},
 	FeatureTypeAdvancedAnalytics:    {false, false, false},
 	FeatureTypeUnlimitedAccounts:    {false, true, false},
+	FeatureTypeUnlimitedShortcuts:   {false, true, true},
 	FeatureTypeUnlimitedCollections: {false, true, true},
 	FeatureTypeCustomeBranding:      {false, true, true},
 }
@@ -58,6 +61,8 @@ func validateFeatureString(feature string) (FeatureType, bool) {
 		return FeatureTypeAdvancedAnalytics, true
 	case "ysh.slash.unlimited-accounts":
 		return FeatureTypeUnlimitedAccounts, true
+	case "ysh.slash.unlimited-shortcuts":
+		return FeatureTypeUnlimitedShortcuts, true
 	case "ysh.slash.unlimited-collections":
 		return FeatureTypeUnlimitedCollections, true
 	case "ysh.slash.custom-branding":

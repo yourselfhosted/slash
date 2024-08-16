@@ -108,15 +108,14 @@ func (s *APIV1Service) CreateCollection(ctx context.Context, request *v1pb.Creat
 		return nil, status.Errorf(codes.InvalidArgument, "name and title are required")
 	}
 
-	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedAccounts) {
-		collections, err := s.Store.ListCollections(ctx, &store.FindCollection{
-			VisibilityList: []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic},
-		})
+	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedCollections) {
+		collections, err := s.Store.ListCollections(ctx, &store.FindCollection{})
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get collection list, err: %v", err)
 		}
-		if len(collections) >= 5 {
-			return nil, status.Errorf(codes.PermissionDenied, "Maximum number of collections reached")
+		collectionsLimit := int(s.LicenseService.GetSubscription().CollectionsLimit)
+		if len(collections) >= collectionsLimit {
+			return nil, status.Errorf(codes.PermissionDenied, "Maximum number of collections %d reached", collectionsLimit)
 		}
 	}
 

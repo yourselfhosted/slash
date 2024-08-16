@@ -111,11 +111,7 @@ const SubscriptionSetting: React.FC = () => {
                 <ul className="mt-4 space-y-3">
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    Unlimited shortcuts
-                  </li>
-                  <li className="flex items-center dark:text-gray-300">
-                    <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    Basic analytics
+                    Full API access
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
@@ -123,7 +119,15 @@ const SubscriptionSetting: React.FC = () => {
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    Full API access
+                    Basic analytics
+                  </li>
+                  <li className="flex items-center dark:text-gray-300">
+                    <Icon.AlertCircle className="w-5 h-auto text-gray-400 mr-1 shrink-0" />
+                    Up to 100 shortcuts
+                  </li>
+                  <li className="flex items-center dark:text-gray-300">
+                    <Icon.AlertCircle className="w-5 h-auto text-gray-400 mr-1 shrink-0" />
+                    Up to 5 collections
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.AlertCircle className="w-5 h-auto text-gray-400 mr-1 shrink-0" />
@@ -149,7 +153,11 @@ const SubscriptionSetting: React.FC = () => {
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    Custom branding
+                    Unlimited shortcuts
+                  </li>
+                  <li className="flex items-center dark:text-gray-300">
+                    <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
+                    Unlimited collections
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
@@ -181,12 +189,16 @@ const SubscriptionSetting: React.FC = () => {
                 <p className="mt-2 font-medium dark:text-gray-300">Everything in Pro, and</p>
                 <ul className="mt-4 space-y-3">
                   <li className="flex items-center dark:text-gray-300">
+                    <Icon.Building2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
+                    Custom branding
+                  </li>
+                  <li className="flex items-center dark:text-gray-300">
                     <Icon.Shield className="w-5 h-auto text-green-600 mr-1 shrink-0" />
                     Single Sign-On(SSO)
                   </li>
                   <li className="flex items-center dark:text-gray-300">
-                    <Icon.HeartHandshake className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    Dedicated support
+                    <Icon.Mail className="w-5 h-auto text-green-600 mr-1 shrink-0" />
+                    Email support
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.Sparkles className="w-5 h-auto text-green-600 mr-1 shrink-0" />

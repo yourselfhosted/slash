@@ -6,7 +6,7 @@ Slash is open source links shortener and sharing platform. Our source code is av
 
 ### Free
 
-The Free plan is designed for personal use not for commercial use. It allows you to create unlimited shortcuts and invite up to 5 members.
+The Free plan is designed for personal use not for commercial use. It allows you to create up to 100 shortcuts and invite up to 5 members.
 
 ### Pro
 
