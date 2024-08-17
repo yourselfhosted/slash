@@ -26,12 +26,9 @@ const useShortcutStore = create(
       return shortcuts;
     },
     fetchShortcutByName: async (name: string) => {
-      const { shortcut } = await shortcutServiceClient.getShortcutByName({
+      const shortcut = await shortcutServiceClient.getShortcutByName({
         name,
       });
-      if (!shortcut) {
-        throw new Error(`Shortcut with name ${name} not found`);
-      }
       return shortcut;
     },
     getOrFetchShortcutById: async (id: number) => {
@@ -40,13 +37,9 @@ const useShortcutStore = create(
         return shortcutMap[id] as Shortcut;
       }
 
-      const { shortcut } = await shortcutServiceClient.getShortcut({
+      const shortcut = await shortcutServiceClient.getShortcut({
         id,
       });
-      if (!shortcut) {
-        throw new Error(`Shortcut with id ${id} not found`);
-      }
-
       shortcutMap[id] = shortcut;
       set({ shortcutMapById: shortcutMap });
       return shortcut;
@@ -59,25 +52,19 @@ const useShortcutStore = create(
       return Object.values(get().shortcutMapById);
     },
     createShortcut: async (shortcut: Shortcut) => {
-      const { shortcut: createdShortcut } = await shortcutServiceClient.createShortcut({
+      const createdShortcut = await shortcutServiceClient.createShortcut({
         shortcut: shortcut,
       });
-      if (!createdShortcut) {
-        throw new Error(`Failed to create shortcut`);
-      }
       const shortcutMap = get().shortcutMapById;
       shortcutMap[createdShortcut.id] = createdShortcut;
       set({ shortcutMapById: shortcutMap });
       return createdShortcut;
     },
     updateShortcut: async (shortcut: Partial<Shortcut>, updateMask: string[]) => {
-      const { shortcut: updatedShortcut } = await shortcutServiceClient.updateShortcut({
+      const updatedShortcut = await shortcutServiceClient.updateShortcut({
         shortcut: shortcut,
         updateMask,
       });
-      if (!updatedShortcut) {
-        throw new Error(`Failed to update shortcut`);
-      }
       const shortcutMap = get().shortcutMapById;
       shortcutMap[updatedShortcut.id] = updatedShortcut;
       set({ shortcutMapById: shortcutMap });

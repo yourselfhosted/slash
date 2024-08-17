@@ -280,7 +280,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1CreateShortcutResponse'
+            $ref: '#/definitions/apiv1Shortcut'
         default:
           description: An unexpected error response.
           schema:
@@ -301,7 +301,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GetShortcutResponse'
+            $ref: '#/definitions/apiv1Shortcut'
         default:
           description: An unexpected error response.
           schema:
@@ -321,7 +321,8 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1DeleteShortcutResponse'
+            type: object
+            properties: {}
         default:
           description: An unexpected error response.
           schema:
@@ -363,7 +364,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1UpdateShortcutResponse'
+            $ref: '#/definitions/apiv1Shortcut'
         default:
           description: An unexpected error response.
           schema:
@@ -409,7 +410,7 @@ paths:
                 type: integer
                 format: int32
               ogMetadata:
-                $ref: '#/definitions/apiv1OpenGraphMetadata'
+                $ref: '#/definitions/v1ShortcutOpenGraphMetadata'
         - name: updateMask
           in: query
           required: false
@@ -851,15 +852,6 @@ definitions:
       - TYPE_UNSPECIFIED
       - OAUTH2
     default: TYPE_UNSPECIFIED
-  apiv1OpenGraphMetadata:
-    type: object
-    properties:
-      title:
-        type: string
-      description:
-        type: string
-      image:
-        type: string
   apiv1RowStatus:
     type: string
     enum:
@@ -902,7 +894,7 @@ definitions:
         type: integer
         format: int32
       ogMetadata:
-        $ref: '#/definitions/apiv1OpenGraphMetadata'
+        $ref: '#/definitions/v1ShortcutOpenGraphMetadata'
   apiv1UserSetting:
     type: object
     properties:
@@ -995,11 +987,6 @@ definitions:
     properties:
       collection:
         $ref: '#/definitions/apiv1Collection'
-  v1CreateShortcutResponse:
-    type: object
-    properties:
-      shortcut:
-        $ref: '#/definitions/apiv1Shortcut'
   v1CreateUserAccessTokenResponse:
     type: object
     properties:
@@ -1011,8 +998,6 @@ definitions:
       user:
         $ref: '#/definitions/v1User'
   v1DeleteCollectionResponse:
-    type: object
-  v1DeleteShortcutResponse:
     type: object
   v1DeleteUserAccessTokenResponse:
     type: object
@@ -1046,16 +1031,6 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/GetShortcutAnalyticsResponseAnalyticsItem'
-  v1GetShortcutByNameResponse:
-    type: object
-    properties:
-      shortcut:
-        $ref: '#/definitions/apiv1Shortcut'
-  v1GetShortcutResponse:
-    type: object
-    properties:
-      shortcut:
-        $ref: '#/definitions/apiv1Shortcut'
   v1GetUserResponse:
     type: object
     properties:
@@ -1113,6 +1088,15 @@ definitions:
       - ADMIN
       - USER
     default: ROLE_UNSPECIFIED
+  v1ShortcutOpenGraphMetadata:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      image:
+        type: string
   v1Subscription:
     type: object
     properties:
@@ -1149,11 +1133,6 @@ definitions:
     properties:
       collection:
         $ref: '#/definitions/apiv1Collection'
-  v1UpdateShortcutResponse:
-    type: object
-    properties:
-      shortcut:
-        $ref: '#/definitions/apiv1Shortcut'
   v1UpdateSubscriptionRequest:
     type: object
     properties:
