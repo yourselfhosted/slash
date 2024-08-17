@@ -1,9 +1,9 @@
-import { Alert, Button } from "@mui/joy";
+import { Alert, Button, Divider } from "@mui/joy";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/Icon";
-import MemberSection from "@/components/setting/MemberSection";
-import WorkspaceSection from "@/components/setting/WorkspaceSection";
+import WorkspaceGeneralSettingSection from "@/components/setting/WorkspaceGeneralSettingSection";
+import WorkspaceMembersSection from "@/components/setting/WorkspaceMembersSection";
 import { useUserStore, useWorkspaceStore } from "@/stores";
 import { stringifyPlanType } from "@/stores/subscription";
 import { Role } from "@/types/proto/api/v1/user_service";
@@ -40,8 +40,10 @@ const WorkspaceSetting = () => {
           </Link>
         </div>
       </div>
-      <MemberSection />
-      <WorkspaceSection />
+      <Divider />
+      <WorkspaceMembersSection />
+      <Divider />
+      <WorkspaceGeneralSettingSection />
     </div>
   );
 };

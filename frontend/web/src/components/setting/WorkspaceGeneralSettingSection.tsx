@@ -28,7 +28,7 @@ const convertFileToBase64 = (file: File) =>
     reader.onerror = (error) => reject(error);
   });
 
-const WorkspaceSection = () => {
+const WorkspaceGeneralSettingSection = () => {
   const { t } = useTranslation();
   const workspaceStore = useWorkspaceStore();
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(workspaceStore.setting);
@@ -94,7 +94,7 @@ const WorkspaceSection = () => {
 
   return (
     <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
-      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("settings.workspace.self")}</p>
+      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">General</p>
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="w-full flex flex-col justify-start items-start">
@@ -166,4 +166,4 @@ const WorkspaceSection = () => {
   );
 };
 
-export default WorkspaceSection;
+export default WorkspaceGeneralSettingSection;

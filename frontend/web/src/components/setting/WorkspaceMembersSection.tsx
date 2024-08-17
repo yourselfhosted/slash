@@ -9,7 +9,7 @@ import { useUserStore } from "@/stores";
 import { User } from "@/types/proto/api/v1/user_service";
 import { convertRoleFromPb } from "@/utils/user";
 
-const MemberSection = () => {
+const WorkspaceMembersSection = () => {
   const { t } = useTranslation();
   const userStore = useUserStore();
   const [showCreateUserDialog, setShowCreateUserDialog] = useState<boolean>(false);
@@ -43,29 +43,22 @@ const MemberSection = () => {
 
   return (
     <>
-      <div className="w-full flex flex-col justify-start items-start space-y-4">
-        <div className="w-full">
-          <div className="sm:flex sm:items-center">
-            <div className="sm:flex-auto">
-              <p className="text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("user.self")}</p>
-              <p className="mt-2 text-sm text-gray-700 dark:text-gray-600">
-                A list of all the users in your workspace including their nickname, email and role.
-              </p>
-            </div>
-            <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-              <Button
-                variant="outlined"
-                color="neutral"
-                onClick={() => {
-                  setShowCreateUserDialog(true);
-                  setCurrentEditingUser(undefined);
-                }}
-              >
-                {t("user.action.add-user")}
-              </Button>
-            </div>
+      <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
+        <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">Members</p>
+        <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
+          <div className="w-full flex justify-end">
+            <Button
+              variant="outlined"
+              color="neutral"
+              onClick={() => {
+                setShowCreateUserDialog(true);
+                setCurrentEditingUser(undefined);
+              }}
+            >
+              {t("user.action.add-user")}
+            </Button>
           </div>
-          <div className="mt-2 flow-root">
+          <div className="w-full flow-root">
             <div className="overflow-x-auto">
               <div className="inline-block border rounded-lg border-gray-300 dark:border-zinc-700 min-w-full align-middle">
                 <table className="min-w-full divide-y divide-gray-300 dark:divide-zinc-700">
@@ -121,4 +114,4 @@ const MemberSection = () => {
   );
 };
 
-export default MemberSection;
+export default WorkspaceMembersSection;
