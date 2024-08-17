@@ -79,13 +79,12 @@ message Shortcut {
 
   message OpenGraphMetadata {
     string title = 1;
-  
+
     string description = 2;
-  
+
     string image = 3;
   }
 }
-
 
 message ListShortcutsRequest {}
 
@@ -120,13 +119,14 @@ message GetShortcutAnalyticsRequest {
 }
 
 message GetShortcutAnalyticsResponse {
-  message AnalyticsItem {
-    string name = 1;
-    int32 count = 2;
-  }
   repeated AnalyticsItem references = 1;
 
   repeated AnalyticsItem devices = 2;
 
   repeated AnalyticsItem browsers = 3;
+
+  message AnalyticsItem {
+    string name = 1;
+    int32 count = 2;
+  }
 }
