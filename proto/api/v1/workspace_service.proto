@@ -11,13 +11,13 @@ import "google/protobuf/field_mask.proto";
 option go_package = "gen/api/v1";
 
 service WorkspaceService {
-  rpc GetWorkspaceProfile(GetWorkspaceProfileRequest) returns (GetWorkspaceProfileResponse) {
+  rpc GetWorkspaceProfile(GetWorkspaceProfileRequest) returns (WorkspaceProfile) {
     option (google.api.http) = {get: "/api/v1/workspace/profile"};
   }
-  rpc GetWorkspaceSetting(GetWorkspaceSettingRequest) returns (GetWorkspaceSettingResponse) {
+  rpc GetWorkspaceSetting(GetWorkspaceSettingRequest) returns (WorkspaceSetting) {
     option (google.api.http) = {get: "/api/v1/workspace/setting"};
   }
-  rpc UpdateWorkspaceSetting(UpdateWorkspaceSettingRequest) returns (UpdateWorkspaceSettingResponse) {
+  rpc UpdateWorkspaceSetting(UpdateWorkspaceSettingRequest) returns (WorkspaceSetting) {
     option (google.api.http) = {
       patch: "/api/v1/workspace/setting"
       body: "setting"
@@ -31,8 +31,8 @@ message WorkspaceProfile {
   string mode = 1;
   // Current workspace version.
   string version = 2;
-  // The workspace plan.
-  PlanType plan = 3;
+  // The workspace subscription.
+  Subscription subscription = 3;
   // Whether to enable other users to sign up.
   bool enable_signup = 4;
   // The custom style.
@@ -42,8 +42,6 @@ message WorkspaceProfile {
   string owner = 6;
   // The workspace branding.
   bytes branding = 7;
-  // The workspace available features.
-  repeated string features = 8;
 }
 
 message WorkspaceSetting {
@@ -94,26 +92,11 @@ message IdentityProviderConfig {
 
 message GetWorkspaceProfileRequest {}
 
-message GetWorkspaceProfileResponse {
-  // The workspace profile.
-  WorkspaceProfile profile = 1;
-}
-
 message GetWorkspaceSettingRequest {}
-
-message GetWorkspaceSettingResponse {
-  // The user setting.
-  WorkspaceSetting setting = 1;
-}
 
 message UpdateWorkspaceSettingRequest {
   // The user setting.
   WorkspaceSetting setting = 1;
   // The update mask.
   google.protobuf.FieldMask update_mask = 2;
-}
-
-message UpdateWorkspaceSettingResponse {
-  // The user setting.
-  WorkspaceSetting setting = 1;
 }

@@ -102,15 +102,12 @@
   
 - [api/v1/workspace_service.proto](#api_v1_workspace_service-proto)
     - [GetWorkspaceProfileRequest](#slash-api-v1-GetWorkspaceProfileRequest)
-    - [GetWorkspaceProfileResponse](#slash-api-v1-GetWorkspaceProfileResponse)
     - [GetWorkspaceSettingRequest](#slash-api-v1-GetWorkspaceSettingRequest)
-    - [GetWorkspaceSettingResponse](#slash-api-v1-GetWorkspaceSettingResponse)
     - [IdentityProvider](#slash-api-v1-IdentityProvider)
     - [IdentityProviderConfig](#slash-api-v1-IdentityProviderConfig)
     - [IdentityProviderConfig.FieldMapping](#slash-api-v1-IdentityProviderConfig-FieldMapping)
     - [IdentityProviderConfig.OAuth2Config](#slash-api-v1-IdentityProviderConfig-OAuth2Config)
     - [UpdateWorkspaceSettingRequest](#slash-api-v1-UpdateWorkspaceSettingRequest)
-    - [UpdateWorkspaceSettingResponse](#slash-api-v1-UpdateWorkspaceSettingResponse)
     - [WorkspaceProfile](#slash-api-v1-WorkspaceProfile)
     - [WorkspaceSetting](#slash-api-v1-WorkspaceSetting)
   
@@ -1368,40 +1365,10 @@
 
 
 
-<a name="slash-api-v1-GetWorkspaceProfileResponse"></a>
-
-### GetWorkspaceProfileResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| profile | [WorkspaceProfile](#slash-api-v1-WorkspaceProfile) |  | The workspace profile. |
-
-
-
-
-
-
 <a name="slash-api-v1-GetWorkspaceSettingRequest"></a>
 
 ### GetWorkspaceSettingRequest
 
-
-
-
-
-
-
-<a name="slash-api-v1-GetWorkspaceSettingResponse"></a>
-
-### GetWorkspaceSettingResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| setting | [WorkspaceSetting](#slash-api-v1-WorkspaceSetting) |  | The user setting. |
 
 
 
@@ -1494,21 +1461,6 @@
 
 
 
-<a name="slash-api-v1-UpdateWorkspaceSettingResponse"></a>
-
-### UpdateWorkspaceSettingResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| setting | [WorkspaceSetting](#slash-api-v1-WorkspaceSetting) |  | The user setting. |
-
-
-
-
-
-
 <a name="slash-api-v1-WorkspaceProfile"></a>
 
 ### WorkspaceProfile
@@ -1519,12 +1471,11 @@
 | ----- | ---- | ----- | ----------- |
 | mode | [string](#string) |  | Current workspace mode: dev, prod. |
 | version | [string](#string) |  | Current workspace version. |
-| plan | [PlanType](#slash-api-v1-PlanType) |  | The workspace plan. |
+| subscription | [Subscription](#slash-api-v1-Subscription) |  | The workspace subscription. |
 | enable_signup | [bool](#bool) |  | Whether to enable other users to sign up. |
 | custom_style | [string](#string) |  | The custom style. |
 | owner | [string](#string) |  | The owner name. Format: &#34;users/{id}&#34; |
 | branding | [bytes](#bytes) |  | The workspace branding. |
-| features | [string](#string) | repeated | The workspace available features. |
 
 
 
@@ -1574,9 +1525,9 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetWorkspaceProfile | [GetWorkspaceProfileRequest](#slash-api-v1-GetWorkspaceProfileRequest) | [GetWorkspaceProfileResponse](#slash-api-v1-GetWorkspaceProfileResponse) |  |
-| GetWorkspaceSetting | [GetWorkspaceSettingRequest](#slash-api-v1-GetWorkspaceSettingRequest) | [GetWorkspaceSettingResponse](#slash-api-v1-GetWorkspaceSettingResponse) |  |
-| UpdateWorkspaceSetting | [UpdateWorkspaceSettingRequest](#slash-api-v1-UpdateWorkspaceSettingRequest) | [UpdateWorkspaceSettingResponse](#slash-api-v1-UpdateWorkspaceSettingResponse) |  |
+| GetWorkspaceProfile | [GetWorkspaceProfileRequest](#slash-api-v1-GetWorkspaceProfileRequest) | [WorkspaceProfile](#slash-api-v1-WorkspaceProfile) |  |
+| GetWorkspaceSetting | [GetWorkspaceSettingRequest](#slash-api-v1-GetWorkspaceSettingRequest) | [WorkspaceSetting](#slash-api-v1-WorkspaceSetting) |  |
+| UpdateWorkspaceSetting | [UpdateWorkspaceSettingRequest](#slash-api-v1-UpdateWorkspaceSettingRequest) | [WorkspaceSetting](#slash-api-v1-WorkspaceSetting) |  |
 
  
 

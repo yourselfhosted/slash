@@ -28,7 +28,7 @@ function App() {
   }, [workspaceStore.setting.customStyle]);
 
   useEffect(() => {
-    const hasCustomBranding = workspaceStore.profile.plan === PlanType.PRO;
+    const hasCustomBranding = workspaceStore.profile.subscription?.plan === PlanType.PRO;
     if (!hasCustomBranding || !workspaceStore.setting.branding) {
       return;
     }

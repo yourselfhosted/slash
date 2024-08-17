@@ -13,15 +13,21 @@ message WorkspaceSetting {
 
   oneof value {
     GeneralSetting general = 3;
-    ShortcutRelatedSetting shortcut_related = 4;
-    IdentityProviderSetting identity_provider = 5;
+    SecuritySetting security = 4;
+    ShortcutRelatedSetting shortcut_related = 5;
+    IdentityProviderSetting identity_provider = 6;
   }
 
   message GeneralSetting {
     string secret_session = 1;
     string license_key = 2;
-    bytes branding = 3;
-    string custom_style = 4;
+    string instance_url = 3;
+    bytes branding = 4;
+    string custom_style = 5;
+  }
+
+  message SecuritySetting {
+    bool disallow_user_registration = 1;
   }
 
   message ShortcutRelatedSetting {
@@ -37,10 +43,12 @@ enum WorkspaceSettingKey {
   WORKSPACE_SETTING_KEY_UNSPECIFIED = 0;
   // Workspace general settings.
   WORKSPACE_SETTING_GENERAL = 1;
+  // Workspace security settings.
+  WORKSPACE_SETTING_SECURITY = 2;
   // Workspace shortcut-related settings.
-  WORKSPACE_SETTING_SHORTCUT_RELATED = 2;
+  WORKSPACE_SETTING_SHORTCUT_RELATED = 3;
   // Workspace identity provider settings.
-  WORKSPACE_SETTING_IDENTITY_PROVIDER = 3;
+  WORKSPACE_SETTING_IDENTITY_PROVIDER = 4;
 
   // TODO: remove the following keys.
   // The license key.

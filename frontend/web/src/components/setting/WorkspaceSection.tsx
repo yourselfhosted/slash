@@ -35,7 +35,7 @@ const WorkspaceSection = () => {
   const [workspaceSetting, setWorkspaceSetting] = useState<WorkspaceSetting>(workspaceStore.setting);
   const originalWorkspaceSetting = useRef<WorkspaceSetting>(workspaceStore.setting);
   const allowSave = !isEqual(originalWorkspaceSetting.current, workspaceSetting);
-  const hasCustomBranding = workspaceStore.profile.plan === PlanType.PRO;
+  const hasCustomBranding = workspaceStore.profile.subscription?.plan === PlanType.PRO;
   const branding = hasCustomBranding && workspaceSetting.branding ? new TextDecoder().decode(workspaceSetting.branding) : "";
 
   const onBrandingChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,12 +80,10 @@ const WorkspaceSection = () => {
     }
 
     try {
-      const setting = (
-        await workspaceServiceClient.updateWorkspaceSetting({
-          setting: workspaceSetting,
-          updateMask: updateMask,
-        })
-      ).setting as WorkspaceSetting;
+      const setting = await workspaceServiceClient.updateWorkspaceSetting({
+        setting: workspaceSetting,
+        updateMask: updateMask,
+      });
       setWorkspaceSetting(setting);
       await workspaceStore.fetchWorkspaceSetting();
       originalWorkspaceSetting.current = setting;

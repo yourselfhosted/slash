@@ -13,18 +13,16 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorkspaceProfileRequest) (*v1pb.GetWorkspaceProfileResponse, error) {
+func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorkspaceProfileRequest) (*v1pb.WorkspaceProfile, error) {
 	workspaceProfile := &v1pb.WorkspaceProfile{
 		Mode:         s.Profile.Mode,
 		Version:      s.Profile.Version,
-		Plan:         v1pb.PlanType_FREE,
 		EnableSignup: s.Profile.Public,
 	}
 
 	// Load subscription plan from license service.
 	subscription := s.LicenseService.GetSubscription()
-	workspaceProfile.Plan = subscription.Plan
-	workspaceProfile.Features = subscription.Features
+	workspaceProfile.Subscription = subscription
 
 	owner, err := s.GetInstanceOwner(ctx)
 	if err != nil {
@@ -45,12 +43,10 @@ func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorks
 		workspaceProfile.Branding = generalSetting.GetBranding()
 	}
 
-	return &v1pb.GetWorkspaceProfileResponse{
-		Profile: workspaceProfile,
-	}, nil
+	return workspaceProfile, nil
 }
 
-func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorkspaceSettingRequest) (*v1pb.GetWorkspaceSettingResponse, error) {
+func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorkspaceSettingRequest) (*v1pb.WorkspaceSetting, error) {
 	currentUser, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
@@ -83,12 +79,10 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 			}
 		}
 	}
-	return &v1pb.GetWorkspaceSettingResponse{
-		Setting: workspaceSetting,
-	}, nil
+	return workspaceSetting, nil
 }
 
-func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb.UpdateWorkspaceSettingRequest) (*v1pb.UpdateWorkspaceSettingResponse, error) {
+func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb.UpdateWorkspaceSettingRequest) (*v1pb.WorkspaceSetting, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}
@@ -184,13 +178,11 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 		}
 	}
 
-	getWorkspaceSettingResponse, err := s.GetWorkspaceSetting(ctx, &v1pb.GetWorkspaceSettingRequest{})
+	workspaceSetting, err := s.GetWorkspaceSetting(ctx, &v1pb.GetWorkspaceSettingRequest{})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
 	}
-	return &v1pb.UpdateWorkspaceSettingResponse{
-		Setting: getWorkspaceSettingResponse.Setting,
-	}, nil
+	return workspaceSetting, nil
 }
 
 var ownerCache *v1pb.User

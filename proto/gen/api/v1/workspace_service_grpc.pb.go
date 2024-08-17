@@ -28,9 +28,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WorkspaceServiceClient interface {
-	GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*GetWorkspaceProfileResponse, error)
-	GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*GetWorkspaceSettingResponse, error)
-	UpdateWorkspaceSetting(ctx context.Context, in *UpdateWorkspaceSettingRequest, opts ...grpc.CallOption) (*UpdateWorkspaceSettingResponse, error)
+	GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*WorkspaceProfile, error)
+	GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*WorkspaceSetting, error)
+	UpdateWorkspaceSetting(ctx context.Context, in *UpdateWorkspaceSettingRequest, opts ...grpc.CallOption) (*WorkspaceSetting, error)
 }
 
 type workspaceServiceClient struct {
@@ -41,9 +41,9 @@ func NewWorkspaceServiceClient(cc grpc.ClientConnInterface) WorkspaceServiceClie
 	return &workspaceServiceClient{cc}
 }
 
-func (c *workspaceServiceClient) GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*GetWorkspaceProfileResponse, error) {
+func (c *workspaceServiceClient) GetWorkspaceProfile(ctx context.Context, in *GetWorkspaceProfileRequest, opts ...grpc.CallOption) (*WorkspaceProfile, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetWorkspaceProfileResponse)
+	out := new(WorkspaceProfile)
 	err := c.cc.Invoke(ctx, WorkspaceService_GetWorkspaceProfile_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -51,9 +51,9 @@ func (c *workspaceServiceClient) GetWorkspaceProfile(ctx context.Context, in *Ge
 	return out, nil
 }
 
-func (c *workspaceServiceClient) GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*GetWorkspaceSettingResponse, error) {
+func (c *workspaceServiceClient) GetWorkspaceSetting(ctx context.Context, in *GetWorkspaceSettingRequest, opts ...grpc.CallOption) (*WorkspaceSetting, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetWorkspaceSettingResponse)
+	out := new(WorkspaceSetting)
 	err := c.cc.Invoke(ctx, WorkspaceService_GetWorkspaceSetting_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -61,9 +61,9 @@ func (c *workspaceServiceClient) GetWorkspaceSetting(ctx context.Context, in *Ge
 	return out, nil
 }
 
-func (c *workspaceServiceClient) UpdateWorkspaceSetting(ctx context.Context, in *UpdateWorkspaceSettingRequest, opts ...grpc.CallOption) (*UpdateWorkspaceSettingResponse, error) {
+func (c *workspaceServiceClient) UpdateWorkspaceSetting(ctx context.Context, in *UpdateWorkspaceSettingRequest, opts ...grpc.CallOption) (*WorkspaceSetting, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateWorkspaceSettingResponse)
+	out := new(WorkspaceSetting)
 	err := c.cc.Invoke(ctx, WorkspaceService_UpdateWorkspaceSetting_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -75,9 +75,9 @@ func (c *workspaceServiceClient) UpdateWorkspaceSetting(ctx context.Context, in 
 // All implementations must embed UnimplementedWorkspaceServiceServer
 // for forward compatibility.
 type WorkspaceServiceServer interface {
-	GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*GetWorkspaceProfileResponse, error)
-	GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*GetWorkspaceSettingResponse, error)
-	UpdateWorkspaceSetting(context.Context, *UpdateWorkspaceSettingRequest) (*UpdateWorkspaceSettingResponse, error)
+	GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*WorkspaceProfile, error)
+	GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*WorkspaceSetting, error)
+	UpdateWorkspaceSetting(context.Context, *UpdateWorkspaceSettingRequest) (*WorkspaceSetting, error)
 	mustEmbedUnimplementedWorkspaceServiceServer()
 }
 
@@ -88,13 +88,13 @@ type WorkspaceServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedWorkspaceServiceServer struct{}
 
-func (UnimplementedWorkspaceServiceServer) GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*GetWorkspaceProfileResponse, error) {
+func (UnimplementedWorkspaceServiceServer) GetWorkspaceProfile(context.Context, *GetWorkspaceProfileRequest) (*WorkspaceProfile, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorkspaceProfile not implemented")
 }
-func (UnimplementedWorkspaceServiceServer) GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*GetWorkspaceSettingResponse, error) {
+func (UnimplementedWorkspaceServiceServer) GetWorkspaceSetting(context.Context, *GetWorkspaceSettingRequest) (*WorkspaceSetting, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWorkspaceSetting not implemented")
 }
-func (UnimplementedWorkspaceServiceServer) UpdateWorkspaceSetting(context.Context, *UpdateWorkspaceSettingRequest) (*UpdateWorkspaceSettingResponse, error) {
+func (UnimplementedWorkspaceServiceServer) UpdateWorkspaceSetting(context.Context, *UpdateWorkspaceSettingRequest) (*WorkspaceSetting, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorkspaceSetting not implemented")
 }
 func (UnimplementedWorkspaceServiceServer) mustEmbedUnimplementedWorkspaceServiceServer() {}

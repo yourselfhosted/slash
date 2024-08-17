@@ -38,6 +38,7 @@
     - [WorkspaceSetting](#slash-store-WorkspaceSetting)
     - [WorkspaceSetting.GeneralSetting](#slash-store-WorkspaceSetting-GeneralSetting)
     - [WorkspaceSetting.IdentityProviderSetting](#slash-store-WorkspaceSetting-IdentityProviderSetting)
+    - [WorkspaceSetting.SecuritySetting](#slash-store-WorkspaceSetting-SecuritySetting)
     - [WorkspaceSetting.ShortcutRelatedSetting](#slash-store-WorkspaceSetting-ShortcutRelatedSetting)
   
     - [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey)
@@ -446,6 +447,7 @@
 | key | [WorkspaceSettingKey](#slash-store-WorkspaceSettingKey) |  |  |
 | raw | [string](#string) |  |  |
 | general | [WorkspaceSetting.GeneralSetting](#slash-store-WorkspaceSetting-GeneralSetting) |  |  |
+| security | [WorkspaceSetting.SecuritySetting](#slash-store-WorkspaceSetting-SecuritySetting) |  |  |
 | shortcut_related | [WorkspaceSetting.ShortcutRelatedSetting](#slash-store-WorkspaceSetting-ShortcutRelatedSetting) |  |  |
 | identity_provider | [WorkspaceSetting.IdentityProviderSetting](#slash-store-WorkspaceSetting-IdentityProviderSetting) |  |  |
 
@@ -464,6 +466,7 @@
 | ----- | ---- | ----- | ----------- |
 | secret_session | [string](#string) |  |  |
 | license_key | [string](#string) |  |  |
+| instance_url | [string](#string) |  |  |
 | branding | [bytes](#bytes) |  |  |
 | custom_style | [string](#string) |  |  |
 
@@ -481,6 +484,21 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | identity_providers | [IdentityProvider](#slash-store-IdentityProvider) | repeated |  |
+
+
+
+
+
+
+<a name="slash-store-WorkspaceSetting-SecuritySetting"></a>
+
+### WorkspaceSetting.SecuritySetting
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| disallow_user_registration | [bool](#bool) |  |  |
 
 
 
@@ -513,8 +531,9 @@
 | ---- | ------ | ----------- |
 | WORKSPACE_SETTING_KEY_UNSPECIFIED | 0 |  |
 | WORKSPACE_SETTING_GENERAL | 1 | Workspace general settings. |
-| WORKSPACE_SETTING_SHORTCUT_RELATED | 2 | Workspace shortcut-related settings. |
-| WORKSPACE_SETTING_IDENTITY_PROVIDER | 3 | Workspace identity provider settings. |
+| WORKSPACE_SETTING_SECURITY | 2 | Workspace security settings. |
+| WORKSPACE_SETTING_SHORTCUT_RELATED | 3 | Workspace shortcut-related settings. |
+| WORKSPACE_SETTING_IDENTITY_PROVIDER | 4 | Workspace identity provider settings. |
 | WORKSPACE_SETTING_LICENSE_KEY | 10 | TODO: remove the following keys. The license key. |
 | WORKSPACE_SETTING_SECRET_SESSION | 11 | The secret session key used to encrypt session data. |
 | WORKSPACE_SETTING_CUSTOM_STYLE | 12 | The custom style. |

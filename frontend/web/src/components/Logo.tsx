@@ -9,7 +9,7 @@ interface Props {
 
 const Logo = ({ className }: Props) => {
   const workspaceStore = useWorkspaceStore();
-  const hasCustomBranding = workspaceStore.profile.plan === PlanType.PRO;
+  const hasCustomBranding = workspaceStore.profile.subscription?.plan === PlanType.PRO;
   const branding = hasCustomBranding && workspaceStore.setting.branding ? new TextDecoder().decode(workspaceStore.setting.branding) : "";
   return (
     <div className={classNames("w-8 h-auto dark:text-gray-500 rounded-lg overflow-hidden", className)}>

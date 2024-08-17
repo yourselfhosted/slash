@@ -43,7 +43,6 @@ func (s *Store) GetWorkspaceSetting(ctx context.Context, find *FindWorkspaceSett
 	if err != nil {
 		return nil, err
 	}
-
 	if len(list) == 0 {
 		return nil, nil
 	}

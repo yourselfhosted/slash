@@ -29,6 +29,12 @@ func (d *DB) UpsertWorkspaceSetting(ctx context.Context, upsert *storepb.Workspa
 			return nil, err
 		}
 		valueString = string(valueBytes)
+	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY {
+		valueBytes, err := protojson.Marshal(upsert.GetSecurity())
+		if err != nil {
+			return nil, err
+		}
+		valueString = string(valueBytes)
 	} else if upsert.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
 		valueBytes, err := protojson.Marshal(upsert.GetShortcutRelated())
 		if err != nil {
@@ -91,6 +97,14 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 			}
 			workspaceSetting.Value = &storepb.WorkspaceSetting_General{
 				General: workspaceSettingGeneral,
+			}
+		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY {
+			workspaceSettingSecurity := &storepb.WorkspaceSetting_SecuritySetting{}
+			if err := protojsonUnmarshaler.Unmarshal([]byte(valueString), workspaceSettingSecurity); err != nil {
+				return nil, err
+			}
+			workspaceSetting.Value = &storepb.WorkspaceSetting_Security{
+				Security: workspaceSettingSecurity,
 			}
 		} else if workspaceSetting.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
 			workspaceSettingShortcutRelated := &storepb.WorkspaceSetting_ShortcutRelatedSetting{}

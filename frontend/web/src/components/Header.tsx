@@ -35,10 +35,10 @@ const Header: React.FC = () => {
               <Logo className="mr-2" />
               Slash
             </Link>
-            {[PlanType.PRO, PlanType.ENTERPRISE].includes(profile.plan) && (
+            {profile.subscription?.plan && [PlanType.PRO, PlanType.ENTERPRISE].includes(profile.subscription.plan) && (
               <span className="ml-1 text-xs px-1.5 leading-5 border rounded-full bg-blue-600 border-blue-700 text-white shadow dark:opacity-70">
                 {/* PRO or ENT */}
-                {profile.plan.substring(0, 3)}
+                {profile.subscription.plan.substring(0, 3)}
               </span>
             )}
             {shouldShowRouterSwitch && (

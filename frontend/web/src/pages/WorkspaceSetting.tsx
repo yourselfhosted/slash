@@ -33,7 +33,7 @@ const WorkspaceSetting = () => {
         <p className="text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">Subscription</p>
         <div className="mt-2">
           <span className="text-gray-500 mr-2">Current plan:</span>
-          <span className="text-2xl mr-4 dark:text-gray-400">{stringifyPlanType(profile.plan)}</span>
+          <span className="text-2xl mr-4 dark:text-gray-400">{stringifyPlanType(profile.subscription?.plan)}</span>
           <Link to="/setting/subscription" unstable_viewTransition>
             <Button size="sm" variant="outlined" startDecorator={<Icon.Settings className="w-4 h-auto" />}>
               Manage

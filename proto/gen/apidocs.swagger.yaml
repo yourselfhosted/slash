@@ -665,7 +665,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GetWorkspaceProfileResponse'
+            $ref: '#/definitions/v1WorkspaceProfile'
         default:
           description: An unexpected error response.
           schema:
@@ -679,7 +679,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GetWorkspaceSettingResponse'
+            $ref: '#/definitions/apiv1WorkspaceSetting'
         default:
           description: An unexpected error response.
           schema:
@@ -692,7 +692,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1UpdateWorkspaceSettingResponse'
+            $ref: '#/definitions/apiv1WorkspaceSetting'
         default:
           description: An unexpected error response.
           schema:
@@ -773,9 +773,7 @@ definitions:
       expiresAt:
         type: string
         format: date-time
-        description: |-
-          expires_at is the expiration time of the access token.
-          If expires_at is not set, the access token will never expire.
+        description: "expires_at is the expiration time of the access token.\r\nIf expires_at is not set, the access token will never expire."
   apiv1Collection:
     type: object
     properties:
@@ -1062,18 +1060,6 @@ definitions:
     properties:
       userSetting:
         $ref: '#/definitions/apiv1UserSetting'
-  v1GetWorkspaceProfileResponse:
-    type: object
-    properties:
-      profile:
-        $ref: '#/definitions/v1WorkspaceProfile'
-        description: The workspace profile.
-  v1GetWorkspaceSettingResponse:
-    type: object
-    properties:
-      setting:
-        $ref: '#/definitions/apiv1WorkspaceSetting'
-        description: The user setting.
   v1ListCollectionsResponse:
     type: object
     properties:
@@ -1179,12 +1165,6 @@ definitions:
     properties:
       userSetting:
         $ref: '#/definitions/apiv1UserSetting'
-  v1UpdateWorkspaceSettingResponse:
-    type: object
-    properties:
-      setting:
-        $ref: '#/definitions/apiv1WorkspaceSetting'
-        description: The user setting.
   v1User:
     type: object
     properties:
@@ -1229,9 +1209,9 @@ definitions:
       version:
         type: string
         description: Current workspace version.
-      plan:
-        $ref: '#/definitions/v1PlanType'
-        description: The workspace plan.
+      subscription:
+        $ref: '#/definitions/v1Subscription'
+        description: The workspace subscription.
       enableSignup:
         type: boolean
         description: Whether to enable other users to sign up.
@@ -1240,15 +1220,8 @@ definitions:
         description: The custom style.
       owner:
         type: string
-        title: |-
-          The owner name.
-          Format: "users/{id}"
+        title: "The owner name.\r\nFormat: \"users/{id}\""
       branding:
         type: string
         format: byte
         description: The workspace branding.
-      features:
-        type: array
-        items:
-          type: string
-        description: The workspace available features.

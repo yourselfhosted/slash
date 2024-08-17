@@ -24,17 +24,17 @@ const useWorkspaceStore = create<WorkspaceState>()((set, get) => ({
   profile: WorkspaceProfile.fromPartial({}),
   setting: WorkspaceSetting.fromPartial({}),
   fetchWorkspaceProfile: async () => {
-    const workspaceProfile = (await workspaceServiceClient.getWorkspaceProfile({})).profile as WorkspaceProfile;
+    const workspaceProfile = await workspaceServiceClient.getWorkspaceProfile({});
     set({ ...get(), profile: workspaceProfile });
     return workspaceProfile;
   },
   fetchWorkspaceSetting: async () => {
-    const workspaceSetting = (await workspaceServiceClient.getWorkspaceSetting({})).setting as WorkspaceSetting;
+    const workspaceSetting = await workspaceServiceClient.getWorkspaceSetting({});
     set({ ...get(), setting: workspaceSetting });
     return workspaceSetting;
   },
   checkFeatureAvailable: (feature: FeatureType): boolean => {
-    return get().profile.features.includes(feature);
+    return get().profile.subscription?.features.includes(feature) || false;
   },
 }));
 
