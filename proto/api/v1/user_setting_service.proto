@@ -10,12 +10,12 @@ option go_package = "gen/api/v1";
 
 service UserSettingService {
   // GetUserSetting returns the user setting.
-  rpc GetUserSetting(GetUserSettingRequest) returns (GetUserSettingResponse) {
+  rpc GetUserSetting(GetUserSettingRequest) returns (UserSetting) {
     option (google.api.http) = {get: "/api/v1/users/{id}/settings"};
     option (google.api.method_signature) = "id";
   }
   // UpdateUserSetting updates the user setting.
-  rpc UpdateUserSetting(UpdateUserSettingRequest) returns (UpdateUserSettingResponse) {
+  rpc UpdateUserSetting(UpdateUserSettingRequest) returns (UserSetting) {
     option (google.api.http) = {
       patch: "/api/v1/users/{id}/settings"
       body: "user_setting"
@@ -52,10 +52,6 @@ message GetUserSettingRequest {
   int32 id = 1;
 }
 
-message GetUserSettingResponse {
-  UserSetting user_setting = 1;
-}
-
 message UpdateUserSettingRequest {
   // id is the user id.
   int32 id = 1;
@@ -65,8 +61,4 @@ message UpdateUserSettingRequest {
 
   // update_mask is the field mask to update.
   google.protobuf.FieldMask update_mask = 3;
-}
-
-message UpdateUserSettingResponse {
-  UserSetting user_setting = 1;
 }

@@ -578,7 +578,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GetUserSettingResponse'
+            $ref: '#/definitions/apiv1UserSetting'
         default:
           description: An unexpected error response.
           schema:
@@ -599,7 +599,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1UpdateUserSettingResponse'
+            $ref: '#/definitions/apiv1UserSetting'
         default:
           description: An unexpected error response.
           schema:
@@ -1021,11 +1021,6 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/GetShortcutAnalyticsResponseAnalyticsItem'
-  v1GetUserSettingResponse:
-    type: object
-    properties:
-      userSetting:
-        $ref: '#/definitions/apiv1UserSetting'
   v1ListCollectionsResponse:
     type: object
     properties:
@@ -1125,11 +1120,6 @@ definitions:
         type: string
     required:
       - licenseKey
-  v1UpdateUserSettingResponse:
-    type: object
-    properties:
-      userSetting:
-        $ref: '#/definitions/apiv1UserSetting'
   v1User:
     type: object
     properties:

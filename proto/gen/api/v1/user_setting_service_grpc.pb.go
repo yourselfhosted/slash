@@ -28,9 +28,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserSettingServiceClient interface {
 	// GetUserSetting returns the user setting.
-	GetUserSetting(ctx context.Context, in *GetUserSettingRequest, opts ...grpc.CallOption) (*GetUserSettingResponse, error)
+	GetUserSetting(ctx context.Context, in *GetUserSettingRequest, opts ...grpc.CallOption) (*UserSetting, error)
 	// UpdateUserSetting updates the user setting.
-	UpdateUserSetting(ctx context.Context, in *UpdateUserSettingRequest, opts ...grpc.CallOption) (*UpdateUserSettingResponse, error)
+	UpdateUserSetting(ctx context.Context, in *UpdateUserSettingRequest, opts ...grpc.CallOption) (*UserSetting, error)
 }
 
 type userSettingServiceClient struct {
@@ -41,9 +41,9 @@ func NewUserSettingServiceClient(cc grpc.ClientConnInterface) UserSettingService
 	return &userSettingServiceClient{cc}
 }
 
-func (c *userSettingServiceClient) GetUserSetting(ctx context.Context, in *GetUserSettingRequest, opts ...grpc.CallOption) (*GetUserSettingResponse, error) {
+func (c *userSettingServiceClient) GetUserSetting(ctx context.Context, in *GetUserSettingRequest, opts ...grpc.CallOption) (*UserSetting, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetUserSettingResponse)
+	out := new(UserSetting)
 	err := c.cc.Invoke(ctx, UserSettingService_GetUserSetting_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -51,9 +51,9 @@ func (c *userSettingServiceClient) GetUserSetting(ctx context.Context, in *GetUs
 	return out, nil
 }
 
-func (c *userSettingServiceClient) UpdateUserSetting(ctx context.Context, in *UpdateUserSettingRequest, opts ...grpc.CallOption) (*UpdateUserSettingResponse, error) {
+func (c *userSettingServiceClient) UpdateUserSetting(ctx context.Context, in *UpdateUserSettingRequest, opts ...grpc.CallOption) (*UserSetting, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateUserSettingResponse)
+	out := new(UserSetting)
 	err := c.cc.Invoke(ctx, UserSettingService_UpdateUserSetting_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -66,9 +66,9 @@ func (c *userSettingServiceClient) UpdateUserSetting(ctx context.Context, in *Up
 // for forward compatibility.
 type UserSettingServiceServer interface {
 	// GetUserSetting returns the user setting.
-	GetUserSetting(context.Context, *GetUserSettingRequest) (*GetUserSettingResponse, error)
+	GetUserSetting(context.Context, *GetUserSettingRequest) (*UserSetting, error)
 	// UpdateUserSetting updates the user setting.
-	UpdateUserSetting(context.Context, *UpdateUserSettingRequest) (*UpdateUserSettingResponse, error)
+	UpdateUserSetting(context.Context, *UpdateUserSettingRequest) (*UserSetting, error)
 	mustEmbedUnimplementedUserSettingServiceServer()
 }
 
@@ -79,10 +79,10 @@ type UserSettingServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUserSettingServiceServer struct{}
 
-func (UnimplementedUserSettingServiceServer) GetUserSetting(context.Context, *GetUserSettingRequest) (*GetUserSettingResponse, error) {
+func (UnimplementedUserSettingServiceServer) GetUserSetting(context.Context, *GetUserSettingRequest) (*UserSetting, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserSetting not implemented")
 }
-func (UnimplementedUserSettingServiceServer) UpdateUserSetting(context.Context, *UpdateUserSettingRequest) (*UpdateUserSettingResponse, error) {
+func (UnimplementedUserSettingServiceServer) UpdateUserSetting(context.Context, *UpdateUserSettingRequest) (*UserSetting, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserSetting not implemented")
 }
 func (UnimplementedUserSettingServiceServer) mustEmbedUnimplementedUserSettingServiceServer() {}

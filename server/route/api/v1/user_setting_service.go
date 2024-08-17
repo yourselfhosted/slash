@@ -12,17 +12,15 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
-func (s *APIV1Service) GetUserSetting(ctx context.Context, request *v1pb.GetUserSettingRequest) (*v1pb.GetUserSettingResponse, error) {
+func (s *APIV1Service) GetUserSetting(ctx context.Context, request *v1pb.GetUserSettingRequest) (*v1pb.UserSetting, error) {
 	userSetting, err := getUserSetting(ctx, s.Store, request.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user setting: %v", err)
 	}
-	return &v1pb.GetUserSettingResponse{
-		UserSetting: userSetting,
-	}, nil
+	return userSetting, nil
 }
 
-func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *v1pb.UpdateUserSettingRequest) (*v1pb.UpdateUserSettingResponse, error) {
+func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *v1pb.UpdateUserSettingRequest) (*v1pb.UserSetting, error) {
 	if request.UpdateMask == nil || len(request.UpdateMask.Paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update mask is empty")
 	}
@@ -54,9 +52,7 @@ func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *v1pb.Upda
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to get user setting: %v", err)
 	}
-	return &v1pb.UpdateUserSettingResponse{
-		UserSetting: userSetting,
-	}, nil
+	return userSetting, nil
 }
 
 func getUserSetting(ctx context.Context, s *store.Store, userID int32) (*v1pb.UserSetting, error) {

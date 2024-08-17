@@ -79,9 +79,7 @@
   
 - [api/v1/user_setting_service.proto](#api_v1_user_setting_service-proto)
     - [GetUserSettingRequest](#slash-api-v1-GetUserSettingRequest)
-    - [GetUserSettingResponse](#slash-api-v1-GetUserSettingResponse)
     - [UpdateUserSettingRequest](#slash-api-v1-UpdateUserSettingRequest)
-    - [UpdateUserSettingResponse](#slash-api-v1-UpdateUserSettingResponse)
     - [UserSetting](#slash-api-v1-UserSetting)
     - [UserSetting.AccessTokensSetting](#slash-api-v1-UserSetting-AccessTokensSetting)
     - [UserSetting.AccessTokensSetting.AccessToken](#slash-api-v1-UserSetting-AccessTokensSetting-AccessToken)
@@ -1056,21 +1054,6 @@
 
 
 
-<a name="slash-api-v1-GetUserSettingResponse"></a>
-
-### GetUserSettingResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user_setting | [UserSetting](#slash-api-v1-UserSetting) |  |  |
-
-
-
-
-
-
 <a name="slash-api-v1-UpdateUserSettingRequest"></a>
 
 ### UpdateUserSettingRequest
@@ -1082,21 +1065,6 @@
 | id | [int32](#int32) |  | id is the user id. |
 | user_setting | [UserSetting](#slash-api-v1-UserSetting) |  | user_setting is the user setting to update. |
 | update_mask | [google.protobuf.FieldMask](#google-protobuf-FieldMask) |  | update_mask is the field mask to update. |
-
-
-
-
-
-
-<a name="slash-api-v1-UpdateUserSettingResponse"></a>
-
-### UpdateUserSettingResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user_setting | [UserSetting](#slash-api-v1-UserSetting) |  |  |
 
 
 
@@ -1180,8 +1148,8 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetUserSetting | [GetUserSettingRequest](#slash-api-v1-GetUserSettingRequest) | [GetUserSettingResponse](#slash-api-v1-GetUserSettingResponse) | GetUserSetting returns the user setting. |
-| UpdateUserSetting | [UpdateUserSettingRequest](#slash-api-v1-UpdateUserSettingRequest) | [UpdateUserSettingResponse](#slash-api-v1-UpdateUserSettingResponse) | UpdateUserSetting updates the user setting. |
+| GetUserSetting | [GetUserSettingRequest](#slash-api-v1-GetUserSettingRequest) | [UserSetting](#slash-api-v1-UserSetting) | GetUserSetting returns the user setting. |
+| UpdateUserSetting | [UpdateUserSettingRequest](#slash-api-v1-UpdateUserSettingRequest) | [UserSetting](#slash-api-v1-UserSetting) | UpdateUserSetting updates the user setting. |
 
  
 

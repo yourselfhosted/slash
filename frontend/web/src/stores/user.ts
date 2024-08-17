@@ -101,11 +101,9 @@ const useUserStore = create<UserState>()((set, get) => ({
     });
   },
   fetchUserSetting: async (userId: number) => {
-    const userSetting = (
-      await userSettingServiceClient.getUserSetting({
-        id: userId,
-      })
-    ).userSetting as UserSetting;
+    const userSetting = await userSettingServiceClient.getUserSetting({
+      id: userId,
+    });
     const userSettingMap = get().userSettingMapById;
     userSettingMap[userId] = userSetting;
     set(userSettingMap);
@@ -113,13 +111,11 @@ const useUserStore = create<UserState>()((set, get) => ({
   },
   updateUserSetting: async (userSetting: UserSetting, updateMask: string[]) => {
     const userId = userSetting.userId;
-    const updatedUserSetting = (
-      await userSettingServiceClient.updateUserSetting({
-        id: userId,
-        userSetting,
-        updateMask,
-      })
-    ).userSetting as UserSetting;
+    const updatedUserSetting = await userSettingServiceClient.updateUserSetting({
+      id: userId,
+      userSetting,
+      updateMask,
+    });
     const userSettingMap = get().userSettingMapById;
     userSettingMap[userId] = updatedUserSetting;
     set(userSettingMap);
