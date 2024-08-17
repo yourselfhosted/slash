@@ -31,13 +31,9 @@ const useCollectionStore = create<CollectionState>()((set, get) => ({
       return collectionMap[id] as Collection;
     }
 
-    const { collection } = await collectionServiceClient.getCollection({
+    const collection = await collectionServiceClient.getCollection({
       id: id,
     });
-    if (!collection) {
-      throw new Error(`Collection with id ${id} not found`);
-    }
-
     collectionMap[id] = collection;
     set(collectionMap);
     return collection;
@@ -50,40 +46,28 @@ const useCollectionStore = create<CollectionState>()((set, get) => ({
     return Object.values(get().collectionMapById);
   },
   fetchCollectionByName: async (collectionName: string) => {
-    const { collection } = await collectionServiceClient.getCollectionByName({
+    const collection = await collectionServiceClient.getCollectionByName({
       name: collectionName,
     });
-    if (!collection) {
-      throw new Error(`Collection with name ${collectionName} not found`);
-    }
-
     const collectionMap = get().collectionMapById;
     collectionMap[collection.id] = collection;
     set(collectionMap);
     return collection;
   },
   createCollection: async (collection: Collection) => {
-    const { collection: createdCollection } = await collectionServiceClient.createCollection({
+    const createdCollection = await collectionServiceClient.createCollection({
       collection: collection,
     });
-    if (!createdCollection) {
-      throw new Error(`Failed to create collection`);
-    }
-
     const collectionMap = get().collectionMapById;
     collectionMap[createdCollection.id] = createdCollection;
     set(collectionMap);
     return createdCollection;
   },
   updateCollection: async (collection: Partial<Collection>, updateMask: string[]) => {
-    const { collection: updatedCollection } = await collectionServiceClient.updateCollection({
+    const updatedCollection = await collectionServiceClient.updateCollection({
       collection: collection,
       updateMask: updateMask,
     });
-    if (!updatedCollection) {
-      throw new Error("Collection not found");
-    }
-
     const collectionMap = get().collectionMapById;
     collectionMap[updatedCollection.id] = updatedCollection;
     set(collectionMap);

@@ -37,17 +37,12 @@
 - [api/v1/collection_service.proto](#api_v1_collection_service-proto)
     - [Collection](#slash-api-v1-Collection)
     - [CreateCollectionRequest](#slash-api-v1-CreateCollectionRequest)
-    - [CreateCollectionResponse](#slash-api-v1-CreateCollectionResponse)
     - [DeleteCollectionRequest](#slash-api-v1-DeleteCollectionRequest)
-    - [DeleteCollectionResponse](#slash-api-v1-DeleteCollectionResponse)
     - [GetCollectionByNameRequest](#slash-api-v1-GetCollectionByNameRequest)
-    - [GetCollectionByNameResponse](#slash-api-v1-GetCollectionByNameResponse)
     - [GetCollectionRequest](#slash-api-v1-GetCollectionRequest)
-    - [GetCollectionResponse](#slash-api-v1-GetCollectionResponse)
     - [ListCollectionsRequest](#slash-api-v1-ListCollectionsRequest)
     - [ListCollectionsResponse](#slash-api-v1-ListCollectionsResponse)
     - [UpdateCollectionRequest](#slash-api-v1-UpdateCollectionRequest)
-    - [UpdateCollectionResponse](#slash-api-v1-UpdateCollectionResponse)
   
     - [CollectionService](#slash-api-v1-CollectionService)
   
@@ -529,21 +524,6 @@
 
 
 
-<a name="slash-api-v1-CreateCollectionResponse"></a>
-
-### CreateCollectionResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| collection | [Collection](#slash-api-v1-Collection) |  |  |
-
-
-
-
-
-
 <a name="slash-api-v1-DeleteCollectionRequest"></a>
 
 ### DeleteCollectionRequest
@@ -553,16 +533,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v1-DeleteCollectionResponse"></a>
-
-### DeleteCollectionResponse
-
 
 
 
@@ -584,21 +554,6 @@
 
 
 
-<a name="slash-api-v1-GetCollectionByNameResponse"></a>
-
-### GetCollectionByNameResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| collection | [Collection](#slash-api-v1-Collection) |  |  |
-
-
-
-
-
-
 <a name="slash-api-v1-GetCollectionRequest"></a>
 
 ### GetCollectionRequest
@@ -608,21 +563,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v1-GetCollectionResponse"></a>
-
-### GetCollectionResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| collection | [Collection](#slash-api-v1-Collection) |  |  |
 
 
 
@@ -669,21 +609,6 @@
 
 
 
-
-<a name="slash-api-v1-UpdateCollectionResponse"></a>
-
-### UpdateCollectionResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| collection | [Collection](#slash-api-v1-Collection) |  |  |
-
-
-
-
-
  
 
  
@@ -699,11 +624,11 @@
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | ListCollections | [ListCollectionsRequest](#slash-api-v1-ListCollectionsRequest) | [ListCollectionsResponse](#slash-api-v1-ListCollectionsResponse) | ListCollections returns a list of collections. |
-| GetCollection | [GetCollectionRequest](#slash-api-v1-GetCollectionRequest) | [GetCollectionResponse](#slash-api-v1-GetCollectionResponse) | GetCollection returns a collection by id. |
-| GetCollectionByName | [GetCollectionByNameRequest](#slash-api-v1-GetCollectionByNameRequest) | [GetCollectionByNameResponse](#slash-api-v1-GetCollectionByNameResponse) | GetCollectionByName returns a collection by name. |
-| CreateCollection | [CreateCollectionRequest](#slash-api-v1-CreateCollectionRequest) | [CreateCollectionResponse](#slash-api-v1-CreateCollectionResponse) | CreateCollection creates a collection. |
-| UpdateCollection | [UpdateCollectionRequest](#slash-api-v1-UpdateCollectionRequest) | [UpdateCollectionResponse](#slash-api-v1-UpdateCollectionResponse) | UpdateCollection updates a collection. |
-| DeleteCollection | [DeleteCollectionRequest](#slash-api-v1-DeleteCollectionRequest) | [DeleteCollectionResponse](#slash-api-v1-DeleteCollectionResponse) | DeleteCollection deletes a collection by id. |
+| GetCollection | [GetCollectionRequest](#slash-api-v1-GetCollectionRequest) | [Collection](#slash-api-v1-Collection) | GetCollection returns a collection by id. |
+| GetCollectionByName | [GetCollectionByNameRequest](#slash-api-v1-GetCollectionByNameRequest) | [Collection](#slash-api-v1-Collection) | GetCollectionByName returns a collection by name. |
+| CreateCollection | [CreateCollectionRequest](#slash-api-v1-CreateCollectionRequest) | [Collection](#slash-api-v1-Collection) | CreateCollection creates a collection. |
+| UpdateCollection | [UpdateCollectionRequest](#slash-api-v1-UpdateCollectionRequest) | [Collection](#slash-api-v1-Collection) | UpdateCollection updates a collection. |
+| DeleteCollection | [DeleteCollectionRequest](#slash-api-v1-DeleteCollectionRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | DeleteCollection deletes a collection by id. |
 
  
 

@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -34,15 +35,15 @@ type CollectionServiceClient interface {
 	// ListCollections returns a list of collections.
 	ListCollections(ctx context.Context, in *ListCollectionsRequest, opts ...grpc.CallOption) (*ListCollectionsResponse, error)
 	// GetCollection returns a collection by id.
-	GetCollection(ctx context.Context, in *GetCollectionRequest, opts ...grpc.CallOption) (*GetCollectionResponse, error)
+	GetCollection(ctx context.Context, in *GetCollectionRequest, opts ...grpc.CallOption) (*Collection, error)
 	// GetCollectionByName returns a collection by name.
-	GetCollectionByName(ctx context.Context, in *GetCollectionByNameRequest, opts ...grpc.CallOption) (*GetCollectionByNameResponse, error)
+	GetCollectionByName(ctx context.Context, in *GetCollectionByNameRequest, opts ...grpc.CallOption) (*Collection, error)
 	// CreateCollection creates a collection.
-	CreateCollection(ctx context.Context, in *CreateCollectionRequest, opts ...grpc.CallOption) (*CreateCollectionResponse, error)
+	CreateCollection(ctx context.Context, in *CreateCollectionRequest, opts ...grpc.CallOption) (*Collection, error)
 	// UpdateCollection updates a collection.
-	UpdateCollection(ctx context.Context, in *UpdateCollectionRequest, opts ...grpc.CallOption) (*UpdateCollectionResponse, error)
+	UpdateCollection(ctx context.Context, in *UpdateCollectionRequest, opts ...grpc.CallOption) (*Collection, error)
 	// DeleteCollection deletes a collection by id.
-	DeleteCollection(ctx context.Context, in *DeleteCollectionRequest, opts ...grpc.CallOption) (*DeleteCollectionResponse, error)
+	DeleteCollection(ctx context.Context, in *DeleteCollectionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type collectionServiceClient struct {
@@ -63,9 +64,9 @@ func (c *collectionServiceClient) ListCollections(ctx context.Context, in *ListC
 	return out, nil
 }
 
-func (c *collectionServiceClient) GetCollection(ctx context.Context, in *GetCollectionRequest, opts ...grpc.CallOption) (*GetCollectionResponse, error) {
+func (c *collectionServiceClient) GetCollection(ctx context.Context, in *GetCollectionRequest, opts ...grpc.CallOption) (*Collection, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetCollectionResponse)
+	out := new(Collection)
 	err := c.cc.Invoke(ctx, CollectionService_GetCollection_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -73,9 +74,9 @@ func (c *collectionServiceClient) GetCollection(ctx context.Context, in *GetColl
 	return out, nil
 }
 
-func (c *collectionServiceClient) GetCollectionByName(ctx context.Context, in *GetCollectionByNameRequest, opts ...grpc.CallOption) (*GetCollectionByNameResponse, error) {
+func (c *collectionServiceClient) GetCollectionByName(ctx context.Context, in *GetCollectionByNameRequest, opts ...grpc.CallOption) (*Collection, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetCollectionByNameResponse)
+	out := new(Collection)
 	err := c.cc.Invoke(ctx, CollectionService_GetCollectionByName_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -83,9 +84,9 @@ func (c *collectionServiceClient) GetCollectionByName(ctx context.Context, in *G
 	return out, nil
 }
 
-func (c *collectionServiceClient) CreateCollection(ctx context.Context, in *CreateCollectionRequest, opts ...grpc.CallOption) (*CreateCollectionResponse, error) {
+func (c *collectionServiceClient) CreateCollection(ctx context.Context, in *CreateCollectionRequest, opts ...grpc.CallOption) (*Collection, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateCollectionResponse)
+	out := new(Collection)
 	err := c.cc.Invoke(ctx, CollectionService_CreateCollection_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -93,9 +94,9 @@ func (c *collectionServiceClient) CreateCollection(ctx context.Context, in *Crea
 	return out, nil
 }
 
-func (c *collectionServiceClient) UpdateCollection(ctx context.Context, in *UpdateCollectionRequest, opts ...grpc.CallOption) (*UpdateCollectionResponse, error) {
+func (c *collectionServiceClient) UpdateCollection(ctx context.Context, in *UpdateCollectionRequest, opts ...grpc.CallOption) (*Collection, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateCollectionResponse)
+	out := new(Collection)
 	err := c.cc.Invoke(ctx, CollectionService_UpdateCollection_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -103,9 +104,9 @@ func (c *collectionServiceClient) UpdateCollection(ctx context.Context, in *Upda
 	return out, nil
 }
 
-func (c *collectionServiceClient) DeleteCollection(ctx context.Context, in *DeleteCollectionRequest, opts ...grpc.CallOption) (*DeleteCollectionResponse, error) {
+func (c *collectionServiceClient) DeleteCollection(ctx context.Context, in *DeleteCollectionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteCollectionResponse)
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, CollectionService_DeleteCollection_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -120,15 +121,15 @@ type CollectionServiceServer interface {
 	// ListCollections returns a list of collections.
 	ListCollections(context.Context, *ListCollectionsRequest) (*ListCollectionsResponse, error)
 	// GetCollection returns a collection by id.
-	GetCollection(context.Context, *GetCollectionRequest) (*GetCollectionResponse, error)
+	GetCollection(context.Context, *GetCollectionRequest) (*Collection, error)
 	// GetCollectionByName returns a collection by name.
-	GetCollectionByName(context.Context, *GetCollectionByNameRequest) (*GetCollectionByNameResponse, error)
+	GetCollectionByName(context.Context, *GetCollectionByNameRequest) (*Collection, error)
 	// CreateCollection creates a collection.
-	CreateCollection(context.Context, *CreateCollectionRequest) (*CreateCollectionResponse, error)
+	CreateCollection(context.Context, *CreateCollectionRequest) (*Collection, error)
 	// UpdateCollection updates a collection.
-	UpdateCollection(context.Context, *UpdateCollectionRequest) (*UpdateCollectionResponse, error)
+	UpdateCollection(context.Context, *UpdateCollectionRequest) (*Collection, error)
 	// DeleteCollection deletes a collection by id.
-	DeleteCollection(context.Context, *DeleteCollectionRequest) (*DeleteCollectionResponse, error)
+	DeleteCollection(context.Context, *DeleteCollectionRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedCollectionServiceServer()
 }
 
@@ -142,19 +143,19 @@ type UnimplementedCollectionServiceServer struct{}
 func (UnimplementedCollectionServiceServer) ListCollections(context.Context, *ListCollectionsRequest) (*ListCollectionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCollections not implemented")
 }
-func (UnimplementedCollectionServiceServer) GetCollection(context.Context, *GetCollectionRequest) (*GetCollectionResponse, error) {
+func (UnimplementedCollectionServiceServer) GetCollection(context.Context, *GetCollectionRequest) (*Collection, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCollection not implemented")
 }
-func (UnimplementedCollectionServiceServer) GetCollectionByName(context.Context, *GetCollectionByNameRequest) (*GetCollectionByNameResponse, error) {
+func (UnimplementedCollectionServiceServer) GetCollectionByName(context.Context, *GetCollectionByNameRequest) (*Collection, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCollectionByName not implemented")
 }
-func (UnimplementedCollectionServiceServer) CreateCollection(context.Context, *CreateCollectionRequest) (*CreateCollectionResponse, error) {
+func (UnimplementedCollectionServiceServer) CreateCollection(context.Context, *CreateCollectionRequest) (*Collection, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCollection not implemented")
 }
-func (UnimplementedCollectionServiceServer) UpdateCollection(context.Context, *UpdateCollectionRequest) (*UpdateCollectionResponse, error) {
+func (UnimplementedCollectionServiceServer) UpdateCollection(context.Context, *UpdateCollectionRequest) (*Collection, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCollection not implemented")
 }
-func (UnimplementedCollectionServiceServer) DeleteCollection(context.Context, *DeleteCollectionRequest) (*DeleteCollectionResponse, error) {
+func (UnimplementedCollectionServiceServer) DeleteCollection(context.Context, *DeleteCollectionRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCollection not implemented")
 }
 func (UnimplementedCollectionServiceServer) mustEmbedUnimplementedCollectionServiceServer() {}

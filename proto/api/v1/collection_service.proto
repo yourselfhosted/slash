@@ -5,6 +5,7 @@ package slash.api.v1;
 import "api/v1/common.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -16,21 +17,21 @@ service CollectionService {
     option (google.api.http) = {get: "/api/v1/collections"};
   }
   // GetCollection returns a collection by id.
-  rpc GetCollection(GetCollectionRequest) returns (GetCollectionResponse) {
+  rpc GetCollection(GetCollectionRequest) returns (Collection) {
     option (google.api.http) = {get: "/api/v1/collections/{id}"};
     option (google.api.method_signature) = "id";
   }
   // GetCollectionByName returns a collection by name.
-  rpc GetCollectionByName(GetCollectionByNameRequest) returns (GetCollectionByNameResponse) {}
+  rpc GetCollectionByName(GetCollectionByNameRequest) returns (Collection) {}
   // CreateCollection creates a collection.
-  rpc CreateCollection(CreateCollectionRequest) returns (CreateCollectionResponse) {
+  rpc CreateCollection(CreateCollectionRequest) returns (Collection) {
     option (google.api.http) = {
       post: "/api/v1/collections"
       body: "collection"
     };
   }
   // UpdateCollection updates a collection.
-  rpc UpdateCollection(UpdateCollectionRequest) returns (UpdateCollectionResponse) {
+  rpc UpdateCollection(UpdateCollectionRequest) returns (Collection) {
     option (google.api.http) = {
       put: "/api/v1/collections/{collection.id}"
       body: "collection"
@@ -38,7 +39,7 @@ service CollectionService {
     option (google.api.method_signature) = "collection,update_mask";
   }
   // DeleteCollection deletes a collection by id.
-  rpc DeleteCollection(DeleteCollectionRequest) returns (DeleteCollectionResponse) {
+  rpc DeleteCollection(DeleteCollectionRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/api/v1/collections/{id}"};
     option (google.api.method_signature) = "id";
   }
@@ -74,23 +75,11 @@ message GetCollectionRequest {
   int32 id = 1;
 }
 
-message GetCollectionResponse {
-  Collection collection = 1;
-}
-
 message GetCollectionByNameRequest {
   string name = 1;
 }
 
-message GetCollectionByNameResponse {
-  Collection collection = 1;
-}
-
 message CreateCollectionRequest {
-  Collection collection = 1;
-}
-
-message CreateCollectionResponse {
   Collection collection = 1;
 }
 
@@ -100,12 +89,6 @@ message UpdateCollectionRequest {
   google.protobuf.FieldMask update_mask = 2;
 }
 
-message UpdateCollectionResponse {
-  Collection collection = 1;
-}
-
 message DeleteCollectionRequest {
   int32 id = 1;
 }
-
-message DeleteCollectionResponse {}

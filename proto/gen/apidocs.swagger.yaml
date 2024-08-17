@@ -151,7 +151,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1CreateCollectionResponse'
+            $ref: '#/definitions/apiv1Collection'
         default:
           description: An unexpected error response.
           schema:
@@ -172,7 +172,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1UpdateCollectionResponse'
+            $ref: '#/definitions/apiv1Collection'
         default:
           description: An unexpected error response.
           schema:
@@ -225,7 +225,7 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1GetCollectionResponse'
+            $ref: '#/definitions/apiv1Collection'
         default:
           description: An unexpected error response.
           schema:
@@ -245,7 +245,8 @@ paths:
         "200":
           description: A successful response.
           schema:
-            $ref: '#/definitions/v1DeleteCollectionResponse'
+            type: object
+            properties: {}
         default:
           description: An unexpected error response.
           schema:
@@ -986,23 +987,6 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
-  v1CreateCollectionResponse:
-    type: object
-    properties:
-      collection:
-        $ref: '#/definitions/apiv1Collection'
-  v1DeleteCollectionResponse:
-    type: object
-  v1GetCollectionByNameResponse:
-    type: object
-    properties:
-      collection:
-        $ref: '#/definitions/apiv1Collection'
-  v1GetCollectionResponse:
-    type: object
-    properties:
-      collection:
-        $ref: '#/definitions/apiv1Collection'
   v1GetShortcutAnalyticsResponse:
     type: object
     properties:
@@ -1108,11 +1092,6 @@ definitions:
         type: integer
         format: int32
         readOnly: true
-  v1UpdateCollectionResponse:
-    type: object
-    properties:
-      collection:
-        $ref: '#/definitions/apiv1Collection'
   v1UpdateSubscriptionRequest:
     type: object
     properties:
