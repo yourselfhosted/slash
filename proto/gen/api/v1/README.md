@@ -9,21 +9,15 @@
   
 - [api/v1/user_service.proto](#api_v1_user_service-proto)
     - [CreateUserAccessTokenRequest](#slash-api-v1-CreateUserAccessTokenRequest)
-    - [CreateUserAccessTokenResponse](#slash-api-v1-CreateUserAccessTokenResponse)
     - [CreateUserRequest](#slash-api-v1-CreateUserRequest)
-    - [CreateUserResponse](#slash-api-v1-CreateUserResponse)
     - [DeleteUserAccessTokenRequest](#slash-api-v1-DeleteUserAccessTokenRequest)
-    - [DeleteUserAccessTokenResponse](#slash-api-v1-DeleteUserAccessTokenResponse)
     - [DeleteUserRequest](#slash-api-v1-DeleteUserRequest)
-    - [DeleteUserResponse](#slash-api-v1-DeleteUserResponse)
     - [GetUserRequest](#slash-api-v1-GetUserRequest)
-    - [GetUserResponse](#slash-api-v1-GetUserResponse)
     - [ListUserAccessTokensRequest](#slash-api-v1-ListUserAccessTokensRequest)
     - [ListUserAccessTokensResponse](#slash-api-v1-ListUserAccessTokensResponse)
     - [ListUsersRequest](#slash-api-v1-ListUsersRequest)
     - [ListUsersResponse](#slash-api-v1-ListUsersResponse)
     - [UpdateUserRequest](#slash-api-v1-UpdateUserRequest)
-    - [UpdateUserResponse](#slash-api-v1-UpdateUserResponse)
     - [User](#slash-api-v1-User)
     - [UserAccessToken](#slash-api-v1-UserAccessToken)
   
@@ -181,39 +175,9 @@
 
 
 
-<a name="slash-api-v1-CreateUserAccessTokenResponse"></a>
-
-### CreateUserAccessTokenResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| access_token | [UserAccessToken](#slash-api-v1-UserAccessToken) |  |  |
-
-
-
-
-
-
 <a name="slash-api-v1-CreateUserRequest"></a>
 
 ### CreateUserRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v1-User) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v1-CreateUserResponse"></a>
-
-### CreateUserResponse
 
 
 
@@ -242,16 +206,6 @@
 
 
 
-<a name="slash-api-v1-DeleteUserAccessTokenResponse"></a>
-
-### DeleteUserAccessTokenResponse
-
-
-
-
-
-
-
 <a name="slash-api-v1-DeleteUserRequest"></a>
 
 ### DeleteUserRequest
@@ -267,16 +221,6 @@
 
 
 
-<a name="slash-api-v1-DeleteUserResponse"></a>
-
-### DeleteUserResponse
-
-
-
-
-
-
-
 <a name="slash-api-v1-GetUserRequest"></a>
 
 ### GetUserRequest
@@ -286,21 +230,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
-
-
-
-
-
-
-<a name="slash-api-v1-GetUserResponse"></a>
-
-### GetUserResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v1-User) |  |  |
 
 
 
@@ -378,21 +307,6 @@
 
 
 
-<a name="slash-api-v1-UpdateUserResponse"></a>
-
-### UpdateUserResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| user | [User](#slash-api-v1-User) |  |  |
-
-
-
-
-
-
 <a name="slash-api-v1-User"></a>
 
 ### User
@@ -460,13 +374,13 @@
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | ListUsers | [ListUsersRequest](#slash-api-v1-ListUsersRequest) | [ListUsersResponse](#slash-api-v1-ListUsersResponse) | ListUsers returns a list of users. |
-| GetUser | [GetUserRequest](#slash-api-v1-GetUserRequest) | [GetUserResponse](#slash-api-v1-GetUserResponse) | GetUser returns a user by id. |
-| CreateUser | [CreateUserRequest](#slash-api-v1-CreateUserRequest) | [CreateUserResponse](#slash-api-v1-CreateUserResponse) | CreateUser creates a new user. |
-| UpdateUser | [UpdateUserRequest](#slash-api-v1-UpdateUserRequest) | [UpdateUserResponse](#slash-api-v1-UpdateUserResponse) |  |
-| DeleteUser | [DeleteUserRequest](#slash-api-v1-DeleteUserRequest) | [DeleteUserResponse](#slash-api-v1-DeleteUserResponse) | DeleteUser deletes a user by id. |
+| GetUser | [GetUserRequest](#slash-api-v1-GetUserRequest) | [User](#slash-api-v1-User) | GetUser returns a user by id. |
+| CreateUser | [CreateUserRequest](#slash-api-v1-CreateUserRequest) | [User](#slash-api-v1-User) | CreateUser creates a new user. |
+| UpdateUser | [UpdateUserRequest](#slash-api-v1-UpdateUserRequest) | [User](#slash-api-v1-User) |  |
+| DeleteUser | [DeleteUserRequest](#slash-api-v1-DeleteUserRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | DeleteUser deletes a user by id. |
 | ListUserAccessTokens | [ListUserAccessTokensRequest](#slash-api-v1-ListUserAccessTokensRequest) | [ListUserAccessTokensResponse](#slash-api-v1-ListUserAccessTokensResponse) | ListUserAccessTokens returns a list of access tokens for a user. |
-| CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v1-CreateUserAccessTokenRequest) | [CreateUserAccessTokenResponse](#slash-api-v1-CreateUserAccessTokenResponse) | CreateUserAccessToken creates a new access token for a user. |
-| DeleteUserAccessToken | [DeleteUserAccessTokenRequest](#slash-api-v1-DeleteUserAccessTokenRequest) | [DeleteUserAccessTokenResponse](#slash-api-v1-DeleteUserAccessTokenResponse) | DeleteUserAccessToken deletes an access token for a user. |
+| CreateUserAccessToken | [CreateUserAccessTokenRequest](#slash-api-v1-CreateUserAccessTokenRequest) | [UserAccessToken](#slash-api-v1-UserAccessToken) | CreateUserAccessToken creates a new access token for a user. |
+| DeleteUserAccessToken | [DeleteUserAccessTokenRequest](#slash-api-v1-DeleteUserAccessTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | DeleteUserAccessToken deletes an access token for a user. |
 
  
 

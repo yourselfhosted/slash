@@ -5,6 +5,7 @@ package slash.api.v1;
 import "api/v1/common.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -16,18 +17,18 @@ service UserService {
     option (google.api.http) = {get: "/api/v1/users"};
   }
   // GetUser returns a user by id.
-  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+  rpc GetUser(GetUserRequest) returns (User) {
     option (google.api.http) = {get: "/api/v1/users/{id}"};
     option (google.api.method_signature) = "id";
   }
   // CreateUser creates a new user.
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+  rpc CreateUser(CreateUserRequest) returns (User) {
     option (google.api.http) = {
       post: "/api/v1/users"
       body: "user"
     };
   }
-  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+  rpc UpdateUser(UpdateUserRequest) returns (User) {
     option (google.api.http) = {
       patch: "/api/v1/users/{user.id}"
       body: "user"
@@ -35,7 +36,7 @@ service UserService {
     option (google.api.method_signature) = "user,update_mask";
   }
   // DeleteUser deletes a user by id.
-  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/api/v1/users/{id}"};
     option (google.api.method_signature) = "id";
   }
@@ -45,7 +46,7 @@ service UserService {
     option (google.api.method_signature) = "id";
   }
   // CreateUserAccessToken creates a new access token for a user.
-  rpc CreateUserAccessToken(CreateUserAccessTokenRequest) returns (CreateUserAccessTokenResponse) {
+  rpc CreateUserAccessToken(CreateUserAccessTokenRequest) returns (UserAccessToken) {
     option (google.api.http) = {
       post: "/api/v1/users/{id}/access_tokens"
       body: "*"
@@ -53,7 +54,7 @@ service UserService {
     option (google.api.method_signature) = "id";
   }
   // DeleteUserAccessToken deletes an access token for a user.
-  rpc DeleteUserAccessToken(DeleteUserAccessTokenRequest) returns (DeleteUserAccessTokenResponse) {
+  rpc DeleteUserAccessToken(DeleteUserAccessTokenRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {delete: "/api/v1/users/{id}/access_tokens/{access_token}"};
     option (google.api.method_signature) = "id,access_token";
   }
@@ -95,15 +96,7 @@ message GetUserRequest {
   int32 id = 1;
 }
 
-message GetUserResponse {
-  User user = 1;
-}
-
 message CreateUserRequest {
-  User user = 1;
-}
-
-message CreateUserResponse {
   User user = 1;
 }
 
@@ -113,15 +106,9 @@ message UpdateUserRequest {
   google.protobuf.FieldMask update_mask = 2;
 }
 
-message UpdateUserResponse {
-  User user = 1;
-}
-
 message DeleteUserRequest {
   int32 id = 1;
 }
-
-message DeleteUserResponse {}
 
 message ListUserAccessTokensRequest {
   // id is the user id.
@@ -142,18 +129,12 @@ message CreateUserAccessTokenRequest {
   optional google.protobuf.Timestamp expires_at = 3;
 }
 
-message CreateUserAccessTokenResponse {
-  UserAccessToken access_token = 1;
-}
-
 message DeleteUserAccessTokenRequest {
   // id is the user id.
   int32 id = 1;
   // access_token is the access token to delete.
   string access_token = 2;
 }
-
-message DeleteUserAccessTokenResponse {}
 
 message UserAccessToken {
   string access_token = 1;

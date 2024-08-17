@@ -53,36 +53,27 @@ const useUserStore = create<UserState>()((set, get) => ({
       return userMap[id] as User;
     }
 
-    const { user } = await userServiceClient.getUser({
+    const user = await userServiceClient.getUser({
       id: id,
     });
-    if (!user) {
-      throw new Error("User not found");
-    }
     userMap[id] = user;
     set(userMap);
     return user;
   },
   createUser: async (userCreate: Partial<User>) => {
-    const { user } = await userServiceClient.createUser({
+    const user = await userServiceClient.createUser({
       user: userCreate,
     });
-    if (!user) {
-      throw new Error("User not found");
-    }
     const userMap = get().userMapById;
     userMap[user.id] = user;
     set(userMap);
     return user;
   },
   patchUser: async (userPatch: Partial<User>, updateMask: string[]) => {
-    const { user } = await userServiceClient.updateUser({
+    const user = await userServiceClient.updateUser({
       user: userPatch,
       updateMask: updateMask,
     });
-    if (!user) {
-      throw new Error("User not found");
-    }
     const userMap = get().userMapById;
     userMap[user.id] = user;
     set(userMap);
