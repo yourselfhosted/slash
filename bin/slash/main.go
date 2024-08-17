@@ -30,14 +30,12 @@ var (
 		Short: `An open source, self-hosted links shortener and sharing platform.`,
 		Run: func(_ *cobra.Command, _ []string) {
 			serverProfile := &profile.Profile{
-				Mode:        viper.GetString("mode"),
-				Port:        viper.GetInt("port"),
-				Data:        viper.GetString("data"),
-				DSN:         viper.GetString("dsn"),
-				Driver:      viper.GetString("driver"),
-				Public:      viper.GetBool("public"),
-				InstanceURL: viper.GetString("instance-url"),
-				Version:     version.GetCurrentVersion(viper.GetString("mode")),
+				Mode:    viper.GetString("mode"),
+				Port:    viper.GetInt("port"),
+				Data:    viper.GetString("data"),
+				DSN:     viper.GetString("dsn"),
+				Driver:  viper.GetString("driver"),
+				Version: version.GetCurrentVersion(viper.GetString("mode")),
 			}
 			if err := serverProfile.Validate(); err != nil {
 				panic(err)
@@ -105,7 +103,6 @@ func init() {
 	viper.SetDefault("mode", "demo")
 	viper.SetDefault("driver", "sqlite")
 	viper.SetDefault("port", 8082)
-	viper.SetDefault("public", true)
 
 	rootCmd.PersistentFlags().String("mode", "demo", `mode of server, can be "prod" or "dev" or "demo"`)
 	rootCmd.PersistentFlags().String("addr", "", "address of server")
@@ -113,8 +110,6 @@ func init() {
 	rootCmd.PersistentFlags().String("data", "", "data directory")
 	rootCmd.PersistentFlags().String("driver", "sqlite", "database driver")
 	rootCmd.PersistentFlags().String("dsn", "", "database source name(aka. DSN)")
-	rootCmd.PersistentFlags().Bool("public", true, "")
-	rootCmd.PersistentFlags().String("instance-url", "", "URL of the instance")
 
 	if err := viper.BindPFlag("mode", rootCmd.PersistentFlags().Lookup("mode")); err != nil {
 		panic(err)
@@ -131,18 +126,9 @@ func init() {
 	if err := viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn")); err != nil {
 		panic(err)
 	}
-	if err := viper.BindPFlag("public", rootCmd.PersistentFlags().Lookup("public")); err != nil {
-		panic(err)
-	}
-	if err := viper.BindPFlag("instance-url", rootCmd.PersistentFlags().Lookup("instance-url")); err != nil {
-		panic(err)
-	}
 
 	viper.SetEnvPrefix("slash")
 	viper.AutomaticEnv()
-	if err := viper.BindEnv("instance-url", "SLASH_INSTANCE_URL"); err != nil {
-		panic(err)
-	}
 }
 
 func printGreetings(serverProfile *profile.Profile) {
@@ -152,8 +138,6 @@ func printGreetings(serverProfile *profile.Profile) {
 	println("port:", serverProfile.Port)
 	println("mode:", serverProfile.Mode)
 	println("version:", serverProfile.Version)
-	println("public:", serverProfile.Public)
-	println("instance-url:", serverProfile.InstanceURL)
 	println("---")
 	println(greetingBanner)
 	fmt.Printf("Version %s has been started on port %d\n", serverProfile.Version, serverProfile.Port)

@@ -59,3 +59,33 @@ func (s *Store) DeleteWorkspaceSetting(ctx context.Context, key storepb.Workspac
 	s.workspaceSettingCache.Delete(key)
 	return nil
 }
+
+func (s *Store) GetWorkspaceGeneralSetting(ctx context.Context) (*storepb.WorkspaceSetting_GeneralSetting, error) {
+	setting, err := s.GetWorkspaceSetting(ctx, &FindWorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
+	})
+	if err != nil {
+		return nil, err
+	}
+	generalSetting := &storepb.WorkspaceSetting_GeneralSetting{}
+	if setting != nil && setting.GetGeneral() != nil {
+		generalSetting = setting.GetGeneral()
+	}
+	return generalSetting, nil
+}
+
+func (s *Store) GetWorkspaceSecuritySetting(ctx context.Context) (*storepb.WorkspaceSetting_SecuritySetting, error) {
+	setting, err := s.GetWorkspaceSetting(ctx, &FindWorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY,
+	})
+	if err != nil {
+		return nil, err
+	}
+	securitySetting := &storepb.WorkspaceSetting_SecuritySetting{
+		DisallowUserRegistration: false,
+	}
+	if setting != nil && setting.GetGeneral() != nil {
+		securitySetting = setting.GetSecurity()
+	}
+	return securitySetting, nil
+}

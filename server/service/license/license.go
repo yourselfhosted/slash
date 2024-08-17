@@ -37,18 +37,13 @@ func NewLicenseService(profile *profile.Profile, store *store.Store) *LicenseSer
 }
 
 func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscription, error) {
-	workspaceSettingGeneral, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
-	})
+	workspaceGeneralSetting, err := s.Store.GetWorkspaceGeneralSetting(ctx)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to get workspace setting")
+		return nil, errors.Wrap(err, "failed to get workspace general setting")
 	}
 
 	subscription := getSubscriptionForFreePlan()
-	licenseKey := ""
-	if workspaceSettingGeneral != nil {
-		licenseKey = workspaceSettingGeneral.GetGeneral().LicenseKey
-	}
+	licenseKey := workspaceGeneralSetting.LicenseKey
 	if licenseKey == "" {
 		return subscription, nil
 	}
@@ -93,25 +88,17 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 }
 
 func (s *LicenseService) UpdateLicenseKey(ctx context.Context, licenseKey string) error {
-	workspaceSettingGeneral, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
-	})
+	workspaceGeneralSetting, err := s.Store.GetWorkspaceGeneralSetting(ctx)
 	if err != nil {
-		return errors.Wrap(err, "failed to get workspace setting")
+		return errors.Wrap(err, "failed to get workspace general setting")
 	}
-	if workspaceSettingGeneral == nil || workspaceSettingGeneral.GetGeneral() == nil {
-		workspaceSettingGeneral = &storepb.WorkspaceSetting{
-			Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
-			Value: &storepb.WorkspaceSetting_General{
-				General: &storepb.WorkspaceSetting_GeneralSetting{
-					LicenseKey: licenseKey,
-				},
-			},
-		}
-	} else {
-		workspaceSettingGeneral.GetGeneral().LicenseKey = licenseKey
-	}
-	_, err = s.Store.UpsertWorkspaceSetting(ctx, workspaceSettingGeneral)
+	workspaceGeneralSetting.LicenseKey = licenseKey
+	_, err = s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
+		Value: &storepb.WorkspaceSetting_General{
+			General: workspaceGeneralSetting,
+		},
+	})
 	if err != nil {
 		return errors.Wrap(err, "failed to upsert workspace setting")
 	}

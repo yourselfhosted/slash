@@ -949,6 +949,9 @@ definitions:
   apiv1WorkspaceSetting:
     type: object
     properties:
+      instanceUrl:
+        type: string
+        description: The url of instance.
       branding:
         type: string
         format: byte
@@ -965,6 +968,9 @@ definitions:
           type: object
           $ref: '#/definitions/apiv1IdentityProvider'
         description: The identity providers.
+      disallowUserRegistration:
+        type: boolean
+        description: Whether to disallow user registration by email&password.
   protobufAny:
     type: object
     properties:

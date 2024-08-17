@@ -45,14 +45,18 @@ message WorkspaceProfile {
 }
 
 message WorkspaceSetting {
+  // The url of instance.
+  string instance_url = 1;
   // The workspace custome branding.
-  bytes branding = 1;
+  bytes branding = 2;
   // The custom style.
-  string custom_style = 2;
+  string custom_style = 3;
   // The default visibility of shortcuts and collections.
-  Visibility default_visibility = 3;
+  Visibility default_visibility = 4;
   // The identity providers.
-  repeated IdentityProvider identity_providers = 4;
+  repeated IdentityProvider identity_providers = 5;
+  // Whether to disallow user registration by email&password.
+  bool disallow_user_registration = 6;
 }
 
 message IdentityProvider {

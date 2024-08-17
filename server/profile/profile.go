@@ -26,10 +26,6 @@ type Profile struct {
 	Version string
 	// Metric indicate the metric collection is enabled or not.
 	Metric bool
-	// Pubic is the flag whether the instance is public for others.
-	Public bool
-	// InstanceURL is the URL of the instance.
-	InstanceURL string
 }
 
 func (p *Profile) IsDev() bool {

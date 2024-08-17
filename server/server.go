@@ -57,7 +57,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	secret := "slash"
 	if profile.Mode == "prod" {
 		var err error
-		secret, err = s.getSecretSessionName(ctx)
+		secret, err = s.getSecretSession(ctx)
 		if err != nil {
 			return nil, err
 		}
@@ -119,20 +119,19 @@ func (s *Server) GetEcho() *echo.Echo {
 	return s.e
 }
 
-func (s *Server) getSecretSessionName(ctx context.Context) (string, error) {
-	workspaceSettingGeneral, err := s.Store.GetWorkspaceSetting(ctx, &store.FindWorkspaceSetting{
-		Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
-	})
+func (s *Server) getSecretSession(ctx context.Context) (string, error) {
+	workspaceGeneralSetting, err := s.Store.GetWorkspaceGeneralSetting(ctx)
 	if err != nil {
 		return "", err
 	}
-	if workspaceSettingGeneral == nil || workspaceSettingGeneral.GetGeneral() == nil {
-		tempSecret := uuid.New().String()
-		workspaceSettingGeneral, err = s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+	secretSession := workspaceGeneralSetting.SecretSession
+	if secretSession == "" {
+		secretSession = uuid.New().String()
+		_, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 			Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
 			Value: &storepb.WorkspaceSetting_General{
 				General: &storepb.WorkspaceSetting_GeneralSetting{
-					SecretSession: tempSecret,
+					SecretSession: secretSession,
 				},
 			},
 		})
@@ -140,5 +139,5 @@ func (s *Server) getSecretSessionName(ctx context.Context) (string, error) {
 			return "", err
 		}
 	}
-	return workspaceSettingGeneral.GetGeneral().SecretSession, nil
+	return secretSession, nil
 }
