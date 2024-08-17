@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { workspaceServiceClient } from "@/grpcweb";
+import { Subscription } from "@/types/proto/api/v1/subscription_service";
 import { WorkspaceProfile, WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 
 export enum FeatureType {
@@ -17,6 +18,7 @@ interface WorkspaceState {
   // Workspace related actions.
   fetchWorkspaceProfile: () => Promise<WorkspaceProfile>;
   fetchWorkspaceSetting: () => Promise<WorkspaceSetting>;
+  getSubscription: () => Subscription;
   checkFeatureAvailable: (feature: FeatureType) => boolean;
 }
 
@@ -33,6 +35,7 @@ const useWorkspaceStore = create<WorkspaceState>()((set, get) => ({
     set({ ...get(), setting: workspaceSetting });
     return workspaceSetting;
   },
+  getSubscription: () => Subscription.fromPartial(get().profile.subscription || {}),
   checkFeatureAvailable: (feature: FeatureType): boolean => {
     return get().profile.subscription?.features.includes(feature) || false;
   },

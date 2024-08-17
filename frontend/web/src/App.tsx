@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import DemoBanner from "@/components/DemoBanner";
 import { useWorkspaceStore } from "@/stores";
 import useNavigateTo from "./hooks/useNavigateTo";
-import { PlanType } from "./types/proto/api/v1/subscription_service";
+import { FeatureType } from "./stores/workspace";
 
 function App() {
   const navigateTo = useNavigateTo();
@@ -28,7 +28,7 @@ function App() {
   }, [workspaceStore.setting.customStyle]);
 
   useEffect(() => {
-    const hasCustomBranding = workspaceStore.profile.subscription?.plan === PlanType.PRO;
+    const hasCustomBranding = workspaceStore.checkFeatureAvailable(FeatureType.CustomeBranding);
     if (!hasCustomBranding || !workspaceStore.setting.branding) {
       return;
     }

@@ -14,7 +14,7 @@ const SubscriptionSetting: React.FC = () => {
   const currentUser = useUserStore().getCurrentUser();
   const [licenseKey, setLicenseKey] = useState<string>("");
   const isAdmin = currentUser.role === Role.ADMIN;
-  const profile = workspaceStore.profile;
+  const subscription = workspaceStore.getSubscription();
 
   const handleDeleteLicenseKey = async () => {
     if (!isAdmin) {
@@ -58,7 +58,7 @@ const SubscriptionSetting: React.FC = () => {
         <p className="text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">Subscription</p>
         <div className="mt-2">
           <span className="text-gray-500 mr-2">Current plan:</span>
-          <span className="text-2xl mr-4 dark:text-gray-400">{stringifyPlanType(profile.subscription?.plan)}</span>
+          <span className="text-2xl mr-4 dark:text-gray-400">{stringifyPlanType(subscription.plan)}</span>
         </div>
         <Textarea
           className="w-full mt-2"
@@ -70,7 +70,7 @@ const SubscriptionSetting: React.FC = () => {
         />
         <div className="w-full flex justify-between items-center mt-4">
           <div>
-            {profile.subscription?.plan === PlanType.FREE && (
+            {subscription.plan === PlanType.FREE && (
               <Link href="https://yourselfhosted.lemonsqueezy.com/checkout/buy/947e9a56-c93a-4294-8d71-2ea4b0f3ec51" target="_blank">
                 Buy a license key
                 <Icon.ExternalLink className="w-4 h-auto ml-1" />
@@ -78,7 +78,7 @@ const SubscriptionSetting: React.FC = () => {
             )}
           </div>
           <div className="flex justify-end items-center gap-2">
-            {profile.subscription?.plan !== PlanType.FREE && (
+            {subscription.plan !== PlanType.FREE && (
               <Button color="neutral" variant="plain" onClick={handleDeleteLicenseKey}>
                 Reset
               </Button>

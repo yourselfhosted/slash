@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   const workspaceStore = useWorkspaceStore();
   const currentUser = useUserStore().getCurrentUser();
   const [showAboutDialog, setShowAboutDialog] = useState<boolean>(false);
-  const profile = workspaceStore.profile;
+  const subscription = workspaceStore.getSubscription();
   const isAdmin = currentUser.role === Role.ADMIN;
   const shouldShowRouterSwitch = location.pathname === "/shortcuts" || location.pathname === "/collections";
   const selectedSection = location.pathname === "/shortcuts" ? "Shortcuts" : location.pathname === "/collections" ? "Collections" : "";
@@ -35,10 +35,10 @@ const Header: React.FC = () => {
               <Logo className="mr-2" />
               Slash
             </Link>
-            {profile.subscription?.plan && [PlanType.PRO, PlanType.ENTERPRISE].includes(profile.subscription.plan) && (
+            {[PlanType.PRO, PlanType.ENTERPRISE].includes(subscription.plan) && (
               <span className="ml-1 text-xs px-1.5 leading-5 border rounded-full bg-blue-600 border-blue-700 text-white shadow dark:opacity-70">
                 {/* PRO or ENT */}
-                {profile.subscription.plan.substring(0, 3)}
+                {subscription.plan.substring(0, 3)}
               </span>
             )}
             {shouldShowRouterSwitch && (
