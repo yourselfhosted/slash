@@ -98,7 +98,7 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 		}
 		// Inject shortcut metadata into `index.html`.
 		indexHTML := strings.ReplaceAll(rawIndexHTML, headerMetadataPlaceholder, generateShortcutMetadata(shortcut).String())
-		return c.HTML(http.StatusSeeOther, indexHTML)
+		return c.HTML(http.StatusPermanentRedirect, indexHTML)
 	})
 
 	e.GET("/c/:collectionName", func(c echo.Context) error {
