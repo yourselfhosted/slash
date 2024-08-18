@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"math/big"
 	"net/mail"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -54,4 +55,10 @@ func RandomString(n int) (string, error) {
 		}
 	}
 	return sb.String(), nil
+}
+
+// ValidateURI validates the URI.
+func ValidateURI(uri string) bool {
+	u, err := url.Parse(uri)
+	return err == nil && u.Scheme != "" && u.Host != ""
 }

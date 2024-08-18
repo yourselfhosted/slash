@@ -92,9 +92,13 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 		}
 
 		metric.Enqueue("shortcut view")
+		// Only set the `Location` header if the link is a valid URI.
+		if util.ValidateURI(shortcut.Link) {
+			c.Response().Header().Set("Location", shortcut.Link)
+		}
 		// Inject shortcut metadata into `index.html`.
 		indexHTML := strings.ReplaceAll(rawIndexHTML, headerMetadataPlaceholder, generateShortcutMetadata(shortcut).String())
-		return c.HTML(http.StatusOK, indexHTML)
+		return c.HTML(http.StatusSeeOther, indexHTML)
 	})
 
 	e.GET("/c/:collectionName", func(c echo.Context) error {
