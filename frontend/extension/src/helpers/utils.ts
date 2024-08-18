@@ -1,7 +1,7 @@
 export const getFaviconWithGoogleS2 = (url: string) => {
   try {
     const urlObject = new URL(url);
-    return `https://www.google.com/s2/favicons?sz=128&domain=${urlObject.hostname}`;
+    return `https://formidable-scarlet-whale.faviconkit.com/${urlObject.hostname}/256`;
   } catch (error) {
     return undefined;
   }
