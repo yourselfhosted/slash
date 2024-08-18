@@ -61,6 +61,9 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 			generalSetting := v.GetGeneral()
 			workspaceSetting.Branding = generalSetting.GetBranding()
 			workspaceSetting.CustomStyle = generalSetting.GetCustomStyle()
+		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY {
+			securitySetting := v.GetSecurity()
+			workspaceSetting.DisallowUserRegistration = securitySetting.GetDisallowUserRegistration()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
 			shortcutRelatedSetting := v.GetShortcutRelated()
 			workspaceSetting.DefaultVisibility = v1pb.Visibility(shortcutRelatedSetting.GetDefaultVisibility())
@@ -149,6 +152,20 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER,
 				Value: &storepb.WorkspaceSetting_IdentityProvider{
 					IdentityProvider: identityProviderSetting,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "disallow_user_registration" {
+			securitySetting, err := s.Store.GetWorkspaceSecuritySetting(ctx)
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
+			}
+			securitySetting.DisallowUserRegistration = request.Setting.DisallowUserRegistration
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY,
+				Value: &storepb.WorkspaceSetting_Security{
+					Security: securitySetting,
 				},
 			}); err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)

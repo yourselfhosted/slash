@@ -7,6 +7,7 @@ export enum FeatureType {
   SSO = "ysh.slash.sso",
   AdvancedAnalytics = "ysh.slash.advanced-analytics",
   UnlimitedAccounts = "ysh.slash.unlimited-accounts",
+  UnlimitedShortcuts = "ysh.slash.unlimited-shortcuts",
   UnlimitedCollections = "ysh.slash.unlimited-collections",
   CustomeBranding = "ysh.slash.custom-branding",
 }

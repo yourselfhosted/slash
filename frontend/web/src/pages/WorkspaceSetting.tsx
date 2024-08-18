@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/Icon";
 import WorkspaceGeneralSettingSection from "@/components/setting/WorkspaceGeneralSettingSection";
 import WorkspaceMembersSection from "@/components/setting/WorkspaceMembersSection";
+import WorkspaceSecuritySection from "@/components/setting/WorkspaceSecuritySection";
 import { useUserStore, useWorkspaceStore } from "@/stores";
 import { stringifyPlanType } from "@/stores/subscription";
 import { Role } from "@/types/proto/api/v1/user_service";
@@ -44,6 +45,8 @@ const WorkspaceSetting = () => {
       <WorkspaceMembersSection />
       <Divider />
       <WorkspaceGeneralSettingSection />
+      <Divider />
+      <WorkspaceSecuritySection />
     </div>
   );
 };
