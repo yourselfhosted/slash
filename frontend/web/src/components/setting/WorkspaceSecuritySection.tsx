@@ -1,11 +1,13 @@
 import { Switch } from "@mui/joy";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
 import SSOSection from "./SSOSection";
 
 const WorkspaceSecuritySection = () => {
+  const { t } = useTranslation();
   const workspaceStore = useWorkspaceStore();
 
   const toggleDisallowUserRegistration = async (on: boolean) => {
@@ -30,10 +32,6 @@ const WorkspaceSecuritySection = () => {
       return;
     }
 
-    console.log("1", {
-      setting: workspaceSetting,
-      updateMask: updateMask,
-    });
     try {
       await workspaceServiceClient.updateWorkspaceSetting({
         setting: workspaceSetting,
@@ -56,7 +54,7 @@ const WorkspaceSecuritySection = () => {
             size="lg"
             checked={workspaceStore.setting.disallowUserRegistration}
             onChange={(event) => toggleDisallowUserRegistration(event.target.checked)}
-            endDecorator={<span>Disallow user registration</span>}
+            endDecorator={<span>{t("settings.workspace.disallow-user-registration.self")}</span>}
           />
         </div>
       </div>

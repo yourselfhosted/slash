@@ -44,7 +44,7 @@ const WorkspaceMembersSection = () => {
   return (
     <>
       <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
-        <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">Members</p>
+        <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("settings.workspace.member.self")}</p>
         <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
           <div className="w-full flex justify-end">
             <Button
@@ -55,7 +55,7 @@ const WorkspaceMembersSection = () => {
                 setCurrentEditingUser(undefined);
               }}
             >
-              {t("user.action.add-user")}
+              {t("settings.workspace.member.add")}
             </Button>
           </div>
           <div className="w-full flow-root">

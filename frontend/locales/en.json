@@ -62,10 +62,7 @@
     "nickname": "Nickname",
     "email": "Email",
     "role": "Role",
-    "profile": "Profile",
-    "action": {
-      "add-user": "Add user"
-    }
+    "profile": "Profile"
   },
   "settings": {
     "self": "Setting",
@@ -76,11 +73,14 @@
     "workspace": {
       "self": "Workspace settings",
       "custom-style": "Custom style",
-      "enable-user-signup": {
-        "self": "Enable user signup",
-        "description": "Once enabled, other users can signup."
+      "disallow-user-registration": {
+        "self": "Disallow user registration"
       },
-      "default-visibility": "Default visibility"
+      "default-visibility": "Default visibility",
+      "member": {
+        "self": "Member",
+        "add": "Add member"
+      }
     }
   }
 }
