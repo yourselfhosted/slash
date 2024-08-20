@@ -65,7 +65,6 @@ require (
 )
 
 require (
-	github.com/domodwyer/mailyak/v3 v3.6.2
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0
 	github.com/improbable-eng/grpc-web v0.15.0
