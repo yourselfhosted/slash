@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/big"
 	"net/mail"
+	"net/url"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -146,11 +147,17 @@ func TruncateString(str string, limit int) (string, bool) {
 	return str, false
 }
 
-// TruncateStringWithDescription tries to truncate the string and append "... (view details in Bytebase)" if truncated.
+// TruncateStringWithDescription tries to truncate the string and append "..." if truncated.
 func TruncateStringWithDescription(str string) string {
 	const limit = 450
 	if truncatedStr, truncated := TruncateString(str, limit); truncated {
-		return fmt.Sprintf("%s... (view details in Bytebase)", truncatedStr)
+		return fmt.Sprintf("%s...", truncatedStr)
 	}
 	return str
+}
+
+// ValidateURI validates the URI.
+func ValidateURI(uri string) bool {
+	u, err := url.Parse(uri)
+	return err == nil && u.Scheme != "" && u.Host != ""
 }
