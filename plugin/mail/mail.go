@@ -1,26 +1,4 @@
-// Package mail is a mail delivery plugin based on SMTP.
 package mail
-
-// Usage:
-//  email := NewEmailMsg().SetFrom("yourselfhosted <from@yourselfhosted.com>").AddTo("Customer <to@yourselfhosted.com>").SetSubject("Test Email Subject").SetBody(`
-// <!DOCTYPE html>
-// <html>
-// <head>
-// 	<title>HTML Test</title>
-// </head>
-// <body>
-// 	<h1>This is a mail delivery test.</h1>
-// </body>
-// </html>
-// 	`)
-// 	fmt.Printf("email: %+v\n", email)
-// 	client := NewSMTPClient("smtp.gmail.com", 587)
-// 	client.SetAuthType(SMTPAuthTypePlain)
-// 	client.SetAuthCredentials("from@yourselfhosted.com", "nqxxxxxxxxxxxxxx")
-// 	client.SetEncryptionType(SMTPEncryptionTypeSTARTTLS)
-// 	if err := client.SendMail(email); err != nil {
-// 		t.Fatalf("SendMail failed: %v", err)
-// 	}
 
 import (
 	"crypto/tls"
@@ -80,7 +58,7 @@ func (e *Email) AddTo(to ...string) *Email {
 	for _, toAddress := range to {
 		parsedAddr, err := mail.ParseAddress(toAddress)
 		if err != nil {
-			e.err = errors.Wrapf(err, "Invalid to address: %s", toAddress)
+			e.err = errors.Wrapf(err, "invalid to address: %s", toAddress)
 			return e
 		}
 		buf = append(buf, parsedAddr)
@@ -97,7 +75,7 @@ func (e *Email) SetSubject(subject string) *Email {
 		return e
 	}
 	if e.subject != "" {
-		e.err = errors.New("Subject already set")
+		e.err = errors.New("subject already set")
 		return e
 	}
 	e.subject = subject
@@ -192,7 +170,7 @@ func (c *SMTPClient) SendMail(e *Email) error {
 	case SMTPEncryptionTypeSTARTTLS:
 		return e.e.SendWithStartTLS(fmt.Sprintf("%s:%d", c.host, c.port), c.getAuth(), &tls.Config{InsecureSkipVerify: true})
 	default:
-		return errors.Errorf("Unknown SMTP encryption type: %d", c.encryptionType)
+		return errors.Errorf("unknown SMTP encryption type: %d", c.encryptionType)
 	}
 }
 
