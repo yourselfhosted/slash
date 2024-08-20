@@ -17,6 +17,8 @@ import (
 	"github.com/yourselfhosted/slash/server/profile"
 	apiv1 "github.com/yourselfhosted/slash/server/route/api/v1"
 	"github.com/yourselfhosted/slash/server/route/frontend"
+	licensern "github.com/yourselfhosted/slash/server/runner/license"
+	"github.com/yourselfhosted/slash/server/runner/version"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -79,10 +81,7 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 }
 
 func (s *Server) Start(ctx context.Context) error {
-	// Load subscription.
-	if _, err := s.licenseService.LoadSubscription(ctx); err != nil {
-		slog.Error("failed to load subscription", slog.Any("error", err))
-	}
+	s.StartBackgroundRunners(ctx)
 	// Start gRPC server.
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%d", s.Profile.Port+1))
 	if err != nil {
@@ -117,6 +116,16 @@ func (s *Server) Shutdown(ctx context.Context) {
 
 func (s *Server) GetEcho() *echo.Echo {
 	return s.e
+}
+
+func (s *Server) StartBackgroundRunners(ctx context.Context) {
+	licenseRunner := licensern.NewRunner(s.Store, s.licenseService)
+	licenseRunner.RunOnce(ctx)
+	versionRunner := version.NewRunner(s.Store, s.Profile)
+	versionRunner.RunOnce(ctx)
+
+	go licenseRunner.Run(ctx)
+	go versionRunner.Run(ctx)
 }
 
 func (s *Server) getSecretSession(ctx context.Context) (string, error) {
