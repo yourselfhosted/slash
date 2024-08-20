@@ -2,60 +2,142 @@ package util
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestValidateEmail(t *testing.T) {
-	tests := []struct {
-		email string
-		want  bool
-	}{
-		{
-			email: "t@gmail.com",
-			want:  true,
-		},
-		{
-			email: "@yourselfhosted.com",
-			want:  false,
-		},
-		{
-			email: "1@gmail",
-			want:  true,
-		},
+func TestHasPrefixes(t *testing.T) {
+	type args struct {
+		src      string
+		prefixes []string
 	}
-	for _, test := range tests {
-		result := ValidateEmail(test.email)
-		if result != test.want {
-			t.Errorf("Validate Email %s: got result %v, want %v.", test.email, result, test.want)
-		}
-	}
-}
-
-func TestValidateURI(t *testing.T) {
 	tests := []struct {
-		uri  string
+		name string
+		args args
 		want bool
 	}{
 		{
-			uri:  "https://localhsot:3000",
+			name: "has prefixes",
+			args: args{
+				src:      "abc",
+				prefixes: []string{"a", "b", "c"},
+			},
 			want: true,
 		},
 		{
-			uri:  "https://yourselfhosted.com",
-			want: true,
-		},
-		{
-			uri:  "google.com",
-			want: false,
-		},
-		{
-			uri:  "i don't know",
+			name: "has no matching prefix",
+			args: args{
+				src:      "this is a sentence",
+				prefixes: []string{"that", "x", "y"},
+			},
 			want: false,
 		},
 	}
+	for i := range tests {
+		tt := tests[i]
+		t.Run(tt.name, func(t *testing.T) {
+			got := HasPrefixes(tt.args.src, tt.args.prefixes...)
+			assert.Equal(t, got, tt.want)
+		})
+	}
+}
+
+func TestTruncateString(t *testing.T) {
+	tests := []struct {
+		name      string
+		str       string
+		limit     int
+		want      string
+		truncated bool
+	}{
+		{
+			name:      "simple truncate 0",
+			str:       "0123",
+			limit:     0,
+			want:      "",
+			truncated: true,
+		},
+		{
+			name:      "simple truncate 2",
+			str:       "0123",
+			limit:     2,
+			want:      "01",
+			truncated: true,
+		},
+		{
+			name:      "simple truncate 3",
+			str:       "0123",
+			limit:     3,
+			want:      "012",
+			truncated: true,
+		},
+		{
+			name:      "simple truncate 4",
+			str:       "0123",
+			limit:     4,
+			want:      "0123",
+			truncated: false,
+		},
+		{
+			name:      "simple truncate 20",
+			str:       "0123",
+			limit:     20,
+			want:      "0123",
+			truncated: false,
+		},
+		{
+			name:      "unicode truncate 5",
+			str:       "H㐀〾▓朗퐭텟şüöžåйкл¤",
+			limit:     5,
+			want:      "H㐀〾▓朗",
+			truncated: true,
+		},
+		{
+			name:      "unicode truncate 10",
+			str:       "H㐀〾▓朗퐭텟şüöžåйкл¤",
+			limit:     10,
+			want:      "H㐀〾▓朗퐭텟şüö",
+			truncated: true,
+		},
+		{
+			name:      "unicode fit",
+			str:       "H㐀〾▓朗퐭텟şüöžåйкл¤",
+			limit:     16,
+			want:      "H㐀〾▓朗퐭텟şüöžåйкл¤",
+			truncated: false,
+		},
+	}
+	a := assert.New(t)
+	for i := range tests {
+		test := tests[i]
+		t.Run(test.name, func(_ *testing.T) {
+			got, truncated := TruncateString(test.str, test.limit)
+			a.Equal(test.want, got)
+			a.Equal(test.truncated, truncated)
+		})
+	}
+}
+
+func TestValidatePhone(t *testing.T) {
+	tests := []struct {
+		phone string
+		want  bool
+	}{
+		{
+			phone: "1234567890",
+			want:  false,
+		},
+		{
+			phone: "+8615655556666",
+			want:  true,
+		},
+	}
+
 	for _, test := range tests {
-		result := ValidateURI(test.uri)
-		if result != test.want {
-			t.Errorf("Validate URI %s: got result %v, want %v.", test.uri, result, test.want)
+		got := ValidatePhone(test.phone)
+		isValid := got == nil
+		if isValid != test.want {
+			t.Errorf("validatePhone %s, err %v", test.phone, got)
 		}
 	}
 }
