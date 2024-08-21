@@ -35,12 +35,12 @@ func (f FeatureType) String() string {
 
 // FeatureMatrix is a matrix of features in [Free, Pro, Enterprise].
 var FeatureMatrix = map[FeatureType][3]bool{
-	FeatureTypeSSO:                  {false, false, false},
-	FeatureTypeAdvancedAnalytics:    {false, false, false},
-	FeatureTypeUnlimitedAccounts:    {false, true, false},
+	FeatureTypeUnlimitedAccounts:    {false, true, true},
 	FeatureTypeUnlimitedShortcuts:   {false, true, true},
 	FeatureTypeUnlimitedCollections: {false, true, true},
-	FeatureTypeCustomeBranding:      {false, true, true},
+	FeatureTypeCustomeBranding:      {false, false, true},
+	FeatureTypeSSO:                  {false, false, false},
+	FeatureTypeAdvancedAnalytics:    {false, false, false},
 }
 
 func getDefaultFeatures(plan v1pb.PlanType) []FeatureType {
@@ -55,10 +55,6 @@ func getDefaultFeatures(plan v1pb.PlanType) []FeatureType {
 
 func validateFeatureString(feature string) (FeatureType, bool) {
 	switch feature {
-	case "ysh.slash.sso":
-		return FeatureTypeSSO, true
-	case "ysh.slash.advanced-analytics":
-		return FeatureTypeAdvancedAnalytics, true
 	case "ysh.slash.unlimited-accounts":
 		return FeatureTypeUnlimitedAccounts, true
 	case "ysh.slash.unlimited-shortcuts":
@@ -67,6 +63,10 @@ func validateFeatureString(feature string) (FeatureType, bool) {
 		return FeatureTypeUnlimitedCollections, true
 	case "ysh.slash.custom-branding":
 		return FeatureTypeCustomeBranding, true
+	case "ysh.slash.sso":
+		return FeatureTypeSSO, true
+	case "ysh.slash.advanced-analytics":
+		return FeatureTypeAdvancedAnalytics, true
 	default:
 		return "", false
 	}
