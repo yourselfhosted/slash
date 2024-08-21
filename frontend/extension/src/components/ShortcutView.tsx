@@ -10,7 +10,7 @@ interface Props {
 
 const ShortcutView = (props: Props) => {
   const { shortcut } = props;
-  const [domain] = useStorage<string>("domain", "");
+  const [domain] = useStorage<string>("instance_url", "");
   const favicon = getFaviconWithGoogleS2(shortcut.link);
 
   const handleShortcutLinkClick = () => {
