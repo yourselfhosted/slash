@@ -27,7 +27,7 @@ const (
 var (
 	rootCmd = &cobra.Command{
 		Use:   "slash",
-		Short: `An open source, self-hosted links shortener and sharing platform.`,
+		Short: `An open source, self-hosted platform for sharing and managing your most frequently used links.`,
 		Run: func(_ *cobra.Command, _ []string) {
 			serverProfile := &profile.Profile{
 				Mode:    viper.GetString("mode"),

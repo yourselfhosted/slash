@@ -94,7 +94,8 @@ const SubscriptionSetting: React.FC = () => {
         <div className="w-full px-6">
           <div className="max-w-4xl mx-auto mb-12">
             <Alert className="!inline-block mb-12">
-              Slash is open source links shortener and sharing platform. Our source code is available and accessible on{" "}
+              Slash is an open source, self-hosted platform for sharing and managing your most frequently used links. Easily create
+              customizable, human-readable shortcuts to streamline your link management. Our source code is available and accessible on{" "}
               <Link href="https://github.com/yourselfhosted/slash" target="_blank">
                 GitHub
               </Link>{" "}

@@ -1,6 +1,6 @@
 # Subscription
 
-Slash is open source links shortener and sharing platform. Our source code is available and accessible on GitHub so anyone can get it, inspect it and review it.
+Slash is an open source, self-hosted platform for sharing and managing your most frequently used links. Easily create customizable, human-readable shortcuts to streamline your link management. Our source code is available and accessible on GitHub so anyone can get it, inspect it and review it.
 
 ## Plans
 
