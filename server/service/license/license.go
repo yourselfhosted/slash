@@ -45,6 +45,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 	subscription := getSubscriptionForFreePlan()
 	licenseKey := workspaceGeneralSetting.LicenseKey
 	if licenseKey == "" {
+		s.cachedSubscription = subscription
 		return subscription, nil
 	}
 
@@ -53,6 +54,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 		return nil, errors.Wrap(err, "failed to validate license key")
 	}
 	if result == nil {
+		s.cachedSubscription = subscription
 		return subscription, nil
 	}
 
@@ -62,6 +64,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 	for _, feature := range result.Features {
 		subscription.Features = append(subscription.Features, feature.String())
 	}
+	s.cachedSubscription = subscription
 	return subscription, nil
 }
 
@@ -83,7 +86,6 @@ func (s *LicenseService) UpdateSubscription(ctx context.Context, licenseKey stri
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to load subscription")
 	}
-	s.cachedSubscription = subscription
 	return subscription, nil
 }
 
