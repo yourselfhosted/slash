@@ -30,19 +30,19 @@ const getShortcutNameFromUrl = (urlString: string) => {
 
 const getShortcutNameFromSearchUrl = (urlString: string) => {
   const url = new URL(urlString);
-  if ((url.hostname === "www.google.com" || url.hostname === "www.bing.com") && url.pathname === "/search") {
+  if ((url.hostname.endsWith("google.com") || url.hostname.endsWith("bing.com")) && url.pathname === "/search") {
     const params = new URLSearchParams(url.search);
     const shortcutName = params.get("q");
     if (typeof shortcutName === "string" && shortcutName.startsWith("s/")) {
       return shortcutName.slice(2);
     }
-  } else if (url.hostname === "www.baidu.com" && url.pathname === "/s") {
+  } else if (url.hostname.endsWith("baidu.com") && url.pathname === "/s") {
     const params = new URLSearchParams(url.search);
     const shortcutName = params.get("wd");
     if (typeof shortcutName === "string" && shortcutName.startsWith("s/")) {
       return shortcutName.slice(2);
     }
-  } else if (url.hostname === "duckduckgo.com" && url.pathname === "/") {
+  } else if (url.hostname.endsWith("duckduckgo.com") && url.pathname === "/") {
     const params = new URLSearchParams(url.search);
     const shortcutName = params.get("q");
     if (typeof shortcutName === "string" && shortcutName.startsWith("s/")) {

@@ -1,7 +1,7 @@
 {
   "name": "slash-extension",
   "displayName": "Slash",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "An open source, self-hosted platform for sharing and managing your most frequently used links. Save and share your links very easily.",
   "scripts": {
     "dev": "plasmo dev",
@@ -11,12 +11,11 @@
     "lint-fix": "eslint --ext .js,.ts,.tsx, src --fix"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/joy": "5.0.0-beta.48",
     "@plasmohq/storage": "^1.11.0",
     "classnames": "^2.5.1",
-    "lodash-es": "^4.17.21",
     "lucide-react": "^0.419.0",
     "plasmo": "^0.88.0",
     "react": "^18.3.1",
@@ -26,9 +25,8 @@
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/chrome": "^0.0.268",
-    "@types/lodash-es": "^4.17.12",
-    "@types/node": "^20.15.0",
-    "@types/react": "^18.3.3",
+    "@types/node": "^20.16.1",
+    "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",

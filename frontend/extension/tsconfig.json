@@ -7,7 +7,6 @@
     ".plasmo/index.d.ts",
     "./**/*.ts",
     "./**/*.tsx",
-    "../types"
   ],
   "compilerOptions": {
     "paths": {
