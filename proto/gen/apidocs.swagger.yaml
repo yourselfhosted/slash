@@ -777,9 +777,7 @@ definitions:
       expiresAt:
         type: string
         format: date-time
-        description: |-
-          expires_at is the expiration time of the access token.
-          If expires_at is not set, the access token will never expire.
+        description: "expires_at is the expiration time of the access token.\r\nIf expires_at is not set, the access token will never expire."
   apiv1Collection:
     type: object
     properties:
@@ -1154,9 +1152,7 @@ definitions:
         description: The custom style.
       owner:
         type: string
-        title: |-
-          The owner name.
-          Format: "users/{id}"
+        title: "The owner name.\r\nFormat: \"users/{id}\""
       branding:
         type: string
         format: byte

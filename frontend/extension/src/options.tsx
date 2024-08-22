@@ -1,51 +1,24 @@
-import { Button, CssVarsProvider, Divider, Input, Select, Option } from "@mui/joy";
+import { Button, CssVarsProvider, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
-import { useShortcutStore } from "@/stores";
 import Icon from "./components/Icon";
 import Logo from "./components/Logo";
-import PullShortcutsButton from "./components/PullShortcutsButton";
-import ShortcutsContainer from "./components/ShortcutsContainer";
 import { StorageContextProvider, useStorageContext } from "./context";
-import useColorTheme from "./hooks/useColorTheme";
 import "./style.css";
-import { Visibility } from "./types/proto/api/v1/common";
 
 interface SettingState {
-  domain: string;
-  accessToken: string;
+  instanceUrl: string;
 }
 
-const colorThemeOptions = [
-  {
-    value: "system",
-    label: "System",
-  },
-  {
-    value: "light",
-    label: "Light",
-  },
-  {
-    value: "dark",
-    label: "Dark",
-  },
-];
-
 const IndexOptions = () => {
-  const { colorTheme, setColorTheme } = useColorTheme();
   const context = useStorageContext();
   const [settingState, setSettingState] = useState<SettingState>({
-    domain: context.instanceUrl || "",
-    accessToken: context.accessToken || "",
+    instanceUrl: context.instanceUrl || "",
   });
-  const shortcutStore = useShortcutStore();
-  const shortcuts = shortcutStore.getShortcutList();
-  const isInitialized = context.instanceUrl && context.accessToken;
 
   useEffect(() => {
     setSettingState({
-      domain: context.instanceUrl || "",
-      accessToken: context.accessToken || "",
+      instanceUrl: context.instanceUrl || "",
     });
   }, [context]);
 
@@ -57,17 +30,8 @@ const IndexOptions = () => {
   };
 
   const handleSaveSetting = () => {
-    context.setInstanceUrl(settingState.domain);
-    context.setAccessToken(settingState.accessToken);
+    context.setInstanceUrl(settingState.instanceUrl);
     toast.success("Setting saved");
-  };
-
-  const handleSelectColorTheme = async (colorTheme: string) => {
-    setColorTheme(colorTheme as any);
-  };
-
-  const handleDefaultVisibilitySelect = (value: Visibility) => {
-    context.setDefaultVisibility(value);
   };
 
   return (
@@ -112,21 +76,8 @@ const IndexOptions = () => {
                 className="w-full"
                 type="text"
                 placeholder="The url of your Slash instance. e.g., https://slash.example.com"
-                value={settingState.domain}
-                onChange={(e) => setPartialSettingState({ domain: e.target.value })}
-              />
-            </div>
-          </div>
-
-          <div className="w-full flex flex-col justify-start items-start">
-            <span className="mb-2 text-base dark:text-gray-400">Access Token</span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="An available access token of your account."
-                value={settingState.accessToken}
-                onChange={(e) => setPartialSettingState({ accessToken: e.target.value })}
+                value={settingState.instanceUrl}
+                onChange={(e) => setPartialSettingState({ instanceUrl: e.target.value })}
               />
             </div>
           </div>
@@ -134,50 +85,7 @@ const IndexOptions = () => {
           <div className="w-full mt-6 flex flex-row justify-end">
             <Button onClick={handleSaveSetting}>Save</Button>
           </div>
-
-          <Divider className="!my-6" />
-
-          <p className="text-base font-semibold leading-6 mb-2 text-gray-900 dark:text-gray-500">Preference</p>
-
-          <div className="w-full flex flex-row justify-between items-center mb-2">
-            <div className="flex flex-row justify-start items-center gap-x-1">
-              <span className="dark:text-gray-400">Color Theme</span>
-            </div>
-            <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value)}>
-              {colorThemeOptions.map((option) => {
-                return (
-                  <Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Option>
-                );
-              })}
-            </Select>
-          </div>
-
-          <div className="w-full flex flex-row justify-between items-center">
-            <div className="flex flex-row justify-start items-center gap-x-1">
-              <span className="dark:text-gray-400">Default Visibility</span>
-            </div>
-            <Select defaultValue={context.defaultVisibility} onChange={(_, value) => handleDefaultVisibilitySelect(value as Visibility)}>
-              <Option value={Visibility.PRIVATE}>Private</Option>
-              <Option value={Visibility.WORKSPACE}>Workspace</Option>
-              <Option value={Visibility.PUBLIC}>Public</Option>
-            </Select>
-          </div>
         </div>
-
-        {isInitialized && (
-          <>
-            <Divider className="!my-6" />
-
-            <h2 className="flex flex-row justify-start items-center mb-4">
-              <span className="text-lg dark:text-gray-400">Shortcuts</span>
-              <span className="text-gray-500 mr-1">({shortcuts.length})</span>
-              <PullShortcutsButton />
-            </h2>
-            <ShortcutsContainer />
-          </>
-        )}
       </div>
     </div>
   );
