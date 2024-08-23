@@ -149,14 +149,14 @@ func (s *FrontendService) createShortcutViewActivity(ctx context.Context, reques
 }
 
 func getReadUserIP(r *http.Request) string {
-	IPAddress := r.Header.Get("X-Real-Ip")
-	if IPAddress == "" {
-		IPAddress = r.Header.Get("X-Forwarded-For")
+	ip := r.Header.Get("X-Real-Ip")
+	if ip == "" {
+		ip = r.Header.Get("X-Forwarded-For")
 	}
-	if IPAddress == "" {
-		IPAddress = r.RemoteAddr
+	if ip == "" {
+		ip = r.RemoteAddr
 	}
-	return IPAddress
+	return ip
 }
 
 func getFileSystem(path string) http.FileSystem {
