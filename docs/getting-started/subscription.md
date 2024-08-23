@@ -14,7 +14,7 @@ The Pro plan is designed for teams and businesses. It allows you to create unlim
 
 ### Enterprise or Custom
 
-The Enterprise plan is designed for organizations that need more than the Pro plan. It allows you to use Single Sign-On(SSO) and other advanced features. The Enterprise plan is $18 per month. If you need a custom plan, please contact us at `yourselfhosted@gmail.com`.
+The Enterprise plan is designed for organizations that need more than the Pro plan. It allows you to use Single Sign-On(SSO) and other advanced features. If you need a custom plan, please contact us at `yourselfhosted@gmail.com`.
 
 ## Using a License Key
 
