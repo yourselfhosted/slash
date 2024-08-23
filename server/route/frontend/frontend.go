@@ -5,14 +5,18 @@ import (
 	"embed"
 	"fmt"
 	"io/fs"
+	"log/slog"
 	"net/http"
 	"strings"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/pkg/errors"
+	"google.golang.org/protobuf/encoding/protojson"
 
 	"github.com/yourselfhosted/slash/internal/util"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	"github.com/yourselfhosted/slash/server/common"
 	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
@@ -44,35 +48,34 @@ func (s *FrontendService) Serve(ctx context.Context, e *echo.Echo) {
 		HTML5:      true,
 		Filesystem: getFileSystem("dist"),
 		Skipper: func(c echo.Context) bool {
-			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/robots.txt", "/sitemap.xml", "/s/:shortcutName", "/c/:collectionName")
+			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
 		},
 	}))
 
-	g := e.Group("assets")
+	assetsGroup := e.Group("assets")
 	// Use echo gzip middleware to compress the response.
 	// Reference: https://echo.labstack.com/docs/middleware/gzip
-	g.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+	assetsGroup.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 		Skipper: func(c echo.Context) bool {
-			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/robots.txt", "/sitemap.xml", "/s/:shortcutName", "/c/:collectionName")
+			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
 		},
 		Level: 5,
 	}))
-	g.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+	assetsGroup.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			c.Response().Header().Set(echo.HeaderCacheControl, "max-age=31536000, immutable")
 			return next(c)
 		}
 	})
-	g.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+	assetsGroup.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		HTML5:      true,
 		Filesystem: getFileSystem("dist/assets"),
 		Skipper: func(c echo.Context) bool {
-			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/robots.txt", "/sitemap.xml", "/s/:shortcutName", "/c/:collectionName")
+			return util.HasPrefixes(c.Path(), "/api", "/slash.api.v1", "/s/:shortcutName", "/c/:collectionName")
 		},
 	}))
 
 	s.registerRoutes(e)
-	s.registerFileRoutes(ctx, e)
 }
 
 func (s *FrontendService) registerRoutes(e *echo.Echo) {
@@ -84,21 +87,20 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 		shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 			Name: &shortcutName,
 		})
-		if err != nil {
-			return c.HTML(http.StatusOK, rawIndexHTML)
-		}
-		if shortcut == nil {
+		// If any error occurs or the shortcut is not found, return the raw `index.html`.
+		if err != nil || shortcut == nil {
 			return c.HTML(http.StatusOK, rawIndexHTML)
 		}
 
-		metric.Enqueue("shortcut view")
-		// Only set the `Location` header if the link is a valid URI.
-		if util.ValidateURI(shortcut.Link) {
-			c.Response().Header().Set("Location", shortcut.Link)
+		// Create shortcut view activity.
+		if err := s.createShortcutViewActivity(ctx, c.Request(), shortcut); err != nil {
+			slog.Warn("failed to create shortcut view activity", slog.String("error", err.Error()))
 		}
+		metric.Enqueue("shortcut view")
+
 		// Inject shortcut metadata into `index.html`.
 		indexHTML := strings.ReplaceAll(rawIndexHTML, headerMetadataPlaceholder, generateShortcutMetadata(shortcut).String())
-		return c.HTML(http.StatusPermanentRedirect, indexHTML)
+		return c.HTML(http.StatusOK, indexHTML)
 	})
 
 	e.GET("/c/:collectionName", func(c echo.Context) error {
@@ -107,10 +109,8 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 		collection, err := s.Store.GetCollection(ctx, &store.FindCollection{
 			Name: &collectionName,
 		})
-		if err != nil {
-			return c.HTML(http.StatusOK, rawIndexHTML)
-		}
-		if collection == nil {
+		// If any error occurs or the collection is not found, return the raw `index.html`.
+		if err != nil || collection == nil {
 			return c.HTML(http.StatusOK, rawIndexHTML)
 		}
 
@@ -121,50 +121,42 @@ func (s *FrontendService) registerRoutes(e *echo.Echo) {
 	})
 }
 
-func (s *FrontendService) registerFileRoutes(ctx context.Context, e *echo.Echo) {
-	workspaceGeneralSetting, err := s.Store.GetWorkspaceGeneralSetting(ctx)
+func (s *FrontendService) createShortcutViewActivity(ctx context.Context, request *http.Request, shortcut *storepb.Shortcut) error {
+	ip := getReadUserIP(request)
+	referer := request.Header.Get("Referer")
+	userAgent := request.Header.Get("User-Agent")
+	payload := &storepb.ActivityShorcutViewPayload{
+		ShortcutId: shortcut.Id,
+		Ip:         ip,
+		Referer:    referer,
+		UserAgent:  userAgent,
+	}
+	payloadStr, err := protojson.Marshal(payload)
 	if err != nil {
-		return
+		return errors.Wrap(err, "Failed to marshal activity payload")
 	}
-	instanceURL := workspaceGeneralSetting.InstanceUrl
-	if instanceURL == "" {
-		return
+	activity := &store.Activity{
+		CreatorID: common.BotID,
+		Type:      store.ActivityShortcutView,
+		Level:     store.ActivityInfo,
+		Payload:   string(payloadStr),
 	}
+	_, err = s.Store.CreateActivity(ctx, activity)
+	if err != nil {
+		return errors.Wrap(err, "Failed to create activity")
+	}
+	return nil
+}
 
-	e.GET("/robots.txt", func(c echo.Context) error {
-		robotsTxt := fmt.Sprintf(`User-agent: *
-Allow: /
-Host: %s
-Sitemap: %s/sitemap.xml`, instanceURL, instanceURL)
-		return c.String(http.StatusOK, robotsTxt)
-	})
-
-	e.GET("/sitemap.xml", func(c echo.Context) error {
-		urlsets := []string{}
-		// Append shortcut list.
-		shortcuts, err := s.Store.ListShortcuts(ctx, &store.FindShortcut{
-			VisibilityList: []store.Visibility{store.VisibilityPublic},
-		})
-		if err != nil {
-			return err
-		}
-		for _, shortcut := range shortcuts {
-			urlsets = append(urlsets, fmt.Sprintf(`<url><loc>%s/s/%s</loc></url>`, instanceURL, shortcut.Name))
-		}
-		// Append collection list.
-		collections, err := s.Store.ListCollections(ctx, &store.FindCollection{
-			VisibilityList: []store.Visibility{store.VisibilityPublic},
-		})
-		if err != nil {
-			return err
-		}
-		for _, collection := range collections {
-			urlsets = append(urlsets, fmt.Sprintf(`<url><loc>%s/c/%s</loc></url>`, instanceURL, collection.Name))
-		}
-
-		sitemap := fmt.Sprintf(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">%s</urlset>`, strings.Join(urlsets, "\n"))
-		return c.XMLBlob(http.StatusOK, []byte(sitemap))
-	})
+func getReadUserIP(r *http.Request) string {
+	IPAddress := r.Header.Get("X-Real-Ip")
+	if IPAddress == "" {
+		IPAddress = r.Header.Get("X-Forwarded-For")
+	}
+	if IPAddress == "" {
+		IPAddress = r.RemoteAddr
+	}
+	return IPAddress
 }
 
 func getFileSystem(path string) http.FileSystem {
