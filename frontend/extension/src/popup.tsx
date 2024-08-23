@@ -1,4 +1,4 @@
-import { Button, CssVarsProvider, IconButton } from "@mui/joy";
+import { Button, CssVarsProvider } from "@mui/joy";
 import { Toaster } from "react-hot-toast";
 import Icon from "@/components/Icon";
 import Logo from "@/components/Logo";
@@ -42,20 +42,22 @@ const IndexPopup = () => {
               </a>
             </p>
             <div className="w-full flex flex-row justify-between items-center mb-2">
-              <div className="flex flex-row justify-start items-center">
-                <IconButton size="sm" variant="plain" color="neutral" onClick={handleSettingButtonClick}>
-                  <Icon.Settings className="w-5 h-auto text-gray-500 dark:text-gray-400" />
-                </IconButton>
-                <IconButton
+              <div className="flex flex-row justify-start items-center gap-2">
+                <Button size="sm" variant="outlined" color="neutral" onClick={handleSettingButtonClick}>
+                  <Icon.Settings className="w-5 h-auto text-gray-500 dark:text-gray-400 mr-1" />
+                  Setting
+                </Button>
+                <Button
                   size="sm"
-                  variant="plain"
+                  variant="outlined"
                   color="neutral"
                   component="a"
                   href="https://github.com/yourselfhosted/slash"
                   target="_blank"
                 >
-                  <Icon.Github className="w-5 h-auto text-gray-500 dark:text-gray-400" />
-                </IconButton>
+                  <Icon.Github className="w-5 h-auto text-gray-500 dark:text-gray-400 mr-1" />
+                  GitHub
+                </Button>
               </div>
             </div>
           </>
