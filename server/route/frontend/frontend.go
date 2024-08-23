@@ -41,7 +41,7 @@ func NewFrontendService(profile *profile.Profile, store *store.Store) *FrontendS
 	}
 }
 
-func (s *FrontendService) Serve(ctx context.Context, e *echo.Echo) {
+func (s *FrontendService) Serve(_ context.Context, e *echo.Echo) {
 	// Use echo static middleware to serve the built dist folder.
 	// Reference: https://github.com/labstack/echo/blob/master/middleware/static.go
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
