@@ -13,7 +13,8 @@ chrome.webRequest.onBeforeRequest.addListener(
       const shortcutName = getShortcutNameFromUrl(param.url);
       if (shortcutName) {
         const instanceUrl = (await storage.getItem<string>("instance_url")) || "";
-        return chrome.tabs.update({ url: `${instanceUrl}/s/${shortcutName}` });
+        const url = new URL(`/s/${shortcutName}`, instanceUrl);
+        return chrome.tabs.update({ url: url.toString() });
       }
     })();
   },
