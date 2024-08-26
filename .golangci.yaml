@@ -19,6 +19,7 @@ issues:
   include:
     # https://golangci-lint.run/usage/configuration/#command-line-options
   exclude:
+    - Rollback
     - fmt.Printf
 
 linters-settings:
