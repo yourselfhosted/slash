@@ -11,7 +11,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/yourselfhosted/slash/server/version"
+	"github.com/yourselfhosted/slash/server/common"
 	"github.com/yourselfhosted/slash/store"
 )
 
@@ -68,7 +68,7 @@ func (d *DB) nonProdMigrate(ctx context.Context) error {
 }
 
 func (d *DB) prodMigrate(ctx context.Context) error {
-	currentVersion := version.GetCurrentVersion(d.profile.Mode)
+	currentVersion := common.GetCurrentVersion(d.profile.Mode)
 	migrationHistoryList, err := d.ListMigrationHistories(ctx, &store.FindMigrationHistory{})
 	// If there is no migration history, we should apply the latest schema.
 	if err != nil || len(migrationHistoryList) == 0 {
@@ -94,17 +94,17 @@ func (d *DB) prodMigrate(ctx context.Context) error {
 	for _, migrationHistory := range migrationHistoryList {
 		migrationHistoryVersionList = append(migrationHistoryVersionList, migrationHistory.Version)
 	}
-	sort.Sort(version.SortVersion(migrationHistoryVersionList))
+	sort.Sort(common.SortVersion(migrationHistoryVersionList))
 	latestMigrationHistoryVersion := migrationHistoryVersionList[len(migrationHistoryVersionList)-1]
 	// If the latest migration history version is greater than or equal to the current version, we will not apply any migration.
-	if !version.IsVersionGreaterThan(version.GetSchemaVersion(currentVersion), latestMigrationHistoryVersion) {
+	if !common.IsVersionGreaterThan(common.GetSchemaVersion(currentVersion), latestMigrationHistoryVersion) {
 		return nil
 	}
 
 	println("start migrate")
 	for _, minorVersion := range getMinorVersionList() {
 		normalizedVersion := minorVersion + ".0"
-		if version.IsVersionGreaterThan(normalizedVersion, latestMigrationHistoryVersion) && version.IsVersionGreaterOrEqualThan(currentVersion, normalizedVersion) {
+		if common.IsVersionGreaterThan(normalizedVersion, latestMigrationHistoryVersion) && common.IsVersionGreaterOrEqualThan(currentVersion, normalizedVersion) {
 			println("applying migration for", normalizedVersion)
 			if err := d.applyMigrationForMinorVersion(ctx, minorVersion); err != nil {
 				return errors.Wrap(err, "failed to apply minor version migration")
@@ -166,6 +166,6 @@ func getMinorVersionList() []string {
 		panic(err)
 	}
 
-	sort.Sort(version.SortVersion(minorVersionList))
+	sort.Sort(common.SortVersion(minorVersionList))
 	return minorVersionList
 }

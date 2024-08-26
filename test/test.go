@@ -8,8 +8,8 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"github.com/yourselfhosted/slash/server/common"
 	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/server/version"
 )
 
 func getUnusedPort() int {
@@ -45,7 +45,7 @@ func GetTestingProfile(t *testing.T) *profile.Profile {
 		Data:    dir,
 		DSN:     dsn,
 		Driver:  driver,
-		Version: version.GetCurrentVersion(mode),
+		Version: common.GetCurrentVersion(mode),
 	}
 }
 

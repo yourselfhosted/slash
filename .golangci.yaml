@@ -19,12 +19,7 @@ issues:
   include:
     # https://golangci-lint.run/usage/configuration/#command-line-options
   exclude:
-    - Rollback
-    - logger.Sync
-    - pgInstance.Stop
     - fmt.Printf
-    - Enter(.*)_(.*)
-    - Exit(.*)_(.*)
 
 linters-settings:
   goimports:
@@ -68,6 +63,10 @@ linters-settings:
       - name: use-any
         disabled: true
       - name: var-naming
+        disabled: true
+      - name: unchecked-type-assertion
+        disabled: true
+      - name: max-control-nesting
         disabled: true
       - name: exported
         arguments:
