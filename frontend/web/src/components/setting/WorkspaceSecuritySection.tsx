@@ -51,6 +51,7 @@ const WorkspaceSecuritySection = () => {
         <SSOSection />
         <div>
           <Switch
+            className="dark:text-gray-500"
             size="lg"
             checked={workspaceStore.setting.disallowUserRegistration}
             onChange={(event) => toggleDisallowUserRegistration(event.target.checked)}
