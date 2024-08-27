@@ -24,8 +24,6 @@ type Profile struct {
 	Driver string
 	// Version is the current version of server.
 	Version string
-	// Metric indicate the metric collection is enabled or not.
-	Metric bool
 }
 
 func (p *Profile) IsDev() bool {

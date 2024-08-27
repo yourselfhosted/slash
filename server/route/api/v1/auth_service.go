@@ -17,7 +17,6 @@ import (
 	"github.com/yourselfhosted/slash/plugin/idp/oauth2"
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -53,7 +52,6 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) 
 	if err := s.doSignIn(ctx, user, time.Now().Add(AccessTokenDuration)); err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to sign in, err: %s", err))
 	}
-	metric.Enqueue("user sign in")
 	return convertUserFromStore(user), nil
 }
 
@@ -181,7 +179,6 @@ func (s *APIV1Service) SignUp(ctx context.Context, request *v1pb.SignUpRequest) 
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to create user, err: %s", err))
 	}
-	metric.Enqueue("user sign up")
 	if err := s.doSignIn(ctx, user, time.Now().Add(AccessTokenDuration)); err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to sign in, err: %s", err))
 	}

@@ -11,7 +11,6 @@ import (
 
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -131,7 +130,6 @@ func (s *APIV1Service) CreateCollection(ctx context.Context, request *v1pb.Creat
 		return nil, status.Errorf(codes.Internal, "failed to create collection, err: %v", err)
 	}
 
-	metric.Enqueue("collection create")
 	return convertCollectionFromStore(collection), nil
 }
 

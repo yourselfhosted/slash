@@ -17,7 +17,6 @@ import (
 
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/service/license"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -175,7 +174,6 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *v1pb.CreateS
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
 	}
-	metric.Enqueue("shortcut create")
 	return composedShortcut, nil
 }
 
@@ -322,7 +320,6 @@ func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *v1pb.G
 		browserMap[browserName]++
 	}
 
-	metric.Enqueue("shortcut analytics")
 	response := &v1pb.GetShortcutAnalyticsResponse{
 		References: mapToAnalyticsSlice(referenceMap),
 		Devices:    mapToAnalyticsSlice(deviceMap),

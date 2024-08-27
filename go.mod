@@ -74,7 +74,6 @@ require (
 	github.com/mssola/useragent v1.0.0
 	github.com/nyaruka/phonenumbers v1.4.0
 	github.com/pkg/errors v0.9.1
-	github.com/posthog/posthog-go v1.2.18
 	golang.org/x/exp v0.0.0-20240808152545-0cdaa3abc0fa
 	golang.org/x/mod v0.20.0
 	golang.org/x/oauth2 v0.22.0

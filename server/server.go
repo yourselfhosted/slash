@@ -13,7 +13,6 @@ import (
 	"github.com/pkg/errors"
 
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/profile"
 	apiv1 "github.com/yourselfhosted/slash/server/route/api/v1"
 	"github.com/yourselfhosted/slash/server/route/frontend"
@@ -93,7 +92,6 @@ func (s *Server) Start(ctx context.Context) error {
 		}
 	}()
 
-	metric.Enqueue("server start")
 	return s.e.Start(fmt.Sprintf(":%d", s.Profile.Port))
 }
 

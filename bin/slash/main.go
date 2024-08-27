@@ -14,7 +14,6 @@ import (
 
 	"github.com/yourselfhosted/slash/server"
 	"github.com/yourselfhosted/slash/server/common"
-	"github.com/yourselfhosted/slash/server/metric"
 	"github.com/yourselfhosted/slash/server/profile"
 	"github.com/yourselfhosted/slash/store"
 	"github.com/yourselfhosted/slash/store/db"
@@ -65,11 +64,6 @@ var (
 				cancel()
 				slog.Error("failed to create server", "error", err)
 				return
-			}
-
-			if serverProfile.Metric {
-				// nolint
-				metric.NewMetricClient(s.Secret, *serverProfile)
 			}
 
 			c := make(chan os.Signal, 1)
