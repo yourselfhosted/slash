@@ -210,7 +210,7 @@ const SubscriptionSetting: React.FC = () => {
                   </li>
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.Sparkles className="w-5 h-auto text-green-600 mr-1 shrink-0" />
-                    More Coming Soon
+                    More coming soon
                   </li>
                 </ul>
               </div>
@@ -218,7 +218,7 @@ const SubscriptionSetting: React.FC = () => {
                 <Link
                   className="w-full"
                   underline="none"
-                  href="mailto:yourselfhosted@gmail.com?subject=Inquiry about Slash Team PLan"
+                  href="mailto:yourselfhosted@gmail.com?subject=Inquiry about Slash Team Plan"
                   target="_blank"
                 >
                   <Button className="w-full">Contact us</Button>
