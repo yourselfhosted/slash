@@ -117,7 +117,7 @@ const SignIn: React.FC = () => {
               </Button>
             </div>
           </form>
-          {workspaceStore.profile.enableSignup && (
+          {!workspaceStore.setting.disallowUserRegistration && (
             <p className="w-full mt-4 text-sm">
               <span className="dark:text-gray-500">{"Don't have an account yet?"}</span>
               <Link className="cursor-pointer ml-2 text-blue-600 hover:underline" to="/auth/signup" unstable_viewTransition>

@@ -21,6 +21,10 @@ import (
 	"github.com/yourselfhosted/slash/store"
 )
 
+const (
+	unmatchedEmailAndPasswordError = "unmatched email and password"
+)
+
 func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRequest) (*v1pb.User, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
@@ -40,15 +44,24 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) 
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to find user by email %s", request.Email))
 	}
 	if user == nil {
-		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("user not found with email %s", request.Email))
-	} else if user.RowStatus == store.Archived {
+		return nil, status.Errorf(codes.InvalidArgument, unmatchedEmailAndPasswordError)
+	}
+	// Compare the stored hashed password, with the hashed version of the password that was received.
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(request.Password)); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, unmatchedEmailAndPasswordError)
+	}
+
+	workspaceSecuritySetting, err := s.Store.GetWorkspaceSecuritySetting(ctx)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to get workspace security setting, err: %s", err))
+	}
+	if workspaceSecuritySetting.DisallowPasswordAuth && user.Role == store.RoleUser {
+		return nil, status.Errorf(codes.PermissionDenied, "password authentication is not allowed")
+	}
+	if user.RowStatus == store.Archived {
 		return nil, status.Errorf(codes.PermissionDenied, fmt.Sprintf("user has been archived with email %s", request.Email))
 	}
 
-	// Compare the stored hashed password, with the hashed version of the password that was received.
-	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(request.Password)); err != nil {
-		return nil, status.Errorf(codes.InvalidArgument, "unmatched email and password")
-	}
 	if err := s.doSignIn(ctx, user, time.Now().Add(AccessTokenDuration)); err != nil {
 		return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to sign in, err: %s", err))
 	}

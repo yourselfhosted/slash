@@ -499,6 +499,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | disallow_user_registration | [bool](#bool) |  |  |
+| disallow_password_auth | [bool](#bool) |  |  |
 
 
 

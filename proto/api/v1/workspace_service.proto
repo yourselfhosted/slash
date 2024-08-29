@@ -31,17 +31,15 @@ message WorkspaceProfile {
   string mode = 1;
   // Current workspace version.
   string version = 2;
-  // The workspace subscription.
-  Subscription subscription = 3;
-  // Whether to enable other users to sign up.
-  bool enable_signup = 4;
-  // The custom style.
-  string custom_style = 5;
   // The owner name.
   // Format: "users/{id}"
-  string owner = 6;
+  string owner = 3;
+  // The workspace subscription.
+  Subscription subscription = 4;
+  // The custom style.
+  string custom_style = 5;
   // The workspace branding.
-  bytes branding = 7;
+  bytes branding = 6;
 }
 
 message WorkspaceSetting {
@@ -57,6 +55,8 @@ message WorkspaceSetting {
   repeated IdentityProvider identity_providers = 5;
   // Whether to disallow user registration by email&password.
   bool disallow_user_registration = 6;
+  // Whether to disallow password authentication.
+  bool disallow_password_auth = 7;
 }
 
 message IdentityProvider {

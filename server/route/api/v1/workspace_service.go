@@ -37,12 +37,6 @@ func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorks
 	}
 	workspaceProfile.Branding = workspaceGeneralSetting.GetBranding()
 
-	workspaceSecuritySetting, err := s.Store.GetWorkspaceSecuritySetting(ctx)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get workspace security setting")
-	}
-	workspaceProfile.EnableSignup = !workspaceSecuritySetting.DisallowUserRegistration
-
 	return workspaceProfile, nil
 }
 
@@ -64,6 +58,7 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY {
 			securitySetting := v.GetSecurity()
 			workspaceSetting.DisallowUserRegistration = securitySetting.GetDisallowUserRegistration()
+			workspaceSetting.DisallowPasswordAuth = securitySetting.GetDisallowPasswordAuth()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
 			shortcutRelatedSetting := v.GetShortcutRelated()
 			workspaceSetting.DefaultVisibility = v1pb.Visibility(shortcutRelatedSetting.GetDefaultVisibility())
@@ -162,6 +157,20 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 				return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
 			}
 			securitySetting.DisallowUserRegistration = request.Setting.DisallowUserRegistration
+			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
+				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY,
+				Value: &storepb.WorkspaceSetting_Security{
+					Security: securitySetting,
+				},
+			}); err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
+			}
+		} else if path == "disallow_password_auth" {
+			securitySetting, err := s.Store.GetWorkspaceSecuritySetting(ctx)
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
+			}
+			securitySetting.DisallowPasswordAuth = request.Setting.DisallowPasswordAuth
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY,
 				Value: &storepb.WorkspaceSetting_Security{

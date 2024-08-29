@@ -21,7 +21,7 @@ const SignUp: React.FC = () => {
   const allowConfirm = email.length > 0 && nickname.length > 0 && password.length > 0;
 
   useEffect(() => {
-    if (!workspaceStore.profile.enableSignup) {
+    if (workspaceStore.setting.disallowUserRegistration) {
       return navigateTo("/auth", {
         replace: true,
       });

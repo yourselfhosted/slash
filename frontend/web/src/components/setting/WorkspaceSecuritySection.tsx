@@ -26,6 +26,22 @@ const WorkspaceSecuritySection = () => {
     );
   };
 
+  const toggleDisallowPasswordAuth = async (on: boolean) => {
+    if (on) {
+      const confirmed = window.confirm("Are you sure to disallow password auth? This will prevent users from signing in with password.");
+      if (!confirmed) {
+        return;
+      }
+    }
+
+    await updateWorkspaceSetting(
+      WorkspaceSetting.fromPartial({
+        disallowPasswordAuth: on,
+      }),
+      ["disallow_password_auth"],
+    );
+  };
+
   const updateWorkspaceSetting = async (workspaceSetting: WorkspaceSetting, updateMask: string[]) => {
     if (updateMask.length === 0) {
       toast.error("No changes made");
@@ -56,6 +72,15 @@ const WorkspaceSecuritySection = () => {
             checked={workspaceStore.setting.disallowUserRegistration}
             onChange={(event) => toggleDisallowUserRegistration(event.target.checked)}
             endDecorator={<span>{t("settings.workspace.disallow-user-registration.self")}</span>}
+          />
+        </div>
+        <div>
+          <Switch
+            className="dark:text-gray-500"
+            size="lg"
+            checked={workspaceStore.setting.disallowPasswordAuth}
+            onChange={(event) => toggleDisallowPasswordAuth(event.target.checked)}
+            endDecorator={<span>{"Disallow password auth"}</span>}
           />
         </div>
       </div>

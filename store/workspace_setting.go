@@ -83,6 +83,7 @@ func (s *Store) GetWorkspaceSecuritySetting(ctx context.Context) (*storepb.Works
 	}
 	securitySetting := &storepb.WorkspaceSetting_SecuritySetting{
 		DisallowUserRegistration: false,
+		DisallowPasswordAuth:     false,
 	}
 	if setting != nil && setting.GetSecurity() != nil {
 		securitySetting = setting.GetSecurity()

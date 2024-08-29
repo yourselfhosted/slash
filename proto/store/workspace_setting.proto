@@ -28,6 +28,7 @@ message WorkspaceSetting {
 
   message SecuritySetting {
     bool disallow_user_registration = 1;
+    bool disallow_password_auth = 2;
   }
 
   message ShortcutRelatedSetting {

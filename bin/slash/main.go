@@ -54,11 +54,6 @@ var (
 				slog.Error("failed to migrate db", "error", err)
 				return
 			}
-			if err := storeInstance.MigrateWorkspaceSettings(ctx); err != nil {
-				cancel()
-				slog.Error("failed to migrate workspace settings", "error", err)
-				return
-			}
 			s, err := server.NewServer(ctx, serverProfile, storeInstance)
 			if err != nil {
 				cancel()
