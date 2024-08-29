@@ -18,11 +18,10 @@ func NewTestingStore(ctx context.Context, t *testing.T) *store.Store {
 		fmt.Printf("failed to create db driver, error: %+v\n", err)
 	}
 	resetTestingDB(ctx, profile, dbDriver)
-	if err := dbDriver.Migrate(ctx); err != nil {
+	store := store.New(dbDriver, profile)
+	if err := store.Migrate(ctx); err != nil {
 		fmt.Printf("failed to migrate db, error: %+v\n", err)
 	}
-
-	store := store.New(dbDriver, profile)
 	return store
 }
 

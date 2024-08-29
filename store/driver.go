@@ -13,8 +13,6 @@ type Driver interface {
 	GetDB() *sql.DB
 	Close() error
 
-	Migrate(ctx context.Context) error
-
 	// MigrationHistory model related methods.
 	UpsertMigrationHistory(ctx context.Context, upsert *UpsertMigrationHistory) (*MigrationHistory, error)
 	ListMigrationHistories(ctx context.Context, find *FindMigrationHistory) ([]*MigrationHistory, error)

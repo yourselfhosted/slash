@@ -47,13 +47,13 @@ var (
 				slog.Error("failed to create db driver", "error", err)
 				return
 			}
-			if err := dbDriver.Migrate(ctx); err != nil {
+
+			storeInstance := store.New(dbDriver, serverProfile)
+			if err := storeInstance.Migrate(ctx); err != nil {
 				cancel()
 				slog.Error("failed to migrate db", "error", err)
 				return
 			}
-
-			storeInstance := store.New(dbDriver, serverProfile)
 			if err := storeInstance.MigrateWorkspaceSettings(ctx); err != nil {
 				cancel()
 				slog.Error("failed to migrate workspace settings", "error", err)
