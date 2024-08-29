@@ -106,7 +106,7 @@ const SubscriptionSetting: React.FC = () => {
             <div className="flex flex-col p-6 bg-white dark:bg-zinc-800 shadow-lg rounded-lg justify-between border border-gray-300 dark:border-zinc-700">
               <div>
                 <h3 className="text-2xl font-bold text-center dark:text-gray-300">Free</h3>
-                <div className="mt-4 text-center text-zinc-600 dark:text-zinc-400">
+                <div className="mt-3 text-center text-zinc-600 dark:text-zinc-400">
                   <span className="text-4xl font-bold">$0</span>/ month
                 </div>
                 <ul className="mt-4 space-y-3">
@@ -143,10 +143,10 @@ const SubscriptionSetting: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-center dark:text-gray-300">Pro</h3>
-                <div className="mt-4 text-center text-zinc-600 dark:text-zinc-400">
+                <div className="mt-3 text-center text-zinc-600 dark:text-zinc-400">
                   <span className="text-4xl font-bold">$4</span>/ month
                 </div>
-                <p className="mt-2 font-medium dark:text-gray-300">Everything in Free, and</p>
+                <p className="mt-3 font-medium dark:text-gray-300">Everything in Free, and</p>
                 <ul className="mt-4 space-y-3">
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.CheckCircle2 className="w-5 h-auto text-green-600 mr-1 shrink-0" />
@@ -183,11 +183,14 @@ const SubscriptionSetting: React.FC = () => {
             </div>
             <div className="flex flex-col p-6 bg-white dark:bg-zinc-800 shadow-lg rounded-lg dark:bg-zinc-850 justify-between border border-gray-300 dark:border-zinc-700">
               <div>
-                <span className="block text-2xl text-center dark:text-gray-200 opacity-80">More</span>
-                <div className="mt-4 text-center text-zinc-800 dark:text-zinc-400">
-                  <span className="text-4xl font-bold">Custom</span>
+                <span className="block text-2xl text-center dark:text-gray-200 opacity-80">Team</span>
+                <div className="mt-3 text-center text-zinc-600 dark:text-zinc-400">
+                  <span className="mr-2">start with</span>
+                  <span>
+                    <span className="text-4xl font-bold">$10</span>/ month
+                  </span>
                 </div>
-                <p className="mt-2 font-medium dark:text-gray-300">Everything in Pro, and</p>
+                <p className="mt-3 font-medium dark:text-gray-300">Everything in Pro, and</p>
                 <ul className="mt-4 space-y-3">
                   <li className="flex items-center dark:text-gray-300">
                     <Icon.BadgeCheck className="w-5 h-auto text-green-600 mr-1 shrink-0" />
@@ -212,7 +215,12 @@ const SubscriptionSetting: React.FC = () => {
                 </ul>
               </div>
               <div className="mt-6">
-                <Link className="w-full" underline="none" href="mailto:yourselfhosted@gmail.com" target="_blank">
+                <Link
+                  className="w-full"
+                  underline="none"
+                  href="mailto:yourselfhosted@gmail.com?subject=Inquiry about Slash Team PLan"
+                  target="_blank"
+                >
                   <Button className="w-full">Contact us</Button>
                 </Link>
               </div>

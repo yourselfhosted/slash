@@ -12,13 +12,13 @@ The Free plan is designed for personal use not for commercial use. It allows you
 
 The Pro plan is designed for teams and businesses. It allows you to create unlimited shortcuts and invite unlimited members. It also includes priority support. The Pro plan is $4 per month.
 
-### Enterprise or Custom
+### Team
 
-The Enterprise plan is designed for organizations that need more than the Pro plan. It allows you to use Single Sign-On(SSO) and other advanced features. If you need a custom plan, please contact us at `yourselfhosted@gmail.com`.
+The Team plan is designed for teams that need more than the Pro plan. It allows you to use Single Sign-On(SSO) and other advanced features. If you need a team plan, please contact us at `yourselfhosted@gmail.com`.
 
 ## Using a License Key
 
-After purchasing a Pro or Enterprise plan, you will receive a license key. You can use the license key to activate your plan. Here is how to do it:
+After purchasing a Pro or Team plan, you will receive a license key. You can use the license key to activate your plan. Here is how to do it:
 
 1. Log in to your Slash instance as an Admin user.
 2. Go to Settings > Subscription. `https://your-slash-instance.com/setting/subscription`
