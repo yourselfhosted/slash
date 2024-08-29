@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/common"
 )
@@ -108,6 +109,12 @@ func (s *Store) Migrate(ctx context.Context) error {
 		if err := s.seed(ctx); err != nil {
 			return errors.Wrap(err, "failed to seed")
 		}
+	}
+
+	// Manually migrate workspace settings.
+	// TODO: remove this after the next release.
+	if err := s.migrateWorkspaceSettings(ctx); err != nil {
+		return errors.Wrap(err, "failed to migrate workspace settings")
 	}
 	return nil
 }
@@ -291,7 +298,8 @@ func (s *Store) normalizedMigrationHistoryList(ctx context.Context) error {
 	return tx.Commit()
 }
 
-func (s *Store) MigrateWorkspaceSettings(ctx context.Context) error {
+// migrateWorkspaceSettings migrates workspace settings manually.
+func (s *Store) migrateWorkspaceSettings(ctx context.Context) error {
 	workspaceSettings, err := s.driver.ListWorkspaceSettings(ctx, &FindWorkspaceSetting{})
 	if err != nil {
 		return err
