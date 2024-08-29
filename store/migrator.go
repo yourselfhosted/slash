@@ -277,6 +277,12 @@ func (s *Store) normalizedMigrationHistoryList(ctx context.Context) error {
 		}
 		schemaVersionMap[common.GetMinorVersion(fileSchemaVersion)] = fileSchemaVersion
 	}
+	// Add the current schema version to the map.
+	currentSchemaVersion, err := s.GetCurrentSchemaVersion()
+	if err != nil {
+		return errors.Wrap(err, "failed to get current schema version")
+	}
+	schemaVersionMap[common.GetMinorVersion(currentSchemaVersion)] = currentSchemaVersion
 
 	latestSchemaVersion := schemaVersionMap[latestMinorVersion]
 	if latestSchemaVersion == "" {
