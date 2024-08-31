@@ -21,7 +21,6 @@ import { useShortcutStore, useWorkspaceStore } from "@/stores";
 import { getShortcutUpdateMask } from "@/stores/shortcut";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
-import { convertVisibilityFromPb } from "@/utils/visibility";
 import Icon from "./Icon";
 
 interface Props {
@@ -295,13 +294,12 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             <span className="mb-2">Visibility</span>
             <div className="w-full flex flex-row justify-start items-center text-base">
               <RadioGroup orientation="horizontal" value={state.shortcutCreate.visibility} onChange={handleVisibilityInputChange}>
-                <Radio value={Visibility.PRIVATE} label={t(`shortcut.visibility.private.self`)} />
                 <Radio value={Visibility.WORKSPACE} label={t(`shortcut.visibility.workspace.self`)} />
                 <Radio value={Visibility.PUBLIC} label={t(`shortcut.visibility.public.self`)} />
               </RadioGroup>
             </div>
             <p className="mt-3 text-sm text-gray-500 w-full bg-gray-100 border border-gray-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400 px-2 py-1 rounded-md">
-              {t(`shortcut.visibility.${convertVisibilityFromPb(state.shortcutCreate.visibility).toLowerCase()}.description`)}
+              {t(`shortcut.visibility.${state.shortcutCreate.visibility.toLowerCase()}.description`)}
             </p>
           </div>
           <Divider className="text-gray-500">More</Divider>

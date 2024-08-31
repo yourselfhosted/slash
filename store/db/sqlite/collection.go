@@ -92,7 +92,7 @@ func (d *DB) UpdateCollection(ctx context.Context, update *store.UpdateCollectio
 			collection.ShortcutIds = append(collection.ShortcutIds, shortcutID)
 		}
 	}
-	collection.Visibility = convertVisibilityStringToStorepb(visibility)
+	collection.Visibility = store.ConvertVisibilityStringToStorepb(visibility)
 	return collection, nil
 }
 
@@ -165,7 +165,7 @@ func (d *DB) ListCollections(ctx context.Context, find *store.FindCollection) ([
 				collection.ShortcutIds = append(collection.ShortcutIds, shortcutID)
 			}
 		}
-		collection.Visibility = storepb.Visibility(storepb.Visibility_value[visibility])
+		collection.Visibility = store.ConvertVisibilityStringToStorepb(visibility)
 		list = append(list, collection)
 	}
 
@@ -189,6 +189,5 @@ func vacuumCollection(ctx context.Context, tx *sql.Tx) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

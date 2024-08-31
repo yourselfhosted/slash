@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { absolutifyLink } from "@/helpers/utils";
 import { useUserStore, useViewStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
-import { convertVisibilityFromPb } from "@/utils/visibility";
 import Icon from "./Icon";
 import LinkFavicon from "./LinkFavicon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";
@@ -117,18 +116,13 @@ const ShortcutCard = (props: Props) => {
             alt={creator.nickname.toUpperCase()}
           ></Avatar>
         </Tooltip>
-        <Tooltip
-          title={t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.description`)}
-          variant="solid"
-          placement="top"
-          arrow
-        >
+        <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
           <div
             className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-400 text-sm"
             onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
           >
             <VisibilityIcon className="w-4 h-auto mr-1 opacity-70" visibility={shortcut.visibility} />
-            {t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.self`)}
+            {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
           </div>
         </Tooltip>
         <Tooltip title="View count" variant="solid" placement="top" arrow>

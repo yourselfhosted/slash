@@ -21,7 +21,7 @@ func TestCollectionStore(t *testing.T) {
 		Title:       "My collection",
 		Description: "A test collection",
 		ShortcutIds: []int32{101, 102},
-		Visibility:  storepb.Visibility_PRIVATE,
+		Visibility:  storepb.Visibility_WORKSPACE,
 	})
 	require.NoError(t, err)
 	collections, err := ts.ListCollections(ctx, &store.FindCollection{

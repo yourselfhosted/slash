@@ -135,7 +135,6 @@ const WorkspaceGeneralSettingSection = () => {
             defaultValue={getDefaultVisibility(workspaceSetting.defaultVisibility)}
             onChange={(_, value) => handleDefaultVisibilityChange(value as Visibility)}
           >
-            <Option value={Visibility.PRIVATE}>{t(`shortcut.visibility.private.self`)}</Option>
             <Option value={Visibility.WORKSPACE}>{t(`shortcut.visibility.workspace.self`)}</Option>
             <Option value={Visibility.PUBLIC}>{t(`shortcut.visibility.public.self`)}</Option>
           </Select>

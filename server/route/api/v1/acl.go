@@ -116,7 +116,7 @@ func (in *GRPCAuthInterceptor) authenticate(ctx context.Context, accessToken str
 	if user == nil {
 		return 0, status.Errorf(codes.Unauthenticated, "user ID %q not exists in the access token", userID)
 	}
-	if user.RowStatus == store.Archived {
+	if user.RowStatus == storepb.RowStatus_ARCHIVED {
 		return 0, status.Errorf(codes.Unauthenticated, "user ID %q has been deactivated by administrators", userID)
 	}
 

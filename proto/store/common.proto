@@ -15,9 +15,7 @@ enum RowStatus {
 enum Visibility {
   VISIBILITY_UNSPECIFIED = 0;
 
-  PRIVATE = 1;
+  WORKSPACE = 1;
 
-  WORKSPACE = 2;
-
-  PUBLIC = 3;
+  PUBLIC = 2;
 }

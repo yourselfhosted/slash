@@ -7,22 +7,20 @@ import (
 )
 
 type UpdateCollection struct {
-	ID int32
-
-	RowStatus   *RowStatus
+	ID          int32
 	Name        *string
 	Link        *string
 	Title       *string
 	Description *string
 	ShortcutIDs []int32
-	Visibility  *Visibility
+	Visibility  *storepb.Visibility
 }
 
 type FindCollection struct {
 	ID             *int32
 	CreatorID      *int32
 	Name           *string
-	VisibilityList []Visibility
+	VisibilityList []storepb.Visibility
 }
 
 type DeleteCollection struct {

@@ -19,6 +19,7 @@ func (d *DB) CreateUser(ctx context.Context, create *store.User) (*store.User, e
 		VALUES ($1, $2, $3, $4)
 		RETURNING id, created_ts, updated_ts, row_status
 	`
+	var rowStatus string
 	if err := d.db.QueryRowContext(ctx, stmt,
 		create.Email,
 		create.Nickname,
@@ -28,19 +29,20 @@ func (d *DB) CreateUser(ctx context.Context, create *store.User) (*store.User, e
 		&create.ID,
 		&create.CreatedTs,
 		&create.UpdatedTs,
-		&create.RowStatus,
+		&rowStatus,
 	); err != nil {
 		return nil, err
 	}
 
 	user := create
+	user.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 	return user, nil
 }
 
 func (d *DB) UpdateUser(ctx context.Context, update *store.UpdateUser) (*store.User, error) {
 	set, args := []string{}, []any{}
 	if v := update.RowStatus; v != nil {
-		set, args = append(set, "row_status = "+placeholder(len(args)+1)), append(args, *v)
+		set, args = append(set, "row_status = "+placeholder(len(args)+1)), append(args, v.String())
 	}
 	if v := update.Email; v != nil {
 		set, args = append(set, "email = "+placeholder(len(args)+1)), append(args, *v)
@@ -66,11 +68,12 @@ func (d *DB) UpdateUser(ctx context.Context, update *store.UpdateUser) (*store.U
 	`
 	args = append(args, update.ID)
 	user := &store.User{}
+	var rowStatus string
 	if err := d.db.QueryRowContext(ctx, stmt, args...).Scan(
 		&user.ID,
 		&user.CreatedTs,
 		&user.UpdatedTs,
-		&user.RowStatus,
+		&rowStatus,
 		&user.Email,
 		&user.Nickname,
 		&user.PasswordHash,
@@ -79,6 +82,7 @@ func (d *DB) UpdateUser(ctx context.Context, update *store.UpdateUser) (*store.U
 		return nil, err
 	}
 
+	user.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 	return user, nil
 }
 
@@ -124,11 +128,12 @@ func (d *DB) ListUsers(ctx context.Context, find *store.FindUser) ([]*store.User
 	list := make([]*store.User, 0)
 	for rows.Next() {
 		user := &store.User{}
+		var rowStatus string
 		if err := rows.Scan(
 			&user.ID,
 			&user.CreatedTs,
 			&user.UpdatedTs,
-			&user.RowStatus,
+			&rowStatus,
 			&user.Email,
 			&user.Nickname,
 			&user.PasswordHash,
@@ -136,6 +141,7 @@ func (d *DB) ListUsers(ctx context.Context, find *store.FindUser) ([]*store.User
 		); err != nil {
 			return nil, err
 		}
+		user.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 		list = append(list, user)
 	}
 

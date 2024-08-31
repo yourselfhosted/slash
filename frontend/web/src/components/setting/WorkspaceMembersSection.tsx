@@ -7,7 +7,6 @@ import CreateUserDialog from "@/components/CreateUserDialog";
 import Icon from "@/components/Icon";
 import { useUserStore } from "@/stores";
 import { User } from "@/types/proto/api/v1/user_service";
-import { convertRoleFromPb } from "@/utils/user";
 
 const WorkspaceMembersSection = () => {
   const { t } = useTranslation();
@@ -83,7 +82,7 @@ const WorkspaceMembersSection = () => {
                       <tr key={user.email}>
                         <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">{user.nickname}</td>
                         <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{user.email}</td>
-                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{convertRoleFromPb(user.role)}</td>
+                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{user.role}</td>
                         <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">
                           <IconButton
                             size="sm"

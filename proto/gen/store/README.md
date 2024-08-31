@@ -126,9 +126,8 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | VISIBILITY_UNSPECIFIED | 0 |  |
-| PRIVATE | 1 |  |
-| WORKSPACE | 2 |  |
-| PUBLIC | 3 |  |
+| WORKSPACE | 1 |  |
+| PUBLIC | 2 |  |
 
 
  
@@ -312,7 +311,6 @@
 | creator_id | [int32](#int32) |  |  |
 | created_ts | [int64](#int64) |  |  |
 | updated_ts | [int64](#int64) |  |  |
-| row_status | [RowStatus](#slash-store-RowStatus) |  |  |
 | name | [string](#string) |  |  |
 | link | [string](#string) |  |  |
 | title | [string](#string) |  |  |

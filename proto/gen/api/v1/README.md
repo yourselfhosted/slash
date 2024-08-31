@@ -5,6 +5,7 @@
 
 - [api/v1/common.proto](#api_v1_common-proto)
     - [RowStatus](#slash-api-v1-RowStatus)
+    - [State](#slash-api-v1-State)
     - [Visibility](#slash-api-v1-Visibility)
   
 - [api/v1/user_service.proto](#api_v1_user_service-proto)
@@ -113,13 +114,26 @@
 <a name="slash-api-v1-RowStatus"></a>
 
 ### RowStatus
-
+deprecated
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | ROW_STATUS_UNSPECIFIED | 0 |  |
 | NORMAL | 1 |  |
 | ARCHIVED | 2 |  |
+
+
+
+<a name="slash-api-v1-State"></a>
+
+### State
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| STATE_UNSPECIFIED | 0 |  |
+| ACTIVE | 1 |  |
+| INACTIVE | 2 |  |
 
 
 
@@ -309,7 +323,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
-| row_status | [RowStatus](#slash-api-v1-RowStatus) |  |  |
+| state | [State](#slash-api-v1-State) |  |  |
 | created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | role | [Role](#slash-api-v1-Role) |  |  |
@@ -786,7 +800,6 @@
 | creator_id | [int32](#int32) |  |  |
 | created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| row_status | [RowStatus](#slash-api-v1-RowStatus) |  |  |
 | name | [string](#string) |  |  |
 | link | [string](#string) |  |  |
 | title | [string](#string) |  |  |

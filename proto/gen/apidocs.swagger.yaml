@@ -391,8 +391,6 @@ paths:
               updatedTime:
                 type: string
                 format: date-time
-              rowStatus:
-                $ref: '#/definitions/apiv1RowStatus'
               name:
                 type: string
               link:
@@ -644,8 +642,8 @@ paths:
           schema:
             type: object
             properties:
-              rowStatus:
-                $ref: '#/definitions/apiv1RowStatus'
+              state:
+                $ref: '#/definitions/v1State'
               createdTime:
                 type: string
                 format: date-time
@@ -857,13 +855,6 @@ definitions:
       - TYPE_UNSPECIFIED
       - OAUTH2
     default: TYPE_UNSPECIFIED
-  apiv1RowStatus:
-    type: string
-    enum:
-      - ROW_STATUS_UNSPECIFIED
-      - NORMAL
-      - ARCHIVED
-    default: ROW_STATUS_UNSPECIFIED
   apiv1Shortcut:
     type: object
     properties:
@@ -879,8 +870,6 @@ definitions:
       updatedTime:
         type: string
         format: date-time
-      rowStatus:
-        $ref: '#/definitions/apiv1RowStatus'
       name:
         type: string
       link:
@@ -1064,6 +1053,13 @@ definitions:
         type: string
       image:
         type: string
+  v1State:
+    type: string
+    enum:
+      - STATE_UNSPECIFIED
+      - ACTIVE
+      - INACTIVE
+    default: STATE_UNSPECIFIED
   v1Subscription:
     type: object
     properties:
@@ -1108,8 +1104,8 @@ definitions:
       id:
         type: integer
         format: int32
-      rowStatus:
-        $ref: '#/definitions/apiv1RowStatus'
+      state:
+        $ref: '#/definitions/v1State'
       createdTime:
         type: string
         format: date-time

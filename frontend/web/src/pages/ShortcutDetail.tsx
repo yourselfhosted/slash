@@ -19,7 +19,6 @@ import useNavigateTo from "@/hooks/useNavigateTo";
 import { useUserStore, useShortcutStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { Role } from "@/types/proto/api/v1/user_service";
-import { convertVisibilityFromPb } from "@/utils/visibility";
 
 interface State {
   showEditDrawer: boolean;
@@ -169,15 +168,10 @@ const ShortcutDetail = () => {
               <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{creator.nickname}</span>
             </div>
           </Tooltip>
-          <Tooltip
-            title={t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.description`)}
-            variant="solid"
-            placement="top"
-            arrow
-          >
+          <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
             <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
               <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
-              {t(`shortcut.visibility.${convertVisibilityFromPb(shortcut.visibility).toLowerCase()}.self`)}
+              {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
             </div>
           </Tooltip>
           <Tooltip title="View count" variant="solid" placement="top" arrow>

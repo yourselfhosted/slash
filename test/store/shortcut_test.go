@@ -20,7 +20,7 @@ func TestShortcutStore(t *testing.T) {
 		Name:        "test",
 		Link:        "https://test.link",
 		Description: "A test shortcut",
-		Visibility:  storepb.Visibility_PRIVATE,
+		Visibility:  storepb.Visibility_WORKSPACE,
 		Tags:        []string{"test", "shortcut"},
 		OgMetadata:  &storepb.OpenGraphMetadata{},
 	})

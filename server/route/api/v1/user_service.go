@@ -72,7 +72,7 @@ func (s *APIV1Service) CreateUser(ctx context.Context, request *v1pb.CreateUserR
 func (s *APIV1Service) UpdateUser(ctx context.Context, request *v1pb.UpdateUserRequest) (*v1pb.User, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	if user.ID != request.User.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
@@ -101,7 +101,7 @@ func (s *APIV1Service) UpdateUser(ctx context.Context, request *v1pb.UpdateUserR
 func (s *APIV1Service) DeleteUser(ctx context.Context, request *v1pb.DeleteUserRequest) (*emptypb.Empty, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	if user.ID == request.Id {
 		return nil, status.Errorf(codes.InvalidArgument, "cannot delete yourself")
@@ -116,7 +116,7 @@ func (s *APIV1Service) DeleteUser(ctx context.Context, request *v1pb.DeleteUserR
 func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *v1pb.ListUserAccessTokensRequest) (*v1pb.ListUserAccessTokensResponse, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	if user.ID != request.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
@@ -170,7 +170,7 @@ func (s *APIV1Service) ListUserAccessTokens(ctx context.Context, request *v1pb.L
 func (s *APIV1Service) CreateUserAccessToken(ctx context.Context, request *v1pb.CreateUserAccessTokenRequest) (*v1pb.UserAccessToken, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	if user.ID != request.Id {
 		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
@@ -220,7 +220,7 @@ func (s *APIV1Service) CreateUserAccessToken(ctx context.Context, request *v1pb.
 func (s *APIV1Service) DeleteUserAccessToken(ctx context.Context, request *v1pb.DeleteUserAccessTokenRequest) (*emptypb.Empty, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	userAccessTokens, err := s.Store.GetUserAccessTokens(ctx, user.ID)
 	if err != nil {
@@ -275,7 +275,7 @@ func (s *APIV1Service) UpsertAccessTokenToStore(ctx context.Context, user *store
 func convertUserFromStore(user *store.User) *v1pb.User {
 	return &v1pb.User{
 		Id:          int32(user.ID),
-		RowStatus:   convertRowStatusFromStore(user.RowStatus),
+		State:       convertStateFromRowStatus(user.RowStatus),
 		CreatedTime: timestamppb.New(time.Unix(user.CreatedTs, 0)),
 		UpdatedTime: timestamppb.New(time.Unix(user.UpdatedTs, 0)),
 		Role:        convertUserRoleFromStore(user.Role),

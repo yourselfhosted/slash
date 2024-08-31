@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { useViewStore } from "@/stores";
-import { convertVisibilityFromPb } from "@/utils/visibility";
 import Icon from "./Icon";
 import VisibilityIcon from "./VisibilityIcon";
 
@@ -33,7 +32,7 @@ const FilterView = () => {
           onClick={() => viewStore.setFilter({ visibility: undefined })}
         >
           <VisibilityIcon className="w-4 h-auto mr-1" visibility={filter.visibility} />
-          {t(`shortcut.visibility.${convertVisibilityFromPb(filter.visibility).toLowerCase()}.self`)}
+          {t(`shortcut.visibility.${filter.visibility.toLowerCase()}.self`)}
           <Icon.X className="w-4 h-auto ml-1" />
         </button>
       )}

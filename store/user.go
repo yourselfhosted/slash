@@ -2,6 +2,8 @@ package store
 
 import (
 	"context"
+
+	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 )
 
 // Role is the type of a role.
@@ -20,7 +22,7 @@ type User struct {
 	// Standard fields
 	CreatedTs int64
 	UpdatedTs int64
-	RowStatus RowStatus
+	RowStatus storepb.RowStatus
 
 	// Domain specific fields
 	Email        string
@@ -32,7 +34,7 @@ type User struct {
 type UpdateUser struct {
 	ID int32
 
-	RowStatus    *RowStatus
+	RowStatus    *storepb.RowStatus
 	Email        *string
 	Nickname     *string
 	PasswordHash *string
@@ -41,7 +43,7 @@ type UpdateUser struct {
 
 type FindUser struct {
 	ID        *int32
-	RowStatus *RowStatus
+	RowStatus *storepb.RowStatus
 	Email     *string
 	Nickname  *string
 	Role      *Role

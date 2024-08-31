@@ -43,7 +43,7 @@ func (s *APIV1Service) GetWorkspaceProfile(ctx context.Context, _ *v1pb.GetWorks
 func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorkspaceSettingRequest) (*v1pb.WorkspaceSetting, error) {
 	currentUser, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	workspaceSettings, err := s.Store.ListWorkspaceSettings(ctx, &store.FindWorkspaceSetting{})
 	if err != nil {
@@ -61,7 +61,7 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 			workspaceSetting.DisallowPasswordAuth = securitySetting.GetDisallowPasswordAuth()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED {
 			shortcutRelatedSetting := v.GetShortcutRelated()
-			workspaceSetting.DefaultVisibility = v1pb.Visibility(shortcutRelatedSetting.GetDefaultVisibility())
+			workspaceSetting.DefaultVisibility = convertVisibilityFromStorepb(shortcutRelatedSetting.GetDefaultVisibility())
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_IDENTITY_PROVIDER {
 			identityProviderSetting := v.GetIdentityProvider()
 			workspaceSetting.IdentityProviders = []*v1pb.IdentityProvider{}
@@ -129,7 +129,7 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 					},
 				}
 			}
-			shortcutRelatedSetting.GetShortcutRelated().DefaultVisibility = storepb.Visibility(request.Setting.DefaultVisibility)
+			shortcutRelatedSetting.GetShortcutRelated().DefaultVisibility = convertVisibilityToStorepb(request.Setting.DefaultVisibility)
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SHORTCUT_RELATED,
 				Value: &storepb.WorkspaceSetting_ShortcutRelated{

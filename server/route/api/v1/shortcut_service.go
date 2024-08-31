@@ -22,36 +22,22 @@ import (
 )
 
 func (s *APIV1Service) ListShortcuts(ctx context.Context, _ *v1pb.ListShortcutsRequest) (*v1pb.ListShortcutsResponse, error) {
-	user, err := getCurrentUser(ctx, s.Store)
+	shortcutList, err := s.Store.ListShortcuts(ctx, &store.FindShortcut{})
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
-	}
-	find := &store.FindShortcut{}
-	find.VisibilityList = []store.Visibility{store.VisibilityWorkspace, store.VisibilityPublic}
-	visibleShortcutList, err := s.Store.ListShortcuts(ctx, find)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to fetch visible shortcut list, err: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to list shortcuts, err: %v", err)
 	}
 
-	find.VisibilityList = []store.Visibility{store.VisibilityPrivate}
-	find.CreatorID = &user.ID
-	shortcutList, err := s.Store.ListShortcuts(ctx, find)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to fetch private shortcut list, err: %v", err)
-	}
-
-	shortcutList = append(shortcutList, visibleShortcutList...)
-	shortcuts := []*v1pb.Shortcut{}
+	shortcutMessageList := []*v1pb.Shortcut{}
 	for _, shortcut := range shortcutList {
 		composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to convert shortcut, err: %v", err)
 		}
-		shortcuts = append(shortcuts, composedShortcut)
+		shortcutMessageList = append(shortcutMessageList, composedShortcut)
 	}
 
 	response := &v1pb.ListShortcutsResponse{
-		Shortcuts: shortcuts,
+		Shortcuts: shortcutMessageList,
 	}
 	return response, nil
 }
@@ -67,15 +53,12 @@ func (s *APIV1Service) GetShortcut(ctx context.Context, request *v1pb.GetShortcu
 		return nil, status.Errorf(codes.NotFound, "shortcut not found")
 	}
 
-	userID, ok := ctx.Value(userIDContextKey).(int32)
-	if ok {
-		if shortcut.Visibility == storepb.Visibility_PRIVATE && shortcut.CreatorId != userID {
-			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
-		}
-	} else {
-		if shortcut.Visibility != storepb.Visibility_PUBLIC {
-			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
-		}
+	user, err := getCurrentUser(ctx, s.Store)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
+	}
+	if user == nil && shortcut.Visibility != storepb.Visibility_PUBLIC {
+		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
 
 	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
@@ -96,15 +79,12 @@ func (s *APIV1Service) GetShortcutByName(ctx context.Context, request *v1pb.GetS
 		return nil, status.Errorf(codes.NotFound, "shortcut not found")
 	}
 
-	userID, ok := ctx.Value(userIDContextKey).(int32)
-	if ok {
-		if shortcut.Visibility == storepb.Visibility_PRIVATE && shortcut.CreatorId != userID {
-			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
-		}
-	} else {
-		if shortcut.Visibility != storepb.Visibility_PUBLIC {
-			return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
-		}
+	user, err := getCurrentUser(ctx, s.Store)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
+	}
+	if user == nil && shortcut.Visibility != storepb.Visibility_PUBLIC {
+		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
 	}
 
 	composedShortcut, err := s.convertShortcutFromStorepb(ctx, shortcut)
@@ -132,7 +112,7 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *v1pb.CreateS
 
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	shortcutCreate := &storepb.Shortcut{
 		CreatorId:   user.ID,
@@ -141,7 +121,7 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *v1pb.CreateS
 		Title:       request.Shortcut.Title,
 		Tags:        request.Shortcut.Tags,
 		Description: request.Shortcut.Description,
-		Visibility:  storepb.Visibility(request.Shortcut.Visibility),
+		Visibility:  convertVisibilityToStorepb(request.Shortcut.Visibility),
 		OgMetadata:  &storepb.OpenGraphMetadata{},
 	}
 	if shortcutCreate.Visibility == storepb.Visibility_VISIBILITY_UNSPECIFIED {
@@ -149,11 +129,11 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *v1pb.CreateS
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to get workspace setting, err: %v", err)
 		}
-		visibility := v1pb.Visibility_PRIVATE
+		visibility := v1pb.Visibility_WORKSPACE
 		if workspaceSetting.DefaultVisibility != v1pb.Visibility_VISIBILITY_UNSPECIFIED {
 			visibility = workspaceSetting.DefaultVisibility
 		}
-		shortcutCreate.Visibility = storepb.Visibility(visibility)
+		shortcutCreate.Visibility = convertVisibilityToStorepb(visibility)
 	}
 	if request.Shortcut.OgMetadata != nil {
 		shortcutCreate.OgMetadata = &storepb.OpenGraphMetadata{
@@ -184,7 +164,7 @@ func (s *APIV1Service) UpdateShortcut(ctx context.Context, request *v1pb.UpdateS
 
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		ID: &request.Shortcut.Id,
@@ -216,7 +196,7 @@ func (s *APIV1Service) UpdateShortcut(ctx context.Context, request *v1pb.UpdateS
 			tag := strings.Join(request.Shortcut.Tags, " ")
 			update.Tag = &tag
 		case "visibility":
-			visibility := store.Visibility(request.Shortcut.Visibility.String())
+			visibility := convertVisibilityToStorepb(request.Shortcut.Visibility)
 			update.Visibility = &visibility
 		case "og_metadata":
 			if request.Shortcut.OgMetadata != nil {
@@ -243,7 +223,7 @@ func (s *APIV1Service) UpdateShortcut(ctx context.Context, request *v1pb.UpdateS
 func (s *APIV1Service) DeleteShortcut(ctx context.Context, request *v1pb.DeleteShortcutRequest) (*emptypb.Empty, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	shortcut, err := s.Store.GetShortcut(ctx, &store.FindShortcut{
 		ID: &request.Id,
@@ -369,13 +349,12 @@ func (s *APIV1Service) convertShortcutFromStorepb(ctx context.Context, shortcut 
 		CreatorId:   shortcut.CreatorId,
 		CreatedTime: timestamppb.New(time.Unix(shortcut.CreatedTs, 0)),
 		UpdatedTime: timestamppb.New(time.Unix(shortcut.UpdatedTs, 0)),
-		RowStatus:   v1pb.RowStatus(shortcut.RowStatus),
 		Name:        shortcut.Name,
 		Link:        shortcut.Link,
 		Title:       shortcut.Title,
 		Tags:        shortcut.Tags,
 		Description: shortcut.Description,
-		Visibility:  v1pb.Visibility(shortcut.Visibility),
+		Visibility:  convertVisibilityFromStorepb(shortcut.Visibility),
 		OgMetadata: &v1pb.Shortcut_OpenGraphMetadata{
 			Title:       shortcut.OgMetadata.Title,
 			Description: shortcut.OgMetadata.Description,

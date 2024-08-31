@@ -63,7 +63,7 @@ service UserService {
 message User {
   int32 id = 1;
 
-  RowStatus row_status = 2;
+  State state = 2;
 
   google.protobuf.Timestamp created_time = 3;
 

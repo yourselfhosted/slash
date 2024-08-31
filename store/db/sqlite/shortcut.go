@@ -32,27 +32,21 @@ func (d *DB) CreateShortcut(ctx context.Context, create *storepb.Shortcut) (*sto
 			` + strings.Join(set, ", ") + `
 		)
 		VALUES (` + strings.Join(placeholder, ",") + `)
-		RETURNING id, created_ts, updated_ts, row_status
+		RETURNING id, created_ts, updated_ts
 	`
-	var rowStatus string
 	if err := d.db.QueryRowContext(ctx, stmt, args...).Scan(
 		&create.Id,
 		&create.CreatedTs,
 		&create.UpdatedTs,
-		&rowStatus,
 	); err != nil {
 		return nil, err
 	}
-	create.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 	shortcut := create
 	return shortcut, nil
 }
 
 func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (*storepb.Shortcut, error) {
 	set, args := []string{}, []any{}
-	if update.RowStatus != nil {
-		set, args = append(set, "row_status = ?"), append(args, update.RowStatus.String())
-	}
 	if update.Name != nil {
 		set, args = append(set, "name = ?"), append(args, *update.Name)
 	}
@@ -89,16 +83,15 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 			` + strings.Join(set, ", ") + `
 		WHERE
 			id = ?
-		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, title, description, visibility, tag, og_metadata
+		RETURNING id, creator_id, created_ts, updated_ts, name, link, title, description, visibility, tag, og_metadata
 	`
 	shortcut := &storepb.Shortcut{}
-	var rowStatus, visibility, tags, openGraphMetadataString string
+	var visibility, tags, openGraphMetadataString string
 	if err := d.db.QueryRowContext(ctx, stmt, args...).Scan(
 		&shortcut.Id,
 		&shortcut.CreatorId,
 		&shortcut.CreatedTs,
 		&shortcut.UpdatedTs,
-		&rowStatus,
 		&shortcut.Name,
 		&shortcut.Link,
 		&shortcut.Title,
@@ -109,8 +102,7 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 	); err != nil {
 		return nil, err
 	}
-	shortcut.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
-	shortcut.Visibility = convertVisibilityStringToStorepb(visibility)
+	shortcut.Visibility = store.ConvertVisibilityStringToStorepb(visibility)
 	shortcut.Tags = filterTags(strings.Split(tags, " "))
 	var ogMetadata storepb.OpenGraphMetadata
 	if err := protojson.Unmarshal([]byte(openGraphMetadataString), &ogMetadata); err != nil {
@@ -128,9 +120,6 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 	if v := find.CreatorID; v != nil {
 		where, args = append(where, "creator_id = ?"), append(args, *v)
 	}
-	if v := find.RowStatus; v != nil {
-		where, args = append(where, "row_status = ?"), append(args, *v)
-	}
 	if v := find.Name; v != nil {
 		where, args = append(where, "name = ?"), append(args, *v)
 	}
@@ -138,7 +127,7 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 		list := []string{}
 		for _, visibility := range v {
 			list = append(list, fmt.Sprintf("$%d", len(args)+1))
-			args = append(args, visibility)
+			args = append(args, visibility.String())
 		}
 		where = append(where, fmt.Sprintf("visibility in (%s)", strings.Join(list, ",")))
 	}
@@ -152,7 +141,6 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 			creator_id,
 			created_ts,
 			updated_ts,
-			row_status,
 			name,
 			link,
 			title,
@@ -173,13 +161,12 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 	list := make([]*storepb.Shortcut, 0)
 	for rows.Next() {
 		shortcut := &storepb.Shortcut{}
-		var rowStatus, visibility, tags, openGraphMetadataString string
+		var visibility, tags, openGraphMetadataString string
 		if err := rows.Scan(
 			&shortcut.Id,
 			&shortcut.CreatorId,
 			&shortcut.CreatedTs,
 			&shortcut.UpdatedTs,
-			&rowStatus,
 			&shortcut.Name,
 			&shortcut.Link,
 			&shortcut.Title,
@@ -190,8 +177,7 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 		); err != nil {
 			return nil, err
 		}
-		shortcut.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
-		shortcut.Visibility = storepb.Visibility(storepb.Visibility_value[visibility])
+		shortcut.Visibility = store.ConvertVisibilityStringToStorepb(visibility)
 		shortcut.Tags = filterTags(strings.Split(tags, " "))
 		var ogMetadata storepb.OpenGraphMetadata
 		if err := protojson.Unmarshal([]byte(openGraphMetadataString), &ogMetadata); err != nil {
@@ -233,8 +219,4 @@ func filterTags(tags []string) []string {
 		}
 	}
 	return result
-}
-
-func convertVisibilityStringToStorepb(visibility string) storepb.Visibility {
-	return storepb.Visibility(storepb.Visibility_value[visibility])
 }

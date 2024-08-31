@@ -15,8 +15,6 @@ message Shortcut {
 
   int64 updated_ts = 4;
 
-  RowStatus row_status = 5;
-
   string name = 6;
 
   string link = 7;

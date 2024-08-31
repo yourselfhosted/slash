@@ -9,12 +9,11 @@ import (
 type UpdateShortcut struct {
 	ID int32
 
-	RowStatus         *RowStatus
 	Name              *string
 	Link              *string
 	Title             *string
 	Description       *string
-	Visibility        *Visibility
+	Visibility        *storepb.Visibility
 	Tag               *string
 	OpenGraphMetadata *storepb.OpenGraphMetadata
 }
@@ -22,9 +21,8 @@ type UpdateShortcut struct {
 type FindShortcut struct {
 	ID             *int32
 	CreatorID      *int32
-	RowStatus      *RowStatus
 	Name           *string
-	VisibilityList []Visibility
+	VisibilityList []storepb.Visibility
 	Tag            *string
 }
 

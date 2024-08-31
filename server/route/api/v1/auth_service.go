@@ -28,7 +28,7 @@ const (
 func (s *APIV1Service) GetAuthStatus(ctx context.Context, _ *v1pb.GetAuthStatusRequest) (*v1pb.User, error) {
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	if user == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "user not found")
@@ -58,7 +58,7 @@ func (s *APIV1Service) SignIn(ctx context.Context, request *v1pb.SignInRequest) 
 	if workspaceSecuritySetting.DisallowPasswordAuth && user.Role == store.RoleUser {
 		return nil, status.Errorf(codes.PermissionDenied, "password authentication is not allowed")
 	}
-	if user.RowStatus == store.Archived {
+	if user.RowStatus == storepb.RowStatus_ARCHIVED {
 		return nil, status.Errorf(codes.PermissionDenied, fmt.Sprintf("user has been archived with email %s", request.Email))
 	}
 
@@ -143,7 +143,7 @@ func (s *APIV1Service) SignInWithSSO(ctx context.Context, request *v1pb.SignInWi
 			return nil, status.Errorf(codes.Internal, fmt.Sprintf("failed to create user, err: %s", err))
 		}
 	}
-	if user.RowStatus == store.Archived {
+	if user.RowStatus == storepb.RowStatus_ARCHIVED {
 		return nil, status.Errorf(codes.PermissionDenied, fmt.Sprintf("user has been archived with email %s", email))
 	}
 

@@ -59,8 +59,6 @@ message Shortcut {
 
   google.protobuf.Timestamp updated_time = 4;
 
-  RowStatus row_status = 5;
-
   string name = 6;
 
   string link = 7;

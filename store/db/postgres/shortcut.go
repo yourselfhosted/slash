@@ -27,28 +27,21 @@ func (d *DB) CreateShortcut(ctx context.Context, create *storepb.Shortcut) (*sto
 	stmt := fmt.Sprintf(`
 		INSERT INTO shortcut (%s)
 		VALUES (%s)
-		RETURNING id, created_ts, updated_ts, row_status
+		RETURNING id, created_ts, updated_ts
 	`, strings.Join(set, ","), placeholders(len(args)))
-
-	var rowStatus string
 	if err := d.db.QueryRowContext(ctx, stmt, args...).Scan(
 		&create.Id,
 		&create.CreatedTs,
 		&create.UpdatedTs,
-		&rowStatus,
 	); err != nil {
 		return nil, err
 	}
-	create.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
 	shortcut := create
 	return shortcut, nil
 }
 
 func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (*storepb.Shortcut, error) {
 	set, args := []string{}, []any{}
-	if update.RowStatus != nil {
-		set, args = append(set, fmt.Sprintf("row_status = $%d", len(args)+1)), append(args, update.RowStatus.String())
-	}
 	if update.Name != nil {
 		set, args = append(set, fmt.Sprintf("name = $%d", len(args)+1)), append(args, *update.Name)
 	}
@@ -70,7 +63,7 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 	if update.OpenGraphMetadata != nil {
 		openGraphMetadataBytes, err := protojson.Marshal(update.OpenGraphMetadata)
 		if err != nil {
-			return nil, errors.Wrap(err, "Failed to marshal activity payload")
+			return nil, errors.Wrap(err, "failed to marshal activity payload")
 		}
 		set, args = append(set, fmt.Sprintf("og_metadata = $%d", len(args)+1)), append(args, string(openGraphMetadataBytes))
 	}
@@ -83,17 +76,16 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 		UPDATE shortcut
 		SET %s
 		WHERE id = $%d
-		RETURNING id, creator_id, created_ts, updated_ts, row_status, name, link, title, description, visibility, tag, og_metadata
+		RETURNING id, creator_id, created_ts, updated_ts, name, link, title, description, visibility, tag, og_metadata
 	`, strings.Join(set, ","), len(args))
 
 	shortcut := &storepb.Shortcut{}
-	var rowStatus, visibility, tags, openGraphMetadataString string
+	var visibility, tags, openGraphMetadataString string
 	if err := d.db.QueryRowContext(ctx, stmt, args...).Scan(
 		&shortcut.Id,
 		&shortcut.CreatorId,
 		&shortcut.CreatedTs,
 		&shortcut.UpdatedTs,
-		&rowStatus,
 		&shortcut.Name,
 		&shortcut.Link,
 		&shortcut.Title,
@@ -104,8 +96,7 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 	); err != nil {
 		return nil, err
 	}
-	shortcut.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
-	shortcut.Visibility = convertVisibilityStringToStorepb(visibility)
+	shortcut.Visibility = store.ConvertVisibilityStringToStorepb(visibility)
 	shortcut.Tags = filterTags(strings.Split(tags, " "))
 	var ogMetadata storepb.OpenGraphMetadata
 	if err := protojson.Unmarshal([]byte(openGraphMetadataString), &ogMetadata); err != nil {
@@ -122,9 +113,6 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 	}
 	if v := find.CreatorID; v != nil {
 		where, args = append(where, fmt.Sprintf("creator_id = %s", placeholder(len(args)+1))), append(args, *v)
-	}
-	if v := find.RowStatus; v != nil {
-		where, args = append(where, fmt.Sprintf("row_status = %s", placeholder(len(args)+1))), append(args, *v)
 	}
 	if v := find.Name; v != nil {
 		where, args = append(where, fmt.Sprintf("name = %s", placeholder(len(args)+1))), append(args, *v)
@@ -147,7 +135,6 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 			creator_id,
 			created_ts,
 			updated_ts,
-			row_status,
 			name,
 			link,
 			title,
@@ -167,13 +154,12 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 	list := make([]*storepb.Shortcut, 0)
 	for rows.Next() {
 		shortcut := &storepb.Shortcut{}
-		var rowStatus, visibility, tags, openGraphMetadataString string
+		var visibility, tags, openGraphMetadataString string
 		if err := rows.Scan(
 			&shortcut.Id,
 			&shortcut.CreatorId,
 			&shortcut.CreatedTs,
 			&shortcut.UpdatedTs,
-			&rowStatus,
 			&shortcut.Name,
 			&shortcut.Link,
 			&shortcut.Title,
@@ -184,8 +170,7 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 		); err != nil {
 			return nil, err
 		}
-		shortcut.RowStatus = store.ConvertRowStatusStringToStorepb(rowStatus)
-		shortcut.Visibility = storepb.Visibility(storepb.Visibility_value[visibility])
+		shortcut.Visibility = store.ConvertVisibilityStringToStorepb(visibility)
 		shortcut.Tags = filterTags(strings.Split(tags, " "))
 		var ogMetadata storepb.OpenGraphMetadata
 		if err := protojson.Unmarshal([]byte(openGraphMetadataString), &ogMetadata); err != nil {
@@ -214,8 +199,4 @@ func filterTags(tags []string) []string {
 		}
 	}
 	return result
-}
-
-func convertVisibilityStringToStorepb(visibility string) storepb.Visibility {
-	return storepb.Visibility(storepb.Visibility_value[visibility])
 }

@@ -27,7 +27,7 @@ func (s *APIV1Service) UpdateUserSetting(ctx context.Context, request *v1pb.Upda
 
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "failed to get current user: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
 	}
 	for _, path := range request.UpdateMask.Paths {
 		if path == "general" {
