@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle, Drawer, Input, ModalClose, Radio, RadioGroup } from "@mui/joy";
+import { Button, Checkbox, DialogActions, DialogContent, DialogTitle, Divider, Drawer, Input, ModalClose } from "@mui/joy";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -107,14 +107,6 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPartialState({
-      collectionCreate: Object.assign(state.collectionCreate, {
-        visibility: e.target.value,
-      }),
-    });
-  };
-
   const handleDescriptionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPartialState({
       collectionCreate: Object.assign(state.collectionCreate, {
@@ -209,18 +201,21 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
             </div>
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Visibility</span>
-            <div className="w-full flex flex-row justify-start items-center text-base">
-              <RadioGroup orientation="horizontal" value={state.collectionCreate.visibility} onChange={handleVisibilityInputChange}>
-                <Radio value={Visibility.WORKSPACE} label={t(`shortcut.visibility.workspace.self`)} />
-                <Radio value={Visibility.PUBLIC} label={t(`shortcut.visibility.public.self`)} />
-              </RadioGroup>
-            </div>
-            <p className="mt-3 text-sm text-gray-500 w-full bg-gray-100 border border-gray-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400 px-2 py-1 rounded-md">
-              {t(`shortcut.visibility.${state.collectionCreate.visibility.toLowerCase()}.description`)}
-            </p>
+            <Checkbox
+              className="w-full dark:text-gray-400"
+              checked={state.collectionCreate.visibility === Visibility.PUBLIC}
+              label={t(`shortcut.visibility.public.description`)}
+              onChange={(e) =>
+                setPartialState({
+                  collectionCreate: Object.assign(state.collectionCreate, {
+                    visibility: e.target.checked ? Visibility.PUBLIC : Visibility.WORKSPACE,
+                  }),
+                })
+              }
+            />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
+          <Divider className="text-gray-500" />
+          <div className="w-full flex flex-col justify-start items-start mt-3 mb-3">
             <p className="mb-2">
               <span>Shortcuts</span>
               <span className="opacity-60">({selectedShortcuts.length})</span>

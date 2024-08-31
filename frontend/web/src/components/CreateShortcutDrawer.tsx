@@ -1,16 +1,4 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Drawer,
-  Input,
-  ModalClose,
-  Radio,
-  RadioGroup,
-  Textarea,
-} from "@mui/joy";
+import { Button, Checkbox, DialogActions, DialogContent, DialogTitle, Divider, Drawer, Input, ModalClose, Textarea } from "@mui/joy";
 import classnames from "classnames";
 import { isUndefined, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
@@ -120,14 +108,6 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
     setPartialState({
       shortcutCreate: Object.assign(state.shortcutCreate, {
         title: e.target.value,
-      }),
-    });
-  };
-
-  const handleVisibilityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPartialState({
-      shortcutCreate: Object.assign(state.shortcutCreate, {
-        visibility: e.target.value,
       }),
     });
   };
@@ -291,16 +271,18 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             )}
           </div>
           <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Visibility</span>
-            <div className="w-full flex flex-row justify-start items-center text-base">
-              <RadioGroup orientation="horizontal" value={state.shortcutCreate.visibility} onChange={handleVisibilityInputChange}>
-                <Radio value={Visibility.WORKSPACE} label={t(`shortcut.visibility.workspace.self`)} />
-                <Radio value={Visibility.PUBLIC} label={t(`shortcut.visibility.public.self`)} />
-              </RadioGroup>
-            </div>
-            <p className="mt-3 text-sm text-gray-500 w-full bg-gray-100 border border-gray-200 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400 px-2 py-1 rounded-md">
-              {t(`shortcut.visibility.${state.shortcutCreate.visibility.toLowerCase()}.description`)}
-            </p>
+            <Checkbox
+              className="w-full dark:text-gray-400"
+              checked={state.shortcutCreate.visibility === Visibility.PUBLIC}
+              label={t(`shortcut.visibility.public.description`)}
+              onChange={(e) =>
+                setPartialState({
+                  shortcutCreate: Object.assign(state.shortcutCreate, {
+                    visibility: e.target.checked ? Visibility.PUBLIC : Visibility.WORKSPACE,
+                  }),
+                })
+              }
+            />
           </div>
           <Divider className="text-gray-500">More</Divider>
           <div className="w-full flex flex-col justify-start items-start border rounded-md mt-3 overflow-hidden dark:border-zinc-800">

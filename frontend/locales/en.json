@@ -42,7 +42,7 @@
       },
       "public": {
         "self": "Public",
-        "description": "Visible to everyone on the internet"
+        "description": "Public on the internet"
       }
     }
   },

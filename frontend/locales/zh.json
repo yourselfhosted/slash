@@ -39,7 +39,7 @@
       },
       "public": {
         "self": "公开的",
-        "description": "对任何人可见"
+        "description": "公开至互联网"
       }
     }
   },
