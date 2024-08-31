@@ -34,10 +34,6 @@
   "shortcut": {
     "visits": "{{count}} 回訪問",
     "visibility": {
-      "private": {
-        "self": "非公開",
-        "description": "あなただけがアクセスできます"
-      },
       "workspace": {
         "self": "ワークスペース",
         "description": "ワークスペースメンバーがアクセスできます"

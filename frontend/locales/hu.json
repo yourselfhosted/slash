@@ -34,10 +34,6 @@
   "shortcut": {
     "visits": "{{count}} látogatás",
     "visibility": {
-      "private": {
-        "self": "Privát",
-        "description": "Csak Ön férhet hozzá"
-      },
       "workspace": {
         "self": "Munkaterület",
         "description": "A munkaterület tagjai hozzáférhetnek"

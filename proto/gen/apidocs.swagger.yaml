@@ -928,7 +928,6 @@ definitions:
     type: string
     enum:
       - VISIBILITY_UNSPECIFIED
-      - PRIVATE
       - WORKSPACE
       - PUBLIC
     default: VISIBILITY_UNSPECIFIED

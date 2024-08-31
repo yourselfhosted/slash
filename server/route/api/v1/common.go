@@ -58,7 +58,7 @@ func convertVisibilityFromStorepb(visibility storepb.Visibility) v1pb.Visibility
 
 func convertVisibilityToStorepb(visibility v1pb.Visibility) storepb.Visibility {
 	switch visibility {
-	case v1pb.Visibility_PRIVATE, v1pb.Visibility_WORKSPACE:
+	case v1pb.Visibility_WORKSPACE:
 		return storepb.Visibility_WORKSPACE
 	case v1pb.Visibility_PUBLIC:
 		return storepb.Visibility_PUBLIC

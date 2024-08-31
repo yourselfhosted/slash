@@ -4,7 +4,6 @@
 ## Table of Contents
 
 - [api/v1/common.proto](#api_v1_common-proto)
-    - [RowStatus](#slash-api-v1-RowStatus)
     - [State](#slash-api-v1-State)
     - [Visibility](#slash-api-v1-Visibility)
   
@@ -111,19 +110,6 @@
  
 
 
-<a name="slash-api-v1-RowStatus"></a>
-
-### RowStatus
-deprecated
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| ROW_STATUS_UNSPECIFIED | 0 |  |
-| NORMAL | 1 |  |
-| ARCHIVED | 2 |  |
-
-
-
 <a name="slash-api-v1-State"></a>
 
 ### State
@@ -145,9 +131,8 @@ deprecated
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | VISIBILITY_UNSPECIFIED | 0 |  |
-| PRIVATE | 1 |  |
-| WORKSPACE | 2 |  |
-| PUBLIC | 3 |  |
+| WORKSPACE | 1 |  |
+| PUBLIC | 2 |  |
 
 
  

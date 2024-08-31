@@ -10,19 +10,10 @@ enum State {
   INACTIVE = 2;
 }
 
-// deprecated
-enum RowStatus {
-  ROW_STATUS_UNSPECIFIED = 0;
-  NORMAL = 1;
-  ARCHIVED = 2;
-}
-
 enum Visibility {
   VISIBILITY_UNSPECIFIED = 0;
 
-  PRIVATE = 1 [deprecated = true];
+  WORKSPACE = 1;
 
-  WORKSPACE = 2;
-
-  PUBLIC = 3;
+  PUBLIC = 2;
 }

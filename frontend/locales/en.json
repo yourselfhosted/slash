@@ -36,10 +36,6 @@
   "shortcut": {
     "visits": "{{count}} visits",
     "visibility": {
-      "private": {
-        "self": "Private",
-        "description": "Only you can access"
-      },
       "workspace": {
         "self": "Workspace",
         "description": "Workspace members can access"

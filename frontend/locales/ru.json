@@ -34,10 +34,6 @@
   "shortcut": {
     "visits": "{{count}} перехода",
     "visibility": {
-      "private": {
-        "self": "Частная",
-        "description": "Только Вы иммете доступ"
-      },
       "workspace": {
         "self": "Команда",
         "description": "Члены команды имеют доступ"

@@ -33,10 +33,6 @@
   "shortcut": {
     "visits": "{{count}} 次访问",
     "visibility": {
-      "private": {
-        "self": "私有的",
-        "description": "仅您可以访问"
-      },
       "workspace": {
         "self": "工作区",
         "description": "工作区成员可以访问"
