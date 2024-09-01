@@ -263,13 +263,17 @@ func (s *Store) normalizedMigrationHistoryList(ctx context.Context) error {
 	sort.Sort(common.SortVersion(versions))
 	latestVersion := versions[len(versions)-1]
 	latestMinorVersion := common.GetMinorVersion(latestVersion)
+	// If the latest version is greater than or equal to 1.0, the migration history is already normalized.
+	if common.IsVersionGreaterOrEqualThan(latestMinorVersion, "1.0") {
+		return nil
+	}
 
-	schemaVersionMap := map[string]string{}
 	filePaths, err := fs.Glob(migrationFS, fmt.Sprintf("%s*/*.sql", s.getMigrationBasePath()))
 	if err != nil {
 		return errors.Wrap(err, "failed to read migration files")
 	}
 	sort.Strings(filePaths)
+	schemaVersionMap := map[string]string{}
 	for _, filePath := range filePaths {
 		fileSchemaVersion, err := s.getSchemaVersionOfMigrateScript(filePath)
 		if err != nil {
@@ -283,7 +287,6 @@ func (s *Store) normalizedMigrationHistoryList(ctx context.Context) error {
 		return errors.Wrap(err, "failed to get current schema version")
 	}
 	schemaVersionMap[common.GetMinorVersion(currentSchemaVersion)] = currentSchemaVersion
-
 	latestSchemaVersion := schemaVersionMap[latestMinorVersion]
 	if latestSchemaVersion == "" {
 		return errors.Errorf("latest schema version not found")

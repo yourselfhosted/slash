@@ -13,5 +13,5 @@ func TestGetCurrentSchemaVersion(t *testing.T) {
 
 	currentSchemaVersion, err := ts.GetCurrentSchemaVersion()
 	require.NoError(t, err)
-	require.Equal(t, "1.0.0", currentSchemaVersion)
+	require.Equal(t, "1.0.1", currentSchemaVersion)
 }
