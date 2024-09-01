@@ -76,8 +76,8 @@ importers:
         version: 4.5.5(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
     devDependencies:
       '@bufbuild/buf':
-        specifier: ^1.37.0
-        version: 1.37.0
+        specifier: ^1.39.0
+        version: 1.39.0
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^4.3.0
         version: 4.3.0(prettier@3.3.3)
@@ -215,44 +215,44 @@ packages:
     resolution: {integrity: sha512-YTnYtra7W9e6/oAZEHj0bJehPRUlLH9/fbpT5LfB0NhQXyALCRkRs3zH9v07IYhkgpqX6Z78FnuccZr/l4Fs4Q==}
     engines: {node: '>=6.9.0'}
 
-  '@bufbuild/buf-darwin-arm64@1.37.0':
-    resolution: {integrity: sha512-YrT0HqLf7qJJ9VjXmnG900oGOjskerqfY4UTbpLb67b76uRxZm7pfSfqpM4bCaSru4j6GPBDwH9dkwiuNOenEA==}
+  '@bufbuild/buf-darwin-arm64@1.39.0':
+    resolution: {integrity: sha512-Ptl0uAGssLxQTzoZhGwv1FFTbzUfcstIpEwMhN+XrwiuqsSxOg9eq/n3yXoci5VJsHokjDUHnWkR3y+j5P/5KA==}
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [darwin]
 
-  '@bufbuild/buf-darwin-x64@1.37.0':
-    resolution: {integrity: sha512-c1iDr1LaYcdzAK7v4ZBTiYVRPltPa1UNFQ3JJ6BI/RUaBk/eYFsykuNtsJQb5lXh/usjMz76juzOxAdYikcw7w==}
+  '@bufbuild/buf-darwin-x64@1.39.0':
+    resolution: {integrity: sha512-XNCuy9sjQwVJ4NIZqxaTIyzUtlyquSkp/Uuoh5W5thJ3nzZ5RSgvXKF5iXHhZmesrfRGApktwoCx5Am8runsfQ==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [darwin]
 
-  '@bufbuild/buf-linux-aarch64@1.37.0':
-    resolution: {integrity: sha512-ENaCLU4XZxQFc6+pWjNGeKITlzY0jYeEmz6R2cEeR9kVl+HyNNcTMaKxdffG5HNU5Ci1dC3pSY/ZIF3ck8UHVw==}
+  '@bufbuild/buf-linux-aarch64@1.39.0':
+    resolution: {integrity: sha512-Am+hrw94awp/eY027ROXwRQBuwAzOpQ/4zI4dgmgsyhzeWZ8w1LWC8z2SSr8T2cqd0cm52KxtoWMW+B3b2qzbw==}
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [linux]
 
-  '@bufbuild/buf-linux-x64@1.37.0':
-    resolution: {integrity: sha512-/buQuUaBVU4rYqdoS/xmbyohJFaE4uy7boHMabCnI2aLsVBNPHYa/k0JMc+ZDRqgq0Wnth9VbIHn6DSGHG+cmw==}
+  '@bufbuild/buf-linux-x64@1.39.0':
+    resolution: {integrity: sha512-JXVkHoMrTvmpseqdoQPJJ6MRV7/vlloYtvXHHACEzVytYjljOYCNoVET/E5gLBco/edeXFMNc40cCi1KgL3rSw==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [linux]
 
-  '@bufbuild/buf-win32-arm64@1.37.0':
-    resolution: {integrity: sha512-5Y1aaHge9iQP+YNyxUayMd+rSVbjNXLBXniJDQhim56B+6eufPiKzmTgAKjDE9hGTT+mcBdLznrCMI0fzDLHJw==}
+  '@bufbuild/buf-win32-arm64@1.39.0':
+    resolution: {integrity: sha512-akdGW02mo04wbLfjNMBQqxC4mPQ/L/vTU8/o79I67GSxyFYt7bKifvYIYhAA39C2gibHyB7ZLmoeRPbaU8wbYA==}
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [win32]
 
-  '@bufbuild/buf-win32-x64@1.37.0':
-    resolution: {integrity: sha512-2BioEPdC6EM5zEKmTmM14ZJuuPjKuYIvoAwQ4hoCSJBllIhGvshk61NDYBorr1huEEq6baa4ITL/gWHJ86B0bw==}
+  '@bufbuild/buf-win32-x64@1.39.0':
+    resolution: {integrity: sha512-jos08UMg9iUZsGjPrNpLXP+FNk6q6GizO+bjee/GcI0kSijIzXYMg14goQr0TKlvqs/+IRAM5vZIokQBYlAENQ==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
 
-  '@bufbuild/buf@1.37.0':
-    resolution: {integrity: sha512-33Rp90nRa7ebTwAjI8Yc7f8WOQMOEfRM0mg/o1bkNvE6cGQhYiq82Ag27pcegvYIyXl413XCeLMAUegsqjuFqw==}
+  '@bufbuild/buf@1.39.0':
+    resolution: {integrity: sha512-lm7xb9pc7X04rRjCQ69o9byAAZ7/dsUQGoH+iJ9uBSXQWiwQ1Ts8gneBnuUVsAH2vdW73NFBpmNQGE9XtFauVQ==}
     engines: {node: '>=12'}
     hasBin: true
 
@@ -2555,32 +2555,32 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@bufbuild/buf-darwin-arm64@1.37.0':
+  '@bufbuild/buf-darwin-arm64@1.39.0':
     optional: true
 
-  '@bufbuild/buf-darwin-x64@1.37.0':
+  '@bufbuild/buf-darwin-x64@1.39.0':
     optional: true
 
-  '@bufbuild/buf-linux-aarch64@1.37.0':
+  '@bufbuild/buf-linux-aarch64@1.39.0':
     optional: true
 
-  '@bufbuild/buf-linux-x64@1.37.0':
+  '@bufbuild/buf-linux-x64@1.39.0':
     optional: true
 
-  '@bufbuild/buf-win32-arm64@1.37.0':
+  '@bufbuild/buf-win32-arm64@1.39.0':
     optional: true
 
-  '@bufbuild/buf-win32-x64@1.37.0':
+  '@bufbuild/buf-win32-x64@1.39.0':
     optional: true
 
-  '@bufbuild/buf@1.37.0':
+  '@bufbuild/buf@1.39.0':
     optionalDependencies:
-      '@bufbuild/buf-darwin-arm64': 1.37.0
-      '@bufbuild/buf-darwin-x64': 1.37.0
-      '@bufbuild/buf-linux-aarch64': 1.37.0
-      '@bufbuild/buf-linux-x64': 1.37.0
-      '@bufbuild/buf-win32-arm64': 1.37.0
-      '@bufbuild/buf-win32-x64': 1.37.0
+      '@bufbuild/buf-darwin-arm64': 1.39.0
+      '@bufbuild/buf-darwin-x64': 1.39.0
+      '@bufbuild/buf-linux-aarch64': 1.39.0
+      '@bufbuild/buf-linux-x64': 1.39.0
+      '@bufbuild/buf-win32-arm64': 1.39.0
+      '@bufbuild/buf-win32-x64': 1.39.0
 
   '@emotion/babel-plugin@11.12.0':
     dependencies:
