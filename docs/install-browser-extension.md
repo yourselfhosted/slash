@@ -10,33 +10,22 @@ For Chromuim based browsers, you can install the extension from the [Chrome Web 
 
 For Firefox, you can install the extension from the [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/your-slash/).
 
-### Generate an access token
+### Prerequisites
 
-1. Go to your Slash instance and sign in with your account.
-
-2. Go to the settings page and click on the "Create" button to create an access token.
-
-   ![](./assets/extension-usage/create-access-token.png)
-
-3. Copy the access token and save it somewhere safe.
-
-   ![](./assets/extension-usage/copy-access-token.png)
+- You need to have a Slash instance running.
+- Sign in with your account on the Slash instance.
 
 ### Configure the extension
+
+The extension needs to know the instance url of your Slash. You can configure it by following the steps below:
 
 1. Click on the extension icon and click on the "Settings" button.
 
    ![](./assets/extension-usage/extension-setting-button.png)
 
-2. Enter your Slash's domain and paste the access token you generated in the previous step.
+2. Enter the instance url of your Slash and then "Save".
 
    ![](./assets/extension-usage/extension-setting-page.png)
-
-3. Click on the "Save" button to save the settings.
-
-4. Click on the extension icon again, you will see a list of your shortcuts.
-
-   ![](./assets/extension-usage/extension-screenshot.png)
 
 ### Use your shortcuts in the search bar
 
