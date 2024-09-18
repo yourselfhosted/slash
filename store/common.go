@@ -5,21 +5,17 @@ import (
 )
 
 func ConvertRowStatusStringToStorepb(status string) storepb.RowStatus {
-	switch status {
-	case "NORMAL":
+	if status == "NORMAL" {
 		return storepb.RowStatus_NORMAL
-	case "ARCHIVED":
-		return storepb.RowStatus_ARCHIVED
 	}
-	return storepb.RowStatus_ROW_STATUS_UNSPECIFIED
+	// Otherwise, fallback to archived status.
+	return storepb.RowStatus_ARCHIVED
 }
 
 func ConvertVisibilityStringToStorepb(visibility string) storepb.Visibility {
-	switch visibility {
-	case "PRIVATE", "WORKSPACE":
-		return storepb.Visibility_WORKSPACE
-	case "PUBLIC":
+	if visibility == "PUBLIC" {
 		return storepb.Visibility_PUBLIC
 	}
-	return storepb.Visibility_VISIBILITY_UNSPECIFIED
+	// Otherwise, fallback to workspace visibility.
+	return storepb.Visibility_WORKSPACE
 }
