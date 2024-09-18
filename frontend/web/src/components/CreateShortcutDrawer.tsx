@@ -213,7 +213,8 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             <Input
               className="w-full"
               type="text"
-              placeholder="The memorable name of the shortcut"
+              startDecorator="s/"
+              placeholder="An easy name to remember"
               value={state.shortcutCreate.name}
               onChange={handleNameInputChange}
             />

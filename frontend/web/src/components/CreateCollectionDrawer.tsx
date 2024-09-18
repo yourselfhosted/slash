@@ -169,7 +169,8 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
             <Input
               className="w-full"
               type="text"
-              placeholder="The memorable name of the collection"
+              startDecorator="c/"
+              placeholder="An easy name to remember"
               value={state.collectionCreate.name}
               onChange={handleNameInputChange}
             />
@@ -182,7 +183,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
               <Input
                 className="w-full"
                 type="text"
-                placeholder="A short title to describe your collection"
+                placeholder="A short title of your collection"
                 value={state.collectionCreate.title}
                 onChange={handleTitleInputChange}
               />
