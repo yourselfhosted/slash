@@ -1,6 +1,7 @@
 import { Alert, Button, Divider, Link, Textarea } from "@mui/joy";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { showCommonDialog } from "@/components/Alert";
 import Icon from "@/components/Icon";
 import SubscriptionFAQ from "@/components/SubscriptionFAQ";
 import { subscriptionServiceClient } from "@/grpcweb";
@@ -22,16 +23,20 @@ const SubscriptionSetting: React.FC = () => {
       return;
     }
 
-    const confirmed = window.confirm("Are you sure you want to reset the license key?");
-    if (confirmed) {
-      try {
-        await subscriptionServiceClient.deleteSubscription({});
-        toast.success("License key has been reset");
-      } catch (error: any) {
-        toast.error(error.details);
-      }
-      await workspaceStore.fetchWorkspaceProfile();
-    }
+    showCommonDialog({
+      title: "Reset licence key",
+      content: `Are you sure to reset the license key? You cannot undo this action.`,
+      style: "warning",
+      onConfirm: async () => {
+        try {
+          await subscriptionServiceClient.deleteSubscription({});
+          toast.success("License key has been reset");
+        } catch (error: any) {
+          toast.error(error.details);
+        }
+        await workspaceStore.fetchWorkspaceProfile();
+      },
+    });
   };
 
   const handleUpdateLicenseKey = async () => {

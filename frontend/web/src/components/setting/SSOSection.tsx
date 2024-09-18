@@ -6,6 +6,7 @@ import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { FeatureType } from "@/stores/workspace";
 import { IdentityProvider } from "@/types/proto/api/v1/workspace_service";
+import { showCommonDialog } from "../Alert";
 import CreateIdentityProviderDrawer from "../CreateIdentityProviderDrawer";
 import FeatureBadge from "../FeatureBadge";
 import Icon from "../Icon";
@@ -33,21 +34,25 @@ const SSOSection = () => {
   };
 
   const handleDeleteIdentityProvider = async (identityProvider: IdentityProvider) => {
-    const confirmed = window.confirm(`Are you sure you want to delete ${identityProvider.title}?`);
-    if (confirmed) {
-      try {
-        await workspaceServiceClient.updateWorkspaceSetting({
-          setting: {
-            identityProviders: identityProviderList.filter((idp) => idp.id !== identityProvider.id),
-          },
-          updateMask: ["identity_providers"],
-        });
-      } catch (error: any) {
-        console.error(error);
-        toast.error(error.details);
-      }
-      await fetchIdentityProviderList();
-    }
+    showCommonDialog({
+      title: "Delete identity provider",
+      content: `Are you sure to delete identity provider \`${identityProvider.title}\`? You cannot undo this action.`,
+      style: "danger",
+      onConfirm: async () => {
+        try {
+          await workspaceServiceClient.updateWorkspaceSetting({
+            setting: {
+              identityProviders: identityProviderList.filter((idp) => idp.id !== identityProvider.id),
+            },
+            updateMask: ["identity_providers"],
+          });
+        } catch (error: any) {
+          console.error(error);
+          toast.error(error.details);
+        }
+        await fetchIdentityProviderList();
+      },
+    });
   };
 
   return (
