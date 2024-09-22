@@ -2,10 +2,11 @@
   "name": "slash",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint --ext .js,.ts,.tsx, src",
     "lint-fix": "eslint --ext .js,.ts,.tsx, src --fix",
+    "type-check": "tsc --noEmit --skipLibCheck",
     "postinstall": "cd ../../proto && buf generate"
   },
   "dependencies": {
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.39.0",
+    "@bufbuild/protobuf": "^2.1.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/lodash-es": "^4.17.12",
     "@types/react": "^18.3.5",

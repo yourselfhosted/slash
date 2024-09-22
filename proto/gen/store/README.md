@@ -6,6 +6,8 @@
 - [store/activity.proto](#store_activity-proto)
     - [ActivityShorcutCreatePayload](#slash-store-ActivityShorcutCreatePayload)
     - [ActivityShorcutViewPayload](#slash-store-ActivityShorcutViewPayload)
+    - [ActivityShorcutViewPayload.ParamsEntry](#slash-store-ActivityShorcutViewPayload-ParamsEntry)
+    - [ActivityShorcutViewPayload.ValueList](#slash-store-ActivityShorcutViewPayload-ValueList)
   
 - [store/common.proto](#store_common-proto)
     - [RowStatus](#slash-store-RowStatus)
@@ -81,6 +83,38 @@
 | ip | [string](#string) |  |  |
 | referer | [string](#string) |  |  |
 | user_agent | [string](#string) |  |  |
+| params | [ActivityShorcutViewPayload.ParamsEntry](#slash-store-ActivityShorcutViewPayload-ParamsEntry) | repeated |  |
+
+
+
+
+
+
+<a name="slash-store-ActivityShorcutViewPayload-ParamsEntry"></a>
+
+### ActivityShorcutViewPayload.ParamsEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| key | [string](#string) |  |  |
+| value | [ActivityShorcutViewPayload.ValueList](#slash-store-ActivityShorcutViewPayload-ValueList) |  |  |
+
+
+
+
+
+
+<a name="slash-store-ActivityShorcutViewPayload-ValueList"></a>
+
+### ActivityShorcutViewPayload.ValueList
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| values | [string](#string) | repeated |  |
 
 
 

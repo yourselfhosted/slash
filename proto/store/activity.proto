@@ -13,4 +13,9 @@ message ActivityShorcutViewPayload {
   string ip = 2;
   string referer = 3;
   string user_agent = 4;
+  map<string, ValueList> params = 5;
+
+  message ValueList {
+    repeated string values = 1;
+  }
 }

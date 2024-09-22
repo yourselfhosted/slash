@@ -775,7 +775,9 @@ definitions:
       expiresAt:
         type: string
         format: date-time
-        description: "expires_at is the expiration time of the access token.\r\nIf expires_at is not set, the access token will never expire."
+        description: |-
+          expires_at is the expiration time of the access token.
+          If expires_at is not set, the access token will never expire.
   apiv1Collection:
     type: object
     properties:
@@ -1141,7 +1143,9 @@ definitions:
         description: Current workspace version.
       owner:
         type: string
-        title: "The owner name.\r\nFormat: \"users/{id}\""
+        title: |-
+          The owner name.
+          Format: "users/{id}"
       subscription:
         $ref: '#/definitions/v1Subscription'
         description: The workspace subscription.

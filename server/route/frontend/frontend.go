@@ -122,11 +122,16 @@ func (s *FrontendService) createShortcutViewActivity(ctx context.Context, reques
 	ip := getReadUserIP(request)
 	referer := request.Header.Get("Referer")
 	userAgent := request.Header.Get("User-Agent")
+	params := map[string]*storepb.ActivityShorcutViewPayload_ValueList{}
+	for key, values := range request.URL.Query() {
+		params[key] = &storepb.ActivityShorcutViewPayload_ValueList{Values: values}
+	}
 	payload := &storepb.ActivityShorcutViewPayload{
 		ShortcutId: shortcut.Id,
 		Ip:         ip,
 		Referer:    referer,
 		UserAgent:  userAgent,
+		Params:     params,
 	}
 	payloadStr, err := protojson.Marshal(payload)
 	if err != nil {

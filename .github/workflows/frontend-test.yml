@@ -28,6 +28,9 @@ jobs:
       - name: Run eslint check
         run: pnpm lint
         working-directory: frontend/web
+      - name: Run type check
+        run: pnpm type-check
+        working-directory: frontend/web
 
   frontend-build:
     runs-on: ubuntu-latest
