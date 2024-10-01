@@ -73,8 +73,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(eslint-config-prettier@9.1.0(eslint@8.57.1))(eslint@8.57.1)(prettier@3.3.3)
       eslint-plugin-react:
-        specifier: ^7.37.0
-        version: 7.37.0(eslint@8.57.1)
+        specifier: ^7.37.1
+        version: 7.37.1(eslint@8.57.1)
       postcss:
         specifier: ^8.4.47
         version: 8.4.47
@@ -2249,8 +2249,8 @@ packages:
       eslint-config-prettier:
         optional: true
 
-  eslint-plugin-react@7.37.0:
-    resolution: {integrity: sha512-IHBePmfWH5lKhJnJ7WB1V+v/GolbB0rjS8XYVCSQCZKaQCAUhMoVoOEn1Ef8Z8Wf0a7l8KTJvuZg5/e4qrZ6nA==}
+  eslint-plugin-react@7.37.1:
+    resolution: {integrity: sha512-xwTnwDqzbDRA8uJ7BMxPs/EXRB3i8ZfnOIp8BsxEQkT0nHPp+WWceqGgo6rKb9ctNi8GJLDT4Go5HAWELa/WMg==}
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
@@ -6663,7 +6663,7 @@ snapshots:
     optionalDependencies:
       eslint-config-prettier: 9.1.0(eslint@8.57.1)
 
-  eslint-plugin-react@7.37.0(eslint@8.57.1):
+  eslint-plugin-react@7.37.1(eslint@8.57.1):
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlast: 1.2.5
