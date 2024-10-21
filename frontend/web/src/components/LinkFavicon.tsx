@@ -9,6 +9,7 @@ const getFaviconUrlWithProvider = (url: string, provider: string) => {
   try {
     const searchParams = new URLSearchParams();
     searchParams.set("domain", new URL(url).hostname);
+    searchParams.set("sz", "64");
     return new URL(`?${searchParams.toString()}`, provider).toString();
   } catch (error) {
     return "";
