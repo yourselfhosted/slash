@@ -1,7 +1,7 @@
 import { Button } from "@mui/joy";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import CreateShortcutDrawer from "@/components/CreateShortcutDrawer";
 import { isURL } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
@@ -10,6 +10,7 @@ import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 
 const ShortcutSpace = () => {
   const params = useParams();
+  const [searchParams] = useSearchParams();
   const shortcutName = params["*"] || "";
   const navigateTo = useNavigateTo();
   const userStore = useUserStore();
@@ -69,7 +70,11 @@ const ShortcutSpace = () => {
   // If shortcut is a URL, redirect to it directly.
   if (isURL(shortcut.link)) {
     window.document.title = "Redirecting...";
-    window.location.href = shortcut.link;
+    const url = new URL(shortcut.link);
+    searchParams.forEach((value, key) => {
+      url.searchParams.append(key, value);
+    });
+    window.location.href = url.toString();
     return null;
   }
 
