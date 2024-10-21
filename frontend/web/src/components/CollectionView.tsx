@@ -66,7 +66,7 @@ const CollectionView = (props: Props) => {
         <div className="bg-gray-100 dark:bg-zinc-800 px-3 py-2 w-full flex flex-row justify-between items-center rounded-t-lg">
           <div className="w-auto flex flex-col justify-start items-start mr-2">
             <div className="w-full truncate">
-              <Link className="leading-6 font-medium dark:text-gray-400" to={`/c/${collection.name}`} unstable_viewTransition>
+              <Link className="leading-6 font-medium dark:text-gray-400" to={`/c/${collection.name}`} viewTransition>
                 {collection.title}
               </Link>
               <span className="ml-1 leading-6 text-gray-500 dark:text-gray-400" onClick={handleCopyCollectionLink}>

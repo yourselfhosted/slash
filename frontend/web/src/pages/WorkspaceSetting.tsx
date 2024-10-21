@@ -34,7 +34,7 @@ const WorkspaceSetting = () => {
         <div className="mt-2">
           <span className="text-gray-500 mr-2">Current plan:</span>
           <span className="text-2xl mr-4 dark:text-gray-400">{stringifyPlanType(workspaceStore.getSubscription().plan)}</span>
-          <Link to="/setting/subscription" unstable_viewTransition>
+          <Link to="/setting/subscription" viewTransition>
             <Button size="sm" variant="outlined" startDecorator={<Icon.Settings className="w-4 h-auto" />}>
               Manage
             </Button>

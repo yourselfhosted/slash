@@ -45,7 +45,7 @@ const ShortcutCard = (props: Props) => {
           <Link
             className={classNames("w-8 h-8 flex justify-center items-center overflow-clip shrink-0")}
             to={`/shortcut/${shortcut.id}`}
-            unstable_viewTransition
+            viewTransition
           >
             <LinkFavicon url={shortcut.link} />
           </Link>
@@ -129,7 +129,7 @@ const ShortcutCard = (props: Props) => {
           <Link
             className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-400 text-sm"
             to={`/shortcut/${shortcut.id}#analytics`}
-            unstable_viewTransition
+            viewTransition
           >
             <Icon.BarChart2 className="w-4 h-auto mr-1 opacity-70" />
             {t("shortcut.visits", { count: shortcut.viewCount })}
