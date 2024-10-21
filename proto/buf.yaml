@@ -1,8 +1,8 @@
-version: v1
+version: v2
 name: buf.build/yourselfhosted/slash
-breaking:
-  use:
-    - FILE
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/grpc-ecosystem/grpc-gateway
 lint:
   use:
     - BASIC
@@ -10,6 +10,6 @@ lint:
     - ENUM_VALUE_PREFIX
     - PACKAGE_DIRECTORY_MATCH
     - PACKAGE_VERSION_SUFFIX
-deps:
-  - buf.build/googleapis/googleapis
-  - buf.build/grpc-ecosystem/grpc-gateway
+breaking:
+  use:
+    - FILE
