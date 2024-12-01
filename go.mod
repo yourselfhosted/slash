@@ -82,5 +82,5 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20241015192408-796eee8c2d53
 	google.golang.org/grpc v1.67.1
 	google.golang.org/protobuf v1.35.1
-	modernc.org/sqlite v1.33.1
+	modernc.org/sqlite v1.34.1
 )
