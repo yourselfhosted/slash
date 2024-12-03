@@ -19,7 +19,7 @@
     "dayjs": "^1.11.13",
     "i18next": "^23.16.4",
     "lodash-es": "^4.17.21",
-    "lucide-react": "^0.446.0",
+    "lucide-react": "^0.462.0",
     "nice-grpc-web": "^3.3.5",
     "qrcode.react": "^4.1.0",
     "react": "^18.3.1",
