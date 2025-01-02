@@ -1,7 +1,7 @@
 package cron
 
 // Package cron implements a crontab-like service to execute and schedule
-// repeative tasks/jobs.
+// repetitive tasks/jobs.
 //
 // Example:
 //
