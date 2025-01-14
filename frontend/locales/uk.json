@@ -1,0 +1,82 @@
+{
+  "common": {
+    "about": "Про",
+    "loading": "Завантаження",
+    "cancel": "Скасувати",
+    "save": "Зберегти",
+    "create": "Створити",
+    "download": "Завантажити",
+    "edit": "Редагувати",
+    "delete": "Видалити",
+    "language": "Мова",
+    "search": "Пошук",
+    "email": "Електронна пошта",
+    "password": "Пароль",
+    "account": "Обліковий запис",
+    "or": "Або"
+  },
+  "auth": {
+    "sign-in": "Увійдіть",
+    "sign-up": "Зареєструватися",
+    "sign-out": "Вийти",
+    "create-your-account": "Створіть свій акаунт",
+    "host-tip": "Ви реєструєтесь як адміністратор.",
+    "sign-in-with": "Увійдіть за допомогою {{provider}}"
+  },
+  "analytics": {
+    "self": "Аналітика",
+    "top-sources": "Найпопулярніші джерела",
+    "source": "Джерело",
+    "visitors": "Відвідувачі",
+    "devices": "Пристрої",
+    "browser": "Браузер",
+    "browsers": "Браузери",
+    "operating-system": "Операційна система"
+  },
+  "shortcut": {
+    "visits": "{{count}} відвідувань",
+    "visibility": {
+      "workspace": {
+        "self": "Робоча область",
+        "description": "Учасники робочої області мають доступ"
+      },
+      "public": {
+        "self": "Відкритий",
+        "description": "Відкрито в Інтернеті"
+      }
+    }
+  },
+  "filter": {
+    "all": "Все",
+    "personal": "Особисті",
+    "compact-mode": "Компактний режим",
+    "order-by": "Сортувати за",
+    "direction": "Напрямок"
+  },
+  "user": {
+    "self": "Користувач",
+    "nickname": "Псевдонім",
+    "email": "Електронна пошта",
+    "role": "Роль",
+    "profile": "Профіль"
+  },
+  "settings": {
+    "self": "Налаштування",
+    "preference": {
+      "self": "Вибір",
+      "color-theme": "Кольорова тема"
+    },
+    "workspace": {
+      "self": "Налаштування робочого простору",
+      "custom-style": "Індивідуальний стиль",
+      "disallow-user-registration": {
+        "self": "Заборонити реєстрацію користувача"
+      },
+      "default-visibility": "Видимість за замовченям",
+      "member": {
+        "self": "Учасник",
+        "add": "Додати учасника"
+      }
+    }
+  }
+}
