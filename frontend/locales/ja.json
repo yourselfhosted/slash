@@ -12,14 +12,16 @@
     "search": "検索",
     "email": "Eメール",
     "password": "パスワード",
-    "account": "アカウント"
+    "account": "アカウント",
+    "or": "または"
   },
   "auth": {
     "sign-in": "サインイン",
     "sign-up": "登録",
     "sign-out": "サインアウト",
     "create-your-account": "アカウントを作成してください",
-    "host-tip": "管理者として登録されています。"
+    "host-tip": "管理者として登録されています。",
+    "sign-in-with": "{{provider}}でサインイン"
   },
   "analytics": {
     "self": "分析",
@@ -46,7 +48,7 @@
   },
   "filter": {
     "all": "全て",
-    "mine": "自分",
+    "personal": "個人",
     "compact-mode": "コンパクトモード",
     "order-by": "順序",
     "direction": "方向"
@@ -56,10 +58,7 @@
     "nickname": "ニックネーム",
     "email": "Eメール",
     "role": "役割",
-    "profile": "プロフィール",
-    "action": {
-      "add-user": "ユーザーの追加"
-    }
+    "profile": "プロフィール"
   },
   "settings": {
     "self": "設定",
@@ -70,11 +69,14 @@
     "workspace": {
       "self": "ワークスペースの設定",
       "custom-style": "カスタムスタイル",
-      "enable-user-signup": {
-        "self": "ユーザーの登録を有効にする",
-        "description": "有効にすると他のユーザーが登録できるようになります。"
+      "disallow-user-registration": {
+        "self": "ユーザーの登録を有効にする"
       },
-      "default-visibility": "デフォルトの表示"
+      "default-visibility": "デフォルトの表示",
+      "member": {
+        "self": "メンバー",
+        "add": "メンバーを追加"
+      }
     }
   }
 }
