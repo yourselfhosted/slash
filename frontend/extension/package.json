@@ -14,7 +14,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.14.0",
     "@mui/joy": "5.0.0-beta.48",
-    "@plasmohq/storage": "^1.12.0",
+    "@plasmohq/storage": "^1.13.0",
     "classnames": "^2.5.1",
     "lucide-react": "^0.462.0",
     "plasmo": "^0.89.3",
