@@ -1,7 +1,6 @@
 module github.com/yourselfhosted/slash
 
 go 1.23
-
 toolchain go1.23.1
 
 require github.com/google/uuid v1.6.0
@@ -78,7 +77,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c
 	golang.org/x/mod v0.22.0
-	golang.org/x/oauth2 v0.23.0
+	golang.org/x/oauth2 v0.27.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20241015192408-796eee8c2d53
 	google.golang.org/grpc v1.69.2
 	google.golang.org/protobuf v1.36.1
