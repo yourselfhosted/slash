@@ -62,7 +62,9 @@ func (s *Store) ListShortcuts(ctx context.Context, find *FindShortcut) ([]*store
 func (s *Store) GetShortcut(ctx context.Context, find *FindShortcut) (*storepb.Shortcut, error) {
 	if find.ID != nil {
 		if cache, ok := s.shortcutCache.Load(*find.ID); ok {
-			return cache.(*storepb.Shortcut), nil
+			if shortcut, ok := cache.(*storepb.Shortcut); ok {
+				return shortcut, nil
+			}
 		}
 	}
 

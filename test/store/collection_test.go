@@ -31,15 +31,15 @@ func TestCollectionStore(t *testing.T) {
 	require.Equal(t, 1, len(collections))
 	require.Equal(t, collection, collections[0])
 	newTitle := "My new collection"
-	newShortcutIds := []int32{101, 103}
+	newShortcutIDs := []int32{101, 103}
 	updatedCollection, err := ts.UpdateCollection(ctx, &store.UpdateCollection{
 		ID:          collection.Id,
 		Title:       &newTitle,
-		ShortcutIDs: newShortcutIds,
+		ShortcutIDs: newShortcutIDs,
 	})
 	require.NoError(t, err)
 	require.Equal(t, newTitle, updatedCollection.Title)
-	require.Equal(t, newShortcutIds, updatedCollection.ShortcutIds)
+	require.Equal(t, newShortcutIDs, updatedCollection.ShortcutIds)
 	err = ts.DeleteCollection(ctx, &store.DeleteCollection{
 		ID: collection.Id,
 	})

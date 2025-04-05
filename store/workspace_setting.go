@@ -35,7 +35,9 @@ func (s *Store) ListWorkspaceSettings(ctx context.Context, find *FindWorkspaceSe
 func (s *Store) GetWorkspaceSetting(ctx context.Context, find *FindWorkspaceSetting) (*storepb.WorkspaceSetting, error) {
 	if find.Key != storepb.WorkspaceSettingKey_WORKSPACE_SETTING_KEY_UNSPECIFIED {
 		if cache, ok := s.workspaceSettingCache.Load(find.Key); ok {
-			return cache.(*storepb.WorkspaceSetting), nil
+			if workspaceSetting, ok := cache.(*storepb.WorkspaceSetting); ok {
+				return workspaceSetting, nil
+			}
 		}
 	}
 
