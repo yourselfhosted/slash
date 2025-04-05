@@ -74,7 +74,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
 	golang.org/x/mod v0.24.0
-	golang.org/x/oauth2 v0.27.0
+	golang.org/x/oauth2 v0.29.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/grpc v1.70.0
 	google.golang.org/protobuf v1.36.5
