@@ -5,7 +5,7 @@
   "description": "An open source, self-hosted platform for sharing and managing your most frequently used links. Save and share your links very easily.",
   "scripts": {
     "dev": "plasmo dev",
-    "build": "plasmo build",
+    "build": "export PARCEL_WORKER_BACKEND=process && plasmo build",
     "package": "plasmo package",
     "lint": "eslint --ext .js,.ts,.tsx, src",
     "lint-fix": "eslint --ext .js,.ts,.tsx, src --fix"
