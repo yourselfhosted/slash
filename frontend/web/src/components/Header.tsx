@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { authServiceClient } from "@/grpcweb";
 import { useWorkspaceStore, useUserStore } from "@/stores";
+import { stringifyPlanType } from "@/stores/subscription";
 import { PlanType } from "@/types/proto/api/v1/subscription_service";
 import { Role } from "@/types/proto/api/v1/user_service";
 import AboutDialog from "./AboutDialog";
@@ -37,8 +38,7 @@ const Header: React.FC = () => {
             </Link>
             {[PlanType.PRO, PlanType.ENTERPRISE].includes(subscription.plan) && (
               <span className="ml-1 text-xs px-1.5 leading-5 border rounded-full bg-blue-600 border-blue-700 text-white shadow dark:opacity-70">
-                {/* PRO or ENT */}
-                {subscription.plan.substring(0, 3)}
+                {stringifyPlanType(subscription.plan)}
               </span>
             )}
             {shouldShowRouterSwitch && (
