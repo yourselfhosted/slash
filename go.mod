@@ -14,7 +14,7 @@ require (
 	golang.org/x/crypto v0.33.0
 	golang.org/x/net v0.35.0
 	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
 )
 
@@ -69,7 +69,7 @@ require (
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/lib/pq v1.10.9
 	github.com/mssola/useragent v1.0.0
-	github.com/nyaruka/phonenumbers v1.4.4
+	github.com/nyaruka/phonenumbers v1.6.1
 	github.com/pkg/errors v0.9.1
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
 	golang.org/x/mod v0.24.0
