@@ -11,7 +11,7 @@
     "lint-fix": "eslint --ext .js,.ts,.tsx, src --fix"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
+    "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/joy": "5.0.0-beta.51",
     "@plasmohq/storage": "^1.15.0",
