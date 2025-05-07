@@ -78,7 +78,7 @@ const CollectionDashboard: React.FC = () => {
             <Icon.PackageOpen size={64} strokeWidth={1} />
             <p className="mt-2">No collections found.</p>
             <a
-              className="text-blue-600 border-t text-sm hover:underline flex flex-row justify-center items-center mt-4 pt-2"
+              className="text-blue-600 border-t dark:border-t-zinc-600 text-sm hover:underline flex flex-row justify-center items-center mt-4 pt-2"
               href="https://github.com/yourselfhosted/slash/blob/main/docs/getting-started/collections.md"
               target="_blank"
             >

@@ -113,12 +113,12 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
                   </div>
                 </div>
               ) : (
-                <div className="w-full divide-y divide-gray-300">
+                <div className="w-full divide-y divide-gray-300 dark:divide-zinc-700">
                   <div className="w-full flex flex-row justify-between items-center">
                     <span className="py-2 px-2 text-left text-sm font-semibold text-gray-500">{t("analytics.operating-system")}</span>
                     <span className="py-2 pr-2 text-right text-sm font-semibold text-gray-500">{t("analytics.visitors")}</span>
                   </div>
-                  <div className="w-full divide-y divide-gray-200">
+                  <div className="w-full divide-y divide-gray-200 dark:divide-zinc-800">
                     {analytics.devices.length === 0 && (
                       <div className="w-full flex flex-row justify-center items-center py-6 text-gray-400">
                         <Icon.PackageOpen className="w-6 h-auto" />
@@ -127,7 +127,9 @@ const AnalyticsView: React.FC<Props> = (props: Props) => {
                     )}
                     {analytics.devices.map((device) => (
                       <div key={device.name} className="w-full flex flex-row justify-between items-center">
-                        <span className="whitespace-nowrap py-2 px-2 text-sm text-gray-900 truncate">{device.name || "Unknown"}</span>
+                        <span className="whitespace-nowrap py-2 px-2 text-sm text-gray-900 truncate dark:text-gray-500">
+                          {device.name || "Unknown"}
+                        </span>
                         <span className="whitespace-nowrap py-2 pr-2 text-sm text-gray-500 text-right shrink-0">{device.count}</span>
                       </div>
                     ))}
