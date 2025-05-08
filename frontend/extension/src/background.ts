@@ -18,7 +18,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       }
     })();
   },
-  { urls: ["*://s/*", "*://*/search*"] },
+  { urls: ["*://s/*", "*://*/search*", "*://*/s*", "*://duckduckgo.com/*"] },
 );
 
 const getShortcutNameFromUrl = (urlString: string) => {
