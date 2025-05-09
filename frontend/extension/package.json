@@ -2,7 +2,7 @@
   "name": "slash-extension",
   "displayName": "Slash",
   "version": "1.0.12",
-  "description": "An open source, self-hosted platform for sharing and managing your most frequently used links. Save and share your links very easily.",
+  "description": "An open source, self-hosted platform for sharing and managing your most frequently used links.",
   "scripts": {
     "dev": "plasmo dev",
     "build": "export PARCEL_WORKER_BACKEND=process && plasmo build",
