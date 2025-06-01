@@ -65,7 +65,7 @@ require (
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/lib/pq v1.10.9
 	github.com/mssola/useragent v1.0.0
-	github.com/nyaruka/phonenumbers v1.6.1
+	github.com/nyaruka/phonenumbers v1.6.3
 	github.com/pkg/errors v0.9.1
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6
 	golang.org/x/mod v0.24.0
