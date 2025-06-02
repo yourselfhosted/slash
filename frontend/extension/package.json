@@ -16,7 +16,7 @@
     "@mui/joy": "5.0.0-beta.51",
     "@plasmohq/storage": "^1.15.0",
     "classnames": "^2.5.1",
-    "lucide-react": "^0.486.0",
+    "lucide-react": "^0.511.0",
     "plasmo": "^0.90.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
