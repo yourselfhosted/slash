@@ -22,8 +22,6 @@ import (
 //go:embed migration
 var migrationFS embed.FS
 
-
-
 const (
 	// MigrateFileNameSplit is the split character between the patch version and the description in the migration file name.
 	// For example, "1__create_table.sql".
