@@ -52,8 +52,8 @@ func checkDataDir(dataDir string) (string, error) {
 }
 
 func (p *Profile) Validate() error {
-	if p.Mode != "demo" && p.Mode != "dev" && p.Mode != "prod" {
-		p.Mode = "demo"
+	if p.Mode != "dev" && p.Mode != "prod" {
+		p.Mode = "dev"
 	}
 
 	if p.Mode == "prod" && p.Data == "" {

@@ -22,8 +22,7 @@ import (
 //go:embed migration
 var migrationFS embed.FS
 
-//go:embed seed
-var seedFS embed.FS
+
 
 const (
 	// MigrateFileNameSplit is the split character between the patch version and the description in the migration file name.
@@ -104,11 +103,6 @@ func (s *Store) Migrate(ctx context.Context) error {
 				return errors.Wrapf(err, "failed to upsert migration history with version: %s", schemaVersion)
 			}
 		}
-	} else if s.profile.Mode == "demo" {
-		// In demo mode, we should seed the database.
-		if err := s.seed(ctx); err != nil {
-			return errors.Wrap(err, "failed to seed")
-		}
 	}
 
 	// Manually migrate workspace settings.
@@ -169,43 +163,6 @@ func (s *Store) getMigrationBasePath() string {
 		mode = "prod"
 	}
 	return fmt.Sprintf("migration/%s/%s/", s.profile.Driver, mode)
-}
-
-func (s *Store) getSeedBasePath() string {
-	return fmt.Sprintf("seed/%s/", s.profile.Driver)
-}
-
-func (s *Store) seed(ctx context.Context) error {
-	// Only seed for SQLite.
-	if s.profile.Driver != "sqlite" {
-		slog.Warn("seed is only supported for SQLite")
-		return nil
-	}
-
-	filenames, err := fs.Glob(seedFS, fmt.Sprintf("%s*.sql", s.getSeedBasePath()))
-	if err != nil {
-		return errors.Wrap(err, "failed to read seed files")
-	}
-
-	// Sort seed files by name. This is important to ensure that seed files are applied in order.
-	sort.Strings(filenames)
-	// Start a transaction to apply the seed files.
-	tx, err := s.driver.GetDB().Begin()
-	if err != nil {
-		return errors.Wrap(err, "failed to start transaction")
-	}
-	defer tx.Rollback()
-	// Loop over all seed files and execute them in order.
-	for _, filename := range filenames {
-		bytes, err := seedFS.ReadFile(filename)
-		if err != nil {
-			return errors.Wrapf(err, "failed to read seed file, filename=%s", filename)
-		}
-		if err := s.execute(ctx, tx, string(bytes)); err != nil {
-			return errors.Wrapf(err, "seed error: %s", filename)
-		}
-	}
-	return tx.Commit()
 }
 
 func (s *Store) GetCurrentSchemaVersion() (string, error) {

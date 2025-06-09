@@ -1,7 +1,6 @@
 import { useColorScheme } from "@mui/joy";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import DemoBanner from "@/components/DemoBanner";
 import { useWorkspaceStore } from "@/stores";
 import useNavigateTo from "./hooks/useNavigateTo";
 import { FeatureType } from "./stores/workspace";
@@ -72,7 +71,6 @@ function App() {
 
   return (
     <>
-      <DemoBanner />
       <Outlet />
     </>
   );
