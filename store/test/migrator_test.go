@@ -34,7 +34,6 @@ func TestGetCurrentSchemaVersion(t *testing.T) {
 	}
 }
 
-// newTestingStoreWithConfig creates a testing store with specific driver configuration
 func newTestingStoreWithConfig(driver string) *store.Store {
 	profile := &profile.Profile{
 		Mode:    "prod",
