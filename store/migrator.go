@@ -156,11 +156,7 @@ func (s *Store) preMigrate(ctx context.Context) error {
 }
 
 func (s *Store) getMigrationBasePath() string {
-	mode := "dev"
-	if s.profile.Mode == "prod" {
-		mode = "prod"
-	}
-	return fmt.Sprintf("migration/%s/%s/", s.profile.Driver, mode)
+	return fmt.Sprintf("migration/%s/", s.profile.Driver)
 }
 
 func (s *Store) GetCurrentSchemaVersion() (string, error) {
