@@ -33,6 +33,11 @@ const (
 
 // Migrate applies the latest schema to the database.
 func (s *Store) Migrate(ctx context.Context) error {
+	// Validate migration setup
+	if err := s.validateMigrationSetup(); err != nil {
+		return errors.Wrap(err, "migration setup validation failed")
+	}
+
 	if err := s.preMigrate(ctx); err != nil {
 		return errors.Wrap(err, "failed to pre-migrate")
 	}
@@ -64,34 +69,32 @@ func (s *Store) Migrate(ctx context.Context) error {
 			}
 			sort.Strings(filePaths)
 
-			// Start a transaction to apply the latest schema.
-			tx, err := s.driver.GetDB().Begin()
-			if err != nil {
-				return errors.Wrap(err, "failed to start transaction")
-			}
-			defer tx.Rollback()
-
 			slog.Info("start migration", slog.String("currentSchemaVersion", latestMigrationHistoryVersion), slog.String("targetSchemaVersion", schemaVersion))
-			for _, filePath := range filePaths {
-				fileSchemaVersion, err := s.getSchemaVersionOfMigrateScript(filePath)
-				if err != nil {
-					return errors.Wrap(err, "failed to get schema version of migrate script")
-				}
-				if common.IsVersionGreaterThan(fileSchemaVersion, latestMigrationHistoryVersion) && common.IsVersionGreaterOrEqualThan(schemaVersion, fileSchemaVersion) {
-					bytes, err := migrationFS.ReadFile(filePath)
+
+			// Apply migrations within a transaction
+			if err := s.executeInTransaction(ctx, func(tx *sql.Tx) error {
+				for _, filePath := range filePaths {
+					fileSchemaVersion, err := s.getSchemaVersionOfMigrateScript(filePath)
 					if err != nil {
-						return errors.Wrapf(err, "failed to read minor version migration file: %s", filePath)
+						return errors.Wrapf(err, "failed to get schema version of migrate script for file: %s", filePath)
 					}
-					stmt := string(bytes)
-					if err := s.execute(ctx, tx, stmt); err != nil {
-						return errors.Wrapf(err, "migrate error: %s", stmt)
+					if common.IsVersionGreaterThan(fileSchemaVersion, latestMigrationHistoryVersion) && common.IsVersionGreaterOrEqualThan(schemaVersion, fileSchemaVersion) {
+						bytes, err := migrationFS.ReadFile(filePath)
+						if err != nil {
+							return errors.Wrapf(err, "failed to read migration file: %s", filePath)
+						}
+						stmt := string(bytes)
+						slog.Debug("applying migration", slog.String("file", filePath), slog.String("version", fileSchemaVersion))
+						if err := s.execute(ctx, tx, stmt); err != nil {
+							return errors.Wrapf(err, "failed to execute migration file %s", filePath)
+						}
 					}
 				}
+				return nil
+			}); err != nil {
+				return err
 			}
 
-			if err := tx.Commit(); err != nil {
-				return errors.Wrap(err, "failed to commit transaction")
-			}
 			slog.Info("end migrate")
 
 			// Upsert the current schema version to migration_history.
@@ -128,17 +131,15 @@ func (s *Store) preMigrate(ctx context.Context) error {
 			return errors.Wrap(err, "failed to get current schema version")
 		}
 
-		// Start a transaction to apply the latest schema.
-		tx, err := s.driver.GetDB().Begin()
-		if err != nil {
-			return errors.Wrap(err, "failed to start transaction")
-		}
-		defer tx.Rollback()
-		if err := s.execute(ctx, tx, string(bytes)); err != nil {
-			return errors.Errorf("failed to execute SQL file %s, err %s", filePath, err)
-		}
-		if err := tx.Commit(); err != nil {
-			return errors.Wrap(err, "failed to commit transaction")
+		// Apply the latest schema within a transaction
+		if err := s.executeInTransaction(ctx, func(tx *sql.Tx) error {
+			slog.Info("applying latest schema", slog.String("file", filePath), slog.String("version", schemaVersion))
+			if err := s.execute(ctx, tx, string(bytes)); err != nil {
+				return errors.Wrapf(err, "failed to execute latest schema file: %s", filePath)
+			}
+			return nil
+		}); err != nil {
+			return err
 		}
 
 		if _, err := s.driver.UpsertMigrationHistory(ctx, &UpsertMigrationHistory{
@@ -159,6 +160,27 @@ func (s *Store) getMigrationBasePath() string {
 	return fmt.Sprintf("migration/%s/", s.profile.Driver)
 }
 
+// validateMigrationSetup validates that the migration system is properly configured.
+func (s *Store) validateMigrationSetup() error {
+	if s.driver == nil {
+		return errors.New("database driver is not initialized")
+	}
+	if s.profile == nil {
+		return errors.New("store profile is not initialized")
+	}
+	if s.profile.Driver == "" {
+		return errors.New("database driver type is not specified")
+	}
+
+	// Check if migration files exist
+	basePath := s.getMigrationBasePath()
+	if _, err := fs.Stat(migrationFS, strings.TrimSuffix(basePath, "/")); err != nil {
+		return errors.Wrapf(err, "migration directory not found: %s", basePath)
+	}
+
+	return nil
+}
+
 func (s *Store) GetCurrentSchemaVersion() (string, error) {
 	currentVersion := common.GetCurrentVersion(s.profile.Mode)
 	minorVersion := common.GetMinorVersion(currentVersion)
@@ -175,7 +197,7 @@ func (s *Store) GetCurrentSchemaVersion() (string, error) {
 }
 
 func (s *Store) getSchemaVersionOfMigrateScript(filePath string) (string, error) {
-	// If the file is the latest schema file, return the current schema common.
+	// If the file is the latest schema file, return the current schema version.
 	if strings.HasSuffix(filePath, LatestSchemaFileName) {
 		return s.GetCurrentSchemaVersion()
 	}
@@ -183,14 +205,32 @@ func (s *Store) getSchemaVersionOfMigrateScript(filePath string) (string, error)
 	normalizedPath := filepath.ToSlash(filePath)
 	elements := strings.Split(normalizedPath, "/")
 	if len(elements) < 2 {
-		return "", errors.Errorf("invalid file path: %s", filePath)
+		return "", errors.Errorf("invalid migration file path format: %s (expected migration/driver/version/file.sql)", filePath)
 	}
+
 	minorVersion := elements[len(elements)-2]
-	rawPatchVersion := strings.Split(elements[len(elements)-1], MigrateFileNameSplit)[0]
+	fileName := elements[len(elements)-1]
+
+	// Validate file name format
+	if !strings.HasSuffix(fileName, ".sql") {
+		return "", errors.Errorf("invalid migration file extension: %s (expected .sql)", filePath)
+	}
+
+	fileNameParts := strings.Split(fileName, MigrateFileNameSplit)
+	if len(fileNameParts) < 2 {
+		return "", errors.Errorf("invalid migration file name format: %s (expected format: number%sdescription.sql)", fileName, MigrateFileNameSplit)
+	}
+
+	rawPatchVersion := fileNameParts[0]
 	patchVersion, err := strconv.Atoi(rawPatchVersion)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to convert patch version to int: %s", rawPatchVersion)
+		return "", errors.Wrapf(err, "invalid patch version number in file: %s", filePath)
 	}
+
+	if patchVersion < 0 {
+		return "", errors.Errorf("patch version cannot be negative in file: %s", filePath)
+	}
+
 	return fmt.Sprintf("%s.%d", minorVersion, patchVersion+1), nil
 }
 
@@ -199,6 +239,33 @@ func (*Store) execute(ctx context.Context, tx *sql.Tx, stmt string) error {
 	if _, err := tx.ExecContext(ctx, stmt); err != nil {
 		return errors.Wrap(err, "failed to execute statement")
 	}
+	return nil
+}
+
+// executeInTransaction runs a function within a database transaction.
+// It automatically handles commit and rollback.
+func (s *Store) executeInTransaction(_ context.Context, fn func(*sql.Tx) error) error {
+	tx, err := s.driver.GetDB().Begin()
+	if err != nil {
+		return errors.Wrap(err, "failed to start transaction")
+	}
+
+	// Ensure rollback is called if commit wasn't successful
+	committed := false
+	defer func() {
+		if !committed {
+			_ = tx.Rollback()
+		}
+	}()
+
+	if err := fn(tx); err != nil {
+		return err
+	}
+
+	if err := tx.Commit(); err != nil {
+		return errors.Wrap(err, "failed to commit transaction")
+	}
+	committed = true
 	return nil
 }
 
@@ -246,16 +313,14 @@ func (s *Store) normalizedMigrationHistoryList(ctx context.Context) error {
 		return nil
 	}
 
-	// Start a transaction to insert the latest schema version to migration_history.
-	tx, err := s.driver.GetDB().Begin()
-	if err != nil {
-		return errors.Wrap(err, "failed to start transaction")
-	}
-	defer tx.Rollback()
-	if err := s.execute(ctx, tx, fmt.Sprintf("INSERT INTO migration_history (version) VALUES ('%s')", latestSchemaVersion)); err != nil {
-		return errors.Wrap(err, "failed to insert migration history")
-	}
-	return tx.Commit()
+	// Insert the latest schema version to migration_history within a transaction
+	return s.executeInTransaction(ctx, func(tx *sql.Tx) error {
+		stmt := fmt.Sprintf("INSERT INTO migration_history (version) VALUES ('%s')", latestSchemaVersion)
+		if err := s.execute(ctx, tx, stmt); err != nil {
+			return errors.Wrapf(err, "failed to insert migration history for version: %s", latestSchemaVersion)
+		}
+		return nil
+	})
 }
 
 // migrateWorkspaceSettings migrates workspace settings manually.
