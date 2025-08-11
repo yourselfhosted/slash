@@ -79,8 +79,8 @@ importers:
         specifier: ^1.54.0
         version: 1.54.0
       '@bufbuild/protobuf':
-        specifier: ^2.5.1
-        version: 2.5.1
+        specifier: ^2.6.2
+        version: 2.6.2
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^4.3.0
         version: 4.3.0(prettier@3.5.3)
@@ -278,8 +278,8 @@ packages:
     engines: {node: '>=12'}
     hasBin: true
 
-  '@bufbuild/protobuf@2.5.1':
-    resolution: {integrity: sha512-lut4UTvKL8tqtend0UDu7R79/n9jA7Jtxf77RNPbxtmWqfWI4qQ9bTjf7KCS4vfqLmpQbuHr1ciqJumAgJODdw==}
+  '@bufbuild/protobuf@2.6.2':
+    resolution: {integrity: sha512-vLu7SRY84CV/Dd+NUdgtidn2hS5hSMUC1vDBY0VcviTdgRYkU43vIz3vIFbmx14cX1r+mM7WjzE5Fl1fGEM0RQ==}
 
   '@emotion/babel-plugin@11.13.5':
     resolution: {integrity: sha512-pxHCpT2ex+0q+HH91/zsdHkw/lXd468DIN2zvfvLtPKLLMo6gQj7oLObq8PhkrxOZb/gGCq03S3Z7PDhS8pduQ==}
@@ -2763,7 +2763,7 @@ snapshots:
       '@bufbuild/buf-win32-arm64': 1.54.0
       '@bufbuild/buf-win32-x64': 1.54.0
 
-  '@bufbuild/protobuf@2.5.1': {}
+  '@bufbuild/protobuf@2.6.2': {}
 
   '@emotion/babel-plugin@11.13.5':
     dependencies:
