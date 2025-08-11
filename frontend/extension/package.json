@@ -32,7 +32,7 @@
     "@typescript-eslint/parser": "^7.18.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^8.57.1",
-    "eslint-config-prettier": "^9.1.2",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
     "postcss": "^8.5.6",
