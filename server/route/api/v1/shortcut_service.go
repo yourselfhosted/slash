@@ -262,6 +262,7 @@ func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *v1pb.G
 		Type:              store.ActivityShortcutView,
 		PayloadShortcutID: &shortcut.Id,
 	}
+	// For non-advanced analytics users, we limit the activity to the last 14 days.
 	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeAdvancedAnalytics) {
 		createdTsAfter := time.Now().AddDate(0, 0, -14).Unix()
 		activityFind.CreatedTsAfter = &createdTsAfter

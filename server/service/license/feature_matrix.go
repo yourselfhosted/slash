@@ -39,8 +39,8 @@ var FeatureMatrix = map[FeatureType][3]bool{
 	FeatureTypeUnlimitedShortcuts:   {false, true, true},
 	FeatureTypeUnlimitedCollections: {false, true, true},
 	FeatureTypeCustomeBranding:      {false, false, true},
-	FeatureTypeSSO:                  {false, false, false},
-	FeatureTypeAdvancedAnalytics:    {false, false, false},
+	FeatureTypeSSO:                  {false, false, true},
+	FeatureTypeAdvancedAnalytics:    {false, false, true},
 }
 
 func getDefaultFeatures(plan v1pb.PlanType) []FeatureType {
