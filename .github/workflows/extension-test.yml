@@ -14,7 +14,7 @@ jobs:
   eslint-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: 10
@@ -32,7 +32,7 @@ jobs:
   extension-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: 10
