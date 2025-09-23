@@ -151,7 +151,7 @@ const file_store_collection_proto_rawDesc = "" +
 	"visibility\x18\n" +
 	" \x01(\x0e2\x17.slash.store.VisibilityR\n" +
 	"visibilityB\x98\x01\n" +
-	"\x0fcom.slash.storeB\x0fCollectionProtoP\x01Z'github.com/bshort/monotreme/proto/gen/store\xa2\x02\x03SSX\xaa\x02\vSlash.Store\xca\x02\vSlash\\Store\xe2\x02\x17Slash\\Store\\GPBMetadata\xea\x02\fSlash::Storeb\x06proto3"
+	"\x0fcom.monotreme.storeB\x0fCollectionProtoP\x01Z'github.com/bshort/monotreme/proto/gen/store\xa2\x02\x03SSX\xaa\x02\vSlash.Store\xca\x02\vSlash\\Store\xe2\x02\x17Slash\\Store\\GPBMetadata\xea\x02\fMonotreme::Storeb\x06proto3"
 
 var (
 	file_store_collection_proto_rawDescOnce sync.Once

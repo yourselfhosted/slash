@@ -1,6 +1,6 @@
-# Slash Collections
+# Monotreme Collections
 
-**Slash Collections** introduces a feature to help you better organize and manage related Shortcuts.
+**Monotreme Collections** introduces a feature to help you better organize and manage related Shortcuts.
 
 ## What is a Collection?
 
@@ -14,7 +14,7 @@ A Collection is like a virtual folder where you can group and organize your rela
 
 ## What Problems Does It Solve?
 
-Slash Collections tackle the challenge of efficiently managing and organizing related Shortcuts. By grouping Shortcuts into Collections, you can create a more structured and accessible workflow. This makes it easier to find, access, and share information based on specific themes or projects.
+Monotreme Collections tackle the challenge of efficiently managing and organizing related Shortcuts. By grouping Shortcuts into Collections, you can create a more structured and accessible workflow. This makes it easier to find, access, and share information based on specific themes or projects.
 
 ## How to Use Collections
 
@@ -40,4 +40,4 @@ Share Collections by providing the assigned name to collaborators for easy acces
 
 ## Conclusion
 
-Slash Collections offer a user-friendly and organized way to group, manage, and share related Shortcuts. By utilizing the defined Collection attributes, users can seamlessly categorize and access information, promoting collaboration and improving overall productivity.
+Monotreme Collections offer a user-friendly and organized way to group, manage, and share related Shortcuts. By utilizing the defined Collection attributes, users can seamlessly categorize and access information, promoting collaboration and improving overall productivity.

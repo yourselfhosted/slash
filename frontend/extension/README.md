@@ -1,1 +1,1 @@
-# Slash Browser Extension
+# Monotreme Browser Extension

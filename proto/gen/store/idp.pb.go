@@ -376,7 +376,7 @@ const file_store_idp_proto_rawDesc = "" +
 	"\x06scopes\x18\x06 \x03(\tR\x06scopes\x12U\n" +
 	"\rfield_mapping\x18\a \x01(\v20.slash.store.IdentityProviderConfig.FieldMappingR\ffieldMappingB\b\n" +
 	"\x06configB\x91\x01\n" +
-	"\x0fcom.slash.storeB\bIdpProtoP\x01Z'github.com/bshort/monotreme/proto/gen/store\xa2\x02\x03SSX\xaa\x02\vSlash.Store\xca\x02\vSlash\\Store\xe2\x02\x17Slash\\Store\\GPBMetadata\xea\x02\fSlash::Storeb\x06proto3"
+	"\x0fcom.monotreme.storeB\bIdpProtoP\x01Z'github.com/bshort/monotreme/proto/gen/store\xa2\x02\x03SSX\xaa\x02\vSlash.Store\xca\x02\vSlash\\Store\xe2\x02\x17Slash\\Store\\GPBMetadata\xea\x02\fMonotreme::Storeb\x06proto3"
 
 var (
 	file_store_idp_proto_rawDescOnce sync.Once

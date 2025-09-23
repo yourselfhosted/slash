@@ -294,7 +294,7 @@ const file_api_v1_auth_service_proto_rawDesc = "" +
 	"\rSignInWithSSO\x12\".slash.api.v1.SignInWithSSORequest\x1a\x12.slash.api.v1.User\"\x1f\x82\xd3\xe4\x93\x02\x19\"\x17/api/v1/auth/signin/sso\x12V\n" +
 	"\x06SignUp\x12\x1b.slash.api.v1.SignUpRequest\x1a\x12.slash.api.v1.User\"\x1b\x82\xd3\xe4\x93\x02\x15\"\x13/api/v1/auth/signup\x12]\n" +
 	"\aSignOut\x12\x1c.slash.api.v1.SignOutRequest\x1a\x16.google.protobuf.Empty\"\x1c\x82\xd3\xe4\x93\x02\x16\"\x14/api/v1/auth/signoutB\xa6\x01\n" +
-	"\x10com.slash.api.v1B\x10AuthServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
+	"\x10com.monotreme.api.v1B\x10AuthServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eMonotreme::Api::V1b\x06proto3"
 
 var (
 	file_api_v1_auth_service_proto_rawDescOnce sync.Once

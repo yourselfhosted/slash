@@ -775,7 +775,7 @@ const file_api_v1_user_service_proto_rawDesc = "" +
 	"\x14ListUserAccessTokens\x12).slash.api.v1.ListUserAccessTokensRequest\x1a*.slash.api.v1.ListUserAccessTokensResponse\"-\xdaA\x02id\x82\xd3\xe4\x93\x02\"\x12 /api/v1/users/{id}/access_tokens\x12\x94\x01\n" +
 	"\x15CreateUserAccessToken\x12*.slash.api.v1.CreateUserAccessTokenRequest\x1a\x1d.slash.api.v1.UserAccessToken\"0\xdaA\x02id\x82\xd3\xe4\x93\x02%:\x01*\" /api/v1/users/{id}/access_tokens\x12\xa6\x01\n" +
 	"\x15DeleteUserAccessToken\x12*.slash.api.v1.DeleteUserAccessTokenRequest\x1a\x16.google.protobuf.Empty\"I\xdaA\x0fid,access_token\x82\xd3\xe4\x93\x021*//api/v1/users/{id}/access_tokens/{access_token}B\xa6\x01\n" +
-	"\x10com.slash.api.v1B\x10UserServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
+	"\x10com.monotreme.api.v1B\x10UserServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eMonotreme::Api::V1b\x06proto3"
 
 var (
 	file_api_v1_user_service_proto_rawDescOnce sync.Once

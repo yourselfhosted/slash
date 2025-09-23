@@ -489,7 +489,7 @@ const file_api_v1_collection_service_proto_rawDesc = "" +
 	"\x10UpdateCollection\x12%.slash.api.v1.UpdateCollectionRequest\x1a\x18.slash.api.v1.Collection\"P\xdaA\x16collection,update_mask\x82\xd3\xe4\x93\x021:\n" +
 	"collection\x1a#/api/v1/collections/{collection.id}\x12x\n" +
 	"\x10DeleteCollection\x12%.slash.api.v1.DeleteCollectionRequest\x1a\x16.google.protobuf.Empty\"%\xdaA\x02id\x82\xd3\xe4\x93\x02\x1a*\x18/api/v1/collections/{id}B\xac\x01\n" +
-	"\x10com.slash.api.v1B\x16CollectionServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
+	"\x10com.monotreme.api.v1B\x16CollectionServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eMonotreme::Api::V1b\x06proto3"
 
 var (
 	file_api_v1_collection_service_proto_rawDescOnce sync.Once

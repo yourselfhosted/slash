@@ -135,7 +135,7 @@ const file_store_common_proto_rawDesc = "" +
 	"\tWORKSPACE\x10\x01\x12\n" +
 	"\n" +
 	"\x06PUBLIC\x10\x02B\x94\x01\n" +
-	"\x0fcom.slash.storeB\vCommonProtoP\x01Z'github.com/bshort/monotreme/proto/gen/store\xa2\x02\x03SSX\xaa\x02\vSlash.Store\xca\x02\vSlash\\Store\xe2\x02\x17Slash\\Store\\GPBMetadata\xea\x02\fSlash::Storeb\x06proto3"
+	"\x0fcom.monotreme.storeB\vCommonProtoP\x01Z'github.com/bshort/monotreme/proto/gen/store\xa2\x02\x03SSX\xaa\x02\vSlash.Store\xca\x02\vSlash\\Store\xe2\x02\x17Slash\\Store\\GPBMetadata\xea\x02\fMonotreme::Storeb\x06proto3"
 
 var (
 	file_store_common_proto_rawDescOnce sync.Once

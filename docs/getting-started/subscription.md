@@ -1,6 +1,6 @@
 # Subscription
 
-Slash is an open source, self-hosted platform for sharing and managing your most frequently used links. Easily create customizable, human-readable shortcuts to streamline your link management. Our source code is available and accessible on GitHub so anyone can get it, inspect it and review it.
+Monotreme is an open source, self-hosted platform for sharing and managing your most frequently used links. Easily create customizable, human-readable shortcuts to streamline your link management. Our source code is available and accessible on GitHub so anyone can get it, inspect it and review it.
 
 ## Plans
 
@@ -20,7 +20,7 @@ The Team plan is designed for teams that need more than the Pro plan. It allows 
 
 After purchasing a Pro or Team plan, you will receive a license key. You can use the license key to activate your plan. Here is how to do it:
 
-1. Log in to your Slash instance as an Admin user.
+1. Log in to your Monotreme instance as an Admin user.
 2. Go to Settings > Subscription. `https://your-slash-instance.com/setting/subscription`
 3. You will see a form to enter your license key. Enter your license key and click the **Upload license** button.
 4. If the license key is valid, your plan will be activated.
@@ -35,7 +35,7 @@ Of course you can. In the free plan, you can invite up to 5 members to your team
 
 It's unlimited for now, but please do not abuse it.
 
-### Can I get a refund if Slash doesn't meet my needs?
+### Can I get a refund if Monotreme doesn't meet my needs?
 
 Yes, absolutely! You can contact us with `yourselfhosted@gmail.com`. I will refund you as soon as possible.
 

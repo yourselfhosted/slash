@@ -752,7 +752,7 @@ const file_api_v1_shortcut_service_proto_rawDesc = "" +
 	"\x0eUpdateShortcut\x12#.slash.api.v1.UpdateShortcutRequest\x1a\x16.slash.api.v1.Shortcut\"H\xdaA\x14shortcut,update_mask\x82\xd3\xe4\x93\x02+:\bshortcut\x1a\x1f/api/v1/shortcuts/{shortcut.id}\x12r\n" +
 	"\x0eDeleteShortcut\x12#.slash.api.v1.DeleteShortcutRequest\x1a\x16.google.protobuf.Empty\"#\xdaA\x02id\x82\xd3\xe4\x93\x02\x18*\x16/api/v1/shortcuts/{id}\x12\x9c\x01\n" +
 	"\x14GetShortcutAnalytics\x12).slash.api.v1.GetShortcutAnalyticsRequest\x1a*.slash.api.v1.GetShortcutAnalyticsResponse\"-\xdaA\x02id\x82\xd3\xe4\x93\x02\"\x12 /api/v1/shortcuts/{id}/analyticsB\xaa\x01\n" +
-	"\x10com.slash.api.v1B\x14ShortcutServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
+	"\x10com.monotreme.api.v1B\x14ShortcutServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eMonotreme::Api::V1b\x06proto3"
 
 var (
 	file_api_v1_shortcut_service_proto_rawDescOnce sync.Once

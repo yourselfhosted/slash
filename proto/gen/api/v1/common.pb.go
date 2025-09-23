@@ -135,7 +135,7 @@ const file_api_v1_common_proto_rawDesc = "" +
 	"\tWORKSPACE\x10\x01\x12\n" +
 	"\n" +
 	"\x06PUBLIC\x10\x02B\xa1\x01\n" +
-	"\x10com.slash.api.v1B\vCommonProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
+	"\x10com.monotreme.api.v1B\vCommonProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eMonotreme::Api::V1b\x06proto3"
 
 var (
 	file_api_v1_common_proto_rawDescOnce sync.Once

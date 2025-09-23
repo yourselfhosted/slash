@@ -206,7 +206,7 @@ const file_store_activity_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\v21.slash.store.ActivityShorcutViewPayload.ValueListR\x05value:\x028\x01\x1a#\n" +
 	"\tValueList\x12\x16\n" +
 	"\x06values\x18\x01 \x03(\tR\x06valuesB\x96\x01\n" +
-	"\x0fcom.slash.storeB\rActivityProtoP\x01Z'github.com/bshort/monotreme/proto/gen/store\xa2\x02\x03SSX\xaa\x02\vSlash.Store\xca\x02\vSlash\\Store\xe2\x02\x17Slash\\Store\\GPBMetadata\xea\x02\fSlash::Storeb\x06proto3"
+	"\x0fcom.monotreme.storeB\rActivityProtoP\x01Z'github.com/bshort/monotreme/proto/gen/store\xa2\x02\x03SSX\xaa\x02\vSlash.Store\xca\x02\vSlash\\Store\xe2\x02\x17Slash\\Store\\GPBMetadata\xea\x02\fMonotreme::Storeb\x06proto3"
 
 var (
 	file_store_activity_proto_rawDescOnce sync.Once

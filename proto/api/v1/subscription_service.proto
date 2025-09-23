@@ -9,7 +9,7 @@ import "google/protobuf/timestamp.proto";
 option go_package = "gen/api/v1";
 
 service SubscriptionService {
-  // GetSubscription gets the current subscription of Slash instance.
+  // GetSubscription gets the current subscription of Monotreme instance.
   rpc GetSubscription(GetSubscriptionRequest) returns (Subscription) {
     option (google.api.http) = {get: "/v1/subscription"};
   }

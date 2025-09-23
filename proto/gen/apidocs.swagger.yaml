@@ -712,7 +712,7 @@ paths:
         - WorkspaceService
   /v1/subscription:
     get:
-      summary: GetSubscription gets the current subscription of Slash instance.
+      summary: GetSubscription gets the current subscription of Monotreme instance.
       operationId: SubscriptionService_GetSubscription
       responses:
         "200":

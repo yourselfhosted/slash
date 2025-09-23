@@ -311,7 +311,7 @@ const file_api_v1_subscription_service_proto_rawDesc = "" +
 	"\x0fGetSubscription\x12$.slash.api.v1.GetSubscriptionRequest\x1a\x1a.slash.api.v1.Subscription\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/subscription\x12v\n" +
 	"\x12UpdateSubscription\x12'.slash.api.v1.UpdateSubscriptionRequest\x1a\x1a.slash.api.v1.Subscription\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*2\x10/v1/subscription\x12s\n" +
 	"\x12DeleteSubscription\x12'.slash.api.v1.DeleteSubscriptionRequest\x1a\x1a.slash.api.v1.Subscription\"\x18\x82\xd3\xe4\x93\x02\x12*\x10/v1/subscriptionB\xae\x01\n" +
-	"\x10com.slash.api.v1B\x18SubscriptionServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
+	"\x10com.monotreme.api.v1B\x18SubscriptionServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eMonotreme::Api::V1b\x06proto3"
 
 var (
 	file_api_v1_subscription_service_proto_rawDescOnce sync.Once

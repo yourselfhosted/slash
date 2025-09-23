@@ -1,6 +1,6 @@
-# Slash Shortcuts
+# Monotreme Shortcuts
 
-**Slash Shortcuts** is a handy tool designed to make handling and sharing links in your digital workspace a breeze.
+**Monotreme Shortcuts** is a handy tool designed to make handling and sharing links in your digital workspace a breeze.
 
 ## What is a Shortcut?
 
@@ -26,13 +26,13 @@ A Shortcut is a simplified version of a link with essential details, making it e
 
 #### Direct Access
 
-Effortlessly access your Shortcut's content directly by using the assigned name as part of the Slash Shortcuts format.
+Effortlessly access your Shortcut's content directly by using the assigned name as part of the Monotreme Shortcuts format.
 
 For example, if your Shortcut is named "meet-john", the direct access link would be `{YOUR_DOMAIN}/s/meet-john`. Simply enter this user-friendly shortcut into your browser to reach the associated content with ease.
 
 #### Browser Extension Access
 
-Install the Slash Shortcuts browser extension for even quicker access. Once installed, simply type `s/meet-john` into your browser's address bar, and the extension will seamlessly redirect you to the corresponding page.
+Install the Monotreme Shortcuts browser extension for even quicker access. Once installed, simply type `s/meet-john` into your browser's address bar, and the extension will seamlessly redirect you to the corresponding page.
 
 ### Updating and Managing Shortcuts
 

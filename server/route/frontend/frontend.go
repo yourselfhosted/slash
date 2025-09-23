@@ -207,7 +207,7 @@ type Metadata struct {
 
 func getDefaultMetadata() *Metadata {
 	return &Metadata{
-		Title: "Slash",
+		Title: "Monotreme",
 	}
 }
 

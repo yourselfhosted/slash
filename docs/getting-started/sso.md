@@ -4,7 +4,7 @@
 
 **Single Sign-On (SSO)** is an authentication method that enables users to securely authenticate with multiple applications and websites by using just one set of credentials.
 
-Slash supports SSO integration with **OAuth 2.0** standard.
+Monotreme supports SSO integration with **OAuth 2.0** standard.
 
 ## Create a new SSO provider
 
@@ -31,7 +31,7 @@ The information is the base concept of OAuth 2.0 and comes from your provider.
 
 For different providers, the structures returned by their user information API are usually not the same. In order to know how to map the user information from an provider into user fields, you need to fill the user information mapping form.
 
-Slash will use the mapping to import the user profile fields when creating new accounts. The most important user field mapping is the identifier which is used to identify the Slash account associated with the OAuth 2.0 login.
+Monotreme will use the mapping to import the user profile fields when creating new accounts. The most important user field mapping is the identifier which is used to identify the Monotreme account associated with the OAuth 2.0 login.
 
 - **Identifier** is the field name of primary email in 3rd-party user info;
 - **Display name** is the field name of display name in 3rd-party user info (optional);

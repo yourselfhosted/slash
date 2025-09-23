@@ -28,7 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SubscriptionServiceClient interface {
-	// GetSubscription gets the current subscription of Slash instance.
+	// GetSubscription gets the current subscription of Monotreme instance.
 	GetSubscription(ctx context.Context, in *GetSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error)
 	// UpdateSubscription updates the subscription.
 	UpdateSubscription(ctx context.Context, in *UpdateSubscriptionRequest, opts ...grpc.CallOption) (*Subscription, error)
@@ -78,7 +78,7 @@ func (c *subscriptionServiceClient) DeleteSubscription(ctx context.Context, in *
 // All implementations must embed UnimplementedSubscriptionServiceServer
 // for forward compatibility.
 type SubscriptionServiceServer interface {
-	// GetSubscription gets the current subscription of Slash instance.
+	// GetSubscription gets the current subscription of Monotreme instance.
 	GetSubscription(context.Context, *GetSubscriptionRequest) (*Subscription, error)
 	// UpdateSubscription updates the subscription.
 	UpdateSubscription(context.Context, *UpdateSubscriptionRequest) (*Subscription, error)

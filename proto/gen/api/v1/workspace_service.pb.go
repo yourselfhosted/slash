@@ -719,7 +719,7 @@ const file_api_v1_workspace_service_proto_rawDesc = "" +
 	"\x13GetWorkspaceProfile\x12(.slash.api.v1.GetWorkspaceProfileRequest\x1a\x1e.slash.api.v1.WorkspaceProfile\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/v1/workspace/profile\x12\x82\x01\n" +
 	"\x13GetWorkspaceSetting\x12(.slash.api.v1.GetWorkspaceSettingRequest\x1a\x1e.slash.api.v1.WorkspaceSetting\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/v1/workspace/setting\x12\xa7\x01\n" +
 	"\x16UpdateWorkspaceSetting\x12+.slash.api.v1.UpdateWorkspaceSettingRequest\x1a\x1e.slash.api.v1.WorkspaceSetting\"@\xdaA\x13setting,update_mask\x82\xd3\xe4\x93\x02$:\asetting2\x19/api/v1/workspace/settingB\xab\x01\n" +
-	"\x10com.slash.api.v1B\x15WorkspaceServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
+	"\x10com.monotreme.api.v1B\x15WorkspaceServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eMonotreme::Api::V1b\x06proto3"
 
 var (
 	file_api_v1_workspace_service_proto_rawDescOnce sync.Once

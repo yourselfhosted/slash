@@ -369,7 +369,7 @@ const file_api_v1_user_setting_service_proto_rawDesc = "" +
 	"\x12UserSettingService\x12z\n" +
 	"\x0eGetUserSetting\x12#.slash.api.v1.GetUserSettingRequest\x1a\x19.slash.api.v1.UserSetting\"(\xdaA\x02id\x82\xd3\xe4\x93\x02\x1d\x12\x1b/api/v1/users/{id}/settings\x12\xa4\x01\n" +
 	"\x11UpdateUserSetting\x12&.slash.api.v1.UpdateUserSettingRequest\x1a\x19.slash.api.v1.UserSetting\"L\xdaA\x18user_setting,update_mask\x82\xd3\xe4\x93\x02+:\fuser_setting2\x1b/api/v1/users/{id}/settingsB\xad\x01\n" +
-	"\x10com.slash.api.v1B\x17UserSettingServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eSlash::Api::V1b\x06proto3"
+	"\x10com.monotreme.api.v1B\x17UserSettingServiceProtoP\x01Z.github.com/bshort/monotreme/proto/gen/api/v1;apiv1\xa2\x02\x03SAX\xaa\x02\fSlash.Api.V1\xca\x02\fSlash\\Api\\V1\xe2\x02\x18Slash\\Api\\V1\\GPBMetadata\xea\x02\x0eMonotreme::Api::V1b\x06proto3"
 
 var (
 	file_api_v1_user_setting_service_proto_rawDescOnce sync.Once

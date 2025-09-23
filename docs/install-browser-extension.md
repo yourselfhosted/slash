@@ -1,6 +1,6 @@
-# The Browser Extension of Slash
+# The Browser Extension of Monotreme
 
-Slash provides a browser extension to help you use your shortcuts in the search bar to go to the corresponding URL.
+Monotreme provides a browser extension to help you use your shortcuts in the search bar to go to the corresponding URL.
 
 ## How to use
 
@@ -12,18 +12,18 @@ For Firefox, you can install the extension from the [Firefox Add-ons](https://ad
 
 ### Prerequisites
 
-- You need to have a Slash instance running.
-- Sign in with your account on the Slash instance.
+- You need to have a Monotreme instance running.
+- Sign in with your account on the Monotreme instance.
 
 ### Configure the extension
 
-The extension needs to know the instance url of your Slash. You can configure it by following the steps below:
+The extension needs to know the instance url of your Monotreme. You can configure it by following the steps below:
 
 1. Click on the extension icon and click on the "Settings" button.
 
    ![](./assets/extension-usage/extension-setting-button.png)
 
-2. Enter the instance url of your Slash and then "Save".
+2. Enter the instance url of your Monotreme and then "Save".
 
    ![](./assets/extension-usage/extension-setting-page.png)
 
