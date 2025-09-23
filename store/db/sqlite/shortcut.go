@@ -9,14 +9,14 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/store"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
+	"github.com/bshort/monotreme/store"
 )
 
 func (d *DB) CreateShortcut(ctx context.Context, create *storepb.Shortcut) (*storepb.Shortcut, error) {
-	set := []string{"creator_id", "name", "link", "title", "description", "visibility", "tag"}
-	args := []any{create.CreatorId, create.Name, create.Link, create.Title, create.Description, create.Visibility.String(), strings.Join(create.Tags, " ")}
-	placeholder := []string{"?", "?", "?", "?", "?", "?", "?"}
+	set := []string{"creator_id", "name", "link", "title", "description", "visibility", "tag", "uuid"}
+	args := []any{create.CreatorId, create.Name, create.Link, create.Title, create.Description, create.Visibility.String(), strings.Join(create.Tags, " "), create.Uuid}
+	placeholder := []string{"?", "?", "?", "?", "?", "?", "?", "?"}
 	if create.OgMetadata != nil {
 		set = append(set, "og_metadata")
 		openGraphMetadataBytes, err := protojson.Marshal(create.OgMetadata)
@@ -83,7 +83,7 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 			` + strings.Join(set, ", ") + `
 		WHERE
 			id = ?
-		RETURNING id, creator_id, created_ts, updated_ts, name, link, title, description, visibility, tag, og_metadata
+		RETURNING id, creator_id, created_ts, updated_ts, name, link, title, description, visibility, tag, og_metadata, uuid
 	`
 	shortcut := &storepb.Shortcut{}
 	var visibility, tags, openGraphMetadataString string
@@ -99,6 +99,7 @@ func (d *DB) UpdateShortcut(ctx context.Context, update *store.UpdateShortcut) (
 		&visibility,
 		&tags,
 		&openGraphMetadataString,
+		&shortcut.Uuid,
 	); err != nil {
 		return nil, err
 	}
@@ -147,7 +148,8 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 			description,
 			visibility,
 			tag,
-			og_metadata
+			og_metadata,
+			uuid
 		FROM shortcut
 		WHERE `+strings.Join(where, " AND ")+`
 		ORDER BY created_ts DESC`,
@@ -174,6 +176,7 @@ func (d *DB) ListShortcuts(ctx context.Context, find *store.FindShortcut) ([]*st
 			&visibility,
 			&tags,
 			&openGraphMetadataString,
+			&shortcut.Uuid,
 		); err != nil {
 			return nil, err
 		}

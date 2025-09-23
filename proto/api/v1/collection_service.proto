@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package slash.api.v1;
+package monotreme.api.v1;
 
 import "api/v1/common.proto";
 import "google/api/annotations.proto";

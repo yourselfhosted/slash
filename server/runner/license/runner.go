@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/yourselfhosted/slash/server/service/license"
-	"github.com/yourselfhosted/slash/store"
+	"github.com/bshort/monotreme/server/service/license"
+	"github.com/bshort/monotreme/store"
 )
 
 type Runner struct {

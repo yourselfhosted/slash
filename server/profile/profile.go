@@ -18,7 +18,7 @@ type Profile struct {
 	Port int
 	// Data is the data directory.
 	Data string
-	// DSN points to where slash stores its own data.
+	// DSN points to where monotreme stores its own data.
 	DSN string
 	// Driver is the database driver. Supported drivers are sqlite, postgres.
 	Driver string
@@ -58,7 +58,7 @@ func (p *Profile) Validate() error {
 
 	if p.Mode == "prod" && p.Data == "" {
 		if runtime.GOOS == "windows" {
-			p.Data = filepath.Join(os.Getenv("ProgramData"), "slash")
+			p.Data = filepath.Join(os.Getenv("ProgramData"), "monotreme")
 			if _, err := os.Stat(p.Data); os.IsNotExist(err) {
 				if err := os.MkdirAll(p.Data, 0770); err != nil {
 					fmt.Printf("Failed to create data directory: %s, err: %+v\n", p.Data, err)
@@ -66,7 +66,7 @@ func (p *Profile) Validate() error {
 				}
 			}
 		} else {
-			p.Data = "/var/opt/slash"
+			p.Data = "/var/opt/monotreme"
 		}
 	}
 
@@ -78,7 +78,7 @@ func (p *Profile) Validate() error {
 
 	p.Data = dataDir
 	if p.Driver == "sqlite" && p.DSN == "" {
-		dbFile := fmt.Sprintf("slash_%s.db", p.Mode)
+		dbFile := fmt.Sprintf("monotreme_%s.db", p.Mode)
 		p.DSN = filepath.Join(dataDir, dbFile)
 	}
 

@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/yourselfhosted/slash/server/common"
-	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/store"
+	"github.com/bshort/monotreme/server/common"
+	"github.com/bshort/monotreme/server/profile"
+	"github.com/bshort/monotreme/store"
 )
 
 func TestGetCurrentSchemaVersion(t *testing.T) {

@@ -782,6 +782,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
+| uuid | [string](#string) |  |  |
 | creator_id | [int32](#int32) |  |  |
 | created_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | updated_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |

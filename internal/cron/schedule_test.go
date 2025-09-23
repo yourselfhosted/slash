@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yourselfhosted/slash/internal/cron"
+	"github.com/bshort/monotreme/internal/cron"
 )
 
 func TestNewMoment(t *testing.T) {

@@ -342,6 +342,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [int32](#int32) |  |  |
+| uuid | [string](#string) |  |  |
 | creator_id | [int32](#int32) |  |  |
 | created_ts | [int64](#int64) |  |  |
 | updated_ts | [int64](#int64) |  |  |

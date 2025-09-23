@@ -12,6 +12,7 @@ export const protobufPackage = "slash.store";
 
 export interface Shortcut {
   id: number;
+  uuid: string;
   creatorId: number;
   createdTs: number;
   updatedTs: number;
@@ -33,6 +34,7 @@ export interface OpenGraphMetadata {
 function createBaseShortcut(): Shortcut {
   return {
     id: 0,
+    uuid: "",
     creatorId: 0,
     createdTs: 0,
     updatedTs: 0,
@@ -50,6 +52,9 @@ export const Shortcut: MessageFns<Shortcut> = {
   encode(message: Shortcut, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
+    }
+    if (message.uuid !== "") {
+      writer.uint32(42).string(message.uuid);
     }
     if (message.creatorId !== 0) {
       writer.uint32(16).int32(message.creatorId);
@@ -97,6 +102,14 @@ export const Shortcut: MessageFns<Shortcut> = {
           }
 
           message.id = reader.int32();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.uuid = reader.string();
           continue;
         }
         case 2: {
@@ -194,6 +207,7 @@ export const Shortcut: MessageFns<Shortcut> = {
   fromPartial(object: DeepPartial<Shortcut>): Shortcut {
     const message = createBaseShortcut();
     message.id = object.id ?? 0;
+    message.uuid = object.uuid ?? "";
     message.creatorId = object.creatorId ?? 0;
     message.createdTs = object.createdTs ?? 0;
     message.updatedTs = object.updatedTs ?? 0;

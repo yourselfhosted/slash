@@ -6,7 +6,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
+	v1pb "github.com/bshort/monotreme/proto/gen/api/v1"
 )
 
 func (s *APIV1Service) GetSubscription(ctx context.Context, _ *v1pb.GetSubscriptionRequest) (*v1pb.Subscription, error) {

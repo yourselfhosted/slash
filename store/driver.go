@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
 )
 
 // Driver is an interface for store driver.

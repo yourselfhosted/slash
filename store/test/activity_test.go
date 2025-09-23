@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/yourselfhosted/slash/store"
+	"github.com/bshort/monotreme/store"
 )
 
 func TestActivityStore(t *testing.T) {

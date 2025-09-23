@@ -9,10 +9,10 @@ import (
 
 	"github.com/joho/godotenv"
 
-	"github.com/yourselfhosted/slash/server/common"
-	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/store"
-	"github.com/yourselfhosted/slash/store/db"
+	"github.com/bshort/monotreme/server/common"
+	"github.com/bshort/monotreme/server/profile"
+	"github.com/bshort/monotreme/store"
+	"github.com/bshort/monotreme/store/db"
 )
 
 func NewTestingStore(ctx context.Context, t *testing.T) *store.Store {

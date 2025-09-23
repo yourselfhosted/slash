@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/store"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
+	"github.com/bshort/monotreme/store"
 )
 
 func TestShortcutStore(t *testing.T) {

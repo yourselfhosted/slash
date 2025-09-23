@@ -15,8 +15,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/common"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
+	"github.com/bshort/monotreme/server/common"
 )
 
 //go:embed migration

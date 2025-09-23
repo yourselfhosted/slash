@@ -13,9 +13,9 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/store"
+	v1pb "github.com/bshort/monotreme/proto/gen/api/v1"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
+	"github.com/bshort/monotreme/store"
 )
 
 func (s *APIV1Service) ListUsers(ctx context.Context, _ *v1pb.ListUsersRequest) (*v1pb.ListUsersResponse, error) {

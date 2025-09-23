@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package slash.store;
+package monotreme.store;
 
 option go_package = "gen/store";
 

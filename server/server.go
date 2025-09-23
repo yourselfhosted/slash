@@ -6,20 +6,23 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/profile"
-	apiv1 "github.com/yourselfhosted/slash/server/route/api/v1"
-	"github.com/yourselfhosted/slash/server/route/frontend"
-	licensern "github.com/yourselfhosted/slash/server/runner/license"
-	"github.com/yourselfhosted/slash/server/runner/version"
-	"github.com/yourselfhosted/slash/server/service/license"
-	"github.com/yourselfhosted/slash/store"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
+	"github.com/bshort/monotreme/server/profile"
+	apiv1 "github.com/bshort/monotreme/server/route/api/v1"
+	"github.com/bshort/monotreme/server/route/frontend"
+	"github.com/bshort/monotreme/server/route/swagger"
+	licensern "github.com/bshort/monotreme/server/runner/license"
+	"github.com/bshort/monotreme/server/runner/version"
+	"github.com/bshort/monotreme/server/service/license"
+	"github.com/bshort/monotreme/store"
 )
 
 type Server struct {
@@ -69,6 +72,15 @@ func NewServer(ctx context.Context, profile *profile.Profile, store *store.Store
 	e.GET("/healthz", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Service ready.")
 	})
+
+	// Register Swagger API documentation endpoint.
+	swaggerSpec, err := s.loadSwaggerSpec()
+	if err != nil {
+		slog.Warn("Failed to load swagger spec", "error", err)
+		swaggerSpec = "swagger: '2.0'\ninfo:\n  title: Slash API\n  version: '1.0'\npaths: {}"
+	}
+	swaggerService := swagger.NewSwaggerService(swaggerSpec)
+	swaggerService.RegisterRoutes(e)
 
 	s.apiV1Service = apiv1.NewAPIV1Service(secret, profile, store, licenseService, s.Profile.Port+1)
 	// Register gRPC gateway as api v1.
@@ -148,3 +160,32 @@ func (s *Server) getSecretSession(ctx context.Context) (string, error) {
 	}
 	return secretSession, nil
 }
+
+// loadSwaggerSpec loads the swagger specification from file
+func (s *Server) loadSwaggerSpec() (string, error) {
+	// Try to find the swagger file relative to the executable or working directory
+	swaggerPaths := []string{
+		"proto/gen/apidocs.swagger.yaml",
+		"../proto/gen/apidocs.swagger.yaml",
+		"./proto/gen/apidocs.swagger.yaml",
+	}
+
+	for _, path := range swaggerPaths {
+		if content, err := os.ReadFile(path); err == nil {
+			return string(content), nil
+		}
+	}
+
+	// Try to find it relative to the executable location
+	execPath, err := os.Executable()
+	if err == nil {
+		execDir := filepath.Dir(execPath)
+		swaggerPath := filepath.Join(execDir, "proto", "gen", "apidocs.swagger.yaml")
+		if content, err := os.ReadFile(swaggerPath); err == nil {
+			return string(content), nil
+		}
+	}
+
+	return "", errors.New("swagger spec file not found")
+}
+

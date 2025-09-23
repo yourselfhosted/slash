@@ -3,10 +3,10 @@ package db
 import (
 	"github.com/pkg/errors"
 
-	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/store"
-	"github.com/yourselfhosted/slash/store/db/postgres"
-	"github.com/yourselfhosted/slash/store/db/sqlite"
+	"github.com/bshort/monotreme/server/profile"
+	"github.com/bshort/monotreme/store"
+	"github.com/bshort/monotreme/store/db/postgres"
+	"github.com/bshort/monotreme/store/db/sqlite"
 )
 
 // NewDBDriver creates new db driver based on profile.

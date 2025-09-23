@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
 )
 
 type UpdateCollection struct {

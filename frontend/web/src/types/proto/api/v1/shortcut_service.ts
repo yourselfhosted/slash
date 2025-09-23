@@ -15,6 +15,7 @@ export const protobufPackage = "slash.api.v1";
 
 export interface Shortcut {
   id: number;
+  uuid: string;
   creatorId: number;
   createdTime?: Date | undefined;
   updatedTime?: Date | undefined;
@@ -80,6 +81,7 @@ export interface GetShortcutAnalyticsResponse_AnalyticsItem {
 function createBaseShortcut(): Shortcut {
   return {
     id: 0,
+    uuid: "",
     creatorId: 0,
     createdTime: undefined,
     updatedTime: undefined,
@@ -98,6 +100,9 @@ export const Shortcut: MessageFns<Shortcut> = {
   encode(message: Shortcut, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
+    }
+    if (message.uuid !== "") {
+      writer.uint32(42).string(message.uuid);
     }
     if (message.creatorId !== 0) {
       writer.uint32(16).int32(message.creatorId);
@@ -148,6 +153,14 @@ export const Shortcut: MessageFns<Shortcut> = {
           }
 
           message.id = reader.int32();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.uuid = reader.string();
           continue;
         }
         case 2: {
@@ -253,6 +266,7 @@ export const Shortcut: MessageFns<Shortcut> = {
   fromPartial(object: DeepPartial<Shortcut>): Shortcut {
     const message = createBaseShortcut();
     message.id = object.id ?? 0;
+    message.uuid = object.uuid ?? "";
     message.creatorId = object.creatorId ?? 0;
     message.createdTime = object.createdTime ?? undefined;
     message.updatedTime = object.updatedTime ?? undefined;

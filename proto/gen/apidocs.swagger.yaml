@@ -382,6 +382,8 @@ paths:
           schema:
             type: object
             properties:
+              uuid:
+                type: string
               creatorId:
                 type: integer
                 format: int32
@@ -861,6 +863,8 @@ definitions:
       id:
         type: integer
         format: int32
+      uuid:
+        type: string
       creatorId:
         type: integer
         format: int32

@@ -14,11 +14,11 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	"github.com/yourselfhosted/slash/internal/util"
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/common"
-	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/store"
+	"github.com/bshort/monotreme/internal/util"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
+	"github.com/bshort/monotreme/server/common"
+	"github.com/bshort/monotreme/server/profile"
+	"github.com/bshort/monotreme/store"
 )
 
 //go:embed dist

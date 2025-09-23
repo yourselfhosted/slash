@@ -6,7 +6,7 @@ managed:
       module: buf.build/googleapis/googleapis
   override:
     - file_option: go_package_prefix
-      value: github.com/yourselfhosted/slash/proto/gen
+      value: github.com/bshort/monotreme/proto/gen
 plugins:
   - remote: buf.build/protocolbuffers/go
     out: gen

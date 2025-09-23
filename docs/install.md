@@ -11,7 +11,7 @@ The only requirement is a server with Docker installed.
 To deploy Slash using docker run, just one command is needed:
 
 ```bash
-docker run -d --name slash --publish 5231:5231 --volume ~/.slash/:/var/opt/slash yourselfhosted/slash:latest
+docker run -d --name slash --publish 5231:5231 --volume ~/.slash/:/var/opt/slash bshort/monotreme:latest
 ```
 
 This will start Slash in the background and expose it on port `5231`. Data is stored in `~/.slash/`. You can customize the port and data directory.
@@ -33,7 +33,7 @@ cp -r ~/.slash/slash_prod.db ~/.slash/slash_prod.db.bak
 Then pull the latest image:
 
 ```bash
-docker pull yourselfhosted/slash:latest
+docker pull bshort/monotreme:latest
 ```
 
 Finally, restart Slash by following the steps in [Docker Run](#docker-run).
@@ -44,7 +44,7 @@ Assume that docker compose is deployed in the `/opt/slash` directory.
 
 ```bash
 mkdir -p /opt/slash && cd /opt/slash
-curl -#LO https://github.com/yourselfhosted/slash/raw/main/docker-compose.yml
+curl -#LO https://github.com/bshort/slash/raw/main/docker-compose.yml
 docker compose up -d
 ```
 
@@ -68,7 +68,7 @@ To switch to PostgreSQL, you can use the following steps:
 You can start Slash with Docker using the following command:
 
 ```shell
-docker run -d --name slash --publish 5231:5231 --volume ~/.slash/:/var/opt/slash yourselfhosted/slash:latest --driver postgres --dsn 'postgresql://postgres:PASSWORD@localhost:5432/slash'
+docker run -d --name slash --publish 5231:5231 --volume ~/.slash/:/var/opt/slash bshort/monotreme:latest --driver postgres --dsn 'postgresql://postgres:PASSWORD@localhost:5432/slash'
 ```
 
 Additionally, you can set these configurations via environment variables:

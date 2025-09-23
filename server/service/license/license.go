@@ -10,11 +10,11 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/server/service/license/lemonsqueezy"
-	"github.com/yourselfhosted/slash/store"
+	v1pb "github.com/bshort/monotreme/proto/gen/api/v1"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
+	"github.com/bshort/monotreme/server/profile"
+	"github.com/bshort/monotreme/server/service/license/lemonsqueezy"
+	"github.com/bshort/monotreme/store"
 )
 
 //go:embed slash.public.pem
@@ -32,7 +32,7 @@ func NewLicenseService(profile *profile.Profile, store *store.Store) *LicenseSer
 	return &LicenseService{
 		Profile:            profile,
 		Store:              store,
-		cachedSubscription: getSubscriptionForFreePlan(),
+		cachedSubscription: getSubscriptionForProPlan(),
 	}
 }
 
@@ -42,7 +42,7 @@ func (s *LicenseService) LoadSubscription(ctx context.Context) (*v1pb.Subscripti
 		return nil, errors.Wrap(err, "failed to get workspace general setting")
 	}
 
-	subscription := getSubscriptionForFreePlan()
+	subscription := getSubscriptionForProPlan()
 	licenseKey := workspaceGeneralSetting.LicenseKey
 	if licenseKey == "" {
 		s.cachedSubscription = subscription
@@ -217,5 +217,20 @@ func getSubscriptionForFreePlan() *v1pb.Subscription {
 		ShortcutsLimit:   100,
 		CollectionsLimit: 5,
 		Features:         []string{},
+	}
+}
+
+func getSubscriptionForProPlan() *v1pb.Subscription {
+	features := getDefaultFeatures(v1pb.PlanType_PRO)
+	featureStrings := make([]string, len(features))
+	for i, feature := range features {
+		featureStrings[i] = feature.String()
+	}
+	return &v1pb.Subscription{
+		Plan:             v1pb.PlanType_PRO,
+		Seats:            -1, // Unlimited
+		ShortcutsLimit:   -1, // Unlimited
+		CollectionsLimit: -1, // Unlimited
+		Features:         featureStrings,
 	}
 }

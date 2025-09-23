@@ -45,10 +45,12 @@ CREATE TABLE shortcut (
   description TEXT NOT NULL DEFAULT '',
   visibility TEXT NOT NULL CHECK (visibility IN ('PRIVATE', 'WORKSPACE', 'PUBLIC')) DEFAULT 'PRIVATE',
   tag TEXT NOT NULL DEFAULT '',
-  og_metadata TEXT NOT NULL DEFAULT '{}'
+  og_metadata TEXT NOT NULL DEFAULT '{}',
+  uuid TEXT NOT NULL DEFAULT ''
 );
 
 CREATE INDEX idx_shortcut_name ON shortcut(name);
+CREATE INDEX idx_shortcut_uuid ON shortcut(uuid);
 
 -- activity
 CREATE TABLE activity (

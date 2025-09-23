@@ -38,7 +38,7 @@ const SubscriptionSetting: React.FC = () => {
       },
     });
   };
-
+/*
   const handleUpdateLicenseKey = async () => {
     if (!isAdmin) {
       toast.error("Only admin can upload license key");
@@ -55,6 +55,7 @@ const SubscriptionSetting: React.FC = () => {
     }
     setLicenseKey("");
     await workspaceStore.fetchWorkspaceProfile();
+    */
   };
 
   return (

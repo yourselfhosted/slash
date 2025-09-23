@@ -7,8 +7,8 @@ import (
 	// SQLite driver.
 	_ "modernc.org/sqlite"
 
-	"github.com/yourselfhosted/slash/server/profile"
-	"github.com/yourselfhosted/slash/store"
+	"github.com/bshort/monotreme/server/profile"
+	"github.com/bshort/monotreme/store"
 )
 
 type DB struct {

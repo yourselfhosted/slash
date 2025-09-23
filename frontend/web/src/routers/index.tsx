@@ -12,7 +12,7 @@ import ShortcutDetail from "@/pages/ShortcutDetail";
 import ShortcutSpace from "@/pages/ShortcutSpace";
 import SignIn from "@/pages/SignIn";
 import SignUp from "@/pages/SignUp";
-import SubscriptionSetting from "@/pages/SubscriptionSetting";
+//import SubscriptionSetting from "@/pages/SubscriptionSetting";
 import UserSetting from "@/pages/UserSetting";
 import WorkspaceSetting from "@/pages/WorkspaceSetting";
 
@@ -69,10 +69,6 @@ const router = createBrowserRouter([
           {
             path: "/setting/workspace",
             element: <WorkspaceSetting />,
-          },
-          {
-            path: "/setting/subscription",
-            element: <SubscriptionSetting />,
           },
         ],
       },

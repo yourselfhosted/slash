@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/mssola/useragent"
 	"github.com/pkg/errors"
 	"golang.org/x/exp/slices"
@@ -15,10 +16,10 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
-	storepb "github.com/yourselfhosted/slash/proto/gen/store"
-	"github.com/yourselfhosted/slash/server/service/license"
-	"github.com/yourselfhosted/slash/store"
+	v1pb "github.com/bshort/monotreme/proto/gen/api/v1"
+	storepb "github.com/bshort/monotreme/proto/gen/store"
+	"github.com/bshort/monotreme/server/service/license"
+	"github.com/bshort/monotreme/store"
 )
 
 func (s *APIV1Service) ListShortcuts(ctx context.Context, _ *v1pb.ListShortcutsRequest) (*v1pb.ListShortcutsResponse, error) {
@@ -99,16 +100,6 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *v1pb.CreateS
 		return nil, status.Errorf(codes.InvalidArgument, "name and link are required")
 	}
 
-	if !s.LicenseService.IsFeatureEnabled(license.FeatureTypeUnlimitedShortcuts) {
-		shortcuts, err := s.Store.ListShortcuts(ctx, &store.FindShortcut{})
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to get shortcut list, err: %v", err)
-		}
-		shortcutsLimit := int(s.LicenseService.GetSubscription().ShortcutsLimit)
-		if len(shortcuts) >= shortcutsLimit {
-			return nil, status.Errorf(codes.PermissionDenied, "Maximum number of shortcuts %d reached", shortcutsLimit)
-		}
-	}
 
 	user, err := getCurrentUser(ctx, s.Store)
 	if err != nil {
@@ -123,6 +114,7 @@ func (s *APIV1Service) CreateShortcut(ctx context.Context, request *v1pb.CreateS
 		Description: request.Shortcut.Description,
 		Visibility:  convertVisibilityToStorepb(request.Shortcut.Visibility),
 		OgMetadata:  &storepb.OpenGraphMetadata{},
+		Uuid:        uuid.New().String(),
 	}
 	if shortcutCreate.Visibility == storepb.Visibility_VISIBILITY_UNSPECIFIED {
 		workspaceSetting, err := s.GetWorkspaceSetting(ctx, nil)
@@ -356,6 +348,7 @@ func (s *APIV1Service) convertShortcutFromStorepb(ctx context.Context, shortcut 
 		Tags:        shortcut.Tags,
 		Description: shortcut.Description,
 		Visibility:  convertVisibilityFromStorepb(shortcut.Visibility),
+		Uuid:        shortcut.Uuid,
 		OgMetadata: &v1pb.Shortcut_OpenGraphMetadata{
 			Title:       shortcut.OgMetadata.Title,
 			Description: shortcut.OgMetadata.Description,
