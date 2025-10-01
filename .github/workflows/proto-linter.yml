@@ -13,8 +13,6 @@ on:
       - "release/*.*.*"
     paths:
       - "proto/**"
-    paths-ignore:
-      - ".github/**"
 
 jobs:
   lint-protos:
