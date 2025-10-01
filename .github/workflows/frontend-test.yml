@@ -6,13 +6,11 @@ on:
       - main
       - "release/v*.*.*"
     paths-ignore:
-      - '.github/**'
+      - ".github/**"
   pull_request:
     branches: [main]
     paths:
       - "frontend/web/**"
-    paths-ignore:
-      - '.github/**'
 
 jobs:
   eslint-checks:
