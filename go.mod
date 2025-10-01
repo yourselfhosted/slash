@@ -1,6 +1,6 @@
 module github.com/yourselfhosted/slash
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.24.2
 
@@ -68,7 +68,7 @@ require (
 	github.com/nyaruka/phonenumbers v1.6.3
 	github.com/pkg/errors v0.9.1
 	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b
-	golang.org/x/mod v0.26.0
+	golang.org/x/mod v0.28.0
 	golang.org/x/oauth2 v0.30.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250528174236-200df99c418a
 	google.golang.org/grpc v1.74.2
