@@ -5,10 +5,14 @@ on:
     branches:
       - main
       - "release/v*.*.*"
+    paths-ignore:
+      - '.github/**'
   pull_request:
     branches: [main]
     paths:
       - "frontend/web/**"
+    paths-ignore:
+      - '.github/**'
 
 jobs:
   eslint-checks:
