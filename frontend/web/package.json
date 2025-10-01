@@ -16,7 +16,7 @@
     "classnames": "^2.5.1",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.13",
-    "i18next": "^24.2.3",
+    "i18next": "^25.5.2",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.469.0",
     "nice-grpc-web": "^3.3.7",
