@@ -13,6 +13,7 @@ import (
 	v1pb "github.com/yourselfhosted/slash/proto/gen/api/v1"
 	storepb "github.com/yourselfhosted/slash/proto/gen/store"
 	"github.com/yourselfhosted/slash/server/profile"
+	"github.com/yourselfhosted/slash/server/service/license/gumroad"
 	"github.com/yourselfhosted/slash/server/service/license/lemonsqueezy"
 	"github.com/yourselfhosted/slash/store"
 )
@@ -159,18 +160,31 @@ func validateLicenseKey(licenseKey string) (*ValidateResult, error) {
 		return result, nil
 	}
 
-	// Try to validate the license key with the license server.
-	validateResponse, err := lemonsqueezy.ValidateLicenseKey(licenseKey, "")
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to validate license key")
+	// Try to validate the license key with Gumroad.
+	gumroadResponse, err := gumroad.ValidateLicenseKey(licenseKey, "")
+	if err == nil && gumroadResponse.Success {
+		result := &ValidateResult{
+			Plan:     v1pb.PlanType_PRO,
+			Features: getDefaultFeatures(v1pb.PlanType_PRO),
+			Seats:    -1, // Unlimited seats for Gumroad subscriptions
+		}
+		// For subscription products, set expiration based on recurrence
+		if gumroadResponse.Purchase != nil && gumroadResponse.Purchase.Recurrence != "" {
+			// Subscription is active, set expiration to 1 year from now
+			result.ExpiresTime = time.Now().AddDate(1, 0, 0)
+		}
+		return result, nil
 	}
-	if validateResponse.Valid {
+
+	// Try to validate the license key with LemonSqueezy (fallback for existing customers).
+	lemonsqueezyResponse, err := lemonsqueezy.ValidateLicenseKey(licenseKey, "")
+	if err == nil && lemonsqueezyResponse.Valid {
 		result := &ValidateResult{
 			Plan:     v1pb.PlanType_PRO,
 			Features: getDefaultFeatures(v1pb.PlanType_PRO),
 		}
-		if validateResponse.LicenseKey.ExpiresAt != nil && *validateResponse.LicenseKey.ExpiresAt != "" {
-			expiresTime, err := time.Parse(time.RFC3339Nano, *validateResponse.LicenseKey.ExpiresAt)
+		if lemonsqueezyResponse.LicenseKey.ExpiresAt != nil && *lemonsqueezyResponse.LicenseKey.ExpiresAt != "" {
+			expiresTime, err := time.Parse(time.RFC3339Nano, *lemonsqueezyResponse.LicenseKey.ExpiresAt)
 			if err != nil {
 				return nil, errors.Wrap(err, "failed to parse license key expires time")
 			}
