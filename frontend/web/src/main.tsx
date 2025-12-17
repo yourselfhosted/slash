@@ -1,6 +1,6 @@
 import { CssVarsProvider } from "@mui/joy";
 import { createRoot } from "react-dom/client";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/sonner";
 import { RouterProvider } from "react-router-dom";
 import "./css/index.css";
 import "./css/joy-ui.css";
@@ -16,6 +16,6 @@ root.render(
     <CommonContextProvider>
       <RouterProvider router={router} />
     </CommonContextProvider>
-    <Toaster position="top-center" />
+    <Toaster />
   </CssVarsProvider>,
 );
