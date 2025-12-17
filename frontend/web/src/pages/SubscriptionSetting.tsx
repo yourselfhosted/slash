@@ -176,12 +176,7 @@ const SubscriptionSetting: React.FC = () => {
                 </ul>
               </div>
               <div className="mt-6">
-                <Link
-                  className="w-full"
-                  underline="none"
-                  href="https://yourselfhosted.gumroad.com/l/slash-pro"
-                  target="_blank"
-                >
+                <Link className="w-full" underline="none" href="https://yourselfhosted.gumroad.com/l/slash-pro" target="_blank">
                   <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500 shadow hover:opacity-80">Get Pro License</Button>
                 </Link>
               </div>

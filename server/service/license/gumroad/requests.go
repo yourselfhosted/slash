@@ -133,7 +133,7 @@ func ValidateLicenseKey(licenseKey string, instanceName string) (*ValidateLicens
 	return &response, nil
 }
 
-func ActiveLicenseKey(licenseKey string, instanceName string) (*ActiveLicenseKeyResponse, error) {
+func ActiveLicenseKey(licenseKey string, _ string) (*ActiveLicenseKeyResponse, error) {
 	data := map[string]string{
 		"product_id":           productID,
 		"license_key":          licenseKey,
