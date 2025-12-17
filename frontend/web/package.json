@@ -54,6 +54,7 @@
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "protobufjs": "^7.5.3",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.2",
     "vite": "^6.3.5"
   },
