@@ -18,7 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Card } from "@/components/ui/card";
+import { AnimatedCard } from "@/components/ui/animated-card";
 import { Badge } from "@/components/ui/badge";
 
 interface Props {
@@ -43,7 +43,7 @@ const ShortcutCard = (props: Props) => {
   };
 
   return (
-    <Card
+    <AnimatedCard
       className={classNames(
         "group p-4 w-full flex flex-col justify-start items-start hover:shadow-md transition-shadow duration-200"
       )}
@@ -173,7 +173,7 @@ const ShortcutCard = (props: Props) => {
           </Tooltip>
         </TooltipProvider>
       </div>
-    </Card>
+    </AnimatedCard>
   );
 };
 
