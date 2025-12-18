@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useParams } from "react-router-dom";
 import Icon from "@/components/Icon";
 import ShortcutFrame from "@/components/ShortcutFrame";

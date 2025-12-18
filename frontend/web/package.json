@@ -9,9 +9,6 @@
     "type-check": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/joy": "5.0.0-beta.48",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-avatar": "^1.1.11",
@@ -40,7 +37,6 @@
     "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hot-toast": "^2.5.2",
     "react-i18next": "^15.6.1",
     "react-router-dom": "^7.8.0",
     "react-use": "^17.6.0",

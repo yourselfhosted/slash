@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useParams, useSearchParams } from "react-router-dom";
 import CreateShortcutDrawer from "@/components/CreateShortcutDrawer";
 import { isURL } from "@/helpers/utils";

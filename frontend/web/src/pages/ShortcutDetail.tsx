@@ -2,7 +2,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { showCommonDialog } from "@/components/Alert";

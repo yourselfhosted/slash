@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { head, isEqual } from "lodash-es";
 import { useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
