@@ -1,6 +1,6 @@
-import { Alert, Button, Divider, Link, Textarea } from "@mui/joy";
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
+import { Link } from "react-router-dom";
 import { showCommonDialog } from "@/components/Alert";
 import Icon from "@/components/Icon";
 import SubscriptionFAQ from "@/components/SubscriptionFAQ";
@@ -9,6 +9,10 @@ import { useUserStore, useWorkspaceStore } from "@/stores";
 import { stringifyPlanType } from "@/stores/subscription";
 import { PlanType } from "@/types/proto/api/v1/subscription_service";
 import { Role } from "@/types/proto/api/v1/user_service";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const SubscriptionSetting: React.FC = () => {
   const workspaceStore = useWorkspaceStore();
@@ -67,8 +71,7 @@ const SubscriptionSetting: React.FC = () => {
         </div>
         <Textarea
           className="w-full mt-2"
-          minRows={2}
-          maxRows={2}
+          rows={2}
           placeholder="Enter your license key here - write only"
           value={licenseKey}
           onChange={(event) => setLicenseKey(event.target.value)}
@@ -76,15 +79,20 @@ const SubscriptionSetting: React.FC = () => {
         <div className="w-full flex justify-between items-center mt-4">
           <div>
             {subscription.plan === PlanType.FREE && (
-              <Link href="https://yourselfhosted.gumroad.com/l/slash-pro" target="_blank">
+              <a
+                href="https://yourselfhosted.gumroad.com/l/slash-pro"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline inline-flex items-center"
+              >
                 Buy a license key
                 <Icon.ExternalLink className="w-4 h-auto ml-1" />
-              </Link>
+              </a>
             )}
           </div>
           <div className="flex justify-end items-center gap-2">
             {subscription.plan !== PlanType.FREE && (
-              <Button color="neutral" variant="plain" onClick={handleDeleteLicenseKey}>
+              <Button variant="outline" onClick={handleDeleteLicenseKey}>
                 Reset
               </Button>
             )}
@@ -94,17 +102,19 @@ const SubscriptionSetting: React.FC = () => {
           </div>
         </div>
       </div>
-      <Divider />
+      <Separator />
       <section className="w-full pb-8 dark:bg-zinc-900 flex items-center justify-center">
         <div className="w-full px-6">
           <div className="max-w-4xl mx-auto mb-12">
-            <Alert className="!inline-block mb-12">
-              Slash is an open source, self-hosted platform for sharing and managing your most frequently used links. Easily create
-              customizable, human-readable shortcuts to streamline your link management. Our source code is available and accessible on{" "}
-              <Link href="https://github.com/yourselfhosted/slash" target="_blank">
-                GitHub
-              </Link>{" "}
-              so anyone can get it, inspect it and review it.
+            <Alert className="inline-block mb-12">
+              <AlertDescription>
+                Slash is an open source, self-hosted platform for sharing and managing your most frequently used links. Easily create
+                customizable, human-readable shortcuts to streamline your link management. Our source code is available and accessible on{" "}
+                <a href="https://github.com/yourselfhosted/slash" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                  GitHub
+                </a>{" "}
+                so anyone can get it, inspect it and review it.
+              </AlertDescription>
             </Alert>
           </div>
           <div className="w-full grid grid-cols-1 gap-6 lg:gap-12 mt-8 md:grid-cols-3 md:max-w-4xl mx-auto">
@@ -176,9 +186,9 @@ const SubscriptionSetting: React.FC = () => {
                 </ul>
               </div>
               <div className="mt-6">
-                <Link className="w-full" underline="none" href="https://yourselfhosted.gumroad.com/l/slash-pro" target="_blank">
+                <a className="w-full block" href="https://yourselfhosted.gumroad.com/l/slash-pro" target="_blank" rel="noopener noreferrer">
                   <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500 shadow hover:opacity-80">Get Pro License</Button>
-                </Link>
+                </a>
               </div>
             </div>
             <div className="flex flex-col p-6 bg-white dark:bg-zinc-800 shadow-lg rounded-lg dark:bg-zinc-850 justify-between border border-gray-300 dark:border-zinc-700">
@@ -215,14 +225,14 @@ const SubscriptionSetting: React.FC = () => {
                 </ul>
               </div>
               <div className="mt-6">
-                <Link
-                  className="w-full"
-                  underline="none"
+                <a
+                  className="w-full block"
                   href="mailto:yourselfhosted@gmail.com?subject=Inquiry about Slash Team Plan"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Button className="w-full">Contact us</Button>
-                </Link>
+                </a>
               </div>
             </div>
           </div>

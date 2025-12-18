@@ -1,11 +1,21 @@
-import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { userServiceClient } from "@/grpcweb";
 import useLoading from "@/hooks/useLoading";
 import { useUserStore } from "@/stores";
 import Icon from "./Icon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Props {
   onClose: () => void;
@@ -55,9 +65,9 @@ const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleRoleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleExpirationChange = (value: string) => {
     setPartialState({
-      expiration: Number(e.target.value),
+      expiration: Number(value),
     });
   };
 
@@ -85,52 +95,57 @@ const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Modal open={true}>
-      <ModalDialog>
-        <div className="flex flex-row justify-between items-center w-80">
-          <span className="text-lg font-medium">Create Access Token</span>
-          <Button variant="plain" onClick={onClose}>
-            <Icon.X className="w-5 h-auto text-gray-600" />
-          </Button>
-        </div>
-        <div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Description <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="Some description"
-                value={state.description}
-                onChange={handleDescriptionInputChange}
-              />
-            </div>
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="w-80 sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex flex-row justify-between items-center">
+            <span>Create Access Token</span>
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <Icon.X className="w-5 h-auto" />
+            </Button>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="description">
+              Description <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="description"
+              type="text"
+              placeholder="Some description"
+              value={state.description}
+              onChange={handleDescriptionInputChange}
+            />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Expiration <span className="text-red-600">*</span>
-            </span>
-            <div className="w-full flex flex-row justify-start items-center text-base">
-              <RadioGroup orientation="horizontal" value={state.expiration} onChange={handleRoleInputChange}>
+          <div className="space-y-2">
+            <Label>
+              Expiration <span className="text-destructive">*</span>
+            </Label>
+            <RadioGroup value={String(state.expiration)} onValueChange={handleExpirationChange}>
+              <div className="flex flex-col space-y-2">
                 {expirationOptions.map((option) => (
-                  <Radio key={option.value} value={option.value} checked={state.expiration === option.value} label={option.label} />
+                  <div key={option.value} className="flex items-center space-x-2">
+                    <RadioGroupItem value={String(option.value)} id={`expiration-${option.value}`} />
+                    <Label htmlFor={`expiration-${option.value}`} className="font-normal cursor-pointer">
+                      {option.label}
+                    </Label>
+                  </div>
                 ))}
-              </RadioGroup>
-            </div>
-          </div>
-          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-              {t("common.cancel")}
-            </Button>
-            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              {t("common.create")}
-            </Button>
+              </div>
+            </RadioGroup>
           </div>
         </div>
-      </ModalDialog>
-    </Modal>
+        <DialogFooter>
+          <Button variant="outline" disabled={requestState.isLoading} onClick={onClose}>
+            {t("common.cancel")}
+          </Button>
+          <Button disabled={requestState.isLoading} onClick={handleSaveBtnClick}>
+            {requestState.isLoading ? "Creating..." : t("common.create")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

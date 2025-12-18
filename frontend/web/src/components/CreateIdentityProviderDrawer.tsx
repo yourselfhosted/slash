@@ -1,7 +1,6 @@
-import { Button, DialogActions, DialogContent, DialogTitle, Divider, Drawer, Input, ModalClose } from "@mui/joy";
 import { isUndefined } from "lodash-es";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
 import { workspaceServiceClient } from "@/grpcweb";
@@ -9,6 +8,18 @@ import { absolutifyLink } from "@/helpers/utils";
 import useLoading from "@/hooks/useLoading";
 import { useWorkspaceStore } from "@/stores";
 import { IdentityProvider, IdentityProvider_Type, IdentityProviderConfig_OAuth2Config } from "@/types/proto/api/v1/workspace_service";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 interface Props {
   identityProvider?: IdentityProvider;
@@ -132,159 +143,160 @@ const CreateIdentityProviderDrawer: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Drawer anchor="right" open={true} onClose={onClose}>
-      <DialogTitle>{isCreating ? "Create Identity Provider" : "Edit Identity Provider"}</DialogTitle>
-      <ModalClose />
-      <DialogContent className="w-full max-w-full">
-        <div className="overflow-y-auto w-full mt-2 px-4 pb-4 sm:w-[24rem]">
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Title <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="A short title will be displayed in the UI"
-                value={state.identityProviderCreate.title}
-                onChange={handleTitleInputChange}
-              />
-            </div>
+    <Sheet open={true} onOpenChange={onClose}>
+      <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>{isCreating ? "Create Identity Provider" : "Edit Identity Provider"}</SheetTitle>
+          <SheetDescription>
+            {isCreating ? "Configure a new OAuth2 identity provider" : "Edit your identity provider settings"}
+          </SheetDescription>
+        </SheetHeader>
+        <div className="mt-6 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="title">
+              Title <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="title"
+              type="text"
+              placeholder="A short title will be displayed in the UI"
+              value={state.identityProviderCreate.title}
+              onChange={handleTitleInputChange}
+            />
           </div>
-          <Divider className="!mb-3" />
-          <p className="font-medium mb-2">Identity provider information</p>
-          {isCreating && (
-            <p className="shadow-sm rounded-md py-1 px-2 bg-zinc-100 dark:bg-zinc-900 text-sm w-full mb-2 break-all">
-              <span className="opacity-60">Redirect URL</span>
-              <br />
-              <code>{absolutifyLink("/auth/callback")}</code>
-            </p>
-          )}
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Client ID <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="Client ID of the OAuth2 provider"
-                value={state.identityProviderCreate.config?.oauth2?.clientId}
-                onChange={(e) => handleOAuth2ConfigChange(e, "clientId")}
-              />
-            </div>
+
+          <Separator />
+
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Identity provider information</p>
+            {isCreating && (
+              <div className="rounded-md py-2 px-3 bg-secondary text-sm w-full break-all">
+                <span className="text-muted-foreground">Redirect URL</span>
+                <br />
+                <code className="text-xs">{absolutifyLink("/auth/callback")}</code>
+              </div>
+            )}
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Client Secret <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="Client Secret of the OAuth2 provider"
-                value={state.identityProviderCreate.config?.oauth2?.clientSecret}
-                onChange={(e) => handleOAuth2ConfigChange(e, "clientSecret")}
-              />
-            </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="client-id">
+              Client ID <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="client-id"
+              type="text"
+              placeholder="Client ID of the OAuth2 provider"
+              value={state.identityProviderCreate.config?.oauth2?.clientId}
+              onChange={(e) => handleOAuth2ConfigChange(e, "clientId")}
+            />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Authorization endpoint <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="Authorization endpoint of the OAuth2 provider"
-                value={state.identityProviderCreate.config?.oauth2?.authUrl}
-                onChange={(e) => handleOAuth2ConfigChange(e, "authUrl")}
-              />
-            </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="client-secret">
+              Client Secret <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="client-secret"
+              type="text"
+              placeholder="Client Secret of the OAuth2 provider"
+              value={state.identityProviderCreate.config?.oauth2?.clientSecret}
+              onChange={(e) => handleOAuth2ConfigChange(e, "clientSecret")}
+            />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Token endpoint <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="Token endpoint of the OAuth2 provider"
-                value={state.identityProviderCreate.config?.oauth2?.tokenUrl}
-                onChange={(e) => handleOAuth2ConfigChange(e, "tokenUrl")}
-              />
-            </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="auth-url">
+              Authorization endpoint <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="auth-url"
+              type="text"
+              placeholder="Authorization endpoint of the OAuth2 provider"
+              value={state.identityProviderCreate.config?.oauth2?.authUrl}
+              onChange={(e) => handleOAuth2ConfigChange(e, "authUrl")}
+            />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              User endpoint <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="User endpoint of the OAuth2 provider"
-                value={state.identityProviderCreate.config?.oauth2?.userInfoUrl}
-                onChange={(e) => handleOAuth2ConfigChange(e, "userInfoUrl")}
-              />
-            </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="token-url">
+              Token endpoint <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="token-url"
+              type="text"
+              placeholder="Token endpoint of the OAuth2 provider"
+              value={state.identityProviderCreate.config?.oauth2?.tokenUrl}
+              onChange={(e) => handleOAuth2ConfigChange(e, "tokenUrl")}
+            />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Scopes <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="Scopes of the OAuth2 provider, separated by space"
-                value={state.identityProviderCreate.config?.oauth2?.scopes.join(" ")}
-                onChange={(e) => handleOAuth2ConfigChange(e, "scopes")}
-              />
-            </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="user-info-url">
+              User endpoint <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="user-info-url"
+              type="text"
+              placeholder="User endpoint of the OAuth2 provider"
+              value={state.identityProviderCreate.config?.oauth2?.userInfoUrl}
+              onChange={(e) => handleOAuth2ConfigChange(e, "userInfoUrl")}
+            />
           </div>
-          <Divider className="!mb-3" />
-          <p className="font-medium mb-2">Field mapping</p>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Identifier <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="The field in the user info response to identify the user"
-                value={state.identityProviderCreate.config?.oauth2?.fieldMapping?.identifier}
-                onChange={(e) => handleFieldMappingChange(e, "identifier")}
-              />
-            </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="scopes">
+              Scopes <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="scopes"
+              type="text"
+              placeholder="Scopes of the OAuth2 provider, separated by space"
+              value={state.identityProviderCreate.config?.oauth2?.scopes.join(" ")}
+              onChange={(e) => handleOAuth2ConfigChange(e, "scopes")}
+            />
           </div>
-          <div className="w-full flex flex-col justify-start items-start">
-            <span className="mb-2">Display name</span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="The field in the user info response to display the user"
-                value={state.identityProviderCreate.config?.oauth2?.fieldMapping?.displayName}
-                onChange={(e) => handleFieldMappingChange(e, "displayName")}
-              />
-            </div>
+
+          <Separator />
+
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Field mapping</p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="identifier">
+              Identifier <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="identifier"
+              type="text"
+              placeholder="The field in the user info response to identify the user"
+              value={state.identityProviderCreate.config?.oauth2?.fieldMapping?.identifier}
+              onChange={(e) => handleFieldMappingChange(e, "identifier")}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="display-name">Display name</Label>
+            <Input
+              id="display-name"
+              type="text"
+              placeholder="The field in the user info response to display the user"
+              value={state.identityProviderCreate.config?.oauth2?.fieldMapping?.displayName}
+              onChange={(e) => handleFieldMappingChange(e, "displayName")}
+            />
           </div>
         </div>
-      </DialogContent>
-      <DialogActions>
-        <div className="w-full flex flex-row justify-end items-center px-3 py-4 space-x-2">
-          <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+
+        <SheetFooter className="mt-6">
+          <Button variant="outline" disabled={requestState.isLoading} onClick={onClose}>
             {t("common.cancel")}
           </Button>
-          <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onSave}>
-            {t("common.save")}
+          <Button disabled={requestState.isLoading} onClick={onSave}>
+            {requestState.isLoading ? "Saving..." : t("common.save")}
           </Button>
-        </div>
-      </DialogActions>
-    </Drawer>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 };
 

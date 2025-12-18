@@ -1,12 +1,22 @@
-import { Button, Input, Modal, ModalDialog, Radio, RadioGroup } from "@mui/joy";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import useLoading from "@/hooks/useLoading";
 import { useUserStore } from "@/stores";
 import { Role, User } from "@/types/proto/api/v1/user_service";
 import Icon from "./Icon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Props {
   user?: User;
@@ -78,10 +88,10 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleRoleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRoleChange = (value: string) => {
     setPartialState({
       userCreate: Object.assign(state.userCreate, {
-        role: e.target.value,
+        role: value,
       }),
     });
   };
@@ -127,35 +137,35 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Modal open={true}>
-      <ModalDialog>
-        <div className="flex flex-row justify-between items-center w-80 sm:w-96">
-          <span className="text-lg font-medium">{isCreating ? "Create User" : "Edit User"}</span>
-          <Button variant="plain" onClick={onClose}>
-            <Icon.X className="w-5 h-auto text-gray-600" />
-          </Button>
-        </div>
-        <div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Email <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="email"
-                placeholder="Unique user email"
-                value={state.userCreate.email}
-                onChange={handleEmailInputChange}
-              />
-            </div>
-          </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Nickname <span className="text-red-600">*</span>
-            </span>
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="w-80 sm:w-96">
+        <DialogHeader>
+          <DialogTitle className="flex flex-row justify-between items-center">
+            <span>{isCreating ? "Create User" : "Edit User"}</span>
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <Icon.X className="w-5 h-auto" />
+            </Button>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">
+              Email <span className="text-destructive">*</span>
+            </Label>
             <Input
-              className="w-full"
+              id="email"
+              type="email"
+              placeholder="Unique user email"
+              value={state.userCreate.email}
+              onChange={handleEmailInputChange}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="nickname">
+              Nickname <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="nickname"
               type="text"
               placeholder="Nickname"
               value={state.userCreate.nickname}
@@ -163,12 +173,12 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
             />
           </div>
           {isCreating && (
-            <div className="w-full flex flex-col justify-start items-start mb-3">
-              <span className="mb-2">
-                Password <span className="text-red-600">*</span>
-              </span>
+            <div className="space-y-2">
+              <Label htmlFor="password">
+                Password <span className="text-destructive">*</span>
+              </Label>
               <Input
-                className="w-full"
+                id="password"
                 type="password"
                 placeholder=""
                 value={state.userCreate.password}
@@ -176,28 +186,38 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
               />
             </div>
           )}
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Role <span className="text-red-600">*</span>
-            </span>
-            <div className="w-full flex flex-row justify-start items-center text-base">
-              <RadioGroup orientation="horizontal" value={state.userCreate.role} onChange={handleRoleInputChange}>
-                <Radio value={Role.USER} label={"User"} />
-                <Radio value={Role.ADMIN} label={"Admin"} />
-              </RadioGroup>
-            </div>
-          </div>
-          <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-            <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
-              {t("common.cancel")}
-            </Button>
-            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              {t("common.save")}
-            </Button>
+          <div className="space-y-2">
+            <Label>
+              Role <span className="text-destructive">*</span>
+            </Label>
+            <RadioGroup value={state.userCreate.role} onValueChange={handleRoleChange}>
+              <div className="flex flex-row space-x-4">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={Role.USER} id="role-user" />
+                  <Label htmlFor="role-user" className="font-normal cursor-pointer">
+                    User
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={Role.ADMIN} id="role-admin" />
+                  <Label htmlFor="role-admin" className="font-normal cursor-pointer">
+                    Admin
+                  </Label>
+                </div>
+              </div>
+            </RadioGroup>
           </div>
         </div>
-      </ModalDialog>
-    </Modal>
+        <DialogFooter>
+          <Button variant="outline" disabled={requestState.isLoading} onClick={onClose}>
+            {t("common.cancel")}
+          </Button>
+          <Button disabled={requestState.isLoading} onClick={handleSaveBtnClick}>
+            {requestState.isLoading ? "Saving..." : t("common.save")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

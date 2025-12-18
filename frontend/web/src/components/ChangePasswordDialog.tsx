@@ -1,10 +1,19 @@
-import { Button, Input, Modal, ModalDialog } from "@mui/joy";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import useLoading from "@/hooks/useLoading";
 import { useUserStore } from "@/stores";
 import Icon from "./Icon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Props {
   onClose: () => void;
@@ -54,7 +63,7 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
         ["password"],
       );
       onClose();
-      toast("Password changed");
+      toast.success("Password changed");
     } catch (error: any) {
       console.error(error);
       toast.error(error.details);
@@ -63,34 +72,36 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Modal open={true}>
-      <ModalDialog>
-        <div className="flex flex-row justify-between items-center w-80">
-          <span className="text-lg font-medium">Change Password</span>
-          <Button variant="plain" onClick={handleCloseBtnClick}>
-            <Icon.X className="w-5 h-auto text-gray-600" />
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="w-80 sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex flex-row justify-between items-center">
+            <span>Change Password</span>
+            <Button variant="ghost" size="icon" onClick={handleCloseBtnClick}>
+              <Icon.X className="w-5 h-auto" />
+            </Button>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="new-password">New Password</Label>
+            <Input id="new-password" type="password" value={newPassword} onChange={handleNewPasswordChanged} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="new-password-again">New Password Again</Label>
+            <Input id="new-password-again" type="password" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" disabled={requestState.isLoading} onClick={handleCloseBtnClick}>
+            {t("common.cancel")}
           </Button>
-        </div>
-        <div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">New Password</span>
-            <Input className="w-full" type="text" value={newPassword} onChange={handleNewPasswordChanged} />
-          </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">New Password Again</span>
-            <Input className="w-full" type="text" value={newPasswordAgain} onChange={handleNewPasswordAgainChanged} />
-          </div>
-          <div className="w-full flex flex-row justify-end items-center space-x-2">
-            <Button variant="plain" disabled={requestState.isLoading} onClick={handleCloseBtnClick}>
-              {t("common.cancel")}
-            </Button>
-            <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-              {t("common.save")}
-            </Button>
-          </div>
-        </div>
-      </ModalDialog>
-    </Modal>
+          <Button disabled={requestState.isLoading} onClick={handleSaveBtnClick}>
+            {requestState.isLoading ? "Saving..." : t("common.save")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 
