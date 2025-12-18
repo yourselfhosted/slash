@@ -1,8 +1,7 @@
+import { useTranslation } from "react-i18next";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { useTranslation } from "react-i18next";
 import { useViewStore } from "@/stores";
 import Icon from "./Icon";
 import Dropdown from "./common/Dropdown";
@@ -32,21 +31,31 @@ const ViewSetting = () => {
               onChange={(event) => viewStore.setDisplayStyle(event.target.checked ? "compact" : "full")}
             />
           </div>
-          <Divider className="!my-1" />
+          <Separator className="!my-1" />
           <div className="w-full flex flex-row justify-between items-center">
             <span className="text-sm shrink-0 mr-2">{t("filter.order-by")}</span>
-            <Select size="sm" value={field} onChange={(_, value) => viewStore.setOrder({ field: value as any })}>
-              <Option value={"name"}>Name</Option>
-              <Option value={"updatedTs"}>CreatedAt</Option>
-              <Option value={"createdTs"}>UpdatedAt</Option>
-              <Option value={"view"}>Visits</Option>
+            <Select value={field} onValueChange={(value) => viewStore.setOrder({ field: value as any })}>
+              <SelectTrigger className="w-32 h-8">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="updatedTs">CreatedAt</SelectItem>
+                <SelectItem value="createdTs">UpdatedAt</SelectItem>
+                <SelectItem value="view">Visits</SelectItem>
+              </SelectContent>
             </Select>
           </div>
           <div className="w-full flex flex-row justify-between items-center">
             <span className="text-sm shrink-0 mr-2">{t("filter.direction")}</span>
-            <Select size="sm" value={direction} onChange={(_, value) => viewStore.setOrder({ direction: value as any })}>
-              <Option value={"asc"}>ASC</Option>
-              <Option value={"desc"}>DESC</Option>
+            <Select value={direction} onValueChange={(value) => viewStore.setOrder({ direction: value as any })}>
+              <SelectTrigger className="w-32 h-8">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asc">ASC</SelectItem>
+                <SelectItem value="desc">DESC</SelectItem>
+              </SelectContent>
             </Select>
           </div>
         </div>

@@ -1,7 +1,13 @@
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import useLoading from "@/hooks/useLoading";
 import { useCollectionStore, useShortcutStore, useWorkspaceStore } from "@/stores";
 import { Collection } from "@/types/proto/api/v1/collection_service";
@@ -9,19 +15,6 @@ import { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
 import ShortcutView from "./ShortcutView";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
 
 interface Props {
   collectionId?: number;
@@ -173,9 +166,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
       <SheetContent className="w-full sm:max-w-md overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{isCreating ? "Create Collection" : "Edit Collection"}</SheetTitle>
-          <SheetDescription>
-            {isCreating ? "Create a new collection of shortcuts" : "Edit your collection details"}
-          </SheetDescription>
+          <SheetDescription>{isCreating ? "Create a new collection of shortcuts" : "Edit your collection details"}</SheetDescription>
         </SheetHeader>
         <div className="mt-6 space-y-4">
           <div className="space-y-2">
@@ -236,9 +227,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
             <div className="flex items-baseline gap-2">
               <Label>Shortcuts</Label>
               <span className="text-sm text-muted-foreground">({selectedShortcuts.length})</span>
-              {selectedShortcuts.length === 0 && (
-                <span className="text-sm italic text-muted-foreground">(Select a shortcut first)</span>
-              )}
+              {selectedShortcuts.length === 0 && <span className="text-sm italic text-muted-foreground">(Select a shortcut first)</span>}
             </div>
             <div className="w-full py-1 px-px flex flex-row justify-start items-start flex-wrap gap-2">
               {selectedShortcuts.map((shortcut) => {

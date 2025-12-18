@@ -1,7 +1,7 @@
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
@@ -72,7 +72,9 @@ const WorkspaceSecuritySection = () => {
             checked={workspaceStore.setting.disallowUserRegistration}
             onCheckedChange={toggleDisallowUserRegistration}
           />
-          <Label htmlFor="disallow-user-registration" className="dark:text-gray-500">{t("settings.workspace.disallow-user-registration.self")}</Label>
+          <Label htmlFor="disallow-user-registration" className="dark:text-gray-500">
+            {t("settings.workspace.disallow-user-registration.self")}
+          </Label>
         </div>
         <div className="flex items-center space-x-2">
           <Switch
@@ -80,7 +82,9 @@ const WorkspaceSecuritySection = () => {
             checked={workspaceStore.setting.disallowPasswordAuth}
             onCheckedChange={toggleDisallowPasswordAuth}
           />
-          <Label htmlFor="disallow-password-auth" className="dark:text-gray-500">{"Disallow password auth"}</Label>
+          <Label htmlFor="disallow-password-auth" className="dark:text-gray-500">
+            {"Disallow password auth"}
+          </Label>
         </div>
       </div>
     </div>

@@ -1,28 +1,21 @@
 import classnames from "classnames";
 import { isUndefined, uniq } from "lodash-es";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import useLoading from "@/hooks/useLoading";
 import { useShortcutStore, useWorkspaceStore } from "@/stores";
 import { getShortcutUpdateMask } from "@/stores/shortcut";
 import { Visibility } from "@/types/proto/api/v1/common";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
 
 interface Props {
   shortcutId?: number;
@@ -221,9 +214,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
       <SheetContent className="w-full sm:max-w-md overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{isCreating ? "Create Shortcut" : "Edit Shortcut"}</SheetTitle>
-          <SheetDescription>
-            {isCreating ? "Create a new shortcut" : "Edit your shortcut details"}
-          </SheetDescription>
+          <SheetDescription>{isCreating ? "Create a new shortcut" : "Edit your shortcut details"}</SheetDescription>
         </SheetHeader>
         <div className="mt-6 space-y-4">
           <div className="space-y-2">
@@ -279,13 +270,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
 
           <div className="space-y-2">
             <Label htmlFor="tags">Tags</Label>
-            <Input
-              id="tags"
-              type="text"
-              placeholder="The tags of shortcut"
-              value={tag}
-              onChange={handleTagsInputChange}
-            />
+            <Input id="tags" type="text" placeholder="The tags of shortcut" value={tag} onChange={handleTagsInputChange} />
             {tagSuggestions.length > 0 && (
               <div className="flex flex-row items-start gap-2 mt-2">
                 <Icon.Asterisk className="w-4 h-auto shrink-0 mt-0.5 text-muted-foreground" />
@@ -327,7 +312,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
             <div
               className={classnames(
                 "flex flex-row justify-between items-center px-3 py-2 cursor-pointer hover:bg-accent transition-colors",
-                showOpenGraphMetadata && "bg-accent border-b"
+                showOpenGraphMetadata && "bg-accent border-b",
               )}
               onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
             >
@@ -336,10 +321,7 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
                 <Icon.Sparkles className="w-4 h-auto text-primary" />
               </span>
               <Icon.ChevronDown
-                className={classnames(
-                  "w-4 h-auto text-muted-foreground transition-transform",
-                  showOpenGraphMetadata && "rotate-180"
-                )}
+                className={classnames("w-4 h-auto text-muted-foreground transition-transform", showOpenGraphMetadata && "rotate-180")}
               />
             </div>
             {showOpenGraphMetadata && (
@@ -386,17 +368,10 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
         </div>
 
         <SheetFooter className="mt-6">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            disabled={requestState.isLoading}
-          >
+          <Button variant="outline" onClick={onClose} disabled={requestState.isLoading}>
             {t("common.cancel")}
           </Button>
-          <Button
-            onClick={handleSaveBtnClick}
-            disabled={requestState.isLoading}
-          >
+          <Button onClick={handleSaveBtnClick} disabled={requestState.isLoading}>
             {requestState.isLoading ? "Saving..." : t("common.save")}
           </Button>
         </SheetFooter>

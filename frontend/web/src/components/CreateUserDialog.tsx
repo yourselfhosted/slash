@@ -1,22 +1,16 @@
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useLoading from "@/hooks/useLoading";
 import { useUserStore } from "@/stores";
 import { Role, User } from "@/types/proto/api/v1/user_service";
 import Icon from "./Icon";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
 interface Props {
   user?: User;
@@ -177,13 +171,7 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
               <Label htmlFor="password">
                 Password <span className="text-destructive">*</span>
               </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder=""
-                value={state.userCreate.password}
-                onChange={handlePasswordInputChange}
-              />
+              <Input id="password" type="password" placeholder="" value={state.userCreate.password} onChange={handlePasswordInputChange} />
             </div>
           )}
           <div className="space-y-2">

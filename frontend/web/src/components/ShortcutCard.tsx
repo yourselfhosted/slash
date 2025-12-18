@@ -1,9 +1,13 @@
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
 import { useEffect } from "react";
-import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import { AnimatedCard } from "@/components/ui/animated-card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { absolutifyLink } from "@/helpers/utils";
 import { useUserStore, useViewStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
@@ -11,15 +15,6 @@ import Icon from "./Icon";
 import LinkFavicon from "./LinkFavicon";
 import ShortcutActionsDropdown from "./ShortcutActionsDropdown";
 import VisibilityIcon from "./VisibilityIcon";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { AnimatedCard } from "@/components/ui/animated-card";
-import { Badge } from "@/components/ui/badge";
 
 interface Props {
   shortcut: Shortcut;
@@ -44,9 +39,7 @@ const ShortcutCard = (props: Props) => {
 
   return (
     <AnimatedCard
-      className={classNames(
-        "group p-4 w-full flex flex-col justify-start items-start hover:shadow-md transition-shadow duration-200"
-      )}
+      className={classNames("group p-4 w-full flex flex-col justify-start items-start hover:shadow-md transition-shadow duration-200")}
     >
       <div className="w-full flex flex-row justify-between items-center">
         <div className="w-[calc(100%-16px)] flex flex-row justify-start items-center mr-1 shrink-0">
@@ -61,7 +54,7 @@ const ShortcutCard = (props: Props) => {
             <div className="w-full flex flex-row justify-start items-center leading-tight">
               <a
                 className={classNames(
-                  "max-w-[calc(100%-36px)] flex flex-row justify-start items-center mr-1 hover:opacity-80 hover:underline transition-all"
+                  "max-w-[calc(100%-36px)] flex flex-row justify-start items-center mr-1 hover:opacity-80 hover:underline transition-all",
                 )}
                 target="_blank"
                 href={shortcutLink}
@@ -120,18 +113,14 @@ const ShortcutCard = (props: Props) => {
             </Badge>
           );
         })}
-        {shortcut.tags.length === 0 && (
-          <span className="text-muted-foreground text-sm italic">No tags</span>
-        )}
+        {shortcut.tags.length === 0 && <span className="text-muted-foreground text-sm italic">No tags</span>}
       </div>
       <div className="w-full mt-3 flex gap-3 overflow-x-auto">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Avatar className="h-6 w-6">
-                <AvatarFallback className="text-xs">
-                  {creator.nickname.substring(0, 2).toUpperCase()}
-                </AvatarFallback>
+                <AvatarFallback className="text-xs">{creator.nickname.substring(0, 2).toUpperCase()}</AvatarFallback>
               </Avatar>
             </TooltipTrigger>
             <TooltipContent>

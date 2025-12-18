@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
 import { showCommonDialog } from "@/components/Alert";
 import Icon from "@/components/Icon";
 import SubscriptionFAQ from "@/components/SubscriptionFAQ";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { subscriptionServiceClient } from "@/grpcweb";
 import { useUserStore, useWorkspaceStore } from "@/stores";
 import { stringifyPlanType } from "@/stores/subscription";
 import { PlanType } from "@/types/proto/api/v1/subscription_service";
 import { Role } from "@/types/proto/api/v1/user_service";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const SubscriptionSetting: React.FC = () => {
   const workspaceStore = useWorkspaceStore();
@@ -110,7 +109,12 @@ const SubscriptionSetting: React.FC = () => {
               <AlertDescription>
                 Slash is an open source, self-hosted platform for sharing and managing your most frequently used links. Easily create
                 customizable, human-readable shortcuts to streamline your link management. Our source code is available and accessible on{" "}
-                <a href="https://github.com/yourselfhosted/slash" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                <a
+                  href="https://github.com/yourselfhosted/slash"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
                   GitHub
                 </a>{" "}
                 so anyone can get it, inspect it and review it.

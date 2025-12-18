@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useLocalStorage from "react-use/lib/useLocalStorage";
@@ -7,6 +5,8 @@ import CollectionView from "@/components/CollectionView";
 import CreateCollectionDrawer from "@/components/CreateCollectionDrawer";
 import FilterView from "@/components/FilterView";
 import Icon from "@/components/Icon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import useLoading from "@/hooks/useLoading";
 import { useShortcutStore, useCollectionStore } from "@/stores";
 

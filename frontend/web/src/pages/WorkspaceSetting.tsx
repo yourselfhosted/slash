@@ -4,12 +4,12 @@ import Icon from "@/components/Icon";
 import WorkspaceGeneralSettingSection from "@/components/setting/WorkspaceGeneralSettingSection";
 import WorkspaceMembersSection from "@/components/setting/WorkspaceMembersSection";
 import WorkspaceSecuritySection from "@/components/setting/WorkspaceSecuritySection";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { useUserStore, useWorkspaceStore } from "@/stores";
 import { stringifyPlanType } from "@/stores/subscription";
 import { Role } from "@/types/proto/api/v1/user_service";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const WorkspaceSetting = () => {
   const workspaceStore = useWorkspaceStore();
@@ -30,9 +30,7 @@ const WorkspaceSetting = () => {
     <div className="mx-auto max-w-8xl w-full px-4 sm:px-6 md:px-12 py-6 flex flex-col justify-start items-start gap-y-12">
       <Alert variant="default" className="border-warning bg-warning/10">
         <Icon.Info className="h-4 w-4" />
-        <AlertDescription>
-          You can see the settings items below because you are an Admin.
-        </AlertDescription>
+        <AlertDescription>You can see the settings items below because you are an Admin.</AlertDescription>
       </Alert>
       <div className="w-full flex flex-col">
         <p className="text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">Subscription</p>

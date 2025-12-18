@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { showCommonDialog } from "@/components/Alert";
 import CreateAccessTokenDialog from "@/components/CreateAccessTokenDialog";
 import Icon from "@/components/Icon";
+import { Button } from "@/components/ui/button";
 import { userServiceClient } from "@/grpcweb";
 import { useUserStore } from "@/stores";
 import { UserAccessToken } from "@/types/proto/api/v1/user_service";

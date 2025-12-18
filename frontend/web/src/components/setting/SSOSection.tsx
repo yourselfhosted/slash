@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { FeatureType } from "@/stores/workspace";
@@ -121,12 +121,7 @@ const SSOSection = () => {
                           >
                             <Icon.PenBox className="w-4 h-auto" />
                           </Button>
-                          <Button
-                            size="sm"
-                            color="danger"
-                            variant="plain"
-                            onClick={() => handleDeleteIdentityProvider(identityProvider)}
-                          >
+                          <Button size="sm" color="danger" variant="plain" onClick={() => handleDeleteIdentityProvider(identityProvider)}>
                             <Icon.Trash className="w-4 h-auto" />
                           </Button>
                         </td>

@@ -1,12 +1,7 @@
 import { useTranslation } from "react-i18next";
-import Icon from "./Icon";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import Icon from "./Icon";
 
 interface Props {
   onClose: () => void;

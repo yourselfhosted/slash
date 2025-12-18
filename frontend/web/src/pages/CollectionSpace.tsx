@@ -1,11 +1,11 @@
-import { Separator } from "@/components/ui/separator";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 import Icon from "@/components/Icon";
 import ShortcutFrame from "@/components/ShortcutFrame";
 import ShortcutView from "@/components/ShortcutView";
+import { Separator } from "@/components/ui/separator";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { useUserStore, useCollectionStore, useShortcutStore } from "@/stores";
 import { Collection } from "@/types/proto/api/v1/collection_service";

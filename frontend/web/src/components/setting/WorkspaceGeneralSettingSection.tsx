@@ -1,10 +1,10 @@
+import { head, isEqual } from "lodash-es";
+import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { head, isEqual } from "lodash-es";
-import { useRef, useState } from "react";
-import { toast } from "sonner";
-import { useTranslation } from "react-i18next";
 import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { FeatureType } from "@/stores/workspace";
@@ -133,12 +133,16 @@ const WorkspaceGeneralSettingSection = () => {
             <p className="text-sm text-gray-500 leading-tight">The default visibility of new shortcuts/collections.</p>
           </div>
           <Select
-            className="w-36"
-            defaultValue={getDefaultVisibility(workspaceSetting.defaultVisibility)}
-            onChange={(_, value) => handleDefaultVisibilityChange(value as Visibility)}
+            defaultValue={getDefaultVisibility(workspaceSetting.defaultVisibility).toString()}
+            onValueChange={(value) => handleDefaultVisibilityChange(parseInt(value) as Visibility)}
           >
-            <Option value={Visibility.WORKSPACE}>{t(`shortcut.visibility.workspace.self`)}</Option>
-            <Option value={Visibility.PUBLIC}>{t(`shortcut.visibility.public.self`)}</Option>
+            <SelectTrigger className="w-36">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={Visibility.WORKSPACE.toString()}>{t(`shortcut.visibility.workspace.self`)}</SelectItem>
+              <SelectItem value={Visibility.PUBLIC.toString()}>{t(`shortcut.visibility.public.self`)}</SelectItem>
+            </SelectContent>
           </Select>
         </div>
         <div className="w-full flex flex-col justify-start items-start">

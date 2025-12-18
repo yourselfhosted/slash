@@ -1,6 +1,6 @@
-import { Separator } from "@/components/ui/separator";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
+import { Separator } from "@/components/ui/separator";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
 import LinkFavicon from "./LinkFavicon";

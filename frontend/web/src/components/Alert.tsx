@@ -56,9 +56,7 @@ const Alert: React.FC<Props> = (props: Props) => {
           <AlertDialogDescription>{content}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleCloseBtnClick}>
-            {closeBtnText}
-          </AlertDialogCancel>
+          <AlertDialogCancel onClick={handleCloseBtnClick}>{closeBtnText}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirmBtnClick}
             className={style === "destructive" ? "bg-destructive text-destructive-foreground hover:bg-destructive/90" : ""}

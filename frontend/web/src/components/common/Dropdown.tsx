@@ -1,10 +1,6 @@
 import { ReactNode } from "react";
 import Icon from "@/components/Icon";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface Props {
   trigger?: ReactNode;

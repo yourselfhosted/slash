@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { useParams, useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 import CreateShortcutDrawer from "@/components/CreateShortcutDrawer";
+import { Button } from "@/components/ui/button";
 import { isURL } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useShortcutStore, useUserStore } from "@/stores";

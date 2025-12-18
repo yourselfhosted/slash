@@ -1,8 +1,8 @@
+import { FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FormEvent, useState } from "react";
-import { toast } from "sonner";
-import { useTranslation } from "react-i18next";
 import { authServiceClient } from "@/grpcweb";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
@@ -69,12 +69,7 @@ const PasswordAuthForm = () => {
         </div>
       </div>
       <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-        <Button
-          className="w-full"
-          type="submit"
-          disabled={actionBtnLoadingState.isLoading || !allowConfirm}
-          onClick={handleSigninBtnClick}
-        >
+        <Button className="w-full" type="submit" disabled={actionBtnLoadingState.isLoading || !allowConfirm} onClick={handleSigninBtnClick}>
           {actionBtnLoadingState.isLoading ? "Loading..." : t("auth.sign-in")}
         </Button>
       </div>
