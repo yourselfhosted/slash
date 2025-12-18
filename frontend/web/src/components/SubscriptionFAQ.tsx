@@ -3,7 +3,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const SubscriptionFAQ = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      <h2 className="text-2xl font-semibold mb-8 dark:text-gray-400">Frequently Asked Questions</h2>
+      <h2 className="text-2xl font-semibold mb-8 text-foreground">Frequently Asked Questions</h2>
       <Accordion type="single" collapsible className="w-full max-w-2xl">
         <AccordionItem value="item-1">
           <AccordionTrigger>Can I use the Free plan in my team?</AccordionTrigger>

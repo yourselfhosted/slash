@@ -63,7 +63,7 @@ const WorkspaceSecuritySection = () => {
 
   return (
     <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
-      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">Security</p>
+      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-foreground">Security</p>
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <SSOSection />
         <div className="flex items-center space-x-2">
@@ -72,7 +72,7 @@ const WorkspaceSecuritySection = () => {
             checked={workspaceStore.setting.disallowUserRegistration}
             onCheckedChange={toggleDisallowUserRegistration}
           />
-          <Label htmlFor="disallow-user-registration" className="dark:text-gray-500">
+          <Label htmlFor="disallow-user-registration" className="text-foreground">
             {t("settings.workspace.disallow-user-registration.self")}
           </Label>
         </div>
@@ -82,7 +82,7 @@ const WorkspaceSecuritySection = () => {
             checked={workspaceStore.setting.disallowPasswordAuth}
             onCheckedChange={toggleDisallowPasswordAuth}
           />
-          <Label htmlFor="disallow-password-auth" className="dark:text-gray-500">
+          <Label htmlFor="disallow-password-auth" className="text-foreground">
             {"Disallow password auth"}
           </Label>
         </div>

@@ -17,7 +17,7 @@ const ViewSetting = () => {
     <Dropdown
       trigger={
         <button>
-          <Icon.Settings2 className="w-4 h-auto text-gray-500" />
+          <Icon.Settings2 className="w-4 h-auto text-muted-foreground" />
         </button>
       }
       actionsClassName="!mt-3 !right-[unset] -left-24 -ml-2"

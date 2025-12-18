@@ -46,7 +46,7 @@ const Root: React.FC = () => {
 
   return (
     isInitialized && (
-      <div className="w-full h-auto flex flex-col justify-start items-start dark:bg-zinc-900">
+      <div className="w-full h-auto flex flex-col justify-start items-start bg-background">
         <Header />
         <Navigator />
         <Outlet />

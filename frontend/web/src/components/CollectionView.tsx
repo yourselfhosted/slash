@@ -62,24 +62,28 @@ const CollectionView = (props: Props) => {
 
   return (
     <>
-      <div className={classNames("w-full flex flex-col justify-start items-start border rounded-lg hover:shadow dark:border-zinc-800")}>
-        <div className="bg-gray-100 dark:bg-zinc-800 px-3 py-2 w-full flex flex-row justify-between items-center rounded-t-lg">
+      <div className={classNames("w-full flex flex-col justify-start items-start border border-border rounded-lg hover:shadow")}>
+        <div className="bg-muted px-3 py-2 w-full flex flex-row justify-between items-center rounded-t-lg">
           <div className="w-auto flex flex-col justify-start items-start mr-2">
             <div className="w-full truncate">
-              <Link className="leading-6 font-medium dark:text-gray-400" to={`/c/${collection.name}`} viewTransition>
+              <Link className="leading-6 font-medium text-foreground" to={`/c/${collection.name}`} viewTransition>
                 {collection.title}
               </Link>
-              <span className="ml-1 leading-6 text-gray-500 dark:text-gray-400" onClick={handleCopyCollectionLink}>
+              <span className="ml-1 leading-6 text-muted-foreground" onClick={handleCopyCollectionLink}>
                 (c/{collection.name})
               </span>
             </div>
-            <p className="text-sm text-gray-500">{collection.description}</p>
+            <p className="text-sm text-muted-foreground">{collection.description}</p>
           </div>
           <div className="flex flex-row justify-end items-center shrink-0 gap-2">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link className="w-auto text-gray-400 cursor-pointer hover:text-gray-500" to={`/c/${collection.name}`} target="_blank">
+                  <Link
+                    className="w-auto text-muted-foreground cursor-pointer hover:text-foreground"
+                    to={`/c/${collection.name}`}
+                    target="_blank"
+                  >
                     <Icon.Share className="w-4 h-auto" />
                   </Link>
                 </TooltipTrigger>
@@ -90,7 +94,7 @@ const CollectionView = (props: Props) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    className="w-auto text-gray-400 cursor-pointer hover:text-gray-500"
+                    className="w-auto text-muted-foreground cursor-pointer hover:text-foreground"
                     onClick={() => handleOpenAllShortcutsButtonClick()}
                   >
                     <Icon.ArrowUpRight className="w-5 h-auto" />
@@ -102,7 +106,7 @@ const CollectionView = (props: Props) => {
             {showAdminActions && (
               <Dropdown
                 trigger={
-                  <button className="flex flex-row justify-center items-center rounded text-gray-400 cursor-pointer hover:text-gray-500">
+                  <button className="flex flex-row justify-center items-center rounded text-muted-foreground cursor-pointer hover:text-foreground">
                     <Icon.MoreVertical className="w-4 h-auto" />
                   </button>
                 }
@@ -110,13 +114,13 @@ const CollectionView = (props: Props) => {
                 actions={
                   <>
                     <button
-                      className="w-full px-2 flex flex-row justify-start items-center text-left dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                      className="w-full px-2 flex flex-row justify-start items-center text-left text-foreground leading-8 cursor-pointer rounded hover:bg-accent disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-60"
                       onClick={() => setShowEditDialog(true)}
                     >
                       <Icon.Edit className="w-4 h-auto mr-2" /> {t("common.edit")}
                     </button>
                     <button
-                      className="w-full px-2 flex flex-row justify-start items-center text-left text-red-600 dark:text-gray-400 leading-8 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60"
+                      className="w-full px-2 flex flex-row justify-start items-center text-left text-destructive leading-8 cursor-pointer rounded hover:bg-accent disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-60"
                       onClick={() => {
                         handleDeleteCollectionButtonClick();
                       }}

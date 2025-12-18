@@ -21,6 +21,16 @@ const getDefaultVisibility = (visibility?: Visibility) => {
   return visibility;
 };
 
+const toVisibility = (value: string): Visibility => {
+  switch (value) {
+    case Visibility.PUBLIC.toString():
+      return Visibility.PUBLIC;
+    case Visibility.WORKSPACE.toString():
+    default:
+      return Visibility.WORKSPACE;
+  }
+};
+
 const convertFileToBase64 = (file: File) =>
   new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -95,27 +105,27 @@ const WorkspaceGeneralSettingSection = () => {
 
   return (
     <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
-      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">General</p>
+      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-foreground">General</p>
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="w-full flex flex-col justify-start items-start">
             <p className="flex flex-row justify-start items-center">
-              <span className="font-medium dark:text-gray-400">Custom branding</span>
+              <span className="font-medium text-foreground">Custom branding</span>
               <FeatureBadge className="w-5 h-auto ml-1 text-blue-600" feature={FeatureType.CustomeBranding} />
             </p>
-            <p className="text-sm text-gray-500 leading-tight">Recommand logo ratio: 1:1</p>
+            <p className="text-sm text-muted-foreground leading-tight">Recommand logo ratio: 1:1</p>
           </div>
           <div className="relative shrink-0 hover:opacity-80 flex flex-col items-end justify-center">
             {branding ? (
               <div className="relative w-12 h-12 mr-2">
                 <img src={branding} alt="branding" className="max-w-full max-h-full rounded-lg" />
                 <Icon.X
-                  className="w-4 h-auto -top-2 -right-2 absolute z-10 border rounded-full bg-white opacity-80"
+                  className="w-4 h-auto -top-2 -right-2 absolute z-10 border rounded-full bg-background opacity-80"
                   onClick={() => setWorkspaceSetting({ ...workspaceSetting, branding: new TextEncoder().encode("") })}
                 />
               </div>
             ) : (
-              <Icon.CircleSlash className="w-12 h-auto dark:text-gray-500 mr-2" strokeWidth={1} />
+              <Icon.CircleSlash className="w-12 h-auto text-muted-foreground mr-2" strokeWidth={1} />
             )}
             <input
               className="absolute inset-0 z-1 opacity-0"
@@ -129,12 +139,12 @@ const WorkspaceGeneralSettingSection = () => {
         </div>
         <div className="w-full flex flex-row justify-between items-center">
           <div className="w-full flex flex-col justify-start items-start">
-            <p className="font-medium dark:text-gray-400">{t("settings.workspace.default-visibility")}</p>
-            <p className="text-sm text-gray-500 leading-tight">The default visibility of new shortcuts/collections.</p>
+            <p className="font-medium text-foreground">{t("settings.workspace.default-visibility")}</p>
+            <p className="text-sm text-muted-foreground leading-tight">The default visibility of new shortcuts/collections.</p>
           </div>
           <Select
             defaultValue={getDefaultVisibility(workspaceSetting.defaultVisibility).toString()}
-            onValueChange={(value) => handleDefaultVisibilityChange(Number(value) as Visibility)}
+            onValueChange={(value) => handleDefaultVisibilityChange(toVisibility(value))}
           >
             <SelectTrigger className="w-36">
               <SelectValue />
@@ -146,7 +156,7 @@ const WorkspaceGeneralSettingSection = () => {
           </Select>
         </div>
         <div className="w-full flex flex-col justify-start items-start">
-          <p className="mt-2 font-medium dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
+          <p className="mt-2 font-medium text-foreground">{t("settings.workspace.custom-style")}</p>
           <Textarea
             className="w-full mt-2 min-h-[80px]"
             placeholder="* {font-family: ui-monospace Monaco Consolas;}"

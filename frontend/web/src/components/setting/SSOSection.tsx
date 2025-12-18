@@ -60,7 +60,7 @@ const SSOSection = () => {
       <div className="w-full flex flex-col gap-2 pt-2 pb-4">
         <div className="w-full flex flex-row justify-between items-center gap-1">
           <div className="flex flex-row justify-start items-center">
-            <span className="font-medium dark:text-gray-400">SSO</span>
+            <span className="font-medium text-foreground">SSO</span>
             <FeatureBadge className="w-5 h-auto ml-1 text-blue-600" feature={FeatureType.SSO} />
             <a
               className="text-blue-600 text-sm hover:underline flex flex-row justify-center items-center ml-2"
@@ -87,14 +87,14 @@ const SSOSection = () => {
         {identityProviderList.length > 0 && (
           <div className="mt-2 flow-root">
             <div className="overflow-x-auto">
-              <div className="inline-block border rounded-lg border-gray-300 dark:border-zinc-700 min-w-full align-middle">
-                <table className="min-w-full divide-y divide-gray-300 dark:divide-zinc-700">
+              <div className="inline-block border rounded-lg border-border min-w-full align-middle">
+                <table className="min-w-full divide-y divide-border">
                   <thead>
                     <tr>
-                      <th scope="col" className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                      <th scope="col" className="py-2 pl-4 pr-3 text-left text-sm font-semibold text-foreground">
                         ID
                       </th>
-                      <th scope="col" className="px-3 py-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-500">
+                      <th scope="col" className="px-3 py-2 text-left text-sm font-semibold text-foreground">
                         Title
                       </th>
                       <th scope="col" className="relative py-2 pl-3 pr-4">
@@ -102,11 +102,11 @@ const SSOSection = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
+                  <tbody className="divide-y divide-border">
                     {identityProviderList.map((identityProvider) => (
                       <tr key={identityProvider.id}>
-                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-900 dark:text-gray-500">{identityProvider.id}</td>
-                        <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{identityProvider.title}</td>
+                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-foreground">{identityProvider.id}</td>
+                        <td className="whitespace-nowrap px-3 py-2 text-sm text-muted-foreground">{identityProvider.title}</td>
                         <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">
                           <Button
                             size="sm"

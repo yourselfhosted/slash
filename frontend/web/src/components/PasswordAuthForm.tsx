@@ -54,7 +54,7 @@ const PasswordAuthForm = () => {
     <form className="w-full mt-6" onSubmit={handleSigninBtnClick}>
       <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
         <div className="w-full flex flex-col mb-2">
-          <span className="leading-8 mb-1 text-gray-600">{t("common.email")}</span>
+          <span className="leading-8 mb-1 text-muted-foreground">{t("common.email")}</span>
           <Input
             className="w-full py-3"
             type="email"
@@ -64,7 +64,7 @@ const PasswordAuthForm = () => {
           />
         </div>
         <div className="w-full flex flex-col mb-2">
-          <span className="leading-8 text-gray-600">{t("common.password")}</span>
+          <span className="leading-8 text-muted-foreground">{t("common.password")}</span>
           <Input className="w-full py-3" type="password" value={password} placeholder="····" onChange={handlePasswordInputChanged} />
         </div>
       </div>

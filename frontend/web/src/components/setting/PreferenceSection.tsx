@@ -85,11 +85,11 @@ const PreferenceSection: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
-      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("settings.preference.self")}</p>
+      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-foreground">{t("settings.preference.self")}</p>
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center gap-x-1">
-            <span className="dark:text-gray-400">{t("settings.preference.color-theme")}</span>
+            <span className="text-foreground">{t("settings.preference.color-theme")}</span>
           </div>
           <Select defaultValue={colorTheme} onValueChange={handleSelectColorTheme}>
             <SelectTrigger className="w-32">
@@ -108,7 +108,7 @@ const PreferenceSection: React.FC = () => {
         </div>
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row justify-start items-center gap-x-1">
-            <span className="dark:text-gray-400">{t("common.language")}</span>
+            <span className="text-foreground">{t("common.language")}</span>
             <BetaBadge />
           </div>
           <Select defaultValue={language} onValueChange={handleSelectLanguage}>

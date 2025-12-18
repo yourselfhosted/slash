@@ -61,7 +61,7 @@
 body,
 html,
 #root {
-  @apply text-base w-full h-full dark:bg-zinc-900;
+  @apply text-base w-full h-full;
 }
 
 @layer utilities {

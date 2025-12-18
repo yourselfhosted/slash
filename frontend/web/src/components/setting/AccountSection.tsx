@@ -16,13 +16,13 @@ const AccountSection: React.FC = () => {
   return (
     <>
       <div className="w-full flex flex-col justify-start items-start gap-y-2">
-        <p className="text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">{t("common.account")}</p>
-        <p className="flex flex-row justify-start items-center mt-2 dark:text-gray-400">
+        <p className="text-2xl shrink-0 font-semibold text-foreground">{t("common.account")}</p>
+        <p className="flex flex-row justify-start items-center mt-2 text-foreground">
           <span className="text-xl">{currentUser.nickname}</span>
           {isAdmin && <span className="ml-2 bg-blue-600 text-white px-2 leading-6 text-sm rounded-full">Admin</span>}
         </p>
-        <p className="flex flex-row justify-start items-center dark:text-gray-400">
-          <span className="mr-3 text-gray-500">{t("common.email")}: </span>
+        <p className="flex flex-row justify-start items-center text-foreground">
+          <span className="mr-3 text-muted-foreground">{t("common.email")}: </span>
           {currentUser.email}
         </p>
         <div className="flex flex-row justify-start items-center gap-2 mt-2">

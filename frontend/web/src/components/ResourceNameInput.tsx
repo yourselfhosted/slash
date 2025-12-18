@@ -39,10 +39,10 @@ const ResourceNameInput = (props: Props) => {
             <span className="ml-1 font-mono font-medium">{editingName}</span>
             <div className="ml-1 flex flex-row justify-start items-center">
               <Button size="icon" variant="ghost" onClick={() => setModified(true)}>
-                <Icon.Edit className="w-4 h-auto text-gray-500 dark:text-gray-400" />
+                <Icon.Edit className="w-4 h-auto text-muted-foreground" />
               </Button>
               <Button size="icon" variant="ghost" onClick={() => setEditingName(generateRandomString().toLowerCase())}>
-                <Icon.RefreshCcw className="w-4 h-auto text-gray-500 dark:text-gray-400" />
+                <Icon.RefreshCcw className="w-4 h-auto text-muted-foreground" />
               </Button>
             </div>
           </>
