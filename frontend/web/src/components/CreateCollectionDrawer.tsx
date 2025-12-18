@@ -1,8 +1,13 @@
-import { Button, Checkbox, DialogActions, DialogContent, DialogTitle, Divider, Drawer, Input, ModalClose } from "@mui/joy";
 import { isUndefined } from "lodash-es";
 import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import useLoading from "@/hooks/useLoading";
 import { useCollectionStore, useShortcutStore, useWorkspaceStore } from "@/stores";
 import { Collection } from "@/types/proto/api/v1/collection_service";
@@ -157,77 +162,79 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Drawer anchor="right" open={true} onClose={onClose}>
-      <DialogTitle>{isCreating ? "Create Collection" : "Edit Collection"}</DialogTitle>
-      <ModalClose />
-      <DialogContent className="w-full max-w-full">
-        <div className="overflow-y-auto w-full mt-2 px-4 pb-4 sm:w-[24rem]">
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Name <span className="text-red-600">*</span>
-            </span>
+    <Sheet open={true} onOpenChange={onClose}>
+      <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>{isCreating ? "Create Collection" : "Edit Collection"}</SheetTitle>
+          <SheetDescription>{isCreating ? "Create a new collection of shortcuts" : "Edit your collection details"}</SheetDescription>
+        </SheetHeader>
+        <div className="mt-6 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">
+              Name <span className="text-destructive">*</span>
+            </Label>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">c/</span>
+              <Input
+                id="name"
+                type="text"
+                placeholder="An easy name to remember"
+                value={state.collectionCreate.name}
+                onChange={handleNameInputChange}
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="title">
+              Title <span className="text-destructive">*</span>
+            </Label>
             <Input
-              className="w-full"
+              id="title"
               type="text"
-              startDecorator="c/"
-              placeholder="An easy name to remember"
-              value={state.collectionCreate.name}
-              onChange={handleNameInputChange}
+              placeholder="A short title of your collection"
+              value={state.collectionCreate.title}
+              onChange={handleTitleInputChange}
             />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">
-              Title <span className="text-red-600">*</span>
-            </span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="A short title of your collection"
-                value={state.collectionCreate.title}
-                onChange={handleTitleInputChange}
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <Input
+              id="description"
+              type="text"
+              placeholder="A slightly longer description"
+              value={state.collectionCreate.description}
+              onChange={handleDescriptionInputChange}
+            />
           </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
-            <span className="mb-2">Description</span>
-            <div className="relative w-full">
-              <Input
-                className="w-full"
-                type="text"
-                placeholder="A slightly longer description"
-                value={state.collectionCreate.description}
-                onChange={handleDescriptionInputChange}
-              />
-            </div>
-          </div>
-          <div className="w-full flex flex-col justify-start items-start mb-3">
+          <div className="flex items-center space-x-2">
             <Checkbox
-              className="w-full dark:text-gray-400"
+              id="public"
               checked={state.collectionCreate.visibility === Visibility.PUBLIC}
-              label={t(`shortcut.visibility.public.description`)}
-              onChange={(e) =>
+              onCheckedChange={(checked) =>
                 setPartialState({
                   collectionCreate: Object.assign(state.collectionCreate, {
-                    visibility: e.target.checked ? Visibility.PUBLIC : Visibility.WORKSPACE,
+                    visibility: checked ? Visibility.PUBLIC : Visibility.WORKSPACE,
                   }),
                 })
               }
             />
+            <Label htmlFor="public" className="text-sm font-normal cursor-pointer">
+              {t(`shortcut.visibility.public.description`)}
+            </Label>
           </div>
-          <Divider className="text-gray-500" />
-          <div className="w-full flex flex-col justify-start items-start mt-3 mb-3">
-            <p className="mb-2">
-              <span>Shortcuts</span>
-              <span className="opacity-60">({selectedShortcuts.length})</span>
-              {selectedShortcuts.length === 0 && <span className="ml-2 italic opacity-80 text-sm">(Select a shortcut first)</span>}
-            </p>
-            <div className="w-full py-1 px-px flex flex-row justify-start items-start flex-wrap overflow-hidden gap-2">
+          <Separator />
+          <div className="space-y-2">
+            <div className="flex items-baseline gap-2">
+              <Label>Shortcuts</Label>
+              <span className="text-sm text-muted-foreground">({selectedShortcuts.length})</span>
+              {selectedShortcuts.length === 0 && <span className="text-sm italic text-muted-foreground">(Select a shortcut first)</span>}
+            </div>
+            <div className="w-full py-1 px-px flex flex-row justify-start items-start flex-wrap gap-2">
               {selectedShortcuts.map((shortcut) => {
                 return (
                   <ShortcutView
                     key={shortcut.id}
-                    className="!w-auto select-none max-w-[40%] cursor-pointer bg-gray-100 shadow dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-400"
+                    className="!w-auto select-none max-w-[40%] cursor-pointer bg-muted shadow"
                     shortcut={shortcut}
                     onClick={() => {
                       setSelectedShortcuts([...selectedShortcuts.filter((selectedShortcut) => selectedShortcut.id !== shortcut.id)]);
@@ -248,7 +255,7 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
                 );
               })}
               {selectedShortcuts.length + unselectedShortcuts.length === 0 && (
-                <div className="w-full flex flex-row justify-center items-center text-gray-400">
+                <div className="w-full flex flex-row justify-center items-center text-muted-foreground">
                   <Icon.PackageOpen className="w-6 h-auto" />
                   <p className="ml-2">No shortcuts found.</p>
                 </div>
@@ -256,18 +263,16 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
             </div>
           </div>
         </div>
-      </DialogContent>
-      <DialogActions>
-        <div className="w-full flex flex-row justify-end items-center px-3 py-4 space-x-2">
-          <Button color="neutral" variant="plain" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={onClose}>
+        <SheetFooter className="mt-6">
+          <Button variant="outline" disabled={requestState.isLoading} onClick={onClose}>
             {t("common.cancel")}
           </Button>
-          <Button color="primary" disabled={requestState.isLoading} loading={requestState.isLoading} onClick={handleSaveBtnClick}>
-            {t("common.save")}
+          <Button disabled={requestState.isLoading} onClick={handleSaveBtnClick}>
+            {requestState.isLoading ? "Saving..." : t("common.save")}
           </Button>
-        </div>
-      </DialogActions>
-    </Drawer>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 };
 

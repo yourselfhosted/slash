@@ -42,32 +42,32 @@ const ShortcutActionsDropdown = (props: Props) => {
   return (
     <>
       <Dropdown
-        actionsClassName="!w-32 dark:text-gray-500 text-sm"
+        actionsClassName="!w-32 text-sm"
         actions={
           <>
             {havePermission && (
               <button
-                className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
+                className="w-full px-2 flex flex-row justify-start items-center text-left text-foreground leading-8 cursor-pointer rounded hover:bg-accent disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-60"
                 onClick={() => setShowEditDrawer(true)}
               >
                 <Icon.Edit className="w-4 h-auto mr-2 opacity-70" /> {t("common.edit")}
               </button>
             )}
             <button
-              className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
+              className="w-full px-2 flex flex-row justify-start items-center text-left text-foreground leading-8 cursor-pointer rounded hover:bg-accent disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-60"
               onClick={() => setShowQRCodeDialog(true)}
             >
               <Icon.QrCode className="w-4 h-auto mr-2 opacity-70" /> QR Code
             </button>
             <button
-              className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
+              className="w-full px-2 flex flex-row justify-start items-center text-left text-foreground leading-8 cursor-pointer rounded hover:bg-accent disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-60"
               onClick={gotoAnalytics}
             >
               <Icon.BarChart2 className="w-4 h-auto mr-2 opacity-70" /> {t("analytics.self")}
             </button>
             {havePermission && (
               <button
-                className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-red-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-60 dark:hover:bg-zinc-800"
+                className="w-full px-2 flex flex-row justify-start items-center text-left leading-8 cursor-pointer rounded text-destructive hover:bg-accent disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-60"
                 onClick={() => {
                   handleDeleteShortcutButtonClick(shortcut);
                 }}

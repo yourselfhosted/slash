@@ -1,8 +1,16 @@
-import { Button, Modal, ModalDialog } from "@mui/joy";
 import { createRoot } from "react-dom/client";
-import Icon from "./Icon";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
-type AlertStyle = "primary" | "warning" | "danger";
+type AlertStyle = "default" | "destructive" | "danger";
 
 interface Props {
   title: string;
@@ -14,10 +22,8 @@ interface Props {
   onConfirm?: () => void;
 }
 
-const defaultProps: Props = {
-  title: "",
-  content: "",
-  style: "primary",
+const defaultProps: Partial<Props> = {
+  style: "default",
   closeBtnText: "Close",
   confirmBtnText: "Confirm",
   onClose: () => null,
@@ -43,27 +49,25 @@ const Alert: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Modal open={true}>
-      <ModalDialog>
-        <div className="flex flex-row justify-between items-center w-80">
-          <span className="text-lg font-medium">{title}</span>
-          <Button variant="plain" onClick={handleCloseBtnClick}>
-            <Icon.X className="w-5 h-auto text-gray-600" />
-          </Button>
-        </div>
-        <div className="w-80">
-          <p className="content-text mb-4">{content}</p>
-          <div className="w-full flex flex-row justify-end items-center space-x-2">
-            <Button variant="plain" color="neutral" onClick={handleCloseBtnClick}>
-              {closeBtnText}
-            </Button>
-            <Button color={style} onClick={handleConfirmBtnClick}>
-              {confirmBtnText}
-            </Button>
-          </div>
-        </div>
-      </ModalDialog>
-    </Modal>
+    <AlertDialog open={true}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{content}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={handleCloseBtnClick}>{closeBtnText}</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleConfirmBtnClick}
+            className={
+              style === "destructive" || style === "danger" ? "bg-destructive text-destructive-foreground hover:bg-destructive/90" : ""
+            }
+          >
+            {confirmBtnText}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 
@@ -72,7 +76,7 @@ export const showCommonDialog = (props: Props) => {
   const dialog = createRoot(tempDiv);
   document.body.append(tempDiv);
 
-  const destory = () => {
+  const destroy = () => {
     dialog.unmount();
     tempDiv.remove();
   };
@@ -81,15 +85,17 @@ export const showCommonDialog = (props: Props) => {
     if (props.onClose) {
       props.onClose();
     }
-    destory();
+    destroy();
   };
 
   const onConfirm = () => {
     if (props.onConfirm) {
       props.onConfirm();
     }
-    destory();
+    destroy();
   };
 
   dialog.render(<Alert {...props} onClose={onClose} onConfirm={onConfirm} />);
 };
+
+export default Alert;

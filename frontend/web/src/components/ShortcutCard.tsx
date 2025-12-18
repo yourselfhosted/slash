@@ -1,10 +1,13 @@
-import { Avatar, Tooltip } from "@mui/joy";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
 import { useEffect } from "react";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import { AnimatedCard } from "@/components/ui/animated-card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { absolutifyLink } from "@/helpers/utils";
 import { useUserStore, useViewStore } from "@/stores";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
@@ -35,108 +38,125 @@ const ShortcutCard = (props: Props) => {
   };
 
   return (
-    <div
-      className={classNames(
-        "group px-4 py-3 w-full flex flex-col justify-start items-start border rounded-lg hover:shadow dark:border-zinc-700",
-      )}
-    >
-      <div className="w-full flex flex-row justify-between items-center">
-        <div className="w-[calc(100%-16px)] flex flex-row justify-start items-center mr-1 shrink-0">
-          <Link
-            className={classNames("w-8 h-8 flex justify-center items-center overflow-clip shrink-0")}
-            to={`/shortcut/${shortcut.id}`}
-            viewTransition
-          >
-            <LinkFavicon url={shortcut.link} />
-          </Link>
-          <div className="ml-2 w-[calc(100%-24px)] flex flex-col justify-start items-start">
-            <div className="w-full flex flex-row justify-start items-center leading-tight">
-              <a
-                className={classNames(
-                  "max-w-[calc(100%-36px)] flex flex-row justify-start items-center mr-1 cursor-pointer hover:opacity-80 hover:underline",
-                )}
-                target="_blank"
-                href={shortcutLink}
-              >
-                <div className="truncate">
-                  <span className="dark:text-gray-400">{shortcut.title}</span>
-                  {shortcut.title ? (
-                    <span className="text-gray-500">({shortcut.name})</span>
-                  ) : (
-                    <span className="truncate dark:text-gray-400">{shortcut.name}</span>
+    <TooltipProvider>
+      <AnimatedCard
+        className={classNames("group p-4 w-full flex flex-col justify-start items-start hover:shadow-md transition-shadow duration-200")}
+      >
+        <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-[calc(100%-16px)] flex flex-row justify-start items-center mr-1 shrink-0">
+            <Link
+              className={classNames("w-8 h-8 flex justify-center items-center overflow-clip shrink-0 rounded")}
+              to={`/shortcut/${shortcut.id}`}
+              viewTransition
+            >
+              <LinkFavicon url={shortcut.link} />
+            </Link>
+            <div className="ml-3 w-[calc(100%-24px)] flex flex-col justify-start items-start">
+              <div className="w-full flex flex-row justify-start items-center leading-tight">
+                <a
+                  className={classNames(
+                    "max-w-[calc(100%-36px)] flex flex-row justify-start items-center mr-1 hover:opacity-80 hover:underline transition-all",
                   )}
-                </div>
-                <span className="hidden group-hover:block ml-1 cursor-pointer shrink-0">
-                  <Icon.ExternalLink className="w-4 h-auto text-gray-600" />
-                </span>
-              </a>
-              <Tooltip title="Copy" variant="solid" placement="top" arrow>
-                <button
-                  className="hidden group-hover:block cursor-pointer text-gray-500 hover:opacity-80"
-                  onClick={() => handleCopyButtonClick()}
+                  target="_blank"
+                  href={shortcutLink}
                 >
-                  <Icon.Clipboard className="w-4 h-auto mx-auto" />
-                </button>
-              </Tooltip>
+                  <div className="truncate">
+                    <span className="text-foreground font-medium">{shortcut.title}</span>
+                    {shortcut.title ? (
+                      <span className="text-muted-foreground ml-1">({shortcut.name})</span>
+                    ) : (
+                      <span className="truncate text-foreground font-medium">{shortcut.name}</span>
+                    )}
+                  </div>
+                  <span className="hidden group-hover:block ml-1 shrink-0">
+                    <Icon.ExternalLink className="w-4 h-auto text-muted-foreground" />
+                  </span>
+                </a>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      className="hidden group-hover:block text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => handleCopyButtonClick()}
+                    >
+                      <Icon.Clipboard className="w-4 h-auto" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Copy</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <a
+                className="pr-4 leading-tight w-full text-sm truncate text-muted-foreground hover:underline transition-all"
+                href={shortcut.link}
+                target="_blank"
+              >
+                {shortcut.link}
+              </a>
             </div>
-            <a
-              className="pr-4 leading-tight w-full text-sm truncate text-gray-400 dark:text-gray-500 hover:underline"
-              href={shortcut.link}
-              target="_blank"
-            >
-              {shortcut.link}
-            </a>
+          </div>
+          <div className="h-full pt-2 flex flex-row justify-end items-start">
+            <ShortcutActionsDropdown shortcut={shortcut} />
           </div>
         </div>
-        <div className="h-full pt-2 flex flex-row justify-end items-start">
-          <ShortcutActionsDropdown shortcut={shortcut} />
+        <div className="mt-3 w-full flex flex-row justify-start items-start gap-2 truncate">
+          {shortcut.tags.map((tag) => {
+            return (
+              <Badge
+                key={tag}
+                variant="secondary"
+                className="max-w-[8rem] truncate cursor-pointer hover:bg-secondary/80 transition-colors"
+                onClick={() => viewStore.setFilter({ tag: tag })}
+              >
+                #{tag}
+              </Badge>
+            );
+          })}
+          {shortcut.tags.length === 0 && <span className="text-muted-foreground text-sm italic">No tags</span>}
         </div>
-      </div>
-      <div className="mt-2 w-full flex flex-row justify-start items-start gap-2 truncate">
-        {shortcut.tags.map((tag) => {
-          return (
-            <span
-              key={tag}
-              className="max-w-[8rem] truncate text-gray-400 dark:text-gray-500 text-sm leading-4 cursor-pointer hover:opacity-80"
-              onClick={() => viewStore.setFilter({ tag: tag })}
-            >
-              #{tag}
-            </span>
-          );
-        })}
-        {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm leading-4 italic">No tags</span>}
-      </div>
-      <div className="w-full mt-2 flex gap-2 overflow-x-auto">
-        <Tooltip title={creator.nickname} variant="solid" placement="top" arrow>
-          <Avatar
-            className="dark:bg-zinc-800"
-            sx={{
-              "--Avatar-size": "24px",
-            }}
-            alt={creator.nickname.toUpperCase()}
-          ></Avatar>
-        </Tooltip>
-        <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
-          <div
-            className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-400 text-sm"
-            onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
-          >
-            <VisibilityIcon className="w-4 h-auto mr-1 opacity-70" visibility={shortcut.visibility} />
-            {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
-          </div>
-        </Tooltip>
-        <Tooltip title="View count" variant="solid" placement="top" arrow>
-          <Link
-            className="w-auto leading-5 flex flex-row justify-start items-center flex-nowrap whitespace-nowrap cursor-pointer text-gray-400 text-sm"
-            to={`/shortcut/${shortcut.id}#analytics`}
-            viewTransition
-          >
-            <Icon.BarChart2 className="w-4 h-auto mr-1 opacity-70" />
-            {t("shortcut.visits", { count: shortcut.viewCount })}
-          </Link>
-        </Tooltip>
-      </div>
-    </div>
+        <div className="w-full mt-3 flex gap-3 overflow-x-auto">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Avatar className="h-6 w-6">
+                <AvatarFallback className="text-xs">{creator.nickname.substring(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{creator.nickname}</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div
+                className="flex flex-row justify-start items-center gap-1 text-muted-foreground text-sm cursor-pointer hover:text-foreground transition-colors"
+                onClick={() => viewStore.setFilter({ visibility: shortcut.visibility })}
+              >
+                <VisibilityIcon className="w-4 h-auto" visibility={shortcut.visibility} />
+                {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)}</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                className="flex flex-row justify-start items-center gap-1 text-muted-foreground text-sm hover:text-foreground transition-colors"
+                to={`/shortcut/${shortcut.id}#analytics`}
+                viewTransition
+              >
+                <Icon.BarChart2 className="w-4 h-auto" />
+                {t("shortcut.visits", { count: shortcut.viewCount })}
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>View count</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </AnimatedCard>
+    </TooltipProvider>
   );
 };
 

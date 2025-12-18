@@ -1,4 +1,4 @@
-import { useColorScheme } from "@mui/joy";
+import { useTheme } from "next-themes";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useWorkspaceStore } from "@/stores";
@@ -7,7 +7,7 @@ import { FeatureType } from "./stores/workspace";
 
 function App() {
   const navigateTo = useNavigateTo();
-  const { mode: colorScheme } = useColorScheme();
+  const { theme: colorScheme } = useTheme();
   const workspaceStore = useWorkspaceStore();
 
   // Redirect to sign up page if no instance owner.

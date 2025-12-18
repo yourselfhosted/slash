@@ -1,8 +1,8 @@
-import { Button } from "@mui/joy";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { useParams, useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 import CreateShortcutDrawer from "@/components/CreateShortcutDrawer";
+import { Button } from "@/components/ui/button";
 import { isURL } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useShortcutStore, useUserStore } from "@/stores";
@@ -51,7 +51,7 @@ const ShortcutSpace = () => {
             Shortcut <span className="font-mono">{shortcutName}</span> Not Found.
           </p>
           <div className="mt-4">
-            <Button variant="plain" size="sm" onClick={() => setShowCreateShortcutDrawer(true)}>
+            <Button variant="ghost" size="sm" onClick={() => setShowCreateShortcutDrawer(true)}>
               👉 Click here to create it
             </Button>
           </div>

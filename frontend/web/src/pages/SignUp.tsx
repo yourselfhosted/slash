@@ -1,9 +1,10 @@
-import { Button, Input } from "@mui/joy";
 import React, { FormEvent, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import Logo from "@/components/Logo";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { authServiceClient } from "@/grpcweb";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
@@ -71,18 +72,18 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center items-center w-full h-auto pt-12 sm:pt-24 bg-white dark:bg-zinc-900">
+    <div className="flex flex-row justify-center items-center w-full h-auto pt-12 sm:pt-24 bg-background">
       <div className="w-80 max-w-full h-full py-4 flex flex-col justify-start items-center">
         <div className="w-full py-4 grow flex flex-col justify-center items-center">
           <div className="flex flex-row justify-start items-center w-auto mx-auto gap-y-2 mb-4">
             <Logo className="mr-2" />
-            <span className="text-3xl opacity-80 dark:text-gray-500">Slash</span>
+            <span className="text-3xl text-foreground opacity-80">Slash</span>
           </div>
-          <p className="w-full text-2xl mt-6 dark:text-gray-500">{t("auth.create-your-account")}</p>
+          <p className="w-full text-2xl mt-6 text-foreground">{t("auth.create-your-account")}</p>
           <form className="w-full mt-4" onSubmit={handleSignupBtnClick}>
             <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
               <div className="w-full flex flex-col mb-2">
-                <span className="leading-8 mb-1 text-gray-600">{t("common.email")}</span>
+                <span className="leading-8 mb-1 text-muted-foreground">{t("common.email")}</span>
                 <Input
                   className="w-full py-3"
                   type="email"
@@ -92,11 +93,11 @@ const SignUp: React.FC = () => {
                 />
               </div>
               <div className="w-full flex flex-col mb-2">
-                <span className="leading-8 text-gray-600">Nickname</span>
+                <span className="leading-8 text-muted-foreground">Nickname</span>
                 <Input className="w-full py-3" type="text" value={nickname} placeholder="slash" onChange={handleNicknameInputChanged} />
               </div>
               <div className="w-full flex flex-col mb-2">
-                <span className="leading-8 text-gray-600">{t("common.password")}</span>
+                <span className="leading-8 text-muted-foreground">{t("common.password")}</span>
                 <Input className="w-full py-3" type="password" value={password} placeholder="····" onChange={handlePasswordInputChanged} />
               </div>
             </div>
@@ -104,21 +105,19 @@ const SignUp: React.FC = () => {
               <Button
                 className="w-full"
                 type="submit"
-                color="primary"
-                loading={actionBtnLoadingState.isLoading}
                 disabled={actionBtnLoadingState.isLoading || !allowConfirm}
                 onClick={handleSignupBtnClick}
               >
-                {t("auth.sign-up")}
+                {actionBtnLoadingState.isLoading ? "Loading..." : t("auth.sign-up")}
               </Button>
             </div>
           </form>
           {!workspaceStore.profile.owner ? (
-            <p className="w-full mt-4 text-sm font-medium dark:text-gray-500">{t("auth.host-tip")}</p>
+            <p className="w-full mt-4 text-sm font-medium text-muted-foreground">{t("auth.host-tip")}</p>
           ) : (
             <p className="w-full mt-4 text-sm">
-              <span className="dark:text-gray-500">{"Already has an account?"}</span>
-              <Link className="cursor-pointer ml-2 text-blue-600 hover:underline" to="/auth" viewTransition>
+              <span className="text-muted-foreground">{"Already has an account?"}</span>
+              <Link className="cursor-pointer ml-2 text-primary hover:underline" to="/auth" viewTransition>
                 {t("auth.sign-in")}
               </Link>
             </p>

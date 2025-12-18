@@ -19,7 +19,7 @@ const ShortcutView = (props: Props) => {
   return (
     <div
       className={classNames(
-        "group w-full px-3 py-2 flex flex-row justify-start items-center border rounded-lg hover:bg-gray-100 dark:border-zinc-800 dark:hover:bg-zinc-800",
+        "group w-full px-3 py-2 flex flex-row justify-start items-center border border-border rounded-lg hover:bg-accent",
         className,
       )}
       onClick={onClick}
@@ -30,25 +30,25 @@ const ShortcutView = (props: Props) => {
       <div className="ml-2 w-full truncate">
         {shortcut.title ? (
           <>
-            <span className="dark:text-gray-400">{shortcut.title}</span>
-            <span className="text-gray-500">({shortcut.name})</span>
+            <span className="text-foreground">{shortcut.title}</span>
+            <span className="text-muted-foreground">({shortcut.name})</span>
           </>
         ) : (
           <>
-            <span className="dark:text-gray-400">{shortcut.name}</span>
+            <span className="text-foreground">{shortcut.name}</span>
           </>
         )}
       </div>
       <Link
         className={classNames(
-          "hidden group-hover:block ml-1 w-6 h-6 p-1 shrink-0 rounded-lg bg-gray-200 dark:bg-zinc-900 hover:opacity-80",
+          "hidden group-hover:block ml-1 w-6 h-6 p-1 shrink-0 rounded-lg bg-muted hover:opacity-80",
           alwaysShowLink && "!block",
         )}
         to={`/s/${shortcut.name}`}
         target="_blank"
         onClick={(e) => e.stopPropagation()}
       >
-        <Icon.ArrowUpRight className="w-4 h-auto text-gray-400 shrink-0" />
+        <Icon.ArrowUpRight className="w-4 h-auto text-muted-foreground shrink-0" />
       </Link>
       {showActions && (
         <div className="ml-1 flex flex-row justify-end items-center shrink-0" onClick={(e) => e.stopPropagation()}>

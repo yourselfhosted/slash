@@ -1,11 +1,11 @@
-import { Divider } from "@mui/joy";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 import Icon from "@/components/Icon";
 import ShortcutFrame from "@/components/ShortcutFrame";
 import ShortcutView from "@/components/ShortcutView";
+import { Separator } from "@/components/ui/separator";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { useUserStore, useCollectionStore, useShortcutStore } from "@/stores";
 import { Collection } from "@/types/proto/api/v1/collection_service";
@@ -65,26 +65,24 @@ const CollectionSpace = () => {
   };
 
   return (
-    <div className="w-full h-full sm:px-12 sm:py-10 sm:h-screen sm:bg-gray-100 dark:sm:bg-zinc-800">
-      <div className="w-full h-full flex flex-row sm:border dark:sm:border-zinc-800 p-4 rounded-2xl bg-gray-50 dark:bg-zinc-900">
+    <div className="w-full h-full sm:px-12 sm:py-10 sm:h-screen sm:bg-muted">
+      <div className="w-full h-full flex flex-row sm:border sm:border-border p-4 rounded-2xl bg-background">
         <div className="w-full sm:w-56 sm:pr-4 flex flex-col justify-start items-start overflow-auto shrink-0">
           <div className="w-full sticky top-0 px-2">
-            <div className="w-full flex flex-row justify-start items-center text-gray-800 dark:text-gray-300">
+            <div className="w-full flex flex-row justify-start items-center text-foreground">
               <Icon.LibrarySquare className="w-5 h-auto mr-1 opacity-70 shrink-0" />
               <span className="text-lg truncate">{collection.title}</span>
             </div>
-            <p className="text-gray-500 text-sm truncate">{collection.description}</p>
+            <p className="text-muted-foreground text-sm truncate">{collection.description}</p>
           </div>
-          <Divider className="!my-2" />
+          <Separator className="my-2" />
           <div className="w-full flex flex-col justify-start items-start gap-2 sm:gap-1 px-px">
             {shortcuts.map((shortcut) => {
               return (
                 <ShortcutView
                   className={classNames(
                     "w-full py-2 cursor-pointer sm:!px-2",
-                    selectedShortcut?.id === shortcut.id
-                      ? "bg-gray-100 dark:bg-zinc-800"
-                      : "sm:border-transparent dark:sm:border-transparent",
+                    selectedShortcut?.id === shortcut.id ? "bg-accent" : "sm:border-transparent",
                   )}
                   key={shortcut.name}
                   shortcut={shortcut}
@@ -96,16 +94,16 @@ const CollectionSpace = () => {
           </div>
         </div>
         {sm && (
-          <div className="w-full h-full overflow-clip rounded-lg border dark:border-zinc-800 bg-white dark:bg-zinc-800">
+          <div className="w-full h-full overflow-clip rounded-lg border border-border bg-card">
             {selectedShortcut ? (
               <ShortcutFrame key={selectedShortcut.id} shortcut={selectedShortcut} />
             ) : (
               <div className="w-full h-full flex flex-col justify-center items-center p-8">
-                <div className="w-72 max-w-full border dark:border-zinc-900 dark:bg-zinc-900 dark:text-gray-400 p-6 pb-4 rounded-2xl shadow-xl">
+                <div className="w-72 max-w-full border border-border bg-card text-muted-foreground p-6 pb-4 rounded-2xl shadow-xl">
                   <Icon.AppWindow className="w-12 h-auto mb-2 opacity-60" strokeWidth={1} />
-                  <p className="text-lg font-medium">Click on a tab in the Sidebar to get started.</p>
-                  <Divider className="!my-2" />
-                  <p className="text-gray-400 dark:text-gray-600 text-sm mt-2 italic">
+                  <p className="text-lg font-medium text-foreground">Click on a tab in the Sidebar to get started.</p>
+                  <Separator className="my-2" />
+                  <p className="text-muted-foreground text-sm mt-2 italic">
                     Shared by <span className="font-medium not-italic">{creator.nickname}</span>
                   </p>
                 </div>

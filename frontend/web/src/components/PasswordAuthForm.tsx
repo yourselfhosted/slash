@@ -1,7 +1,8 @@
-import { Button, Input } from "@mui/joy";
 import { FormEvent, useState } from "react";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { authServiceClient } from "@/grpcweb";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
@@ -53,7 +54,7 @@ const PasswordAuthForm = () => {
     <form className="w-full mt-6" onSubmit={handleSigninBtnClick}>
       <div className={`flex flex-col justify-start items-start w-full ${actionBtnLoadingState.isLoading ? "opacity-80" : ""}`}>
         <div className="w-full flex flex-col mb-2">
-          <span className="leading-8 mb-1 text-gray-600">{t("common.email")}</span>
+          <span className="leading-8 mb-1 text-muted-foreground">{t("common.email")}</span>
           <Input
             className="w-full py-3"
             type="email"
@@ -63,20 +64,13 @@ const PasswordAuthForm = () => {
           />
         </div>
         <div className="w-full flex flex-col mb-2">
-          <span className="leading-8 text-gray-600">{t("common.password")}</span>
+          <span className="leading-8 text-muted-foreground">{t("common.password")}</span>
           <Input className="w-full py-3" type="password" value={password} placeholder="····" onChange={handlePasswordInputChanged} />
         </div>
       </div>
       <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-        <Button
-          className="w-full"
-          type="submit"
-          color="primary"
-          loading={actionBtnLoadingState.isLoading}
-          disabled={actionBtnLoadingState.isLoading || !allowConfirm}
-          onClick={handleSigninBtnClick}
-        >
-          {t("auth.sign-in")}
+        <Button className="w-full" type="submit" disabled={actionBtnLoadingState.isLoading || !allowConfirm} onClick={handleSigninBtnClick}>
+          {actionBtnLoadingState.isLoading ? "Loading..." : t("auth.sign-in")}
         </Button>
       </div>
     </form>

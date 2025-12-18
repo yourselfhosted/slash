@@ -1,6 +1,7 @@
-import { Switch } from "@mui/joy";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { WorkspaceSetting } from "@/types/proto/api/v1/workspace_service";
@@ -62,26 +63,28 @@ const WorkspaceSecuritySection = () => {
 
   return (
     <div className="w-full flex flex-col sm:flex-row justify-start items-start gap-4 sm:gap-x-16">
-      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-gray-900 dark:text-gray-500">Security</p>
+      <p className="sm:w-1/4 text-2xl shrink-0 font-semibold text-foreground">Security</p>
       <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
         <SSOSection />
-        <div>
+        <div className="flex items-center space-x-2">
           <Switch
-            className="dark:text-gray-500"
-            size="lg"
+            id="disallow-user-registration"
             checked={workspaceStore.setting.disallowUserRegistration}
-            onChange={(event) => toggleDisallowUserRegistration(event.target.checked)}
-            endDecorator={<span>{t("settings.workspace.disallow-user-registration.self")}</span>}
+            onCheckedChange={toggleDisallowUserRegistration}
           />
+          <Label htmlFor="disallow-user-registration" className="text-foreground">
+            {t("settings.workspace.disallow-user-registration.self")}
+          </Label>
         </div>
-        <div>
+        <div className="flex items-center space-x-2">
           <Switch
-            className="dark:text-gray-500"
-            size="lg"
+            id="disallow-password-auth"
             checked={workspaceStore.setting.disallowPasswordAuth}
-            onChange={(event) => toggleDisallowPasswordAuth(event.target.checked)}
-            endDecorator={<span>{"Disallow password auth"}</span>}
+            onCheckedChange={toggleDisallowPasswordAuth}
           />
+          <Label htmlFor="disallow-password-auth" className="text-foreground">
+            {"Disallow password auth"}
+          </Label>
         </div>
       </div>
     </div>

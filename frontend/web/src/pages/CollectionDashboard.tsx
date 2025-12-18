@@ -1,4 +1,3 @@
-import { Button, Input } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useLocalStorage from "react-use/lib/useLocalStorage";
@@ -6,6 +5,8 @@ import CollectionView from "@/components/CollectionView";
 import CreateCollectionDrawer from "@/components/CreateCollectionDrawer";
 import FilterView from "@/components/FilterView";
 import Icon from "@/components/Icon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import useLoading from "@/hooks/useLoading";
 import { useShortcutStore, useCollectionStore } from "@/stores";
 
@@ -53,15 +54,13 @@ const CollectionDashboard: React.FC = () => {
             <Input
               className="w-32 mr-2"
               type="text"
-              size="sm"
               placeholder={t("common.search")}
-              startDecorator={<Icon.Search className="w-4 h-auto" />}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           <div className="flex flex-row justify-start items-center">
-            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateCollectionDrawer(true)}>
+            <Button className="hover:shadow" variant="secondary" size="sm" onClick={() => setShowCreateCollectionDrawer(true)}>
               <Icon.Plus className="w-5 h-auto" />
               <span className="ml-0.5">{t("common.create")}</span>
             </Button>
@@ -69,16 +68,16 @@ const CollectionDashboard: React.FC = () => {
         </div>
         <FilterView />
         {loadingState.isLoading ? (
-          <div className="py-12 w-full flex flex-row justify-center items-center opacity-80 dark:text-gray-500">
+          <div className="py-12 w-full flex flex-row justify-center items-center opacity-80 text-muted-foreground">
             <Icon.Loader className="mr-2 w-5 h-auto animate-spin" />
             {t("common.loading")}
           </div>
         ) : filteredCollections.length === 0 ? (
-          <div className="py-16 w-full flex flex-col justify-center items-center text-gray-400">
+          <div className="py-16 w-full flex flex-col justify-center items-center text-muted-foreground">
             <Icon.PackageOpen size={64} strokeWidth={1} />
             <p className="mt-2">No collections found.</p>
             <a
-              className="text-blue-600 border-t dark:border-t-zinc-600 text-sm hover:underline flex flex-row justify-center items-center mt-4 pt-2"
+              className="text-blue-600 border-t border-border text-sm hover:underline flex flex-row justify-center items-center mt-4 pt-2"
               href="https://github.com/yourselfhosted/slash/blob/main/docs/getting-started/collections.md"
               target="_blank"
             >
