@@ -72,8 +72,7 @@ const SSOSection = () => {
             </a>
           </div>
           <Button
-            variant="outlined"
-            color="neutral"
+            variant="outline"
             disabled={!isSSOFeatureEnabled}
             onClick={() =>
               setEditState({
@@ -111,7 +110,7 @@ const SSOSection = () => {
                         <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">
                           <Button
                             size="sm"
-                            variant="plain"
+                            variant="ghost"
                             onClick={() =>
                               setEditState({
                                 open: true,
@@ -121,7 +120,7 @@ const SSOSection = () => {
                           >
                             <Icon.PenBox className="w-4 h-auto" />
                           </Button>
-                          <Button size="sm" color="danger" variant="plain" onClick={() => handleDeleteIdentityProvider(identityProvider)}>
+                          <Button size="sm" variant="ghost" onClick={() => handleDeleteIdentityProvider(identityProvider)}>
                             <Icon.Trash className="w-4 h-auto" />
                           </Button>
                         </td>

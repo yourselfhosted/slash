@@ -47,8 +47,7 @@ const WorkspaceMembersSection = () => {
         <div className="w-full sm:w-auto grow flex flex-col justify-start items-start gap-4">
           <div className="w-full flex justify-end">
             <Button
-              variant="outlined"
-              color="neutral"
+              variant="outline"
               onClick={() => {
                 setShowCreateUserDialog(true);
                 setCurrentEditingUser(undefined);
@@ -86,7 +85,7 @@ const WorkspaceMembersSection = () => {
                         <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">
                           <Button
                             size="sm"
-                            variant="plain"
+                            variant="ghost"
                             onClick={() => {
                               setCurrentEditingUser(user);
                               setShowCreateUserDialog(true);
@@ -94,7 +93,7 @@ const WorkspaceMembersSection = () => {
                           >
                             <Icon.PenBox className="w-4 h-auto" />
                           </Button>
-                          <Button size="sm" color="danger" variant="plain" onClick={() => handleDeleteUser(user)}>
+                          <Button size="sm" variant="ghost" onClick={() => handleDeleteUser(user)}>
                             <Icon.Trash className="w-4 h-auto" />
                           </Button>
                         </td>

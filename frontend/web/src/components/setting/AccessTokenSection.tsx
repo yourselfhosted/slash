@@ -69,8 +69,7 @@ const AccessTokenSection = () => {
             </div>
             <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
               <Button
-                variant="outlined"
-                color="neutral"
+                variant="outline"
                 onClick={() => {
                   setShowCreateDialog(true);
                 }}
@@ -107,7 +106,7 @@ const AccessTokenSection = () => {
                       <tr key={userAccessToken.accessToken}>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-900 flex flex-row justify-start items-center gap-x-1 dark:text-gray-500">
                           <span className="font-mono">{getFormatedAccessToken(userAccessToken.accessToken)}</span>
-                          <Button color="neutral" variant="plain" size="sm" onClick={() => copyAccessToken(userAccessToken.accessToken)}>
+                          <Button variant="ghost" size="sm" onClick={() => copyAccessToken(userAccessToken.accessToken)}>
                             <Icon.Clipboard className="w-4 h-auto text-gray-500" />
                           </Button>
                         </td>
@@ -120,8 +119,7 @@ const AccessTokenSection = () => {
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
                           <Button
-                            color="danger"
-                            variant="plain"
+                            variant="ghost"
                             size="sm"
                             onClick={() => {
                               handleDeleteAccessToken(userAccessToken.accessToken);

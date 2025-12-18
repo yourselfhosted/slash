@@ -54,15 +54,13 @@ const CollectionDashboard: React.FC = () => {
             <Input
               className="w-32 mr-2"
               type="text"
-              size="sm"
               placeholder={t("common.search")}
-              startDecorator={<Icon.Search className="w-4 h-auto" />}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           <div className="flex flex-row justify-start items-center">
-            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateCollectionDrawer(true)}>
+            <Button className="hover:shadow" variant="secondary" size="sm" onClick={() => setShowCreateCollectionDrawer(true)}>
               <Icon.Plus className="w-5 h-auto" />
               <span className="ml-0.5">{t("common.create")}</span>
             </Button>

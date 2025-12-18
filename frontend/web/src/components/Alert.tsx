@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-type AlertStyle = "default" | "destructive";
+type AlertStyle = "default" | "destructive" | "danger" | "warning";
 
 interface Props {
   title: string;

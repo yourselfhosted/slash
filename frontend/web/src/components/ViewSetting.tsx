@@ -26,9 +26,8 @@ const ViewSetting = () => {
           <div className="w-full flex flex-row justify-between items-center">
             <span className="text-sm shrink-0 mr-2">{t("filter.compact-mode")}</span>
             <Switch
-              size="sm"
               checked={displayStyle === "compact"}
-              onChange={(event) => viewStore.setDisplayStyle(event.target.checked ? "compact" : "full")}
+              onCheckedChange={(checked) => viewStore.setDisplayStyle(checked ? "compact" : "full")}
             />
           </div>
           <Separator className="!my-1" />

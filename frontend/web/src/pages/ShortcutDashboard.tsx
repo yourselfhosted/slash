@@ -55,16 +55,13 @@ const ShortcutDashboard: React.FC = () => {
             <Input
               className="w-32 mr-2"
               type="text"
-              size="sm"
               placeholder={t("common.search")}
-              startDecorator={<Icon.Search className="w-4 h-auto" />}
-              endDecorator={<ViewSetting />}
               value={filter.search}
               onChange={(e) => viewStore.setFilter({ search: e.target.value })}
             />
           </div>
           <div className="flex flex-row justify-end items-center">
-            <Button className="hover:shadow" variant="soft" size="sm" onClick={() => setShowCreateShortcutDrawer(true)}>
+            <Button className="hover:shadow" variant="secondary" size="sm" onClick={() => setShowCreateShortcutDrawer(true)}>
               <Icon.Plus className="w-5 h-auto" />
               <span className="ml-0.5">{t("common.create")}</span>
             </Button>

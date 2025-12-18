@@ -134,7 +134,7 @@ const WorkspaceGeneralSettingSection = () => {
           </div>
           <Select
             defaultValue={getDefaultVisibility(workspaceSetting.defaultVisibility).toString()}
-            onValueChange={(value) => handleDefaultVisibilityChange(parseInt(value) as Visibility)}
+            onValueChange={(value) => handleDefaultVisibilityChange(Number(value) as Visibility)}
           >
             <SelectTrigger className="w-36">
               <SelectValue />
@@ -148,10 +148,8 @@ const WorkspaceGeneralSettingSection = () => {
         <div className="w-full flex flex-col justify-start items-start">
           <p className="mt-2 font-medium dark:text-gray-400">{t("settings.workspace.custom-style")}</p>
           <Textarea
-            className="w-full mt-2"
+            className="w-full mt-2 min-h-[80px]"
             placeholder="* {font-family: ui-monospace Monaco Consolas;}"
-            minRows={2}
-            maxRows={5}
             value={workspaceSetting.customStyle}
             onChange={(event) => handleCustomStyleChange(event.target.value)}
           />
