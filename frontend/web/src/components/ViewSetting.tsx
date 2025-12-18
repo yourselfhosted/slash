@@ -1,4 +1,7 @@
-import { Divider, Option, Select, Switch } from "@mui/joy";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
 import { useViewStore } from "@/stores";
 import Icon from "./Icon";

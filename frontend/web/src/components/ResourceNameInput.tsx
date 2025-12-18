@@ -1,4 +1,5 @@
-import { IconButton, Input } from "@mui/joy";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { generateRandomString } from "@/helpers/utils";
@@ -37,12 +38,12 @@ const ResourceNameInput = (props: Props) => {
             <span>:</span>
             <span className="ml-1 font-mono font-medium">{editingName}</span>
             <div className="ml-1 flex flex-row justify-start items-center">
-              <IconButton size="sm" variant="plain" color="neutral" onClick={() => setModified(true)}>
+              <Button size="icon" variant="ghost" onClick={() => setModified(true)}>
                 <Icon.Edit className="w-4 h-auto text-gray-500 dark:text-gray-400" />
-              </IconButton>
-              <IconButton size="sm" variant="plain" color="neutral" onClick={() => setEditingName(generateRandomString().toLowerCase())}>
+              </Button>
+              <Button size="icon" variant="ghost" onClick={() => setEditingName(generateRandomString().toLowerCase())}>
                 <Icon.RefreshCcw className="w-4 h-auto text-gray-500 dark:text-gray-400" />
-              </IconButton>
+              </Button>
             </div>
           </>
         )}

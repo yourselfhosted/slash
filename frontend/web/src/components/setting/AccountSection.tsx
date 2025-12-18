@@ -1,4 +1,4 @@
-import { Button } from "@mui/joy";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ChangePasswordDialog from "@/components/ChangePasswordDialog";
@@ -26,10 +26,10 @@ const AccountSection: React.FC = () => {
           {currentUser.email}
         </p>
         <div className="flex flex-row justify-start items-center gap-2 mt-2">
-          <Button variant="outlined" color="neutral" onClick={() => setShowEditUserinfoDialog(true)}>
+          <Button variant="outline" onClick={() => setShowEditUserinfoDialog(true)}>
             {t("common.edit")}
           </Button>
-          <Button variant="outlined" color="neutral" onClick={() => setShowChangePasswordDialog(true)}>
+          <Button variant="outline" onClick={() => setShowChangePasswordDialog(true)}>
             Change password
           </Button>
         </div>

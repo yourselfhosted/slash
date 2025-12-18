@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@mui/joy";
+import { Button } from "@/components/ui/button";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -119,7 +119,7 @@ const AccessTokenSection = () => {
                           {userAccessToken.expiresAt?.toLocaleString() ?? "Never"}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm">
-                          <IconButton
+                          <Button
                             color="danger"
                             variant="plain"
                             size="sm"
@@ -128,7 +128,7 @@ const AccessTokenSection = () => {
                             }}
                           >
                             <Icon.Trash className="w-4 h-auto" />
-                          </IconButton>
+                          </Button>
                         </td>
                       </tr>
                     ))}

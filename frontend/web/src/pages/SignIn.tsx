@@ -1,4 +1,5 @@
-import { Button, Divider } from "@mui/joy";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import React from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -54,15 +55,18 @@ const SignIn: React.FC = () => {
           )}
           {workspaceStore.setting.identityProviders.length > 0 && (
             <>
-              <Divider className="!my-4">{t("common.or")}</Divider>
+              <div className="w-full flex items-center my-4">
+                <Separator className="flex-1" />
+                <span className="px-2 text-sm text-gray-500">{t("common.or")}</span>
+                <Separator className="flex-1" />
+              </div>
               <div className="w-full flex flex-col space-y-2">
                 {workspaceStore.setting.identityProviders.map((identityProvider) => (
                   <Button
                     key={identityProvider.id}
-                    variant="outlined"
-                    color="neutral"
+                    variant="outline"
                     className="w-full"
-                    size="md"
+                    size="default"
                     onClick={() => handleSignInWithIdentityProvider(identityProvider)}
                   >
                     {t("auth.sign-in-with", { provider: identityProvider.title })}

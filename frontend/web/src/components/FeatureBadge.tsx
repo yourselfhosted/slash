@@ -1,4 +1,4 @@
-import { Tooltip } from "@mui/joy";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useWorkspaceStore } from "@/stores";
 import { FeatureType } from "@/stores/workspace";
 import Icon from "./Icon";
@@ -16,9 +16,14 @@ const FeatureBadge = ({ feature, className }: Props) => {
     return null;
   }
   return (
-    <Tooltip title="This feature is not available on your plan." className={className} placement="top" arrow>
-      <Icon.Sparkles />
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild className={className}>
+          <Icon.Sparkles />
+        </TooltipTrigger>
+        <TooltipContent>This feature is not available on your plan.</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

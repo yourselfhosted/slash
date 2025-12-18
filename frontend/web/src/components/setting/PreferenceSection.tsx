@@ -1,4 +1,4 @@
-import { Option, Select } from "@mui/joy";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
 import BetaBadge from "@/components/BetaBadge";
 import { useUserStore } from "@/stores";
@@ -91,14 +91,19 @@ const PreferenceSection: React.FC = () => {
           <div className="flex flex-row justify-start items-center gap-x-1">
             <span className="dark:text-gray-400">{t("settings.preference.color-theme")}</span>
           </div>
-          <Select defaultValue={colorTheme} onChange={(_, value) => handleSelectColorTheme(value as string)}>
-            {colorThemeOptions.map((option) => {
-              return (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              );
-            })}
+          <Select defaultValue={colorTheme} onValueChange={handleSelectColorTheme}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {colorThemeOptions.map((option) => {
+                return (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
           </Select>
         </div>
         <div className="w-full flex flex-row justify-between items-center">
@@ -106,14 +111,19 @@ const PreferenceSection: React.FC = () => {
             <span className="dark:text-gray-400">{t("common.language")}</span>
             <BetaBadge />
           </div>
-          <Select defaultValue={language} onChange={(_, value) => handleSelectLanguage(value as string)}>
-            {languageOptions.map((option) => {
-              return (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              );
-            })}
+          <Select defaultValue={language} onValueChange={handleSelectLanguage}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {languageOptions.map((option) => {
+                return (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
           </Select>
         </div>
       </div>

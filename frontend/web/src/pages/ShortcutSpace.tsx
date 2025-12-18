@@ -1,4 +1,4 @@
-import { Button } from "@mui/joy";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -51,7 +51,7 @@ const ShortcutSpace = () => {
             Shortcut <span className="font-mono">{shortcutName}</span> Not Found.
           </p>
           <div className="mt-4">
-            <Button variant="plain" size="sm" onClick={() => setShowCreateShortcutDrawer(true)}>
+            <Button variant="ghost" size="sm" onClick={() => setShowCreateShortcutDrawer(true)}>
               👉 Click here to create it
             </Button>
           </div>

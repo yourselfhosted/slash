@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@mui/joy";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -84,7 +84,7 @@ const WorkspaceMembersSection = () => {
                         <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{user.email}</td>
                         <td className="whitespace-nowrap px-3 py-2 text-sm text-gray-500">{user.role}</td>
                         <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm">
-                          <IconButton
+                          <Button
                             size="sm"
                             variant="plain"
                             onClick={() => {
@@ -93,10 +93,10 @@ const WorkspaceMembersSection = () => {
                             }}
                           >
                             <Icon.PenBox className="w-4 h-auto" />
-                          </IconButton>
-                          <IconButton size="sm" color="danger" variant="plain" onClick={() => handleDeleteUser(user)}>
+                          </Button>
+                          <Button size="sm" color="danger" variant="plain" onClick={() => handleDeleteUser(user)}>
                             <Icon.Trash className="w-4 h-auto" />
-                          </IconButton>
+                          </Button>
                         </td>
                       </tr>
                     ))}

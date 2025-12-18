@@ -1,4 +1,4 @@
-import { Divider } from "@mui/joy";
+import { Separator } from "@/components/ui/separator";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -75,7 +75,7 @@ const CollectionSpace = () => {
             </div>
             <p className="text-gray-500 text-sm truncate">{collection.description}</p>
           </div>
-          <Divider className="!my-2" />
+          <Separator className="my-2" />
           <div className="w-full flex flex-col justify-start items-start gap-2 sm:gap-1 px-px">
             {shortcuts.map((shortcut) => {
               return (
@@ -104,7 +104,7 @@ const CollectionSpace = () => {
                 <div className="w-72 max-w-full border dark:border-zinc-900 dark:bg-zinc-900 dark:text-gray-400 p-6 pb-4 rounded-2xl shadow-xl">
                   <Icon.AppWindow className="w-12 h-auto mb-2 opacity-60" strokeWidth={1} />
                   <p className="text-lg font-medium">Click on a tab in the Sidebar to get started.</p>
-                  <Divider className="!my-2" />
+                  <Separator className="my-2" />
                   <p className="text-gray-400 dark:text-gray-600 text-sm mt-2 italic">
                     Shared by <span className="font-medium not-italic">{creator.nickname}</span>
                   </p>

@@ -1,4 +1,5 @@
-import { Button, Input } from "@mui/joy";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -104,12 +105,10 @@ const SignUp: React.FC = () => {
               <Button
                 className="w-full"
                 type="submit"
-                color="primary"
-                loading={actionBtnLoadingState.isLoading}
                 disabled={actionBtnLoadingState.isLoading || !allowConfirm}
                 onClick={handleSignupBtnClick}
               >
-                {t("auth.sign-up")}
+                {actionBtnLoadingState.isLoading ? "Loading..." : t("auth.sign-up")}
               </Button>
             </div>
           </form>

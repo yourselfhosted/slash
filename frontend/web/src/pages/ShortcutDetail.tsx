@@ -1,4 +1,4 @@
-import { Tooltip } from "@mui/joy";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
@@ -104,22 +104,32 @@ const ShortcutDetail = () => {
           </span>
         </a>
         <div className="mt-2 w-full flex flex-row justify-normal items-center space-x-2">
-          <Tooltip title="Copy" variant="solid" placement="top" arrow>
-            <button
-              className="w-8 h-8 cursor-pointer border rounded-full text-gray-500 hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
-              onClick={() => handleCopyButtonClick()}
-            >
-              <Icon.Clipboard className="w-4 h-auto mx-auto" />
-            </button>
-          </Tooltip>
-          <Tooltip title="QR Code" variant="solid" placement="top" arrow>
-            <button
-              className="w-8 h-8 cursor-pointer border rounded-full text-gray-500 hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
-              onClick={() => setShowQRCodeDialog(true)}
-            >
-              <Icon.QrCode className="w-4 h-auto mx-auto" />
-            </button>
-          </Tooltip>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className="w-8 h-8 cursor-pointer border rounded-full text-gray-500 hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
+                  onClick={() => handleCopyButtonClick()}
+                >
+                  <Icon.Clipboard className="w-4 h-auto mx-auto" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>Copy</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className="w-8 h-8 cursor-pointer border rounded-full text-gray-500 hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
+                  onClick={() => setShowQRCodeDialog(true)}
+                >
+                  <Icon.QrCode className="w-4 h-auto mx-auto" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>QR Code</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           {havePermission && (
             <Dropdown
               className="w-8 h-8 flex justify-center items-center border cursor-pointer rounded-full hover:bg-gray-100 hover:shadow dark:border-zinc-800 dark:hover:bg-zinc-800"
@@ -162,24 +172,39 @@ const ShortcutDetail = () => {
           {shortcut.tags.length === 0 && <span className="text-gray-400 text-sm leading-4 italic dark:text-gray-500">No tags</span>}
         </div>
         <div className="w-full flex mt-4 gap-2">
-          <Tooltip title="Creator" variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
-              <Icon.User className="w-4 h-auto mr-1" />
-              <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{creator.nickname}</span>
-            </div>
-          </Tooltip>
-          <Tooltip title={t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)} variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
-              <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
-              {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
-            </div>
-          </Tooltip>
-          <Tooltip title="View count" variant="solid" placement="top" arrow>
-            <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
-              <Icon.BarChart2 className="w-4 h-auto mr-1" />
-              {shortcut.viewCount} visits
-            </div>
-          </Tooltip>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
+                  <Icon.User className="w-4 h-auto mr-1" />
+                  <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{creator.nickname}</span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>Creator</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
+                  <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
+                  {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>{t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border rounded-full text-gray-500 text-sm dark:border-zinc-800">
+                  <Icon.BarChart2 className="w-4 h-auto mr-1" />
+                  {shortcut.viewCount} visits
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>View count</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         <div className="w-full flex flex-col mt-8">

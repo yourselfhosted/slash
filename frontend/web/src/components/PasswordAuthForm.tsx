@@ -1,4 +1,5 @@
-import { Button, Input } from "@mui/joy";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -71,12 +72,10 @@ const PasswordAuthForm = () => {
         <Button
           className="w-full"
           type="submit"
-          color="primary"
-          loading={actionBtnLoadingState.isLoading}
           disabled={actionBtnLoadingState.isLoading || !allowConfirm}
           onClick={handleSigninBtnClick}
         >
-          {t("auth.sign-in")}
+          {actionBtnLoadingState.isLoading ? "Loading..." : t("auth.sign-in")}
         </Button>
       </div>
     </form>

@@ -1,4 +1,4 @@
-import { useColorScheme } from "@mui/joy";
+import { useTheme } from "next-themes";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
@@ -9,7 +9,7 @@ import { useUserStore } from "@/stores";
 
 const Root: React.FC = () => {
   const navigateTo = useNavigateTo();
-  const { setMode } = useColorScheme();
+  const { setTheme } = useTheme();
   const { i18n } = useTranslation();
   const userStore = useUserStore();
   const currentUser = userStore.getCurrentUser();
@@ -36,11 +36,11 @@ const Root: React.FC = () => {
     i18n.changeLanguage(currentUserSetting.general?.locale || "en");
 
     if (currentUserSetting.general?.colorTheme === "LIGHT") {
-      setMode("light");
+      setTheme("light");
     } else if (currentUserSetting.general?.colorTheme === "DARK") {
-      setMode("dark");
+      setTheme("dark");
     } else {
-      setMode("system");
+      setTheme("system");
     }
   }, [currentUserSetting]);
 
