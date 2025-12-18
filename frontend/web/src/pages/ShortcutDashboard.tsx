@@ -6,7 +6,6 @@ import FilterView from "@/components/FilterView";
 import Icon from "@/components/Icon";
 import ShortcutsContainer from "@/components/ShortcutsContainer";
 import ShortcutsNavigator from "@/components/ShortcutsNavigator";
-import ViewSetting from "@/components/ViewSetting";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useLoading from "@/hooks/useLoading";
