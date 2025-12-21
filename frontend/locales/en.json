@@ -68,7 +68,6 @@
     },
     "workspace": {
       "self": "Workspace settings",
-      "custom-style": "Custom style",
       "disallow-user-registration": {
         "self": "Disallow user registration"
       },

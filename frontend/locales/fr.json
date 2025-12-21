@@ -68,7 +68,6 @@
     },
     "workspace": {
       "self": "Paramètres de l'espace de travail",
-      "custom-style": "Style personnalisé",
       "enable-user-signup": {
         "self": "Activer l'inscription des utilisateurs",
         "description": "Une fois activé, d'autres utilisateurs peuvent s'inscrire."

@@ -500,7 +500,6 @@
 | license_key | [string](#string) |  |  |
 | instance_url | [string](#string) |  |  |
 | branding | [bytes](#bytes) |  |  |
-| custom_style | [string](#string) |  |  |
 
 
 
@@ -569,7 +568,6 @@
 | WORKSPACE_SETTING_IDENTITY_PROVIDER | 4 | Workspace identity provider settings. |
 | WORKSPACE_SETTING_LICENSE_KEY | 10 | TODO: remove the following keys. The license key. |
 | WORKSPACE_SETTING_SECRET_SESSION | 11 | The secret session key used to encrypt session data. |
-| WORKSPACE_SETTING_CUSTOM_STYLE | 12 | The custom style. |
 | WORKSPACE_SETTING_DEFAULT_VISIBILITY | 13 | The default visibility of shortcuts and collections. |
 
 

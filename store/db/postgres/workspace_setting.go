@@ -125,7 +125,6 @@ func (d *DB) ListWorkspaceSettings(ctx context.Context, find *store.FindWorkspac
 		} else if slices.Contains([]storepb.WorkspaceSettingKey{
 			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_LICENSE_KEY,
 			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECRET_SESSION,
-			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_CUSTOM_STYLE,
 			storepb.WorkspaceSettingKey_WORKSPACE_SETTING_DEFAULT_VISIBILITY,
 		}, workspaceSetting.Key) {
 			workspaceSetting.Raw = valueString

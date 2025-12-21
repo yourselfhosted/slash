@@ -1203,7 +1203,6 @@
 | version | [string](#string) |  | Current workspace version. |
 | owner | [string](#string) |  | The owner name. Format: &#34;users/{id}&#34; |
 | subscription | [Subscription](#slash-api-v1-Subscription) |  | The workspace subscription. |
-| custom_style | [string](#string) |  | The custom style. |
 | branding | [bytes](#bytes) |  | The workspace branding. |
 
 
@@ -1221,7 +1220,6 @@
 | ----- | ---- | ----- | ----------- |
 | instance_url | [string](#string) |  | The url of instance. |
 | branding | [bytes](#bytes) |  | The workspace custome branding. |
-| custom_style | [string](#string) |  | The custom style. |
 | default_visibility | [Visibility](#slash-api-v1-Visibility) |  | The default visibility of shortcuts and collections. |
 | identity_providers | [IdentityProvider](#slash-api-v1-IdentityProvider) | repeated | The identity providers. |
 | disallow_user_registration | [bool](#bool) |  | Whether to disallow user registration by email&amp;password. |

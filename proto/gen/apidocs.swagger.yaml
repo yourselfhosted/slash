@@ -941,9 +941,6 @@ definitions:
         type: string
         format: byte
         description: The workspace custome branding.
-      customStyle:
-        type: string
-        description: The custom style.
       defaultVisibility:
         $ref: '#/definitions/apiv1Visibility'
         description: The default visibility of shortcuts and collections.
@@ -1149,9 +1146,6 @@ definitions:
       subscription:
         $ref: '#/definitions/v1Subscription'
         description: The workspace subscription.
-      customStyle:
-        type: string
-        description: The custom style.
       branding:
         type: string
         format: byte

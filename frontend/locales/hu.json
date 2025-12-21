@@ -69,7 +69,6 @@
     },
     "workspace": {
       "self": "Munkaterület beállítások",
-      "custom-style": "Egyéni stílus",
       "enable-user-signup": {
         "self": "Felhasználói regisztráció engedélyezése",
         "description": "Ha engedélyezve van, más felhasználók is regisztrálhatnak."

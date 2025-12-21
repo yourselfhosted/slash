@@ -28,8 +28,6 @@ export enum WorkspaceSettingKey {
   WORKSPACE_SETTING_LICENSE_KEY = "WORKSPACE_SETTING_LICENSE_KEY",
   /** WORKSPACE_SETTING_SECRET_SESSION - The secret session key used to encrypt session data. */
   WORKSPACE_SETTING_SECRET_SESSION = "WORKSPACE_SETTING_SECRET_SESSION",
-  /** WORKSPACE_SETTING_CUSTOM_STYLE - The custom style. */
-  WORKSPACE_SETTING_CUSTOM_STYLE = "WORKSPACE_SETTING_CUSTOM_STYLE",
   /** WORKSPACE_SETTING_DEFAULT_VISIBILITY - The default visibility of shortcuts and collections. */
   WORKSPACE_SETTING_DEFAULT_VISIBILITY = "WORKSPACE_SETTING_DEFAULT_VISIBILITY",
   UNRECOGNIZED = "UNRECOGNIZED",
@@ -58,9 +56,6 @@ export function workspaceSettingKeyFromJSON(object: any): WorkspaceSettingKey {
     case 11:
     case "WORKSPACE_SETTING_SECRET_SESSION":
       return WorkspaceSettingKey.WORKSPACE_SETTING_SECRET_SESSION;
-    case 12:
-    case "WORKSPACE_SETTING_CUSTOM_STYLE":
-      return WorkspaceSettingKey.WORKSPACE_SETTING_CUSTOM_STYLE;
     case 13:
     case "WORKSPACE_SETTING_DEFAULT_VISIBILITY":
       return WorkspaceSettingKey.WORKSPACE_SETTING_DEFAULT_VISIBILITY;
@@ -87,8 +82,6 @@ export function workspaceSettingKeyToNumber(object: WorkspaceSettingKey): number
       return 10;
     case WorkspaceSettingKey.WORKSPACE_SETTING_SECRET_SESSION:
       return 11;
-    case WorkspaceSettingKey.WORKSPACE_SETTING_CUSTOM_STYLE:
-      return 12;
     case WorkspaceSettingKey.WORKSPACE_SETTING_DEFAULT_VISIBILITY:
       return 13;
     case WorkspaceSettingKey.UNRECOGNIZED:
@@ -111,7 +104,6 @@ export interface WorkspaceSetting_GeneralSetting {
   licenseKey: string;
   instanceUrl: string;
   branding: Uint8Array;
-  customStyle: string;
 }
 
 export interface WorkspaceSetting_SecuritySetting {
@@ -249,7 +241,7 @@ export const WorkspaceSetting: MessageFns<WorkspaceSetting> = {
 };
 
 function createBaseWorkspaceSetting_GeneralSetting(): WorkspaceSetting_GeneralSetting {
-  return { secretSession: "", licenseKey: "", instanceUrl: "", branding: new Uint8Array(0), customStyle: "" };
+  return { secretSession: "", licenseKey: "", instanceUrl: "", branding: new Uint8Array(0) };
 }
 
 export const WorkspaceSetting_GeneralSetting: MessageFns<WorkspaceSetting_GeneralSetting> = {
@@ -265,9 +257,6 @@ export const WorkspaceSetting_GeneralSetting: MessageFns<WorkspaceSetting_Genera
     }
     if (message.branding.length !== 0) {
       writer.uint32(34).bytes(message.branding);
-    }
-    if (message.customStyle !== "") {
-      writer.uint32(42).string(message.customStyle);
     }
     return writer;
   },
@@ -311,14 +300,6 @@ export const WorkspaceSetting_GeneralSetting: MessageFns<WorkspaceSetting_Genera
           message.branding = reader.bytes();
           continue;
         }
-        case 5: {
-          if (tag !== 42) {
-            break;
-          }
-
-          message.customStyle = reader.string();
-          continue;
-        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -337,7 +318,6 @@ export const WorkspaceSetting_GeneralSetting: MessageFns<WorkspaceSetting_Genera
     message.licenseKey = object.licenseKey ?? "";
     message.instanceUrl = object.instanceUrl ?? "";
     message.branding = object.branding ?? new Uint8Array(0);
-    message.customStyle = object.customStyle ?? "";
     return message;
   },
 };

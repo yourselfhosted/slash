@@ -54,7 +54,6 @@ func (s *APIV1Service) GetWorkspaceSetting(ctx context.Context, _ *v1pb.GetWorks
 		if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL {
 			generalSetting := v.GetGeneral()
 			workspaceSetting.Branding = generalSetting.GetBranding()
-			workspaceSetting.CustomStyle = generalSetting.GetCustomStyle()
 		} else if v.Key == storepb.WorkspaceSettingKey_WORKSPACE_SETTING_SECURITY {
 			securitySetting := v.GetSecurity()
 			workspaceSetting.DisallowUserRegistration = securitySetting.GetDisallowUserRegistration()
@@ -92,20 +91,6 @@ func (s *APIV1Service) UpdateWorkspaceSetting(ctx context.Context, request *v1pb
 				return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
 			}
 			generalSetting.Branding = request.Setting.Branding
-			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
-				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
-				Value: &storepb.WorkspaceSetting_General{
-					General: generalSetting,
-				},
-			}); err != nil {
-				return nil, status.Errorf(codes.Internal, "failed to update workspace setting: %v", err)
-			}
-		} else if path == "custom_style" {
-			generalSetting, err := s.Store.GetWorkspaceGeneralSetting(ctx)
-			if err != nil {
-				return nil, status.Errorf(codes.Internal, "failed to get workspace setting: %v", err)
-			}
-			generalSetting.CustomStyle = request.Setting.CustomStyle
 			if _, err := s.Store.UpsertWorkspaceSetting(ctx, &storepb.WorkspaceSetting{
 				Key: storepb.WorkspaceSettingKey_WORKSPACE_SETTING_GENERAL,
 				Value: &storepb.WorkspaceSetting_General{

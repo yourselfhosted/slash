@@ -26,8 +26,6 @@ export interface WorkspaceProfile {
   subscription?:
     | Subscription
     | undefined;
-  /** The custom style. */
-  customStyle: string;
   /** The workspace branding. */
   branding: Uint8Array;
 }
@@ -37,8 +35,6 @@ export interface WorkspaceSetting {
   instanceUrl: string;
   /** The workspace custome branding. */
   branding: Uint8Array;
-  /** The custom style. */
-  customStyle: string;
   /** The default visibility of shortcuts and collections. */
   defaultVisibility: Visibility;
   /** The identity providers. */
@@ -125,7 +121,7 @@ export interface UpdateWorkspaceSettingRequest {
 }
 
 function createBaseWorkspaceProfile(): WorkspaceProfile {
-  return { mode: "", version: "", owner: "", subscription: undefined, customStyle: "", branding: new Uint8Array(0) };
+  return { mode: "", version: "", owner: "", subscription: undefined, branding: new Uint8Array(0) };
 }
 
 export const WorkspaceProfile: MessageFns<WorkspaceProfile> = {
@@ -141,9 +137,6 @@ export const WorkspaceProfile: MessageFns<WorkspaceProfile> = {
     }
     if (message.subscription !== undefined) {
       Subscription.encode(message.subscription, writer.uint32(34).fork()).join();
-    }
-    if (message.customStyle !== "") {
-      writer.uint32(42).string(message.customStyle);
     }
     if (message.branding.length !== 0) {
       writer.uint32(50).bytes(message.branding);
@@ -190,14 +183,6 @@ export const WorkspaceProfile: MessageFns<WorkspaceProfile> = {
           message.subscription = Subscription.decode(reader, reader.uint32());
           continue;
         }
-        case 5: {
-          if (tag !== 42) {
-            break;
-          }
-
-          message.customStyle = reader.string();
-          continue;
-        }
         case 6: {
           if (tag !== 50) {
             break;
@@ -226,7 +211,6 @@ export const WorkspaceProfile: MessageFns<WorkspaceProfile> = {
     message.subscription = (object.subscription !== undefined && object.subscription !== null)
       ? Subscription.fromPartial(object.subscription)
       : undefined;
-    message.customStyle = object.customStyle ?? "";
     message.branding = object.branding ?? new Uint8Array(0);
     return message;
   },
@@ -236,7 +220,6 @@ function createBaseWorkspaceSetting(): WorkspaceSetting {
   return {
     instanceUrl: "",
     branding: new Uint8Array(0),
-    customStyle: "",
     defaultVisibility: Visibility.VISIBILITY_UNSPECIFIED,
     identityProviders: [],
     disallowUserRegistration: false,
@@ -251,9 +234,6 @@ export const WorkspaceSetting: MessageFns<WorkspaceSetting> = {
     }
     if (message.branding.length !== 0) {
       writer.uint32(18).bytes(message.branding);
-    }
-    if (message.customStyle !== "") {
-      writer.uint32(26).string(message.customStyle);
     }
     if (message.defaultVisibility !== Visibility.VISIBILITY_UNSPECIFIED) {
       writer.uint32(32).int32(visibilityToNumber(message.defaultVisibility));
@@ -291,14 +271,6 @@ export const WorkspaceSetting: MessageFns<WorkspaceSetting> = {
           }
 
           message.branding = reader.bytes();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.customStyle = reader.string();
           continue;
         }
         case 4: {
@@ -349,7 +321,6 @@ export const WorkspaceSetting: MessageFns<WorkspaceSetting> = {
     const message = createBaseWorkspaceSetting();
     message.instanceUrl = object.instanceUrl ?? "";
     message.branding = object.branding ?? new Uint8Array(0);
-    message.customStyle = object.customStyle ?? "";
     message.defaultVisibility = object.defaultVisibility ?? Visibility.VISIBILITY_UNSPECIFIED;
     message.identityProviders = object.identityProviders?.map((e) => IdentityProvider.fromPartial(e)) || [];
     message.disallowUserRegistration = object.disallowUserRegistration ?? false;

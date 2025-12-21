@@ -23,7 +23,6 @@ message WorkspaceSetting {
     string license_key = 2;
     string instance_url = 3;
     bytes branding = 4;
-    string custom_style = 5;
   }
 
   message SecuritySetting {
@@ -56,8 +55,6 @@ enum WorkspaceSettingKey {
   WORKSPACE_SETTING_LICENSE_KEY = 10;
   // The secret session key used to encrypt session data.
   WORKSPACE_SETTING_SECRET_SESSION = 11;
-  // The custom style.
-  WORKSPACE_SETTING_CUSTOM_STYLE = 12;
   // The default visibility of shortcuts and collections.
   WORKSPACE_SETTING_DEFAULT_VISIBILITY = 13;
 }

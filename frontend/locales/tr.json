@@ -68,7 +68,6 @@
     },
     "workspace": {
       "self": "Çalışma alanı ayarları",
-      "custom-style": "Özel stil",
       "enable-user-signup": {
         "self": "Kullanıcı kaydını etkinleştir",
         "description": "Etkinleştirildiğinde, diğer kullanıcılar kaydolabilir."

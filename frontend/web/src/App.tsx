@@ -20,13 +20,6 @@ function App() {
   }, [workspaceStore.profile]);
 
   useEffect(() => {
-    const styleEl = document.createElement("style");
-    styleEl.innerHTML = workspaceStore.setting.customStyle;
-    styleEl.setAttribute("type", "text/css");
-    document.body.insertAdjacentElement("beforeend", styleEl);
-  }, [workspaceStore.setting.customStyle]);
-
-  useEffect(() => {
     const hasCustomBranding = workspaceStore.checkFeatureAvailable(FeatureType.CustomeBranding);
     if (!hasCustomBranding || !workspaceStore.setting.branding) {
       return;

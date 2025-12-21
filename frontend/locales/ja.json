@@ -68,7 +68,6 @@
     },
     "workspace": {
       "self": "ワークスペースの設定",
-      "custom-style": "カスタムスタイル",
       "disallow-user-registration": {
         "self": "ユーザーの登録を有効にする"
       },

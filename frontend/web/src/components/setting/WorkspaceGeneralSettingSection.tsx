@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { workspaceServiceClient } from "@/grpcweb";
 import { useWorkspaceStore } from "@/stores";
 import { FeatureType } from "@/stores/workspace";
@@ -59,13 +58,6 @@ const WorkspaceGeneralSettingSection = () => {
     setWorkspaceSetting({ ...workspaceSetting, branding: new TextEncoder().encode(base64) });
   };
 
-  const handleCustomStyleChange = async (value: string) => {
-    setWorkspaceSetting({
-      ...workspaceSetting,
-      customStyle: value,
-    });
-  };
-
   const handleDefaultVisibilityChange = async (value: Visibility) => {
     setWorkspaceSetting({
       ...workspaceSetting,
@@ -77,9 +69,6 @@ const WorkspaceGeneralSettingSection = () => {
     const updateMask: string[] = [];
     if (!isEqual(originalWorkspaceSetting.current.branding, workspaceSetting.branding)) {
       updateMask.push("branding");
-    }
-    if (!isEqual(originalWorkspaceSetting.current.customStyle, workspaceSetting.customStyle)) {
-      updateMask.push("custom_style");
     }
     if (!isEqual(originalWorkspaceSetting.current.defaultVisibility, workspaceSetting.defaultVisibility)) {
       updateMask.push("default_visibility");
@@ -154,15 +143,6 @@ const WorkspaceGeneralSettingSection = () => {
               <SelectItem value={Visibility.PUBLIC.toString()}>{t(`shortcut.visibility.public.self`)}</SelectItem>
             </SelectContent>
           </Select>
-        </div>
-        <div className="w-full flex flex-col justify-start items-start">
-          <p className="mt-2 font-medium text-foreground">{t("settings.workspace.custom-style")}</p>
-          <Textarea
-            className="w-full mt-2 min-h-[80px]"
-            placeholder="* {font-family: ui-monospace Monaco Consolas;}"
-            value={workspaceSetting.customStyle}
-            onChange={(event) => handleCustomStyleChange(event.target.value)}
-          />
         </div>
         <div>
           <Button color="primary" disabled={!allowSave} onClick={handleSaveWorkspaceSetting}>

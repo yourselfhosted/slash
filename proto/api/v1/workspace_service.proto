@@ -36,8 +36,6 @@ message WorkspaceProfile {
   string owner = 3;
   // The workspace subscription.
   Subscription subscription = 4;
-  // The custom style.
-  string custom_style = 5;
   // The workspace branding.
   bytes branding = 6;
 }
@@ -47,8 +45,6 @@ message WorkspaceSetting {
   string instance_url = 1;
   // The workspace custome branding.
   bytes branding = 2;
-  // The custom style.
-  string custom_style = 3;
   // The default visibility of shortcuts and collections.
   Visibility default_visibility = 4;
   // The identity providers.

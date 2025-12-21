@@ -68,7 +68,6 @@
     },
     "workspace": {
       "self": "系统设置",
-      "custom-style": "自定义样式",
       "enable-user-signup": {
         "self": "启用用户注册",
         "description": "允许其他用户注册新账号"
