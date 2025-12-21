@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Icon from "@/components/Icon";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
@@ -12,8 +12,10 @@ interface Props {
 const Dropdown: React.FC<Props> = (props: Props) => {
   const { trigger, actions, className, actionsClassName } = props;
 
+  const [open, setOpen] = useState(false);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className={className} asChild>
         {trigger ? (
           <div>{trigger}</div>
@@ -23,7 +25,7 @@ const Dropdown: React.FC<Props> = (props: Props) => {
           </button>
         )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className={actionsClassName} align="end">
+      <DropdownMenuContent className={actionsClassName} align="end" onClick={() => setOpen(false)}>
         {actions}
       </DropdownMenuContent>
     </DropdownMenu>

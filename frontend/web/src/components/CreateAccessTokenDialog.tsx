@@ -9,7 +9,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { userServiceClient } from "@/grpcweb";
 import useLoading from "@/hooks/useLoading";
 import { useUserStore } from "@/stores";
-import Icon from "./Icon";
 
 interface Props {
   onClose: () => void;
@@ -92,12 +91,7 @@ const CreateAccessTokenDialog: React.FC<Props> = (props: Props) => {
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="w-80 sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex flex-row justify-between items-center">
-            <span>Create Access Token</span>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <Icon.X className="w-5 h-auto" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>Create Access Token</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">

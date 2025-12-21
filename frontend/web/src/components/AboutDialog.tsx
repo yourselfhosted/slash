@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import Icon from "./Icon";
 
 interface Props {
   onClose: () => void;
@@ -15,12 +13,7 @@ const AboutDialog: React.FC<Props> = (props: Props) => {
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="max-w-full w-80 sm:w-96">
         <DialogHeader>
-          <DialogTitle className="flex flex-row justify-between items-center">
-            <span>{t("common.about")}</span>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <Icon.X className="w-5 h-auto" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>{t("common.about")}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <p>

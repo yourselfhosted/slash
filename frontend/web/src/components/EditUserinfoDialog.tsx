@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useLoading from "@/hooks/useLoading";
 import { useUserStore } from "@/stores";
-import Icon from "./Icon";
 
 interface Props {
   onClose: () => void;
@@ -21,10 +20,6 @@ const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
   const [email, setEmail] = useState(currentUser.email);
   const [nickname, setNickname] = useState(currentUser.nickname);
   const requestState = useLoading(false);
-
-  const handleCloseBtnClick = () => {
-    onClose();
-  };
 
   const handleEmailChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value as string;
@@ -65,12 +60,7 @@ const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="w-80 sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex flex-row justify-between items-center">
-            <span>Edit Userinfo</span>
-            <Button variant="ghost" size="icon" onClick={handleCloseBtnClick}>
-              <Icon.X className="w-5 h-auto" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>Edit Userinfo</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
@@ -83,7 +73,7 @@ const EditUserinfoDialog: React.FC<Props> = (props: Props) => {
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" disabled={requestState.isLoading} onClick={handleCloseBtnClick}>
+          <Button variant="outline" disabled={requestState.isLoading} onClick={onClose}>
             {t("common.cancel")}
           </Button>
           <Button disabled={requestState.isLoading} onClick={handleSaveBtnClick}>

@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useLoading from "@/hooks/useLoading";
 import { useUserStore } from "@/stores";
-import Icon from "./Icon";
 
 interface Props {
   onClose: () => void;
@@ -20,10 +19,6 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
   const requestState = useLoading(false);
-
-  const handleCloseBtnClick = () => {
-    onClose();
-  };
 
   const handleNewPasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value as string;
@@ -69,12 +64,7 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="w-80 sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex flex-row justify-between items-center">
-            <span>Change Password</span>
-            <Button variant="ghost" size="icon" onClick={handleCloseBtnClick}>
-              <Icon.X className="w-5 h-auto" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>Change Password</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
@@ -87,7 +77,7 @@ const ChangePasswordDialog: React.FC<Props> = (props: Props) => {
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" disabled={requestState.isLoading} onClick={handleCloseBtnClick}>
+          <Button variant="outline" disabled={requestState.isLoading} onClick={onClose}>
             {t("common.cancel")}
           </Button>
           <Button disabled={requestState.isLoading} onClick={handleSaveBtnClick}>

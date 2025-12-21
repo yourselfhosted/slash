@@ -9,8 +9,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useLoading from "@/hooks/useLoading";
 import { useUserStore } from "@/stores";
-import { Role, User } from "@/types/proto/api/v1/user_service";
-import Icon from "./Icon";
+import { Role, type User } from "@/types/proto/api/v1/user_service";
 
 interface Props {
   user?: User;
@@ -134,12 +133,7 @@ const CreateUserDialog: React.FC<Props> = (props: Props) => {
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="w-80 sm:w-96">
         <DialogHeader>
-          <DialogTitle className="flex flex-row justify-between items-center">
-            <span>{isCreating ? "Create User" : "Edit User"}</span>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <Icon.X className="w-5 h-auto" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>{isCreating ? "Create User" : "Edit User"}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">

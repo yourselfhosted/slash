@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { absolutifyLink } from "@/helpers/utils";
-import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
+import type { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import Icon from "./Icon";
 
 interface Props {
@@ -19,10 +19,6 @@ const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const shortcutLink = absolutifyLink(`/s/${shortcut.name}`);
 
-  const handleCloseBtnClick = () => {
-    onClose();
-  };
-
   const handleDownloadQRCodeClick = () => {
     const canvas = containerRef.current?.querySelector("canvas");
     if (!canvas) {
@@ -34,19 +30,14 @@ const GenerateQRCodeDialog: React.FC<Props> = (props: Props) => {
     link.download = `${shortcut.title || shortcut.name}-qrcode.png`;
     link.href = canvas.toDataURL();
     link.click();
-    handleCloseBtnClick();
+    onClose();
   };
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="w-64 sm:max-w-xs">
         <DialogHeader>
-          <DialogTitle className="flex flex-row justify-between items-center">
-            <span>QR Code</span>
-            <Button variant="ghost" size="icon" onClick={handleCloseBtnClick}>
-              <Icon.X className="w-5 h-auto" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>QR Code</DialogTitle>
         </DialogHeader>
         <div className="space-y-6">
           <div ref={containerRef} className="w-full flex flex-row justify-center items-center">
