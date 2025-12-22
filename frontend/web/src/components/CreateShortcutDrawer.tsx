@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetBody, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import useLoading from "@/hooks/useLoading";
 import { useShortcutStore, useWorkspaceStore } from "@/stores";
@@ -211,163 +211,156 @@ const CreateShortcutDrawer: React.FC<Props> = (props: Props) => {
 
   return (
     <Sheet open={true} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+      <SheetContent className="w-full sm:max-w-md">
         <SheetHeader>
           <SheetTitle>{isCreating ? "Create Shortcut" : "Edit Shortcut"}</SheetTitle>
-          <SheetDescription>{isCreating ? "Create a new shortcut" : "Edit your shortcut details"}</SheetDescription>
         </SheetHeader>
-        <div className="mt-6 space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">
-              Name <span className="text-destructive">*</span>
-            </Label>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">s/</span>
+        <SheetBody>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">
+                Name <span className="text-destructive">*</span>
+              </Label>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">s/</span>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="An easy name to remember"
+                  value={state.shortcutCreate.name}
+                  onChange={handleNameInputChange}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="link">
+                Link <span className="text-destructive">*</span>
+              </Label>
               <Input
-                id="name"
+                id="link"
                 type="text"
-                placeholder="An easy name to remember"
-                value={state.shortcutCreate.name}
-                onChange={handleNameInputChange}
+                placeholder="The destination link of the shortcut"
+                value={state.shortcutCreate.link}
+                onChange={handleLinkInputChange}
               />
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="link">
-              Link <span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="link"
-              type="text"
-              placeholder="The destination link of the shortcut"
-              value={state.shortcutCreate.link}
-              onChange={handleLinkInputChange}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              type="text"
-              placeholder="The title of the shortcut"
-              value={state.shortcutCreate.title}
-              onChange={handleTitleInputChange}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Input
-              id="description"
-              type="text"
-              placeholder="A short description of the shortcut"
-              value={state.shortcutCreate.description}
-              onChange={handleDescriptionInputChange}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="tags">Tags</Label>
-            <Input id="tags" type="text" placeholder="The tags of shortcut" value={tag} onChange={handleTagsInputChange} />
-            {tagSuggestions.length > 0 && (
-              <div className="flex flex-row items-start gap-2 mt-2">
-                <Icon.Asterisk className="w-4 h-auto shrink-0 mt-0.5 text-muted-foreground" />
-                <div className="flex flex-row flex-wrap gap-2">
-                  {tagSuggestions.map((tag) => (
-                    <span
-                      className="text-muted-foreground cursor-pointer text-sm hover:text-foreground transition-colors"
-                      key={tag}
-                      onClick={() => handleTagSuggestionsClick(tag)}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                type="text"
+                placeholder="The title of the shortcut"
+                value={state.shortcutCreate.title}
+                onChange={handleTitleInputChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Input
+                id="description"
+                type="text"
+                placeholder="A short description of the shortcut"
+                value={state.shortcutCreate.description}
+                onChange={handleDescriptionInputChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="tags">Tags</Label>
+              <Input id="tags" type="text" placeholder="The tags of shortcut" value={tag} onChange={handleTagsInputChange} />
+              {tagSuggestions.length > 0 && (
+                <div className="flex flex-row items-start gap-2 mt-2">
+                  <Icon.Asterisk className="w-4 h-auto shrink-0 mt-0.5 text-muted-foreground" />
+                  <div className="flex flex-row flex-wrap gap-2">
+                    {tagSuggestions.map((tag) => (
+                      <span
+                        className="text-muted-foreground cursor-pointer text-sm hover:text-foreground transition-colors"
+                        key={tag}
+                        onClick={() => handleTagSuggestionsClick(tag)}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="public"
-              checked={state.shortcutCreate.visibility === Visibility.PUBLIC}
-              onCheckedChange={(checked) =>
-                setPartialState({
-                  shortcutCreate: Object.assign(state.shortcutCreate, {
-                    visibility: checked ? Visibility.PUBLIC : Visibility.WORKSPACE,
-                  }),
-                })
-              }
-            />
-            <Label htmlFor="public" className="text-sm font-normal cursor-pointer">
-              {t(`shortcut.visibility.public.description`)}
-            </Label>
-          </div>
-
-          <Separator className="my-4" />
-
-          <div className="border rounded-lg overflow-hidden">
-            <div
-              className={classnames(
-                "flex flex-row justify-between items-center px-3 py-2 cursor-pointer hover:bg-accent transition-colors",
-                showOpenGraphMetadata && "bg-accent border-b",
               )}
-              onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
-            >
-              <span className="text-sm flex items-center gap-1">
-                Social media metadata
-                <Icon.Sparkles className="w-4 h-auto text-primary" />
-              </span>
-              <Icon.ChevronDown
-                className={classnames("w-4 h-auto text-muted-foreground transition-transform", showOpenGraphMetadata && "rotate-180")}
-              />
             </div>
-            {showOpenGraphMetadata && (
-              <div className="p-3 space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="og-image" className="text-sm">
-                    Image URL
-                  </Label>
-                  <Input
-                    id="og-image"
-                    type="text"
-                    placeholder="https://the.link.to/the/image.png"
-                    value={state.shortcutCreate.ogMetadata?.image}
-                    onChange={handleOpenGraphMetadataImageChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="og-title" className="text-sm">
-                    Title
-                  </Label>
-                  <Input
-                    id="og-title"
-                    type="text"
-                    placeholder="Slash - An open source, self-hosted platform"
-                    value={state.shortcutCreate.ogMetadata?.title}
-                    onChange={handleOpenGraphMetadataTitleChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="og-description" className="text-sm">
-                    Description
-                  </Label>
-                  <Textarea
-                    id="og-description"
-                    placeholder="An open source, self-hosted platform for sharing and managing your most frequently used links."
-                    rows={3}
-                    value={state.shortcutCreate.ogMetadata?.description}
-                    onChange={handleOpenGraphMetadataDescriptionChange}
-                  />
-                </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="public"
+                checked={state.shortcutCreate.visibility === Visibility.PUBLIC}
+                onCheckedChange={(checked) =>
+                  setPartialState({
+                    shortcutCreate: Object.assign(state.shortcutCreate, {
+                      visibility: checked ? Visibility.PUBLIC : Visibility.WORKSPACE,
+                    }),
+                  })
+                }
+              />
+              <Label htmlFor="public" className="text-sm font-normal cursor-pointer">
+                {t(`shortcut.visibility.public.description`)}
+              </Label>
+            </div>
+            <Separator className="my-4" />
+            <div className="border rounded-lg overflow-hidden">
+              <div
+                className={classnames(
+                  "flex flex-row justify-between items-center px-3 py-2 cursor-pointer hover:bg-accent transition-colors",
+                  showOpenGraphMetadata && "bg-accent border-b",
+                )}
+                onClick={() => setShowOpenGraphMetadata(!showOpenGraphMetadata)}
+              >
+                <span className="text-sm flex items-center gap-1">
+                  Social media metadata
+                  <Icon.Sparkles className="w-4 h-auto text-primary" />
+                </span>
+                <Icon.ChevronDown
+                  className={classnames("w-4 h-auto text-muted-foreground transition-transform", showOpenGraphMetadata && "rotate-180")}
+                />
               </div>
-            )}
+              {showOpenGraphMetadata && (
+                <div className="p-3 space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="og-image" className="text-sm">
+                      Image URL
+                    </Label>
+                    <Input
+                      id="og-image"
+                      type="text"
+                      placeholder="https://the.link.to/the/image.png"
+                      value={state.shortcutCreate.ogMetadata?.image}
+                      onChange={handleOpenGraphMetadataImageChange}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="og-title" className="text-sm">
+                      Title
+                    </Label>
+                    <Input
+                      id="og-title"
+                      type="text"
+                      placeholder="Slash - An open source, self-hosted platform"
+                      value={state.shortcutCreate.ogMetadata?.title}
+                      onChange={handleOpenGraphMetadataTitleChange}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="og-description" className="text-sm">
+                      Description
+                    </Label>
+                    <Textarea
+                      id="og-description"
+                      placeholder="An open source, self-hosted platform for sharing and managing your most frequently used links."
+                      rows={3}
+                      value={state.shortcutCreate.ogMetadata?.description}
+                      onChange={handleOpenGraphMetadataDescriptionChange}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-
-        <SheetFooter className="mt-6">
+        </SheetBody>
+        <SheetFooter>
           <Button variant="outline" onClick={onClose} disabled={requestState.isLoading}>
             {t("common.cancel")}
           </Button>

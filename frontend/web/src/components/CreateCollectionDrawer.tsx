@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetBody, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import useLoading from "@/hooks/useLoading";
 import { useCollectionStore, useShortcutStore, useWorkspaceStore } from "@/stores";
 import { Collection } from "@/types/proto/api/v1/collection_service";
@@ -163,107 +163,108 @@ const CreateCollectionDrawer: React.FC<Props> = (props: Props) => {
 
   return (
     <Sheet open={true} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+      <SheetContent className="w-full sm:max-w-md">
         <SheetHeader>
           <SheetTitle>{isCreating ? "Create Collection" : "Edit Collection"}</SheetTitle>
-          <SheetDescription>{isCreating ? "Create a new collection of shortcuts" : "Edit your collection details"}</SheetDescription>
         </SheetHeader>
-        <div className="mt-6 space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">
-              Name <span className="text-destructive">*</span>
-            </Label>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">c/</span>
+        <SheetBody>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">
+                Name <span className="text-destructive">*</span>
+              </Label>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">c/</span>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="An easy name to remember"
+                  value={state.collectionCreate.name}
+                  onChange={handleNameInputChange}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="title">
+                Title <span className="text-destructive">*</span>
+              </Label>
               <Input
-                id="name"
+                id="title"
                 type="text"
-                placeholder="An easy name to remember"
-                value={state.collectionCreate.name}
-                onChange={handleNameInputChange}
+                placeholder="A short title of your collection"
+                value={state.collectionCreate.title}
+                onChange={handleTitleInputChange}
               />
             </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="title">
-              Title <span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="title"
-              type="text"
-              placeholder="A short title of your collection"
-              value={state.collectionCreate.title}
-              onChange={handleTitleInputChange}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Input
-              id="description"
-              type="text"
-              placeholder="A slightly longer description"
-              value={state.collectionCreate.description}
-              onChange={handleDescriptionInputChange}
-            />
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="public"
-              checked={state.collectionCreate.visibility === Visibility.PUBLIC}
-              onCheckedChange={(checked) =>
-                setPartialState({
-                  collectionCreate: Object.assign(state.collectionCreate, {
-                    visibility: checked ? Visibility.PUBLIC : Visibility.WORKSPACE,
-                  }),
-                })
-              }
-            />
-            <Label htmlFor="public" className="text-sm font-normal cursor-pointer">
-              {t(`shortcut.visibility.public.description`)}
-            </Label>
-          </div>
-          <Separator />
-          <div className="space-y-2">
-            <div className="flex items-baseline gap-2">
-              <Label>Shortcuts</Label>
-              <span className="text-sm text-muted-foreground">({selectedShortcuts.length})</span>
-              {selectedShortcuts.length === 0 && <span className="text-sm italic text-muted-foreground">(Select a shortcut first)</span>}
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Input
+                id="description"
+                type="text"
+                placeholder="A slightly longer description"
+                value={state.collectionCreate.description}
+                onChange={handleDescriptionInputChange}
+              />
             </div>
-            <div className="w-full py-1 px-px flex flex-row justify-start items-start flex-wrap gap-2">
-              {selectedShortcuts.map((shortcut) => {
-                return (
-                  <ShortcutView
-                    key={shortcut.id}
-                    className="!w-auto select-none max-w-[40%] cursor-pointer bg-muted shadow"
-                    shortcut={shortcut}
-                    onClick={() => {
-                      setSelectedShortcuts([...selectedShortcuts.filter((selectedShortcut) => selectedShortcut.id !== shortcut.id)]);
-                    }}
-                  />
-                );
-              })}
-              {unselectedShortcuts.map((shortcut) => {
-                return (
-                  <ShortcutView
-                    key={shortcut.id}
-                    className="!w-auto select-none max-w-[40%] border-dashed cursor-pointer"
-                    shortcut={shortcut}
-                    onClick={() => {
-                      setSelectedShortcuts([...selectedShortcuts, shortcut]);
-                    }}
-                  />
-                );
-              })}
-              {selectedShortcuts.length + unselectedShortcuts.length === 0 && (
-                <div className="w-full flex flex-row justify-center items-center text-muted-foreground">
-                  <Icon.PackageOpen className="w-6 h-auto" />
-                  <p className="ml-2">No shortcuts found.</p>
-                </div>
-              )}
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="public"
+                checked={state.collectionCreate.visibility === Visibility.PUBLIC}
+                onCheckedChange={(checked) =>
+                  setPartialState({
+                    collectionCreate: Object.assign(state.collectionCreate, {
+                      visibility: checked ? Visibility.PUBLIC : Visibility.WORKSPACE,
+                    }),
+                  })
+                }
+              />
+              <Label htmlFor="public" className="text-sm font-normal cursor-pointer">
+                {t(`shortcut.visibility.public.description`)}
+              </Label>
+            </div>
+            <Separator />
+            <div className="space-y-2">
+              <div className="flex items-baseline gap-2">
+                <Label>Shortcuts</Label>
+                <span className="text-sm text-muted-foreground">({selectedShortcuts.length})</span>
+                {selectedShortcuts.length === 0 && <span className="text-sm italic text-muted-foreground">(Select a shortcut first)</span>}
+              </div>
+              <div className="w-full py-1 px-px flex flex-row justify-start items-start flex-wrap gap-2">
+                {selectedShortcuts.map((shortcut) => {
+                  return (
+                    <ShortcutView
+                      key={shortcut.id}
+                      className="!w-auto select-none max-w-[40%] cursor-pointer bg-muted shadow"
+                      shortcut={shortcut}
+                      onClick={() => {
+                        setSelectedShortcuts([...selectedShortcuts.filter((selectedShortcut) => selectedShortcut.id !== shortcut.id)]);
+                      }}
+                    />
+                  );
+                })}
+                {unselectedShortcuts.map((shortcut) => {
+                  return (
+                    <ShortcutView
+                      key={shortcut.id}
+                      className="!w-auto select-none max-w-[40%] border-dashed cursor-pointer"
+                      shortcut={shortcut}
+                      onClick={() => {
+                        setSelectedShortcuts([...selectedShortcuts, shortcut]);
+                      }}
+                    />
+                  );
+                })}
+                {selectedShortcuts.length + unselectedShortcuts.length === 0 && (
+                  <div className="w-full flex flex-row justify-center items-center text-muted-foreground">
+                    <Icon.PackageOpen className="w-6 h-auto" />
+                    <p className="ml-2">No shortcuts found.</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <SheetFooter className="mt-6">
+        </SheetBody>
+        <SheetFooter>
           <Button variant="outline" disabled={requestState.isLoading} onClick={onClose}>
             {t("common.cancel")}
           </Button>
