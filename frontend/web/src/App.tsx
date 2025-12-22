@@ -1,6 +1,7 @@
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { useWorkspaceStore } from "@/stores";
 import useNavigateTo from "./hooks/useNavigateTo";
 import { FeatureType } from "./stores/workspace";
@@ -63,9 +64,9 @@ function App() {
   }, [colorScheme]);
 
   return (
-    <>
+    <TooltipProvider>
       <Outlet />
-    </>
+    </TooltipProvider>
   );
 }
 

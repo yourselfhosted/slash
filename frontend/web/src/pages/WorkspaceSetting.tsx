@@ -1,10 +1,9 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import Icon from "@/components/Icon";
 import WorkspaceGeneralSettingSection from "@/components/setting/WorkspaceGeneralSettingSection";
 import WorkspaceMembersSection from "@/components/setting/WorkspaceMembersSection";
 import WorkspaceSecuritySection from "@/components/setting/WorkspaceSecuritySection";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useUserStore, useWorkspaceStore } from "@/stores";
@@ -16,22 +15,13 @@ const WorkspaceSetting = () => {
   const currentUser = useUserStore().getCurrentUser();
   const isAdmin = currentUser.role === Role.ADMIN;
 
-  useEffect(() => {
-    if (!isAdmin) {
-      window.location.href = "/";
-    }
-  }, []);
-
   if (!isAdmin) {
+    toast.error("Only workspace admins can access workspace settings.");
     return null;
   }
 
   return (
     <div className="mx-auto max-w-8xl w-full px-4 sm:px-6 md:px-12 py-6 flex flex-col justify-start items-start gap-y-12">
-      <Alert variant="default" className="border-primary bg-muted">
-        <Icon.Info className="h-4 w-4" />
-        <AlertDescription>You can see the settings items below because you are an Admin.</AlertDescription>
-      </Alert>
       <div className="w-full flex flex-col">
         <p className="text-2xl shrink-0 font-semibold text-foreground">Subscription</p>
         <div className="mt-2">

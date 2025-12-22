@@ -49,10 +49,10 @@ const ShortcutDashboard: React.FC = () => {
     <>
       <div className="mx-auto max-w-8xl w-full px-4 sm:px-6 md:px-12 pt-4 pb-6 flex flex-col justify-start items-start">
         <ShortcutsNavigator />
-        <div className="w-full flex flex-row justify-between items-center mb-4">
+        <div className="w-full flex flex-row justify-between items-center mb-4 gap-2">
           <div className="flex flex-row justify-start items-center">
             <Input
-              className="w-32 mr-2"
+              className="w-32"
               type="text"
               placeholder={t("common.search")}
               value={filter.search}

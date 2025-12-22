@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { absolutifyLink } from "@/helpers/utils";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
@@ -76,33 +76,29 @@ const CollectionView = (props: Props) => {
             <p className="text-sm text-muted-foreground">{collection.description}</p>
           </div>
           <div className="flex flex-row justify-end items-center shrink-0 gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    className="w-auto text-muted-foreground cursor-pointer hover:text-foreground"
-                    to={`/c/${collection.name}`}
-                    target="_blank"
-                  >
-                    <Icon.Share className="w-4 h-auto" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>Share</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    className="w-auto text-muted-foreground cursor-pointer hover:text-foreground"
-                    onClick={() => handleOpenAllShortcutsButtonClick()}
-                  >
-                    <Icon.ArrowUpRight className="w-5 h-auto" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>Open all</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  className="w-auto text-muted-foreground cursor-pointer hover:text-foreground"
+                  to={`/c/${collection.name}`}
+                  target="_blank"
+                >
+                  <Icon.Share className="w-4 h-auto" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Share</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className="w-auto text-muted-foreground cursor-pointer hover:text-foreground"
+                  onClick={() => handleOpenAllShortcutsButtonClick()}
+                >
+                  <Icon.ArrowUpRight className="w-5 h-auto" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>Open all</TooltipContent>
+            </Tooltip>
             {showAdminActions && (
               <Dropdown
                 trigger={

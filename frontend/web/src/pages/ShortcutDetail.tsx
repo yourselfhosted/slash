@@ -12,7 +12,7 @@ import Icon from "@/components/Icon";
 import LinkFavicon from "@/components/LinkFavicon";
 import VisibilityIcon from "@/components/VisibilityIcon";
 import Dropdown from "@/components/common/Dropdown";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { absolutifyLink } from "@/helpers/utils";
 import useLoading from "@/hooks/useLoading";
 import useNavigateTo from "@/hooks/useNavigateTo";
@@ -104,32 +104,28 @@ const ShortcutDetail = () => {
           </span>
         </a>
         <div className="mt-2 w-full flex flex-row justify-normal items-center space-x-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className="w-8 h-8 cursor-pointer border border-border rounded-full text-muted-foreground hover:bg-accent hover:shadow"
-                  onClick={() => handleCopyButtonClick()}
-                >
-                  <Icon.Clipboard className="w-4 h-auto mx-auto" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>Copy</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className="w-8 h-8 cursor-pointer border border-border rounded-full text-muted-foreground hover:bg-accent hover:shadow"
-                  onClick={() => setShowQRCodeDialog(true)}
-                >
-                  <Icon.QrCode className="w-4 h-auto mx-auto" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>QR Code</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                className="w-8 h-8 cursor-pointer border border-border rounded-full text-muted-foreground hover:bg-accent hover:shadow"
+                onClick={() => handleCopyButtonClick()}
+              >
+                <Icon.Clipboard className="w-4 h-auto mx-auto" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>Copy</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                className="w-8 h-8 cursor-pointer border border-border rounded-full text-muted-foreground hover:bg-accent hover:shadow"
+                onClick={() => setShowQRCodeDialog(true)}
+              >
+                <Icon.QrCode className="w-4 h-auto mx-auto" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>QR Code</TooltipContent>
+          </Tooltip>
           {havePermission && (
             <Dropdown
               className="w-8 h-8 flex justify-center items-center border border-border cursor-pointer rounded-full hover:bg-accent hover:shadow"
@@ -172,39 +168,33 @@ const ShortcutDetail = () => {
           {shortcut.tags.length === 0 && <span className="text-muted-foreground text-sm leading-4 italic">No tags</span>}
         </div>
         <div className="w-full flex mt-4 gap-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border border-border rounded-full text-muted-foreground text-sm">
-                  <Icon.User className="w-4 h-auto mr-1" />
-                  <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{creator.nickname}</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>Creator</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border border-border rounded-full text-muted-foreground text-sm">
-                  <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
-                  {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>{t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border border-border rounded-full text-muted-foreground text-sm">
-                  <Icon.BarChart2 className="w-4 h-auto mr-1" />
-                  {shortcut.viewCount} visits
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>View count</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border border-border rounded-full text-muted-foreground text-sm">
+                <Icon.User className="w-4 h-auto mr-1" />
+                <span className="max-w-[4rem] sm:max-w-[6rem] truncate">{creator.nickname}</span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>Creator</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border border-border rounded-full text-muted-foreground text-sm">
+                <VisibilityIcon className="w-4 h-auto mr-1" visibility={shortcut.visibility} />
+                {t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.self`)}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>{t(`shortcut.visibility.${shortcut.visibility.toLowerCase()}.description`)}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="w-auto px-2 leading-6 flex flex-row justify-start items-center border border-border rounded-full text-muted-foreground text-sm">
+                <Icon.BarChart2 className="w-4 h-auto mr-1" />
+                {shortcut.viewCount} visits
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>View count</TooltipContent>
+          </Tooltip>
         </div>
 
         <div className="w-full flex flex-col mt-8">
