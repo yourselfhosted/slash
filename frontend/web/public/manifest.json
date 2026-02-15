@@ -1,0 +1,75 @@
+{
+  "background_color": "#ffffff",
+  "description": "An open source, self-hosted platform for sharing and managing your most frequently used links. Easily create customizable, human-readable shortcuts to streamline your link management.",
+  "display": "standalone",
+  "name": "Slash",
+  "orientation": "portrait-primary",
+  "short_name": "Slash",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home-narrow-light.png",
+      "type": "image/png",
+      "sizes": "1290×2796",
+      "form_factor": "narrow",
+      "label": "Home screen displaying list of available shortcuts using the light theme"
+    },
+    {
+      "src": "/screenshots/home-narrow-dark.png",
+      "type": "image/png",
+      "sizes": "1290×2796",
+      "form_factor": "narrow",
+      "label": "Home screen displaying list of available shortcuts using the dark theme"
+    },
+    {
+      "src": "/screenshots/home-wide-light.png",
+      "type": "image/png",
+      "sizes": "1624×1561",
+      "form_factor": "wide",
+      "label": "Home screen displaying list of available shortcuts using the light theme"
+    },
+    {
+      "src": "/screenshots/home-wide-dark.png",
+      "type": "image/png",
+      "sizes": "1624×1561",
+      "form_factor": "wide",
+      "label": "Home screen displaying list of available shortcuts using the dark theme"
+    },
+    {
+      "src": "/screenshots/shortcut-narrow-light.png",
+      "type": "image/png",
+      "sizes": "1290×2796",
+      "form_factor": "narrow",
+      "label": "Shortcut creation modal using the light theme"
+    },
+    {
+      "src": "/screenshots/home-narrow-dark.png",
+      "type": "image/png",
+      "sizes": "1290×2796",
+      "form_factor": "narrow",
+      "label": "Shortcut creation modal using the dark theme"
+    },
+    {
+      "src": "/screenshots/home-wide-light.png",
+      "type": "image/png",
+      "sizes": "1624×1561",
+      "form_factor": "wide",
+      "label": "Shortcut creation modal using the light theme"
+    },
+    {
+      "src": "/screenshots/home-wide-dark.png",
+      "type": "image/png",
+      "sizes": "1624×1561",
+      "form_factor": "wide",
+      "label": "Shortcut creation modal using the dark theme"
+    }
+  ]
+}
