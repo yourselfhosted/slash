@@ -258,6 +258,17 @@ func (s *APIV1Service) GetShortcutAnalytics(ctx context.Context, request *v1pb.G
 		return nil, status.Errorf(codes.NotFound, "shortcut not found")
 	}
 
+	// Analytics (referrers, device/browser breakdown) are more sensitive than
+	// the shortcut's own visibility setting governs, so restrict to the
+	// shortcut's creator or an admin, matching UpdateShortcut/DeleteShortcut.
+	user, err := getCurrentUser(ctx, s.Store)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get current user: %v", err)
+	}
+	if user == nil || (shortcut.CreatorId != user.ID && user.Role != store.RoleAdmin) {
+		return nil, status.Errorf(codes.PermissionDenied, "Permission denied")
+	}
+
 	activityFind := &store.FindActivity{
 		Type:              store.ActivityShortcutView,
 		PayloadShortcutID: &shortcut.Id,
